@@ -32,24 +32,20 @@ public class XMLDeserializer {
 	private static void buildFromDOMXML(Element noeudDOMRacine, Plan plan) throws XMLException, NumberFormatException {
 		NodeList listIntersections = noeudDOMRacine.getElementsByTagName("noeud");
 		for (int i = 0; i < listIntersections.getLength(); i++) {
-			int id = Integer.parseInt(((Element) listIntersections.item(i)).getAttribute("id"));
-			Intersection intersection = createIntersection((Element) listIntersections.item(i));
-
-			plan.addIntersection(id, intersection);
+			plan.addIntersection(createIntersection((Element) listIntersections.item(i)));
 		}
 		NodeList listSections = noeudDOMRacine.getElementsByTagName("troncon");
 		for (int i = 0; i < listSections.getLength(); i++) {
-			Section section = createSection((Element) listSections.item(i));
-			
-			plan.addSection(section);
+			plan.addSection(createSection((Element) listSections.item(i)));
 		}
 	}
 	
 	private static Intersection createIntersection(Element element) throws XMLException {
-		double longitude = Integer.parseInt(element.getAttribute("longitude"));
+		int id = Integer.parseInt(element.getAttribute("id"));
 		double latitude = Integer.parseInt(element.getAttribute("latitude"));
+		double longitude = Integer.parseInt(element.getAttribute("longitude"));
 	
-		return new Intersection(latitude, longitude);
+		return new Intersection(id, latitude, longitude);
 	}
 	
     private static Section createSection(Element elt) throws XMLException{ // TODO : naming
