@@ -4,23 +4,32 @@ import java.util.HashMap;
 
 public class Plan {
 	
-	private HashMap<Integer,Intersection> graph;
+	private HashMap<Long,Intersection> graph;
 	
 	public void addIntersection(Intersection toAdd){
 		graph.put(toAdd.getId(), toAdd);
 	}
 	
 	public void addSection(Section toAdd){
-		int idIntersection = toAdd.getIdStartIntersection();
+		long idIntersection = toAdd.getIdStartIntersection();
 		graph.get(idIntersection).addOutcomingSection(toAdd);
 	}
 	
-	public Intersection getIntersectionById(int idIntersection){
-		return graph.get(idIntersection);
+	public Intersection getIntersectionById(long idDeparture){
+		return graph.get(idDeparture);
 	}
 	
 	public Plan(){
-		graph = new HashMap<Integer,Intersection>();
+		graph = new HashMap<>();
+	}
+	
+	public void print() {
+		for (Long key : graph.keySet())
+		{
+			System.out.println("got intersection " + key + " with sections :");
+			graph.get(key).print();
+			
+		}
 	}
 	
 }
