@@ -18,10 +18,10 @@ public interface State {
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException;
 
-	public void openDeliveries(Controler controler)
+	public void openDeliveries(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException;
 
-	public void openParameters(Controler controler);
+	public void openParameters(Controler controler, Window window);
 
-	public void calculateTour(Controler controler);
+	public void calculateTour(Controler controler, Window window);
 }

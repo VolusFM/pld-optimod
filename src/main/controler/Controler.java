@@ -14,6 +14,7 @@ public class Controler {
 	private State currentState;
 	private Window window;
 	private ModelInterface model;
+	
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
@@ -29,14 +30,19 @@ public class Controler {
 		try{
 			currentState.openPlan(this, window);
 		}catch (Exception e){
-			
+			e.printStackTrace();
 		}
 	}
 
 	public void openDeliveries() throws XMLException, ParserConfigurationException, SAXException, IOException {
-		currentState.openDeliveries(this);
+		currentState.openDeliveries(this, window);
 	}
 
+	public void openParameters() {
+		currentState.openParameters(this, window);
+	}
+	
+	
 	public ModelInterface getModel() {
 		return model;
 	}
