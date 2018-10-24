@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.controler.Controler;
+import main.model.ModelInterface;
 import main.model.Plan;
 
 public class Window extends JFrame {
@@ -30,8 +31,8 @@ public class Window extends JFrame {
 
 	/* Component's text */
 	private final String WINDOW_TITLE = "Optimod";
-	private final String TEXT_DELIVERY_SELECTION = "Sélectionnez un fichier de demande de livraison au format XML :";
-	private final String TEXT_PLAN_SELECTION = "Sélectionnez un fichier de plan au format XML :";
+	private final String TEXT_DELIVERY_SELECTION = "SÃ©lectionnez un fichier de demande de livraison au format XML :";
+	private final String TEXT_PLAN_SELECTION = "SÃ©lectionnez un fichier de plan au format XML :";
 	private final String BUTTON_BROWSE = "Parcourir";
 
 	/* Button's action */
@@ -49,7 +50,7 @@ public class Window extends JFrame {
 		this.controler = controler;
 		buttonListener = new ButtonListener(controler);
 		/* Header */
-		this.header = new WindowHeader(this, true, false);
+		this.header = new WindowHeader(this, true, false, buttonListener);
 		this.header.setVisible(headerVisibility);
 		getContentPane().add(header, BorderLayout.NORTH);
 		/* Plan Selection Panel */
@@ -114,11 +115,13 @@ public class Window extends JFrame {
 	public void displayPlanView() {
 		this.centerPanel = new JPanel();
 		/* Create Content */
-		Plan plan = controler.getModel().getPlan();
+		Plan plan = ModelInterface.getPlan();
 		PlanView planPanel = new PlanView(planScale, this, plan);
 		/* Set content */
 		centerPanel.add(planPanel, BorderLayout.CENTER);
 		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
 	}
+	
+	
 
 }
