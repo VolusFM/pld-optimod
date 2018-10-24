@@ -2,7 +2,8 @@ package xml;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,14 +11,15 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import model.Delivery;
 import model.Intersection;
 import model.Plan;
 import model.Section;
+import model.TourCalculator;
 
 /**
  * 
@@ -63,23 +65,6 @@ public class XMLDeserializer {
 		}
 	}
 	
-	public static void load(List<Delivery> deliveries) throws ParserConfigurationException, SAXException, IOException, XMLException {
-		File xml = XMLFileOpener.getInstance().open();
-		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		Document document = docBuilder.parse(xml);
-		Element root = document.getDocumentElement();
-		if (root.getNodeName().equals("demandeDeLivraisons")) {
-			buildFromDOMXML(root, deliveries);
-		} else {
-			throw new XMLException("File's content doesn't match that of a deliveries request");
-		}
-	}
-	
-	private static void buildFromDOMXML(Element rootNode, List<Delivery> deliveries) throws XMLException, NumberFormatException {
-		Node depot = rootNode.getElementsByTagName("entrepot").item(0);
-		NodeList deliveriesNodes = rootNode.getElementsByTagName("livraison");
-	}
-	
 	/**
 	 * 
 	 * @param element
@@ -118,4 +103,49 @@ public class XMLDeserializer {
    		
    		return new Section(departure, arrival, length, streetName);
     }
+	
+	public static void load(Plan plan, TourCalculator calculator) throws ParserConfigurationException, SAXException, IOException, XMLException {
+		File xml = XMLFileOpener.getInstance().open();
+		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+		Document document = docBuilder.parse(xml);
+		Element root = document.getDocumentElement();
+		if (root.getNodeName().equals("demandeDeLivraisons")) {
+			buildFromDOMXML(root, plan, calculator);
+		} else {
+			throw new XMLException("File's content doesn't match that of a deliveries request");
+		}
+	}
+	
+	private static void buildFromDOMXML(Element rootNode, Plan plan, TourCalculator calculator) throws XMLException, NumberFormatException {
+		Node depot = rootNode.getElementsByTagName("entrepot").item(0);
+		NodeList deliveriesNodes = rootNode.getElementsByTagName("livraison");
+		
+		calculator.addDelivery(createDelivery((Element) depot, plan));
+		for (int i = 0; i < deliveriesNodes.getLength(); i++) {
+			calculator.addDelivery(createDelivery((Element) deliveriesNodes.item(i), plan));
+		}
+	}
+	
+	private static Delivery createDelivery(Element elt, Plan plan) {
+		Intersection departure = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));;
+		
+		if (elt.hasAttribute("duree")) { // Actual delivery
+			int duration = Integer.parseInt(elt.getAttribute("duree"));			
+
+			return new Delivery(duration, departure);
+		} else {						 // Not a delivery but a depot 			
+			Calendar departureTime = GregorianCalendar.getInstance();
+			// Parse date
+			String date[] = elt.getAttribute("heureDepart").split(":");
+			int hour = Integer.parseInt(date[0]);
+			int minutes = Integer.parseInt(date[1]);
+			int seconds = Integer.parseInt(date[2]);			
+			departureTime.set(Calendar.HOUR, hour);
+			departureTime.set(Calendar.MINUTE, minutes);
+			departureTime.set(Calendar.SECOND, seconds);
+			Delivery d = new Delivery(0, departure);
+			d.setHour(departureTime);
+			return d;
+		}
+	}
 }

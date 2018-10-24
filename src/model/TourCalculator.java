@@ -28,4 +28,8 @@ public class TourCalculator {
 		}
 		return instance;
 	}
+	
+	public void addDelivery(Delivery d) {
+		this.deliveries.add(d);
+	}
 }
