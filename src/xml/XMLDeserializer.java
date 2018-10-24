@@ -3,7 +3,6 @@ package xml;
 import java.io.File;
 import java.io.IOException;
 
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -48,12 +47,12 @@ public class XMLDeserializer {
 		return new Intersection(id, latitude, longitude);
 	}
 	
+
     private static Section createSection(Element elt, Plan plan) throws XMLException{ // TODO : naming
     	long idDeparture = Long.parseLong(elt.getAttribute("origine"));
     	long idArrival = Long.parseLong(elt.getAttribute("destination"));
    		Intersection departure = plan.getIntersectionById(idDeparture); // XXX : is this OK ?
    		Intersection arrival = plan.getIntersectionById(idArrival);
-   		
    		
    		String streetName = elt.getAttribute("nomRue");
    		
