@@ -28,7 +28,9 @@ public class Main {
 	 * @throws ParserConfigurationException 
 	 */
 	public static void main(String[] args) {
+		ModelInterface.setPlan(new Plan());
 		new Controler();
+		
 	}
 
 }
