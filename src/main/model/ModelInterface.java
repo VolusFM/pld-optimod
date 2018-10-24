@@ -20,4 +20,10 @@ public abstract class ModelInterface {
 	public static void setTourCalculator(TourCalculator c){
 		tourCalculator = c;
 	}
+	
+	
+	
+	public static void setDeliveryMenCount(int count){
+		System.out.println("setDeliveryMenCount to " + count);
+	}
 }
