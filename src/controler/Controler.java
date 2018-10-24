@@ -6,40 +6,43 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Interface;
-import model.Plan;
+import model.ModelInterface;
+import ui.Window;
 import xml.XMLException;
 
 public class Controler {
 	private State currentState;
 	private Window window;
-	private Interface model;
+	private ModelInterface model;
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
-	
-	public Controler(Interface model, Window window){
+
+	public Controler() {
 		this.currentState = initState;
-		this.model = model;
-		this.window = window;	
+		this.window = new Window(this);
 	}
-	
-	protected void openPlan()throws XMLException, ParserConfigurationException, SAXException, IOException{
-		//TODO : try/catch
-		currentState.openPlan(this);
+
+	public void openPlan() /*throws XMLException, ParserConfigurationException, SAXException, IOException */{
+		try{
+			currentState.openPlan(this, window);
+		}catch (Exception e){
+			
+		}
 	}
-	protected void openDeliveries()throws XMLException, ParserConfigurationException, SAXException, IOException{
+
+	public void openDeliveries() throws XMLException, ParserConfigurationException, SAXException, IOException {
 		currentState.openDeliveries(this);
 	}
-	
-	public Interface getModel() {
+
+	public ModelInterface getModel() {
 		return model;
 	}
-	
+
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
-	
+
 }

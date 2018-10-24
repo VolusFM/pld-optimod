@@ -1,5 +1,5 @@
 package controler;
 
-public class PlanningState extends DefaultState{
+public class PlanningState extends DefaultState {
 
 }

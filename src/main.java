@@ -29,10 +29,8 @@ public class main {
 	 * @throws ParserConfigurationException 
 	 */
 	public static void main(String[] args) throws XMLException, ParserConfigurationException, SAXException, IOException {
-		// TODO Auto-generated method stub
-//		XMLFileOpener fo = XMLFileOpener.getInstance();
-//		fo.open();
-//		
+
+	
 		Plan plan = new Plan();
 		XMLDeserializer.load(plan);
 		TourCalculator calculator = TourCalculator.getInstance();
