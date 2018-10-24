@@ -81,14 +81,14 @@ public class Window extends JFrame {
 		/* Create Content */
 		JPanel container = new JPanel();
 		JLabel selectionText = new JLabel(TEXT_PLAN_SELECTION);
-		container.add(selectionText, BorderLayout.NORTH);
+		container.add(selectionText);
 		JButton selectionButton = new JButton(BUTTON_BROWSE);
 		selectionButton.setActionCommand(ACTION_SELECTION_PLAN);
 		selectionButton.addActionListener(buttonListener);
-		container.add(selectionButton, BorderLayout.CENTER);
+		container.add(selectionButton);
 		/* Set content */
-		centerPanel.add(container, BorderLayout.CENTER);
-		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
+		centerPanel.add(container);
+		add(centerPanel, BorderLayout.CENTER);
 	}
 
 	/**
@@ -99,27 +99,28 @@ public class Window extends JFrame {
 		/* Create Content */
 		JPanel container = new JPanel();
 		JLabel selectionText = new JLabel(TEXT_DELIVERY_SELECTION);
-		container.add(selectionText, BorderLayout.NORTH);
+		container.add(selectionText);
 		JButton selectionButton = new JButton(BUTTON_BROWSE);
 		selectionButton.setActionCommand(ACTION_SELECTION_DELIVERY);
 		selectionButton.addActionListener(buttonListener);
-		container.add(selectionButton, BorderLayout.CENTER);
+		container.add(selectionButton);
 		/* Set content */
-		rightPanel.add(container, BorderLayout.CENTER);
-		getContentPane().add(rightPanel, BorderLayout.EAST);
+		rightPanel.add(container);
+		add(rightPanel, BorderLayout.EAST);
 	}
 	
 	/**
 	 * Create the panel with the city plan.
 	 */
 	public void displayPlanView() {
+		remove(centerPanel);
 		this.centerPanel = new JPanel();
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
 		PlanView planPanel = new PlanView(planScale, this, plan);
 		/* Set content */
-		centerPanel.add(planPanel, BorderLayout.CENTER);
-		this.getContentPane().add(centerPanel, BorderLayout.CENTER);
+		centerPanel.add(planPanel);
+		add(centerPanel, BorderLayout.CENTER);
 	}
 	
 	
