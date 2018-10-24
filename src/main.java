@@ -8,8 +8,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Plan;
-import xml.*;
+import controler.Controler;
+import model.ModelInterface;
+import xml.XMLException;
 
 /**
  * @author Montigny
@@ -25,13 +26,7 @@ public class main {
 	 * @throws ParserConfigurationException 
 	 */
 	public static void main(String[] args) throws XMLException, ParserConfigurationException, SAXException, IOException {
-		// TODO Auto-generated method stub
-//		XMLFileOpener fo = XMLFileOpener.getInstance();
-//		fo.open();
-//		
-		Plan p = new Plan();
-		XMLDeserializer.load(p);
-		p.print();
+		new Controler();
 	}
 
 }

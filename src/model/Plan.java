@@ -31,5 +31,9 @@ public class Plan {
 			
 		}
 	}
+
+	public HashMap<Long,Intersection> getGraph() {
+		return graph;
+	}
 	
 }

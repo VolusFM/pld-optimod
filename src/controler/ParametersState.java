@@ -1,5 +1,5 @@
 package controler;
 
-public class ParametersState extends DefaultState{
+public class ParametersState extends DefaultState {
 
 }
