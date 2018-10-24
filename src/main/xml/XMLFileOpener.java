@@ -1,11 +1,12 @@
 /**
  * 
  */
-package xml;
+package main.xml;
 
 import java.io.File;
+
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * This class allows to open an XML file and get its content as a File object.

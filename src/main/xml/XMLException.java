@@ -1,7 +1,7 @@
 /**
  * 
  */
-package xml;
+package main.xml;
 
 /**
  * @author Pomeg
