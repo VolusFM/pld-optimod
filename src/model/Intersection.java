@@ -11,7 +11,7 @@ public class Intersection {
 	private List<Section> outcomingSections;
 	
 	public void addOutcomingSection(Section outcomingSection){
-		//what if we add the same section twice ?
+		//TODO what if we add the same section twice ?
 		outcomingSections.add(outcomingSection);
 	}
 	
@@ -31,4 +31,11 @@ public class Intersection {
 			s.print();
 	}
 	
+	public double getLat() {
+		return lat;
+	}
+	
+	public double getLon() {
+		return lon;
+	}
 }
