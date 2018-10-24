@@ -9,8 +9,9 @@ import org.xml.sax.SAXException;
 import xml.XMLException;
 
 public class DefaultState implements State{
-	public void openPlan(Controler controler)throws XMLException, ParserConfigurationException, SAXException, IOException{}
-	public void openDeliveries(Controler controler) throws  XMLException, ParserConfigurationException, SAXException, IOException{}
-	public void openParameters(Controler controler){}
-	public void calculateTour(Controler controler){}
+	public void openPlan(Controler controler, Window window){}
+	public void openDeliveries(Controler controler, Window window){}
+	public void openParameters(Controler controler, Window window){}
+	public void calculateTour(Controler controler, Window window){}
+	public void addDelivery(Controler controler, Window window){}
 }

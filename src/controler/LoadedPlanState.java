@@ -10,13 +10,15 @@ import xml.XMLDeserializer;
 import xml.XMLException;
 
 public class LoadedPlanState extends DefaultState{
-
-	public void openDeliveries(Controler controler)throws XMLException, ParserConfigurationException, SAXException, IOException{
+	
+	@Override
+	public void openDeliveries(Controler controler, Window window)throws XMLException, ParserConfigurationException, SAXException, IOException{
 		XMLDeserializer.load(controler.getModel().getPlan(),controler.getModel().getTourCalculator());
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 	
-	public void openParameters(Controler controler){
+	@Override
+	public void openParameters(Controler controler, Window window){
 		//TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);
 	}

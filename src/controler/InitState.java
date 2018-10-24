@@ -11,11 +11,15 @@ import xml.XMLDeserializer;
 import xml.XMLException;
 
 public class InitState extends DefaultState{
-	public void openPlan(Controler controler)throws XMLException, ParserConfigurationException, SAXException, IOException{
+	
+	@Override
+	public void openPlan(Controler controler, Window window)throws XMLException, ParserConfigurationException, SAXException, IOException{
 		XMLDeserializer.load(controler.getModel().getPlan());
 		controler.setCurrentState(controler.loadedPlanState);
 	}
-	public void openParameters(Controler controler){
+	
+	@Override
+	public void openParameters(Controler controler, Window window){
 		//TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);
 	}
