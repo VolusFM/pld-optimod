@@ -7,23 +7,34 @@ public class Section {
 
 	private String streetName;
 	private double length;
-	private Intersection startIntersection;
-	private Intersection endIntersection;
+	private Intersection start;
+	private Intersection end;
 	
 	public long getIdStartIntersection(){
-		return startIntersection.getId();
+		return start.getId();
 	}
 
-	public Section(Intersection startIntersection, Intersection endIntersection, double length, String streetName) {
+	public Section(Intersection start, Intersection end, double length, String streetName) {
 		this.streetName = streetName;
 		this.length = length;
-		this.startIntersection = startIntersection;
-		this.endIntersection = endIntersection;
+		this.start = start;
+		this.end = end;
 	}
 
 	public void print() {
 		System.out.println(streetName);	
 	}
-	
+
+	public double getLength() {
+		return length;
+	}
+
+	public Intersection getStart() {
+		return start;
+	}
+
+	public Intersection getEnd() {
+		return end;
+	}	
 	
 }

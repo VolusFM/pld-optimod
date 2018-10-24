@@ -7,22 +7,25 @@ public class TourCalculator {
 
 	private TourFactory tourFactory;
 	private Plan map;
-	private List<Delivery> deliveryRequest;
-    /** Instance unique pré-initialisée */
-	private static TourCalculator INSTANCE = new TourCalculator();
-	
-	private TourCalculator(){
+	private List<Delivery> deliveries;
+	/* Unique instance */
+	private static TourCalculator instance = null;
+
+	private TourCalculator() {
 		tourFactory = TourFactory.getInstance();
-		deliveryRequest = new ArrayList<>();
+		deliveries = new ArrayList<>();
 	}
-	
-	public static TourCalculator initialiseTourCalculator(Plan map, List<Delivery> deliveryRequest){
-		INSTANCE.deliveryRequest = deliveryRequest;
-		INSTANCE.map = map;
-		return INSTANCE;
+
+	private static TourCalculator init(Plan map, List<Delivery> deliveries) {
+		instance.deliveries = deliveries;
+		instance.map = map;
+		return instance;
 	}
-	
-	public static TourCalculator getInstance(){
-		return INSTANCE;
+
+	public static TourCalculator getInstance() {
+		if (instance == null) {
+			instance = new TourCalculator();
+		}
+		return instance;
 	}
 }
