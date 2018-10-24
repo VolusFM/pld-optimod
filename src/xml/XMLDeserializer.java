@@ -7,18 +7,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-/*import modele.Cercle;
-import modele.Plan;
-import modele.Point;
-import modele.PointFactory;
-import modele.Rectangle;*/
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import jdk.management.resource.internal.UnassignedContext;
+import model.Intersection;
+import model.Plan;
+import model.Section;
 
 public class XMLDeserializer {
 	public static void load(Plan plan) throws ParserConfigurationException, SAXException, IOException, XMLException {
@@ -37,17 +33,35 @@ public class XMLDeserializer {
 		for (int i = 0; i < listIntersections.getLength(); i++) {
 			plan.addIntersection(createIntersection((Element) listIntersections.item(i)));
 		}
-		NodeList listSections = noeudDOMRacine.getElementsByTagName("trocon");
+		NodeList listSections = noeudDOMRacine.getElementsByTagName("troncon");
 		for (int i = 0; i < listSections.getLength(); i++) {
-			plan.addSection(createSection((Element) listSections.item(i)));
+			plan.addSection(createSection((Element) listSections.item(i), plan));
 		}
 	}
 	
 	private static Intersection createIntersection(Element element) throws XMLException {
-		double longitude = Integer.parseInt(element.getAttribute("longitude"));
-		double latitude = Integer.parseInt(element.getAttribute("latitude"));
-		int id = Integer.parseInt(element.getAttribute("id"));
-
+		long id = Long.parseLong(element.getAttribute("id"));
+		double latitude = Double.parseDouble(element.getAttribute("latitude"));
+		double longitude = Double.parseDouble(element.getAttribute("longitude"));
+	
 		return new Intersection(id, latitude, longitude);
 	}
+	
+
+    private static Section createSection(Element elt, Plan plan) throws XMLException{ // TODO : naming
+    	long idDeparture = Long.parseLong(elt.getAttribute("origine"));
+    	long idArrival = Long.parseLong(elt.getAttribute("destination"));
+   		Intersection departure = plan.getIntersectionById(idDeparture); // XXX : is this OK ?
+   		Intersection arrival = plan.getIntersectionById(idArrival);
+   		
+   		String streetName = elt.getAttribute("nomRue");
+   		
+   		double length = Double.parseDouble(elt.getAttribute("longueur"));
+
+   		if (length <= 0) {
+   			throw new XMLException("Error when loading file : length of a section must be positive");
+   		}
+   		
+   		return new Section(departure, arrival, length, streetName);
+    }
 }
