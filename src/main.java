@@ -3,13 +3,17 @@
  */
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import model.Delivery;
 import model.Plan;
-import xml.*;
+import model.TourCalculator;
+import xml.XMLDeserializer;
+import xml.XMLException;
 
 /**
  * @author Montigny
@@ -29,9 +33,13 @@ public class main {
 //		XMLFileOpener fo = XMLFileOpener.getInstance();
 //		fo.open();
 //		
-		Plan p = new Plan();
-		XMLDeserializer.load(p);
-		p.print();
+		Plan plan = new Plan();
+		XMLDeserializer.load(plan);
+		TourCalculator calculator = TourCalculator.getInstance();
+		TourCalculator.init(plan, new ArrayList<Delivery>());
+		XMLDeserializer.load(plan, calculator);
+		plan.print();
+		calculator.print();
 	}
 
 }

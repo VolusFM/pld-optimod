@@ -16,7 +16,7 @@ public class TourCalculator {
 		deliveries = new ArrayList<>();
 	}
 
-	private static TourCalculator init(Plan map, List<Delivery> deliveries) {
+	public static TourCalculator init(Plan map, List<Delivery> deliveries) {
 		instance.deliveries = deliveries;
 		instance.map = map;
 		return instance;
@@ -31,5 +31,13 @@ public class TourCalculator {
 	
 	public void addDelivery(Delivery d) {
 		this.deliveries.add(d);
+	}
+	
+	public void print() {
+		for (Delivery d : deliveries)
+		{
+			System.out.println("got delivery with intersection id :" + d.getAddress().getId());
+			
+		}
 	}
 }
