@@ -12,7 +12,8 @@ import xml.XMLException;
 public class LoadedPlanState extends DefaultState{
 
 	public void openDeliveries(Controler controler)throws XMLException, ParserConfigurationException, SAXException, IOException{
-		XMLDeserializer.load(controler.getModel().getTourCalculator(), controler.getModel().getPlan());
+		XMLDeserializer.load(controler.getModel().getPlan(),controler.getModel().getTourCalculator());
+		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 	
 	public void openParameters(Controler controler){

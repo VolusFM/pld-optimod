@@ -16,6 +16,7 @@ public class Controler {
 	private Interface model;
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
+	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	
