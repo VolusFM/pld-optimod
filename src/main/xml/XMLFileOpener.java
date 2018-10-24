@@ -40,6 +40,7 @@ public class XMLFileOpener extends FileFilter {
 	 */
 	public File open() throws XMLException {
 		JFileChooser jFileChooserXML = new JFileChooser();
+		jFileChooserXML.setCurrentDirectory(new File(".")); // set current dir to project dir
 		jFileChooserXML.setFileFilter(this);
 		jFileChooserXML.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
