@@ -1,4 +1,4 @@
-package controler;
+package main.controler;
 
 import java.io.IOException;
 
@@ -6,10 +6,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Plan;
-import ui.Window;
-import xml.XMLDeserializer;
-import xml.XMLException;
+import main.ui.Window;
+import main.xml.XMLDeserializer;
+import main.xml.XMLException;;
 
 public class InitState extends DefaultState {
 	

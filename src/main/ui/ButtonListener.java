@@ -1,9 +1,9 @@
-package ui;
+package main.ui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import controler.Controler;
+import main.controler.Controler;
 
 public class ButtonListener implements ActionListener {
 

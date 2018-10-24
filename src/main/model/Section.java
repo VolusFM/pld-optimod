@@ -1,7 +1,4 @@
-package model;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx.Snapshot;
-
+package main.model;
 
 public class Section {
 

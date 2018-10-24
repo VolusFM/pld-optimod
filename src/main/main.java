@@ -1,6 +1,7 @@
 /**
  * 
  */
+package main;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,11 +10,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Delivery;
-import model.Plan;
-import model.TourCalculator;
-import xml.XMLDeserializer;
-import xml.XMLException;
+import main.model.Delivery;
+import main.model.Plan;
+import main.model.TourCalculator;
+import main.xml.XMLDeserializer;
+import main.xml.XMLException;
 
 /**
  * @author Montigny

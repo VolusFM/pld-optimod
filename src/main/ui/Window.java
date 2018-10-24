@@ -1,4 +1,4 @@
-package ui;
+package main.ui;
 
 import java.awt.BorderLayout;
 
@@ -7,8 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controler.Controler;
-import model.Plan;
+import main.controler.Controler;
+import main.model.Plan;
 
 public class Window extends JFrame {
 

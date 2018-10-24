@@ -1,4 +1,4 @@
-package controler;
+package main.controler;
 
 import java.io.IOException;
 
@@ -6,8 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import ui.Window;
-import xml.XMLException;
+import main.xml.XMLException;
+import main.ui.Window;
 
 public interface State {
 	/**

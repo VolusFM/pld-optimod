@@ -1,17 +1,16 @@
-package ui;
+package main.ui;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import model.Intersection;
-import model.Section;
-import model.Plan;
+import main.model.Intersection;
+import main.model.Section;
+import main.model.Plan;
 
 public class PlanView extends JPanel {
 

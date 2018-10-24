@@ -1,4 +1,4 @@
-package controler;
+package main.controler;
 
 import java.io.IOException;
 
@@ -6,8 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import xml.XMLDeserializer;
-import xml.XMLException;
+import main.xml.XMLDeserializer;
+import main.xml.XMLException;
 
 public class LoadedPlanState extends DefaultState {
 
