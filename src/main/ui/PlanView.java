@@ -1,6 +1,7 @@
 package main.ui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Collection;
 import java.util.Iterator;
@@ -25,10 +26,10 @@ public class PlanView extends JPanel {
 	private double maxLong;
 
 	/* Graphic components */
-	private Graphics graphics;
+	// private Graphics graphics;
 
 	/**
-	 * Create the graphical view for drawing the charged plan with the scale s
+	 * Create the graphical view for drawing the loaded plan with the scale s
 	 * in the specified window w.
 	 * 
 	 * @param s
@@ -44,9 +45,10 @@ public class PlanView extends JPanel {
 		this.scale = s;
 		this.plan = p;
 		this.findExtremes();
-		/* Display */
 		setLayout(null);
-		setBackground(Color.white);
+		setSize(400, 400);
+		/* Display */
+		setBackground(Color.WHITE);
 		w.getContentPane().add(this);
 	}
 	// TODO : mettre l'observer sur le plan.
@@ -60,12 +62,9 @@ public class PlanView extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		/* Draw the border */
-		g.setColor(Color.black);
-		g.drawRect(0, 0, this.getWidth(), this.getHeight());
 		/* Draw the sections */
-		g.setColor(Color.gray);
-		this.graphics = g;
+		g.setColor(Color.DARK_GRAY);
+		// this.graphics = g;
 		Collection<Intersection> intersections = plan.getGraph().values();
 		Iterator<Intersection> itIntersection = intersections.iterator();
 		while (itIntersection.hasNext()) {
@@ -137,5 +136,14 @@ public class PlanView extends JPanel {
 				maxLong = current.getLon();
 			}
 		}
+	}
+	
+	
+	
+	
+	@Override
+	public Dimension getPreferredSize() {
+		// XXX : not so clean... figure out a better (dynamic) way
+		return new Dimension(400,400);
 	}
 }
