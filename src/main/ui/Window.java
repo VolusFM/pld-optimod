@@ -111,6 +111,7 @@ public class Window extends JFrame {
 		add(rightPanel, BorderLayout.EAST);
 	}
 
+	
 	/**
 	 * Create the panel with the city plan.
 	 */
@@ -129,8 +130,8 @@ public class Window extends JFrame {
 	 * Create the panel with the button to calculate the planning.
 	 */
 	public void displayCalculateTourButtonPanel() {
-		this.rightPanel.setVisible(false);
-		this.rightPanel = new JPanel();
+		rightPanel.setVisible(false);
+		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
 		/* Create Content */
 		JPanel container = new JPanel();
 		JButton selectionButton = new JButton(BUTTON_TOUR_CALCUL);
@@ -139,7 +140,7 @@ public class Window extends JFrame {
 		container.add(selectionButton);
 		/* Set content */
 		rightPanel.add(container);
-		this.rightPanel.setVisible(true);
+		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
 
@@ -148,17 +149,18 @@ public class Window extends JFrame {
 	 * men, locations, hours and list of roads.
 	 */
 	public void displayTourPlanningPanel() {
-		this.rightPanel.setVisible(false);
-		this.rightPanel = new JPanel();
+		rightPanel.setVisible(false);
+		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
 		/* Create Content */
 		JPanel container = new JPanel();
+		container.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
 		container.add(planningText, BorderLayout.NORTH);
 		PlanningView planningPanel = new PlanningView(this);
 		container.add(planningPanel, BorderLayout.CENTER);
 		/* Set content */
 		rightPanel.add(container);
-		this.rightPanel.setVisible(true);
+		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
 

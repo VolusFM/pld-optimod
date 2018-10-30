@@ -38,14 +38,14 @@ public class PlanningView extends JPanel {
 	 * @param p
 	 *            the plan to print
 	 */
+	// FIXME : doc is not matching constructor
 	public PlanningView(Window w) {
 		super();
 		/* Initialize */
-		setLayout(null);
 		setSize(600, 900);
 		/* Display */
 		setBackground(Color.WHITE);
-		w.getContentPane().add(this.createBoardPanel());
+		add(this.createBoardPanel());
 	}
 	// TODO : mettre l'observer
 

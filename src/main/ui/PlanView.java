@@ -42,6 +42,7 @@ public class PlanView extends JPanel {
 	 * @param p
 	 *            the plan to print
 	 */
+	// FIXME  : constructor signature may change
 	public PlanView(int s, Window w, Plan p) {
 		super();
 		/* Initialize */
@@ -52,7 +53,7 @@ public class PlanView extends JPanel {
 		setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
-		w.getContentPane().add(this);
+		w.add(this);
 	}
 	// TODO : mettre l'observer sur le plan.
 
