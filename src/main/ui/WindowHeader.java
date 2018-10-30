@@ -25,7 +25,6 @@ public class WindowHeader extends JPanel {
 	protected static final String ACTION_PARAMETERS = "PARAMETERS";
 	protected static final String ACTION_RETURN = "RETURN";
 
-	
 	/* Components */
 	private JButton parametersButton;
 	private JButton returnButton;
@@ -37,7 +36,8 @@ public class WindowHeader extends JPanel {
 	 * @param w
 	 *            the window
 	 */
-	public WindowHeader(Window w, boolean parametersButtonVisibility, boolean returnButtonVisibility, ButtonListener buttonListener) {
+	public WindowHeader(Window w, boolean parametersButtonVisibility, boolean returnButtonVisibility,
+			ButtonListener buttonListener) {
 		super();
 		setLayout(new BorderLayout());
 		setBackground(Color.white);

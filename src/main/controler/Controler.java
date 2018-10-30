@@ -11,10 +11,11 @@ import main.xml.XMLException;
 import main.ui.Window;
 
 public class Controler {
+
 	private State currentState;
-	private Window window;
+	public Window window; // FIXME visibility
 	private ModelInterface model;
-	
+
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
@@ -26,10 +27,13 @@ public class Controler {
 		this.window = new Window(this);
 	}
 
-	public void openPlan() /*throws XMLException, ParserConfigurationException, SAXException, IOException */{
-		try{
+	public void openPlan() /*
+							 * throws XMLException, ParserConfigurationException,
+							 * SAXException, IOException
+							 */ {
+		try {
 			currentState.openPlan(this, window);
-		}catch (Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -41,8 +45,7 @@ public class Controler {
 	public void openParameters() {
 		currentState.openParameters(this, window);
 	}
-	
-	
+
 	public ModelInterface getModel() {
 		return model;
 	}

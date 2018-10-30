@@ -6,8 +6,8 @@ public class Section {
 	private double length;
 	private Intersection start;
 	private Intersection end;
-	
-	public long getIdStartIntersection(){
+
+	public long getIdStartIntersection() {
 		return start.getId();
 	}
 
@@ -19,7 +19,7 @@ public class Section {
 	}
 
 	public void print() {
-		System.out.println(streetName);	
+		System.out.println(streetName);
 	}
 
 	public double getLength() {
@@ -32,6 +32,6 @@ public class Section {
 
 	public Intersection getEnd() {
 		return end;
-	}	
-	
+	}
+
 }

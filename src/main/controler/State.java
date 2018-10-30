@@ -10,11 +10,6 @@ import main.xml.XMLException;
 import main.ui.Window;
 
 public interface State {
-	/**
-	 * 
-	 * @param controleur
-	 * @param fenetre
-	 */
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException;
 

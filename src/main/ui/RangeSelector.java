@@ -10,7 +10,8 @@ import javax.swing.JOptionPane;
 public abstract class RangeSelector {
 
 	public static int getIntegerInRange(int min, int max) {
-		return (Integer) JOptionPane.showInputDialog(null, "Please select the delivery men count", "Range selector", JOptionPane.PLAIN_MESSAGE, null,  IntStream.rangeClosed(min, max).boxed().toArray(), 1);
+		return (Integer) JOptionPane.showInputDialog(null, "Please select the delivery men count", "Range selector",
+				JOptionPane.PLAIN_MESSAGE, null, IntStream.rangeClosed(min, max).boxed().toArray(), 1);
 	}
 
 }

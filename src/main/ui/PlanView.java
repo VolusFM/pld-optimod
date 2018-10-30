@@ -9,9 +9,12 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
+import javafx.util.Pair;
+import main.model.Delivery;
 import main.model.Intersection;
-import main.model.Section;
+import main.model.ModelInterface;
 import main.model.Plan;
+import main.model.Section;
 
 public class PlanView extends JPanel {
 
@@ -29,8 +32,8 @@ public class PlanView extends JPanel {
 	// private Graphics graphics;
 
 	/**
-	 * Create the graphical view for drawing the loaded plan with the scale s
-	 * in the specified window w.
+	 * Create the graphical view for drawing the loaded plan with the scale s in
+	 * the specified window w.
 	 * 
 	 * @param s
 	 *            the scale
@@ -74,6 +77,13 @@ public class PlanView extends JPanel {
 				printSection(g, itSection.next());
 			}
 		}
+		/* Deliveries Displaying */
+		g.setColor(Color.BLUE);
+		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
+		Iterator<Delivery> itDeliveries = deliveries.iterator();
+		while (itDeliveries.hasNext()) {
+			printDelivery(g, itDeliveries.next());
+		}
 	}
 
 	/**
@@ -103,6 +113,29 @@ public class PlanView extends JPanel {
 		int endY = (int) Math.round(endLong * getWidth());
 		/* Display */
 		g.drawLine(startX, startY, endX, endY);
+	}
+
+	/**
+	 * Method called any time we need to draw a delivery point. Draw a circle at
+	 * the specified point.
+	 * 
+	 * @param g
+	 *            the graphics component
+	 * @param delivery
+	 *            the delivery to print
+	 */
+	public void printDelivery(Graphics g, Delivery delivery) {
+		/* Values from the delivery */
+		double lat = delivery.getAddress().getLat();
+		double lon = delivery.getAddress().getLon();
+		/* Normalization */
+		lat = (lat - minLat) / (maxLat - minLat);
+		lon = (lon - minLong) / (maxLong - minLong);
+		/* Scaling */
+		int x = (int) Math.round(lat * getHeight());
+		int y = (int) Math.round(lon * getWidth());
+		/* Display */
+		g.fillOval(x, y, 10, 10);
 	}
 
 	/**
@@ -137,13 +170,18 @@ public class PlanView extends JPanel {
 			}
 		}
 	}
-	
-	
-	
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		// XXX : not so clean... figure out a better (dynamic) way
-		return new Dimension(400,400);
+		return new Dimension(800, 800);
+	}
+
+	public Pair<Integer, Integer> convertToScreenCoordinate(Pair<Double, Double> latLng) {
+		return null; // TODO
+	}
+
+	public Pair<Double, Double> convertToLatLong(Pair<Integer, Integer> screenCOords) {
+		return null; // TODO
 	}
 }

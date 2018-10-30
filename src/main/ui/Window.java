@@ -13,11 +13,10 @@ import main.model.Plan;
 
 public class Window extends JFrame {
 
-
 	/* Attributes */
 	private Controler controler;
 	private int planScale = 1;
-	
+
 	/* Components */
 	private WindowHeader header;
 	private JPanel centerPanel;
@@ -25,7 +24,7 @@ public class Window extends JFrame {
 
 	/* Listeners */
 	private ButtonListener buttonListener;
-	
+
 	/* Components visibility */
 	private boolean headerVisibility = true;
 
@@ -34,10 +33,13 @@ public class Window extends JFrame {
 	private final String TEXT_DELIVERY_SELECTION = "Sélectionnez un fichier de demande de livraison au format XML :";
 	private final String TEXT_PLAN_SELECTION = "Sélectionnez un fichier de plan au format XML :";
 	private final String BUTTON_BROWSE = "Parcourir";
+	private final String BUTTON_TOUR_CALCUL = "Planifier la tournée";
+	private final String TEXT_PLANNING_BOARD = "Planning des tournées obtenu :";
 
 	/* Button's action */
 	protected static final String ACTION_SELECTION_PLAN = "LOAD_PLAN";
 	protected static final String ACTION_SELECTION_DELIVERY = "LOAD_DELIVERY";
+	protected static final String ACTION_CALCULATE_TOUR = "CALCULATE_TOUR";
 
 	/**
 	 * Create a window with a header (with a title and "parameters" button), a
@@ -108,7 +110,7 @@ public class Window extends JFrame {
 		rightPanel.add(container);
 		add(rightPanel, BorderLayout.EAST);
 	}
-	
+
 	/**
 	 * Create the panel with the city plan.
 	 */
@@ -122,7 +124,42 @@ public class Window extends JFrame {
 		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
 	}
-	
-	
+
+	/**
+	 * Create the panel with the button to calculate the planning.
+	 */
+	public void displayCalculateTourButtonPanel() {
+		this.rightPanel.setVisible(false);
+		this.rightPanel = new JPanel();
+		/* Create Content */
+		JPanel container = new JPanel();
+		JButton selectionButton = new JButton(BUTTON_TOUR_CALCUL);
+		selectionButton.setActionCommand(ACTION_CALCULATE_TOUR);
+		selectionButton.addActionListener(buttonListener);
+		container.add(selectionButton);
+		/* Set content */
+		rightPanel.add(container);
+		this.rightPanel.setVisible(true);
+		add(rightPanel, BorderLayout.EAST);
+	}
+
+	/**
+	 * Create the panel with the planning of the tour as a board of delivery
+	 * men, locations, hours and list of roads.
+	 */
+	public void displayTourPlanningPanel() {
+		this.rightPanel.setVisible(false);
+		this.rightPanel = new JPanel();
+		/* Create Content */
+		JPanel container = new JPanel();
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		container.add(planningText, BorderLayout.NORTH);
+		PlanningView planningPanel = new PlanningView(this);
+		container.add(planningPanel, BorderLayout.CENTER);
+		/* Set content */
+		rightPanel.add(container);
+		this.rightPanel.setVisible(true);
+		add(rightPanel, BorderLayout.EAST);
+	}
 
 }

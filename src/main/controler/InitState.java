@@ -12,7 +12,7 @@ import main.xml.XMLDeserializer;
 import main.xml.XMLException;;
 
 public class InitState extends DefaultState {
-	
+
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
 		XMLDeserializer.load(ModelInterface.getPlan());
