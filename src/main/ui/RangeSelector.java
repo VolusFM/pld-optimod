@@ -9,9 +9,17 @@ import javax.swing.JOptionPane;
  */
 public abstract class RangeSelector {
 
-	public static int getIntegerInRange(int min, int max) {
-		return (Integer) JOptionPane.showInputDialog(null, "Please select the delivery men count", "Range selector",
-				JOptionPane.PLAIN_MESSAGE, null, IntStream.rangeClosed(min, max).boxed().toArray(), 1);
+	public static int getIntegerInRange(int min, int max) throws SelectionCancelledException {
+		try {
+			return (Integer) JOptionPane.showInputDialog(null, "Please select the delivery men count", "Range selector",
+					JOptionPane.PLAIN_MESSAGE, null, IntStream.rangeClosed(min, max).boxed().toArray(), 1);
+		} catch (NullPointerException e) {
+			throw new SelectionCancelledException();
+		}
+	}
+
+	public static class SelectionCancelledException extends Exception {
+
 	}
 
 }

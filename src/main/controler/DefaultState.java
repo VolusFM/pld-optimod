@@ -8,6 +8,7 @@ import org.xml.sax.SAXException;
 
 import main.model.ModelInterface;
 import main.ui.RangeSelector;
+import main.ui.RangeSelector.SelectionCancelledException;
 import main.ui.Window;
 import main.xml.XMLException;;
 
@@ -24,7 +25,11 @@ public class DefaultState implements State {
 		// XXX : for testing purposes only, need to get the good range
 		// TODO : move this in the appropriate state (likeli
 		// LoadedDeliveryState)
-		ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, 42));
+		try {
+			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, 42));
+		} catch (SelectionCancelledException e) {
+			System.out.println("Selection was cancelled, ignoring...");
+		}
 	}
 
 	public void calculateTour(Controler controler, Window window) {
