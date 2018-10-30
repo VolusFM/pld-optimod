@@ -39,7 +39,7 @@ public class ButtonListener implements ActionListener {
 			break;
 		case Window.ACTION_CALCULATE_TOUR:
 			controler.window.displayTourPlanningPanel();
-
+			break;
 		default:
 			throw new RuntimeException("Unhandled action : " + e.getActionCommand());
 		}
