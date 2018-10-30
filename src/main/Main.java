@@ -72,9 +72,11 @@ public class Main {
 		/* create delivery */
 		Delivery d1 = new Delivery(5, i3);
 		Delivery d2 = new Delivery(10, i1);
+		Delivery d3 = new Delivery(15, i4);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		deliveries.add(d1);
 		deliveries.add(d2);
+		deliveries.add(d3);
 		/* create steps */
 		List<Section> section = new ArrayList<Section>();
 		section.add(s1);
@@ -87,6 +89,8 @@ public class Main {
 		ModelInterface.setPlan(plan);
 		ModelInterface.addDelivery(d1);
 		ModelInterface.addDelivery(d2);
+		ModelInterface.addDelivery(d3);
+		
 		ModelInterface.createTour(1, steps, deliveries);
 		/* lauch app */
 		new Controler();

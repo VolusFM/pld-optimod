@@ -45,14 +45,14 @@ public class PlanningView extends JPanel {
 		setSize(600, 900);
 		/* Display */
 		setBackground(Color.WHITE);
-		add(this.createBoardPanel());
+		createBoardPanel();
 	}
 	// TODO : mettre l'observer
 
 	/**
 	 * Function called to create the planning panel.
 	 */
-	public JPanel createBoardPanel() {
+	public void createBoardPanel() {
 		/* Building board dimensions */
 		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
 		Object[][] boardDatas = new Object[deliveries.size()][columnsNumber];
@@ -80,15 +80,6 @@ public class PlanningView extends JPanel {
 		/* Building board */
 		planning = new JTable(boardDatas, boardTitle);
 		/* Displaying */
-		JPanel board = new JPanel();
-		board.add(new JScrollPane(planning));
-		board.setVisible(true);
-		return board;
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		// XXX : not so clean... figure out a better (dynamic) way
-		return new Dimension(400, 900);
+		add(new JScrollPane(planning));
 	}
 }
