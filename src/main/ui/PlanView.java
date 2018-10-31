@@ -42,7 +42,7 @@ public class PlanView extends JPanel {
 	 * @param p
 	 *            the plan to print
 	 */
-	// FIXME  : constructor signature may change
+	// FIXME : constructor signature may change
 	public PlanView(int s, Window w, Plan p) {
 		super();
 		/* Initialize */
@@ -96,22 +96,13 @@ public class PlanView extends JPanel {
 	 */
 	public void printSection(Graphics g, Section section) {
 		/* Values from the plan */
-		double startLat = section.getStart().getLat();
-		double startLong = section.getStart().getLon();
-		double endLat = section.getEnd().getLat();
-		double endLong = section.getEnd().getLon();
-		/* Normalization */
-		startLat = (startLat - minLat) / (maxLat - minLat);
-		startLong = (startLong - minLong) / (maxLong - minLong);
-		endLat = (endLat - minLat) / (maxLat - minLat);
-		endLong = (endLong - minLong) / (maxLong - minLong);
-		/* Scaling */
-		int startX = (int) Math.round(startLat * getHeight());
-		int startY = (int) Math.round(startLong * getWidth());
-		int endX = (int) Math.round(endLat * getHeight());
-		int endY = (int) Math.round(endLong * getWidth());
+		GeographicCoordinate startGeographicCoordinate = new GeographicCoordinate(section.getStart().getLat(), section.getStart().getLon());
+		GeographicCoordinate endGeographicCoordinate = new GeographicCoordinate(section.getEnd().getLat(), section.getEnd().getLon());
+		/* Conversion */
+		ScreenCoordinate startScreenCoordinate = convertToScreenCoordinate(startGeographicCoordinate);
+		ScreenCoordinate endScreenCoordinate = convertToScreenCoordinate(endGeographicCoordinate);
 		/* Display */
-		g.drawLine(startX, startY, endX, endY);
+		g.drawLine(startScreenCoordinate.getX(), startScreenCoordinate.getY(), endScreenCoordinate.getX(), endScreenCoordinate.getY());
 	}
 
 	/**
@@ -124,17 +115,12 @@ public class PlanView extends JPanel {
 	 *            the delivery to print
 	 */
 	public void printDelivery(Graphics g, Delivery delivery) {
-		/* Values from the delivery */
-		double lat = delivery.getAddress().getLat();
-		double lon = delivery.getAddress().getLon();
-		/* Normalization */
-		lat = (lat - minLat) / (maxLat - minLat);
-		lon = (lon - minLong) / (maxLong - minLong);
-		/* Scaling */
-		int x = (int) Math.round(lat * getHeight());
-		int y = (int) Math.round(lon * getWidth());
+		/* Values from delivery */
+		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(delivery.getAddress().getLat(), delivery.getAddress().getLon());
+		/* Conversion */
+		ScreenCoordinate screenCoordinate = convertToScreenCoordinate(geographicCoordinate);
 		/* Display */
-		g.drawOval(x-5, y-5, 10, 10);
+		g.drawOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
 	}
 
 	/**
@@ -176,11 +162,87 @@ public class PlanView extends JPanel {
 		return new Dimension(800, 800);
 	}
 
-	public Pair<Integer, Integer> convertToScreenCoordinate(Pair<Double, Double> latLng) {
+	
+	
+	public ScreenCoordinate convertToScreenCoordinate(GeographicCoordinate geographicCoordinate) {
+		double lat = geographicCoordinate.getLatitude();
+		double lon = geographicCoordinate.getLongitude();
+		/* Normalization */
+		lat = (lat - minLat) / (maxLat - minLat);
+		lon = (lon - minLong) / (maxLong - minLong);
+		/* Scaling */
+		int x = (int) Math.round(lat * getHeight());
+		int y = (int) Math.round(lon * getWidth());
+		
+		return new ScreenCoordinate(x, y);
+	}
+
+	public GeographicCoordinate convertToGeographicCoordinate(ScreenCoordinate screenCoordinate) {
 		return null; // TODO
 	}
 
-	public Pair<Double, Double> convertToLatLong(Pair<Integer, Integer> screenCOords) {
-		return null; // TODO
+	/**
+	 * Wrapper class representing a tuple latitude/longitude, in the geographic
+	 * coordinate system
+	 */
+	public static class GeographicCoordinate {
+		double latitude;
+		double longitude;
+		
+		public GeographicCoordinate(double latitude, double longitude) {
+			this.latitude = latitude;
+			this.longitude = longitude;
+		}
+
+		public double getLatitude() {
+			return latitude;
+		}
+
+		public void setLatitude(double latitude) {
+			this.latitude = latitude;
+		}
+
+		public double getLongitude() {
+			return longitude;
+		}
+
+		public void setLongitude(double longitude) {
+			this.longitude = longitude;
+		}
+	}
+
+	/**
+	 * Wrapper class representing a tuple x/y, in the screen coordinate system
+	 * Screen coordinate are "normalized" (taking into account boundaries of map
+	 * view, etc.)
+	 */
+	/*
+	 * TODO : FlyWeight for this class ?
+	 */
+	public static class ScreenCoordinate {
+		int x;
+		int y;
+
+		public ScreenCoordinate(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public void setX(int x) {
+			this.x = x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public void setY(int y) {
+			this.y = y;
+		}
+
 	}
 }
