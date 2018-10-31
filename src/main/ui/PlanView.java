@@ -136,7 +136,7 @@ public class PlanView extends JPanel {
 		int x = (int) Math.round(lat * getHeight());
 		int y = (int) Math.round(lon * getWidth());
 		/* Display */
-		g.fillOval(x, y, 10, 10);
+		g.drawOval(x-5, y-5, 10, 10);
 	}
 
 	/**

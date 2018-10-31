@@ -72,7 +72,7 @@ public class Main {
 		/* create delivery */
 		Delivery d1 = new Delivery(5, i3);
 		Delivery d2 = new Delivery(10, i1);
-		Delivery d3 = new Delivery(15, i4);
+		Delivery d3 = new Delivery(15, i2);
 		List<Delivery> deliveries = new ArrayList<Delivery>();
 		deliveries.add(d1);
 		deliveries.add(d2);
