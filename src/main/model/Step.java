@@ -6,9 +6,12 @@ import java.util.List;
 public class Step {
 
 	private List<Section> sections;
-
+	
 	public Step(List<Section> sections) {
-		sections = new ArrayList<>(sections);
+		this.sections = new ArrayList<>(sections);
 	}
-
+	
+	public List<Section> getSections() {
+		return sections;
+	}
 }
