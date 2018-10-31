@@ -49,11 +49,9 @@ public class PlanView extends JPanel {
 		this.scale = s;
 		this.plan = p;
 		this.findExtremes();
-		setLayout(null);
 		setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
-		w.add(this);
 	}
 	// TODO : mettre l'observer sur le plan.
 

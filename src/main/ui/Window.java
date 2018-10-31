@@ -81,15 +81,11 @@ public class Window extends JFrame {
 	private void displayPlanSelectionPanel() {
 		this.centerPanel = new JPanel();
 		/* Create Content */
-		JPanel container = new JPanel();
 		JLabel selectionText = new JLabel(TEXT_PLAN_SELECTION);
-		container.add(selectionText);
-		JButton selectionButton = new JButton(BUTTON_BROWSE);
-		selectionButton.setActionCommand(ACTION_SELECTION_PLAN);
-		selectionButton.addActionListener(buttonListener);
-		container.add(selectionButton);
+		JButton selectionButton = createButton(BUTTON_BROWSE, ACTION_SELECTION_PLAN);
+		centerPanel.add(selectionText);
+		centerPanel.add(selectionButton);
 		/* Set content */
-		centerPanel.add(container);
 		add(centerPanel, BorderLayout.CENTER);
 	}
 
@@ -99,15 +95,11 @@ public class Window extends JFrame {
 	private void displayDeliveryRequestSelectionPanel() {
 		this.rightPanel = new JPanel();
 		/* Create Content */
-		JPanel container = new JPanel();
 		JLabel selectionText = new JLabel(TEXT_DELIVERY_SELECTION);
-		container.add(selectionText);
-		JButton selectionButton = new JButton(BUTTON_BROWSE);
-		selectionButton.setActionCommand(ACTION_SELECTION_DELIVERY);
-		selectionButton.addActionListener(buttonListener);
-		container.add(selectionButton);
+		JButton selectionButton = createButton(BUTTON_BROWSE, ACTION_SELECTION_DELIVERY);
+		rightPanel.add(selectionText);
+		rightPanel.add(selectionButton);
 		/* Set content */
-		rightPanel.add(container);
 		add(rightPanel, BorderLayout.EAST);
 	}
 
@@ -133,13 +125,9 @@ public class Window extends JFrame {
 		rightPanel.setVisible(false);
 		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
 		/* Create Content */
-		JPanel container = new JPanel();
-		JButton selectionButton = new JButton(BUTTON_TOUR_CALCUL);
-		selectionButton.setActionCommand(ACTION_CALCULATE_TOUR);
-		selectionButton.addActionListener(buttonListener);
-		container.add(selectionButton);
+		JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
+		rightPanel.add(selectionButton);
 		/* Set content */
-		rightPanel.add(container);
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
@@ -152,16 +140,27 @@ public class Window extends JFrame {
 		rightPanel.setVisible(false);
 		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
 		/* Create Content */
-		JPanel container = new JPanel();
-		container.setLayout(new BorderLayout());
+		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-		container.add(planningText, BorderLayout.NORTH);
 		PlanningView planningPanel = new PlanningView(this);
-		container.add(planningPanel, BorderLayout.CENTER);
+		rightPanel.add(planningText, BorderLayout.NORTH);
+		rightPanel.add(planningPanel, BorderLayout.CENTER);
 		/* Set content */
-		rightPanel.add(container);
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
 
+	
+	/**
+	 * Convenience method to create a new button with a given text and action, 
+	 * and to bind it to the action listener
+	 */
+	private JButton createButton(String text, String action) {
+		JButton button = new JButton(text);
+		button.setActionCommand(action);
+		button.addActionListener(buttonListener);
+		return button;
+		
+	}
+	
 }
