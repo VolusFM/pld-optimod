@@ -1,20 +1,23 @@
 package main.ui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
 
-import javafx.util.Pair;
 import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
+import main.model.Step;
+import main.model.Tour;
 
 public class PlanView extends JPanel {
 
@@ -30,6 +33,7 @@ public class PlanView extends JPanel {
 
 	/* Graphic components */
 	// private Graphics graphics;
+
 
 	/**
 	 * Create the graphical view for drawing the loaded plan with the scale s in
@@ -64,8 +68,9 @@ public class PlanView extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		Graphics2D graphics2d = (Graphics2D) g.create();
 		/* Draw the sections */
-		g.setColor(Color.DARK_GRAY);
+		graphics2d.setColor(Color.DARK_GRAY);
 		// this.graphics = g;
 		Collection<Intersection> intersections = plan.getGraph().values();
 		Iterator<Intersection> itIntersection = intersections.iterator();
@@ -73,15 +78,26 @@ public class PlanView extends JPanel {
 			List<Section> sections = itIntersection.next().getOutcomingSections();
 			Iterator<Section> itSection = sections.iterator();
 			while (itSection.hasNext()) {
-				printSection(g, itSection.next());
+				printSection(graphics2d, itSection.next());
 			}
 		}
 		/* Deliveries Displaying */
-		g.setColor(Color.BLUE);
+		graphics2d.setColor(Color.BLUE);
 		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
 		Iterator<Delivery> itDeliveries = deliveries.iterator();
 		while (itDeliveries.hasNext()) {
-			printDelivery(g, itDeliveries.next());
+			printDelivery(graphics2d, itDeliveries.next());
+		}
+		/* Tour displaying */
+		graphics2d.setColor(Color.GREEN);
+		graphics2d.setStroke(new BasicStroke(2));
+		Collection<Tour> tours = ModelInterface.getTourPlanning();
+		for (Tour tour : tours) {
+			for (Step step : tour.getSteps()) {
+				for (Section section : step.getSections()) {
+					printSection(graphics2d, section);
+				}
+			}
 		}
 	}
 
@@ -162,8 +178,6 @@ public class PlanView extends JPanel {
 		return new Dimension(800, 800);
 	}
 
-	
-	
 	public ScreenCoordinate convertToScreenCoordinate(GeographicCoordinate geographicCoordinate) {
 		double lat = geographicCoordinate.getLatitude();
 		double lon = geographicCoordinate.getLongitude();
@@ -173,7 +187,7 @@ public class PlanView extends JPanel {
 		/* Scaling */
 		int x = (int) Math.round(lat * getHeight());
 		int y = (int) Math.round(lon * getWidth());
-		
+
 		return new ScreenCoordinate(x, y);
 	}
 
@@ -188,7 +202,7 @@ public class PlanView extends JPanel {
 	public static class GeographicCoordinate {
 		double latitude;
 		double longitude;
-		
+
 		public GeographicCoordinate(double latitude, double longitude) {
 			this.latitude = latitude;
 			this.longitude = longitude;
@@ -243,6 +257,5 @@ public class PlanView extends JPanel {
 		public void setY(int y) {
 			this.y = y;
 		}
-
 	}
 }
