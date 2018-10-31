@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Intersection {
 	
-	private long id;
+	private int id;
 	private double lat;
 	private double lon;
 	private List<Section> outcomingSections;
@@ -15,11 +15,7 @@ public class Intersection {
 		outcomingSections.add(outcomingSection);
 	}
 	
-	public long getId() {
-		return id;
-	}
-
-	public Intersection(long id, double lat, double lon) {
+	public Intersection(int id, double lat, double lon) {
 		this.lat = lat;
 		this.lon = lon;
 		this.id = id;
@@ -29,6 +25,14 @@ public class Intersection {
 	public void print() {
 		for (Section s : outcomingSections)
 			s.print();
+	}
+	
+	public List<Section> getOutcomingSections(){
+		return outcomingSections;
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public double getLat() {
