@@ -20,7 +20,6 @@ public class Controler {
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
-	protected final MoveDeliveryState moveDeliveryState = new MoveDeliveryState();
 	
 	/**
 	 * Create application s controler
@@ -88,5 +87,11 @@ public class Controler {
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
-
+	/**
+	 * get the controler current state
+	 * @return currentState
+	 */
+public State getCurrentState() {
+	return currentState;
+}
 }
