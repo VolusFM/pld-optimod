@@ -69,7 +69,7 @@ public class PlanningView extends JPanel {
 			while (itDeliveries.hasNext()) {
 				Delivery currentDelivery = itDeliveries.next();
 				boardDatas[currentLastEmptyLine][0] = deliveryMan;
-				boardDatas[currentLastEmptyLine][1] = "( " + currentDelivery.getAddress().getLat() + " ; " + currentDelivery.getAddress().getLon() + " )";
+				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
 				boardDatas[currentLastEmptyLine][2] = "H";
 				// TODO : calcul heure passage (Model ou IHM ?);
 				boardDatas[currentLastEmptyLine][3] = "P";
