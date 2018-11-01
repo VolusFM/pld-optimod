@@ -6,12 +6,13 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.ui.Window;
 import main.xml.XMLDeserializer;
 import main.xml.XMLException;
 
 public class LoadedPlanState extends DefaultState {
 
-	public void openDeliveries(Controler controler)
+	public void openDeliveries(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
 		XMLDeserializer.load(controler.getModel().getPlan(), controler.getModel().getTourCalculator());		
 		controler.setCurrentState(controler.loadedDeliveriesState);
