@@ -53,9 +53,10 @@ public class PlanView extends JPanel {
 		this.scale = s;
 		this.plan = p;
 		this.findExtremes();
-		setSize(400, 400);
+//		setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
+		addMouseListener(new PlanListener());
 	}
 	// TODO : mettre l'observer sur le plan.
 
@@ -192,7 +193,16 @@ public class PlanView extends JPanel {
 	}
 
 	public GeographicCoordinate convertToGeographicCoordinate(ScreenCoordinate screenCoordinate) {
-		return null; // TODO
+		int x = screenCoordinate.getX();
+		int y = screenCoordinate.getY();
+		/* Normalization */
+		double latSpan = (maxLat - minLat) / getHeight();
+		double longSpan = (maxLong - minLong) / getWidth();
+		
+		double lat = minLat + x * latSpan;
+		double lon = minLong + y * longSpan;
+		
+		return new GeographicCoordinate(lat, lon);
 	}
 
 	/**
