@@ -1,4 +1,4 @@
-package model;
+package main.model;
 
 import java.util.HashMap;
 
@@ -30,6 +30,10 @@ public class Plan {
 			graph.get(key).print();
 			
 		}
+	}
+
+	public HashMap<Long,Intersection> getGraph() {
+		return graph;
 	}
 	
 }

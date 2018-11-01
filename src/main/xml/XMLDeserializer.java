@@ -1,4 +1,4 @@
-package xml;
+package main.xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +15,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import model.Delivery;
-import model.Intersection;
-import model.Plan;
-import model.Section;
-import model.TourCalculator;
+import main.model.Delivery;
+import main.model.Intersection;
+import main.model.Section;
+import main.model.Plan;
+import main.model.TourCalculator;
 
 /**
  * 

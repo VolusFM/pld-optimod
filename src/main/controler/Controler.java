@@ -1,4 +1,4 @@
-package controler;
+package main.controler;
 
 import java.io.IOException;
 
@@ -6,14 +6,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import model.Interface;
-import model.Plan;
-import xml.XMLException;
+import main.model.ModelInterface;
+import main.xml.XMLException;
+import main.ui.Window;
 
 public class Controler {
 	private State currentState;
 	private Window window;
-	private Interface model;
+	private ModelInterface model;
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
@@ -88,5 +88,5 @@ public class Controler {
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
-	
+
 }

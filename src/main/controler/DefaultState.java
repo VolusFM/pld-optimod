@@ -1,4 +1,4 @@
-package controler;
+package main.controler;
 
 import java.io.IOException;
 
@@ -6,7 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import xml.XMLException;
+import main.ui.Window;
+import main.xml.XMLException;;
 
 public class DefaultState implements State{
 	public void openPlan(Controler controler, Window window){}
