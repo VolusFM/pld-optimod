@@ -17,8 +17,8 @@ import org.xml.sax.SAXException;
 
 import main.model.Delivery;
 import main.model.Intersection;
-import main.model.Section;
 import main.model.Plan;
+import main.model.Section;
 import main.model.TourCalculator;
 
 /**

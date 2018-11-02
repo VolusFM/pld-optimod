@@ -7,8 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import main.model.ModelInterface;
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public class Controler {
 

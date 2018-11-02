@@ -1,11 +1,9 @@
 package main.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;

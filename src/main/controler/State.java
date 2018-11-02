@@ -6,8 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public interface State {
 	public void openPlan(Controler controler, Window window)
