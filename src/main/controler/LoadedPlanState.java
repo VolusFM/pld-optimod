@@ -18,7 +18,7 @@ public class LoadedPlanState extends DefaultState {
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 
-	public void openParameters(Controler controler) {
+	public void openParameters(Controler controler,Window window) {
 		// TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);
 	}

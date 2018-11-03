@@ -3,9 +3,11 @@ package main.controler;
 import main.ui.Window;
 
 public class ParametersState extends DefaultState {
-	//Only go back to tourCalculatedState
+	
+	//Only go back to loadedDeliveryState
 	public void confirmParameters(Controler controler, Window window) {
 		//TODO : display previous state
+		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 	
 	public String stateToString() {

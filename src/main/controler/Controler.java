@@ -26,9 +26,8 @@ public class Controler {
 	 * @param model, model package s entry point
 	 * @param window
 	 */
-	public Controler(ModelInterface model){
+	public Controler(){ //TODO : check if model is still a parameter (abstract class) + how to use abstract class
 		this.currentState = initState;
-		this.model = model;
 		this.window = new Window(this);	
 	}
 	
@@ -74,6 +73,79 @@ public class Controler {
 		}
 	}
 	
+	/**
+	 * Open parameters window
+	 */
+	public void openParameters() {
+		try {
+			currentState.openParameters(this, window);
+		}
+		catch( Exception e) {
+			//TODO check exeption's handling + remove string when test done
+			System.out.println(e +"controler open parameter");
+		}
+	}
+	
+	/**
+	 * Calculate planning for the asked tour number
+	 */
+	public void calculatePlanning() {
+		try {
+			currentState.calculatePlanning(this, window);
+		}
+		catch( Exception e) {
+			//TODO check exeption's handling + remove string when test done
+			System.out.println(e +" controler calculateTour");
+		}
+	}
+	
+	/**
+	 * Add a new delivery to a tour
+	 */
+	public void addDelivery() {
+		try {
+			currentState.addDelivery(this, window);
+		}
+		catch(Exception e) {
+			//TODO : check exception handling + remove string when test done
+			System.out.println(e +"controler adddelivery");
+		}
+	}
+	
+	/**
+	 * Cancel addition of a new delivery
+	 */
+	public void cancelNewDelivery() {
+		try {
+			currentState.cancelNewDelivery(this, window);
+		}
+		catch(Exception e) {
+			//TODO check handling + remove message
+			System.out.println(e +"controler cancelnewdelivery");
+		}
+	}
+	/**
+	 * Confirms new number of tour
+	 */
+	public void confirmParameters() {
+		try {
+			currentState.confirmParameters(this, window);
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+	}
+	/**
+	 * Confirm new delivery addition
+	 */
+	public void confirmNewDelivery() {
+		try {
+			currentState.confirmNewDelivery(this,window);
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+	}
 	/**
 	 * model s getter.
 	 */

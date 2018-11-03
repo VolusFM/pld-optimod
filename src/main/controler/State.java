@@ -42,7 +42,7 @@ public interface State {
  * @param controler
  * @param window
  */
-	public void calculateTour(Controler controler, Window window);
+	public void calculatePlanning(Controler controler, Window window);
 	
 	/**
 	 * Cancel the creation of a new delivery and go back to previous screen
@@ -58,7 +58,14 @@ public interface State {
 	 */
 	public void addDelivery(Controler controler, Window window);
 	
+	/**
+	 * Confims parameters change
+	 * @param controler
+	 * @param window
+	 */
+	public void confirmParameters(Controler controler, Window window);
 	
+	public void confirmNewDelivery(Controler controler, Window window);
 	/**
 	 * Get the state to a string for test use.
 	 */

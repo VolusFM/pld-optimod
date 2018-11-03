@@ -11,6 +11,8 @@ import main.xml.XMLException;;
 
 public class DefaultState implements State{
 	
+	//TODO : check @Override annotation function
+	
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {}
 	
@@ -19,17 +21,24 @@ public class DefaultState implements State{
 	
 	public void openParameters(Controler controler, Window window){}
 	
-	public void calculateTour(Controler controler, Window window){}
+	public void calculatePlanning(Controler controler, Window window){}
 	
-	public void addDelivery(Controler controler, Window window){}
+	public void addDelivery(Controler controler, Window window){
+	}
 	
 	public void cancelNewDelivery(Controler controler, Window window) {}
 	
 	public String stateToString() {
-		//debug
+		//TODO : remove after tests
 		System.out.println("Stuck in default state");
 		return null;
 	}
+
+	@Override
+	public void confirmParameters(Controler controler, Window window) {}
+
+	@Override
+	public void confirmNewDelivery(Controler controler, Window window) {}
 
 	
 }

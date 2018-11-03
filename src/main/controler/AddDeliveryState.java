@@ -3,6 +3,7 @@ package main.controler;
 import main.ui.Window;
 
 public class AddDeliveryState extends DefaultState{
+	//TODO : check in which states a delivery can be added
 	
 	/**
 	 * Confirms the delivery's addition
@@ -13,7 +14,7 @@ public class AddDeliveryState extends DefaultState{
 		
 	}
 	/**
-	 * Cancel the new delivery and go back to TourCalculatedState
+	 * Cancel the new delivery and go back to planningState
 	 * @param controler
 	 * @param window
 	 */
@@ -22,8 +23,13 @@ public class AddDeliveryState extends DefaultState{
 		controler.setCurrentState(controler.planningState);
 	}
 	
+	public void confirmNewDelivery(Controler controler, Window window) {
+		//TODO: forward changes to model
+		controler.setCurrentState(controler.planningState);
+	}
+	
 	public String stateToString() {
-		return "AddDeliveryState";
+		return "addDeliveryState";
 	}
 
 }

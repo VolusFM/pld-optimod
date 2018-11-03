@@ -3,12 +3,12 @@ package main.controler;
 import main.ui.Window;
 
 public class LoadedDeliveriesState extends DefaultState {
-	public void openParameters(Controler controler) {
+	public void openParameters(Controler controler, Window window) {
 		// TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);
 	}
 
-	public void calculateTour(Controler controler, Window window) {
+	public void calculatePlanning(Controler controler, Window window) {
 		// TODO: add code to call tourCalculator
 		controler.setCurrentState(controler.planningState);
 	}
