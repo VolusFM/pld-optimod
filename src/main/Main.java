@@ -3,13 +3,8 @@
  */
 package main;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 import main.controler.Controler;
 import main.model.Delivery;
@@ -18,7 +13,6 @@ import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 import main.model.Step;
-import main.xml.XMLException;
 
 /**
  * @author Montigny
@@ -26,13 +20,6 @@ import main.xml.XMLException;
  */
 public class Main {
 
-	/**
-	 * @param args
-	 * @throws XMLException
-	 * @throws IOException
-	 * @throws SAXException
-	 * @throws ParserConfigurationException
-	 */
 	public static void main(String[] args) {
 		Plan plan = new Plan();
 		/* Creation intersections */
@@ -90,10 +77,10 @@ public class Main {
 		ModelInterface.addDelivery(d1);
 		ModelInterface.addDelivery(d2);
 		ModelInterface.addDelivery(d3);
-		
+
 		ModelInterface.createTour(1, steps, deliveries);
 		/* lauch app */
 		new Controler();
-	}
 
+	}
 }
