@@ -52,17 +52,6 @@ public class Plan {
 	public Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
 		List<Long> settledId = new ArrayList<>();
 		List<Long> unSettledId = new ArrayList<>();
-/*
-		
-		//to make sure that the two table are wide enough.
-		//FIXME find another way to do it 
-		
-		int higherId = getHigherIntersectionId();
-		double[] distances = new double [higherId+1]; // XXX : OutOfMemory on allocation
-		long[] predecessors = new long [higherId+1];
-		// FIXME : doesn't this break if higherId > Integer.MAX_VALUE ? (which is the case), 
-		// as indexes can't be bigger than an int and ids are bigger than an int (which is why we chose longs)
-*/
 		
 		// intersection id -> distance
 		HashMap<Long, Double> distances = new HashMap<>();
@@ -75,13 +64,6 @@ public class Plan {
 		
 		
 		//Initialization
-/*
-//TODO find a way for distances and predecessors to not be as empty and/or find a way to initialize predecessor at something more meaningful
-		for (int i=0; i<higherId+1; i++) {
-			distances[i]=HIGH;
-			predecessors[i]=sourceIntersection.getId();
-		}
-*/
 		for (Long id : graph.keySet()) {
 			distances.put(id, HIGH);
 			predecessors.put(id, sourceIntersection.getId());
@@ -89,33 +71,8 @@ public class Plan {
 		
 		unSettledId.add(sourceIntersection.getId());
 		
-/*		
-		distances[sourceIntersection.getId()] = 0;
-*/
 		distances.put(sourceIntersection.getId(), 0.); // 0. because 0 is not a double
 
-/*		
-		//Algorithm
-		while(!unSettledId.isEmpty()) {
-			int idEvaluationIntersectionId = findIntersectionWithLowestDistance(distances, unSettledId);
-			unSettledId.remove(unSettledId.indexOf(idEvaluationIntersectionId) );
-			settledId.add(idEvaluationIntersectionId);
-			Intersection evaluationIntersection = graph.get(idEvaluationIntersectionId);
-			List<Section> neighbours = evaluationIntersection.getOutcomingSections();
-			for (Section neighbour : neighbours) {
-				int destinationId = neighbour.getIdEndIntersection();
-				if (!settledId.contains(destinationId)) {
-					double newDistance = distances[idEvaluationIntersectionId] + neighbour.getLength();
-					if (newDistance < distances[neighbour.getIdEndIntersection()]) {
-						distances[neighbour.getIdEndIntersection()]=newDistance;
-						predecessors[neighbour.getIdEndIntersection()]=idEvaluationIntersectionId;
-						unSettledId.add(neighbour.getIdEndIntersection());
-					}
-				}
-			}
-		}
-*/
-		
 		while(!unSettledId.isEmpty()) {
 			long idEvaluationIntersectionId = findIntersectionWithLowestDistance(distances, unSettledId);
 			unSettledId.remove(unSettledId.indexOf(idEvaluationIntersectionId) );
@@ -139,39 +96,12 @@ public class Plan {
 		return toReturn;
 	}
 	
-	/**
-	 * find the higher IntersectionId
-	 */
-//	private int getHigherIntersectionId() {
-//		Set<Long> keys = graph.keySet();
-//		Iterator<Long> it = keys.iterator();
-//		int higherIntersectionId = 0;
-//		while (it.hasNext()){
-//		    Object key = it.next(); 
-//		    if (graph.get(key).getId()>higherIntersectionId) {
-//		    	higherIntersectionId=graph.get(key).getId();
-//		    }
-//		}
-//		return higherIntersectionId;
-//	}
 	
 	/**
 	 * find the lowest distances in distances for key in unSettledIntersectionId
 	 * @param distances
 	 * @param unSettledIntersectionId
 	 */
-	/*
-	private int findIntersectionWithLowestDistance(double [] distances, List<Integer> unSettledIntersectionId ) {
-		double lowestDistance = HIGH;
-		int idIntersectionWithLowestDistance = unSettledIntersectionId.get(0);
-		for (Integer id : unSettledIntersectionId) {
-			if(distances[id]<lowestDistance){
-				lowestDistance=distances[id];
-				idIntersectionWithLowestDistance = id;
-			}
-		}
-		return idIntersectionWithLowestDistance;
-	}*/
 	private long findIntersectionWithLowestDistance(HashMap<Long, Double> distances, List<Long> unSettledId ) {
 		double lowestDistance = HIGH;
 		long idIntersectionWithLowestDistance = unSettledId.get(0);
