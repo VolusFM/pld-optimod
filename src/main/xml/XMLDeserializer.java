@@ -76,7 +76,7 @@ public class XMLDeserializer {
 		double latitude = Double.parseDouble(element.getAttribute("latitude"));
 		double longitude = Double.parseDouble(element.getAttribute("longitude"));
 	
-		return new Intersection(id, latitude, longitude);
+		return new Intersection((int) id, latitude, longitude);
 	}
 	
 
@@ -90,8 +90,8 @@ public class XMLDeserializer {
     private static Section createSection(Element elt, Plan plan) throws XMLException{ // TODO : naming
     	long idDeparture = Long.parseLong(elt.getAttribute("origine"));
     	long idArrival = Long.parseLong(elt.getAttribute("destination"));
-   		Intersection departure = plan.getIntersectionById(idDeparture); // XXX : is this OK ?
-   		Intersection arrival = plan.getIntersectionById(idArrival);
+   		Intersection departure = plan.getIntersectionById((int) idDeparture); // XXX : is this OK ?
+   		Intersection arrival = plan.getIntersectionById((int) idArrival);
    		
    		String streetName = elt.getAttribute("nomRue");
    		
@@ -104,6 +104,8 @@ public class XMLDeserializer {
    		return new Section(departure, arrival, length, streetName);
     }
 	
+    
+    // XXX : this assumes the plan to be loaded, right ?
 	public static void load(Plan plan, TourCalculator calculator) throws ParserConfigurationException, SAXException, IOException, XMLException {
 		File xml = XMLFileOpener.getInstance().open();
 		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -120,14 +122,21 @@ public class XMLDeserializer {
 		Node depot = rootNode.getElementsByTagName("entrepot").item(0);
 		NodeList deliveriesNodes = rootNode.getElementsByTagName("livraison");
 		
-		calculator.addDelivery(createDelivery((Element) depot, plan));
+		
+		
+		
+		calculator.setDepot(createDelivery((Element) depot, plan));
 		for (int i = 0; i < deliveriesNodes.getLength(); i++) {
 			calculator.addDelivery(createDelivery((Element) deliveriesNodes.item(i), plan));
 		}
+		
+		
+		
+		
 	}
 	
 	private static Delivery createDelivery(Element elt, Plan plan) {
-		Intersection departure = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));;
+		Intersection departure = plan.getIntersectionById((int) Long.parseLong(elt.getAttribute("adresse")));;
 		
 		if (elt.hasAttribute("duree")) { // Actual delivery
 			int duration = Integer.parseInt(elt.getAttribute("duree"));			

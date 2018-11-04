@@ -30,6 +30,7 @@ public class Intersection {
 		for (Section s : outcomingSections)
 			s.print();
 	}
+	
 
 	public double getLat() {
 		return lat;
