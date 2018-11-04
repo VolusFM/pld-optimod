@@ -6,7 +6,6 @@ import java.util.Observable;
 public class Delivery extends Observable {
 
 	private int duration;
-	//private Date hour;
 	private Calendar hour;
 	private Intersection address;
 	
