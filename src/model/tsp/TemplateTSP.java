@@ -1,6 +1,7 @@
 package model.tsp;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 public abstract class TemplateTSP implements TSP {
@@ -29,6 +30,10 @@ public abstract class TemplateTSP implements TSP {
 		if ((meilleureSolution == null) || (i < 0) || (i >= meilleureSolution.length))
 			return null;
 		return meilleureSolution[i];
+	}
+	
+	public Integer[] getMeilleureSolution() {
+		return meilleureSolution;
 	}
 
 	public double getCoutMeilleureSolution() {
@@ -134,6 +139,8 @@ public abstract class TemplateTSP implements TSP {
 		}
 		
 		System.out.println("Coût de la meilleure solution : " + getCoutMeilleureSolution());
+		System.out.println("Meilleure solution " + Arrays.toString(getMeilleureSolution()));
+		
 		System.out.println();
 		System.out.println("Meilleure solution : ");
 		int sommetCourant = 0;
