@@ -48,11 +48,11 @@ public class Plan {
 	
 	/**
 	 * execute a Dijkstra algorithm on graph. In the result, if distance = Double.MAX_VALUE, the associated Intersection 
-	 * doesn t exist or can t be reach.
+	 * doesn't exist or can't be reach.
 	 * @param sourceIntersection
 	 * @return a pair with as the first members distances, and as a second members predecessors. 
 	 */
-	public Pair<double [], long[]> Dijkstra(Intersection sourceIntersection) {
+	public Pair<double[], long[]> Dijkstra(Intersection sourceIntersection) {
 		List<Integer> settledId = new ArrayList<Integer>();
 		List<Integer> unSettledId = new ArrayList<Integer>();
 		//to make sure that the two table are wide enough.
@@ -60,6 +60,10 @@ public class Plan {
 		int higherId = getHigherIntersectionId();
 		double [] distances = new double [higherId+1];
 		long [] predecessors = new long [higherId+1];
+		// FIXME : doesn't this break if higherId > Integer.MAX_VALUE ? (which is the case), 
+		// as indexes can't be bigger than an int and ids are bigger than an int (which is why we chose longs)
+		
+		
 		
 		//Initialization
 		//TODO find a way for distances and predecessors to not be as empty and/or find a way to initialize predecessor at something more meaningful
@@ -90,7 +94,7 @@ public class Plan {
 			}
 		}
 		
-		Pair<double [], long []> toReturn = new Pair<double [], long []>(distances, predecessors);
+		Pair<double[], long[]> toReturn = new Pair<double[], long[]>(distances, predecessors);
 		return toReturn;
 	}
 	
@@ -129,7 +133,3 @@ public class Plan {
 	
 	
 }
-
-
-
-
