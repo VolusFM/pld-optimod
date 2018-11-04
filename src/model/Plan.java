@@ -56,10 +56,10 @@ public class Plan {
 		List<Integer> settledId = new ArrayList<Integer>();
 		List<Integer> unSettledId = new ArrayList<Integer>();
 		//to make sure that the two table are wide enough.
-		//TODO find another way to do it
+		//FIXME find another way to do it 
 		int higherId = getHigherIntersectionId();
-		double [] distances = new double [higherId+1];
-		long [] predecessors = new long [higherId+1];
+		double[] distances = new double [higherId+1]; // XXX : OutOfMemory on allocation
+		long[] predecessors = new long [higherId+1];
 		// FIXME : doesn't this break if higherId > Integer.MAX_VALUE ? (which is the case), 
 		// as indexes can't be bigger than an int and ids are bigger than an int (which is why we chose longs)
 		
