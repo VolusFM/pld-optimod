@@ -7,12 +7,12 @@ public class Tour {
 	
 	private List <Section> stepList;
 	private List <Delivery> deliveryPoints;
-	private int deliveryMan;
+	private int deliveryManId;
 	
 	public Tour (List <Section> stepList, List <Delivery> deliveryPoints, int deliveryMan){
 		this.stepList = new ArrayList<>(stepList);
 		this.deliveryPoints = new ArrayList<>(deliveryPoints);
-		this.deliveryMan = deliveryMan; 
+		this.deliveryManId = deliveryMan; 
 	}
 	
 }
