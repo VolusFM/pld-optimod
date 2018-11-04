@@ -2,6 +2,7 @@ package main.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import javafx.util.Pair;
@@ -136,9 +137,9 @@ public class TourCalculator {
 	 * on the result of the algorithm
 	 */
 	private double[] dijkstraHelper(Intersection source) {
-		Pair<double[], long[]> result = map.Dijkstra(source);
+		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
 		
-		double[] cost = result.getKey();
+		HashMap<Long, Double> cost = result.getKey();
 		// FIXME : use the predecessors for something here -> create the Steps
 		
 		/* "Header" of the list : the ids of the nodes to use in the correct order */
@@ -151,7 +152,7 @@ public class TourCalculator {
 		/* We use the header to construct the cost line */
 		double[] costResult = new double[nodesCount];
 		for (int i = 0; i < nodesCount; i++) {
-			costResult[i] = cost[(int) idsList[i]];
+			costResult[i] = cost.get(idsList[i]);
 		}	
 		
 		/* And we return it */

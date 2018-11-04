@@ -22,11 +22,11 @@ public class Section {
 		return length;
 	}
 	
-	public int getIdStartIntersection(){
+	public long getIdStartIntersection(){
 		return start.getId();
 	}
 	
-	public int getIdEndIntersection(){
+	public long getIdEndIntersection(){
 		return end.getId();
 	}
 	
