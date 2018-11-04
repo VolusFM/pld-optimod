@@ -4,9 +4,9 @@ import java.util.List;
 
 public abstract class ModelInterface {
 
-	private static Plan plan;
-	private static TourCalculator tourCalculator;
-	private static TourFactory tourFactory;
+	private static Plan plan = new Plan();
+	private static TourCalculator tourCalculator = TourCalculator.getInstance();
+	private static TourFactory tourFactory = TourFactory.getInstance();
 
 	public static Plan getPlan() {
 		return plan;
@@ -30,6 +30,7 @@ public abstract class ModelInterface {
 
 	public static void setDeliveryMenCount(int count) {
 		System.out.println("setDeliveryMenCount to " + count); // FIXME do actual implementation
+		throw new RuntimeException("NYI");
 	}
 
 	public static List<Delivery> getDeliveries() {
@@ -48,5 +49,9 @@ public abstract class ModelInterface {
 	public static void createTour(int deliveryMan, List<Step> steps, List<Delivery> deliveryPoints) {
 		setTourFactory(TourFactory.getInstance());
 		TourFactory.createTour(deliveryMan, steps, deliveryPoints);
+	}
+	
+	public static Delivery getDepot() {
+		return tourCalculator.getDepot();
 	}
 }

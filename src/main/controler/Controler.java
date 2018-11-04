@@ -87,18 +87,24 @@ public class Controler {
 	 * State s setter.
 	 */
 	public void setCurrentState(State currentState) {
+		System.out.println("Changed from " + this.currentState.stateToString() + " to " + currentState.stateToString());
 		this.currentState = currentState;
 	}
 	/**
 	 * get the controler current state
 	 * @return currentState
 	 */
-public State getCurrentState() {
-	return currentState;
-}
+
+	public State getCurrentState() {
+		return currentState;
+	}
 
 	public void openParameters() {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("NYI");
+	}
+
+	public void calculateTour() {
+		currentState.calculateTour(this, window);
 	}
 }

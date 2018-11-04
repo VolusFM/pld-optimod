@@ -57,8 +57,6 @@ public class Window extends JFrame {
 		getContentPane().add(header, BorderLayout.NORTH);
 		/* Plan Selection Panel */
 		displayPlanSelectionPanel();
-		/* Delivery Request Selection Panel */
-		displayDeliveryRequestSelectionPanel();
 		/* Display */
 		this.setTitle(WINDOW_TITLE);
 		setWindowDimensions();
@@ -92,7 +90,7 @@ public class Window extends JFrame {
 	/**
 	 * Create the panel for selecting a delivery request.
 	 */
-	private void displayDeliveryRequestSelectionPanel() {
+	public void displayDeliveryRequestSelectionPanel() {
 		this.rightPanel = new JPanel();
 		/* Create Content */
 		JLabel selectionText = new JLabel(TEXT_DELIVERY_SELECTION);
@@ -116,6 +114,7 @@ public class Window extends JFrame {
 		/* Set content */
 		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
+		pack();
 	}
 
 	/**
@@ -130,6 +129,7 @@ public class Window extends JFrame {
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
+		pack();
 	}
 
 	/**

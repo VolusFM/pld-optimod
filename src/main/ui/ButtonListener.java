@@ -26,19 +26,16 @@ public class ButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case Window.ACTION_SELECTION_PLAN:
-			// controler.openPlan();
-			controler.window.displayPlanView();
-			/* TODO : ajouter un appel aux methode du controleur */
-			controler.window.displayCalculateTourButtonPanel();
+			controler.openPlan();
 			break;
 		case Window.ACTION_SELECTION_DELIVERY:
-			/* TODO : ajouter un appel aux methode du controleur */ ;
+			controler.openDeliveries();
 			break;
 		case WindowHeader.ACTION_PARAMETERS:
 			controler.openParameters();
 			break;
 		case Window.ACTION_CALCULATE_TOUR:
-			controler.window.displayTourPlanningPanel();
+			controler.calculateTour();
 			break;
 		default:
 			throw new RuntimeException("Unhandled action : " + e.getActionCommand());

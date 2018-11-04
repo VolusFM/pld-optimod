@@ -82,6 +82,12 @@ public class PlanView extends JPanel {
 				printSection(graphics2d, itSection.next());
 			}
 		}
+		/* Depot displaying */
+		graphics2d.setColor(Color.RED);
+		Delivery depot = ModelInterface.getDepot();
+		if (depot != null) {			
+			printDelivery(graphics2d, depot);
+		}
 		/* Deliveries Displaying */
 		graphics2d.setColor(Color.BLUE);
 		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
@@ -137,7 +143,7 @@ public class PlanView extends JPanel {
 		/* Conversion */
 		ScreenCoordinate screenCoordinate = convertToScreenCoordinate(geographicCoordinate);
 		/* Display */
-		g.drawOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
+		g.fillOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
 	}
 
 	/**

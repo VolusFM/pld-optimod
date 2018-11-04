@@ -13,8 +13,8 @@ import model.tsp.TemplateTSP;
 
 public class TourCalculator {
 
-	private TourFactory tourFactory;
-	private Plan map;
+	private TourFactory tourFactory = TourFactory.getInstance();
+	private Plan map = ModelInterface.getPlan();
 	private List<Delivery> deliveries;
 	
 	private Delivery depot; // XXX
@@ -243,5 +243,9 @@ public class TourCalculator {
 	
 	public List<Delivery> getDeliveries() {
 		return deliveries;
+	}
+	
+	public Delivery getDepot() {
+		return depot;
 	}
 }
