@@ -19,10 +19,10 @@ public class Main {
 		Plan plan = new Plan();
 		XMLDeserializer.load(plan);
 //		TourCalculator.init(plan, null, null);
-		TourCalculator.getInstance().setMap(plan);
 		
 		
 		XMLDeserializer.load(plan, TourCalculator.getInstance());
+		TourCalculator.getInstance().setMap(plan);
 		
 		TourCalculator.getInstance().calculateTours(1);
 	}
