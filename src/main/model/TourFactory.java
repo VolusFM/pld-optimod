@@ -22,4 +22,9 @@ public class TourFactory {
 	public static TourFactory getInstance() {
 		return INSTANCE;
 	}
+
+	protected List<Tour> getTourPlanning() {
+		return tourPlanning;
+	}
+
 }

@@ -5,10 +5,6 @@ import main.model.TourCalculator;
 import main.xml.XMLDeserializer;
 
 /**
- * 
- */
-
-/**
  * @author Montigny
  *
  */

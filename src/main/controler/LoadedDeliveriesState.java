@@ -1,5 +1,6 @@
 package main.controler;
 
+import main.model.TourCalculator;
 import main.ui.Window;
 
 public class LoadedDeliveriesState extends DefaultState {
@@ -10,6 +11,10 @@ public class LoadedDeliveriesState extends DefaultState {
 
 	public void calculateTour(Controler controler, Window window) {
 		// TODO: add code to call tourCalculator
+		
+		TourCalculator.getInstance().calculateTours(1);
+		window.invalidate(); // FIXME : force window to display again with path
+		
 		controler.setCurrentState(controler.planningState);
 	}
 

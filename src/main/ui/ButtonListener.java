@@ -29,8 +29,16 @@ public class ButtonListener implements ActionListener {
 			controler.openPlan();
 			break;
 		case Window.ACTION_SELECTION_DELIVERY:
-			/* TODO : ajouter un appel aux methode du controleur */ ;
+			controler.openDeliveries();
 			break;
+		case WindowHeader.ACTION_PARAMETERS:
+			controler.openParameters();
+			break;
+		case Window.ACTION_CALCULATE_TOUR:
+			controler.calculateTour();
+			break;
+		default:
+			throw new RuntimeException("Unhandled action : " + e.getActionCommand());
 		}
 	}
 }

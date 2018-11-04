@@ -17,8 +17,8 @@ import org.xml.sax.SAXException;
 
 import main.model.Delivery;
 import main.model.Intersection;
-import main.model.Section;
 import main.model.Plan;
+import main.model.Section;
 import main.model.TourCalculator;
 
 /**
@@ -131,8 +131,8 @@ public class XMLDeserializer {
 	}
 
 	private static Delivery createDelivery(Element elt, Plan plan) {
+
 		Intersection departure = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));
-		;
 
 		if (elt.hasAttribute("duree")) { // Actual delivery
 			int duration = Integer.parseInt(elt.getAttribute("duree"));

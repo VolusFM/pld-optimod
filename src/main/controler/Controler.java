@@ -7,19 +7,22 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import main.model.ModelInterface;
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public class Controler {
+
 	private State currentState;
-	private Window window;
-	private ModelInterface model;
+	public Window window; // FIXME visibility
+//	private ModelInterface model;
+
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
+	private ModelInterface model;
 
 	/**
 	 * Create application's controler
@@ -72,6 +75,7 @@ public class Controler {
 	/**
 	 * model s getter.
 	 */
+
 	public ModelInterface getModel() {
 		return model;
 	}
@@ -80,6 +84,7 @@ public class Controler {
 	 * State s setter.
 	 */
 	public void setCurrentState(State currentState) {
+		System.out.println("Changed from " + this.currentState.stateToString() + " to " + currentState.stateToString());
 		this.currentState = currentState;
 	}
 
@@ -90,5 +95,14 @@ public class Controler {
 	 */
 	public State getCurrentState() {
 		return currentState;
+	}
+
+	public void openParameters() {
+		// TODO Auto-generated method stub
+		throw new RuntimeException("NYI");
+	}
+
+	public void calculateTour() {
+		currentState.calculateTour(this, window);
 	}
 }

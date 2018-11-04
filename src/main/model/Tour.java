@@ -9,10 +9,22 @@ public class Tour {
 	private List<Delivery> deliveryPoints;
 	private int deliveryManId;
 
-	public Tour(List<Step> steps, List<Delivery> deliveryPoints, int deliveryMan) {
+	public Tour(List<Step> steps, List<Delivery> deliveryPoints, int deliveryManId) {
 		this.steps = new ArrayList<>(steps);
 		this.deliveryPoints = new ArrayList<>(deliveryPoints);
-		this.deliveryManId = deliveryMan;
+
+		this.deliveryManId = deliveryManId;
 	}
 
+	public List<Delivery> getDeliveryPoints() {
+		return deliveryPoints;
+	}
+
+	public List<Step> getSteps() {
+		return steps;
+	}
+
+	public int getDeliveryManId() {
+		return deliveryManId;
+	}
 }
