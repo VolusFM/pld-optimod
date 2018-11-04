@@ -6,7 +6,7 @@ import java.util.List;
 public class TourFactory {
 	
 	private static List<Tour> tourPlanning;
-    /** Instance unique pré-initialisée */
+    /** Instance unique prÃ©-initialisÃ©e */
     private static TourFactory INSTANCE = new TourFactory();
     
     private TourFactory(){
