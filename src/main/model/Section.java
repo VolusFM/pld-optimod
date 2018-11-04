@@ -38,4 +38,8 @@ public class Section {
 		return end;
 	}	
 	
+	@Override
+	public String toString() {
+		return "Section from " + getIdStartIntersection() + " to " + getIdEndIntersection();
+	}
 }
