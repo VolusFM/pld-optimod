@@ -1,19 +1,12 @@
 package model;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import javafx.util.Pair;
-import xml.XMLException;
-
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class Plan {
 	
@@ -102,8 +95,8 @@ public class Plan {
 	 * find the higher IntersectionId
 	 */
 	private int getHigherIntersectionId() {
-		Set keys = graph.keySet();
-		Iterator it = keys.iterator();
+		Set<Integer> keys = graph.keySet();
+		Iterator<Integer> it = keys.iterator();
 		int higherIntersectionId = 0;
 		while (it.hasNext()){
 		    Object key = it.next(); 
