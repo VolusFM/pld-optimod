@@ -2,6 +2,8 @@ package main.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,10 +33,12 @@ public class TourCalculator {
 	
 	
 	
+	private HashMap<Pair<Long, Long>, Step> steps;
 	
 	private TourCalculator() {
 		tourFactory = TourFactory.getInstance();
 		deliveries = new ArrayList<>();
+		steps = new HashMap<>();
 	}
 
 	@Deprecated
@@ -78,17 +82,13 @@ public class TourCalculator {
 	
 	public void calculateTours(int deliveryMenCount) {
 		// FIXME : for now, assumes a deleveryMenCount of 1
-		// FIXME : this branch doesn't take into account the object 'Step'
 
 		/* Creates the sub-graph */
 		createGraph();
 
-		/* Solves TSP within the sub-graph */
+		/* Solves TSP within the sub-graph, and create the tours */
 		resolveTSP();
 		
-		/* Create tours from the result of the TSP, and add them to the 
-		 * model */
-		createTours();
 	}
 
 	
@@ -140,7 +140,7 @@ public class TourCalculator {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
 		
 		HashMap<Long, Double> cost = result.getKey();
-		// FIXME : use the predecessors for something here -> create the Steps
+		HashMap<Long, Long> predecessors = result.getValue();
 		
 		/* "Header" of the list : the ids of the nodes to use in the correct order */
 		long[] idsList = new long[nodesCount];		
@@ -153,9 +153,12 @@ public class TourCalculator {
 		double[] costResult = new double[nodesCount];
 		for (int i = 0; i < nodesCount; i++) {
 			costResult[i] = cost.get(idsList[i]);
-		}	
+		}
 		
-		/* And we return it */
+		/* We also create the steps */
+		createSteps(predecessors, source);
+		
+		/* And we return the cost */
 		return costResult;
 	}
 	
@@ -169,12 +172,75 @@ public class TourCalculator {
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
 		tsp.chercherEtAfficherMeilleureSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
+		
+		List<Step> solutionSteps = findStepsFromResult(tsp.getMeilleureSolution());
+		
+		TourFactory.createTour(1, solutionSteps, deliveries); // FIXME : hardcoded 1 and deliveries		
 	}
 
 	
 	
-	private void createTours() {
-		// TODO : when merging with other branches
+	
+	
+	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
+		long sourceId = source.getId();
+		for (Long id : predecessors.keySet()) {
+			if (id == sourceId) {
+				continue;
+			}
+			
+			ArrayList<Long> intersectionsIds = new ArrayList<>();
+			Long currentId = id;
+			do {
+				intersectionsIds.add(currentId);
+				currentId = predecessors.get(currentId);
+			} while (currentId != sourceId);
+			
+			intersectionsIds.add(sourceId);
+			
+			Collections.reverse(intersectionsIds);
+			
+			System.out.println(intersectionsIds);
+			
+			ArrayList<Section> sections = new ArrayList<>();
+			for (int i = 0; i < intersectionsIds.size() - 1; i++) {
+				sections.add(findSectionBetween(intersectionsIds.get(i), intersectionsIds.get(i + 1)));
+			}
+			
+			Step step = new Step(sections);
+			Pair<Long, Long> pair = new Pair<Long, Long>(sourceId, id);
+			
+			steps.put(pair, step);
+		}
+	}
+
+	private Section findSectionBetween(Long idStart, Long idEnd) {
+		for (Section section : map.getIntersectionById(idStart).getOutcomingSections()) {
+			if (section.getIdEndIntersection() == idEnd) {
+				return section;
+			}
+		}
+		return null;
+	}
+	
+	private List<Step> findStepsFromResult(Integer[] solution) {
+		List<Step> list = new ArrayList<Step>();
+		for (int i = 0; i < solution.length - 1; i++) {
+			/* Convert ids used with TSP to ids used in Model*/
+			long idStart = solution[i] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i]-1).getAddress().getId();
+			long idEnd = solution[i+1] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i+1]-1).getAddress().getId();
+
+			list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+		}
+		
+		/* Add latest step : last delivery -> depot */
+		long idStart = deliveries.get(solution[solution.length-1]-1).getAddress().getId();
+		long idEnd = depot.getAddress().getId();
+
+		list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+
+		
+		return list;
 	}
 	
 }
