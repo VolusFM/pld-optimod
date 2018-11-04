@@ -15,29 +15,29 @@ public class Section {
 	}
 
 	public void print() {
-		System.out.println(streetName);	
+		System.out.println(streetName);
 	}
 
 	public double getLength() {
 		return length;
 	}
-	
-	public long getIdStartIntersection(){
+
+	public long getIdStartIntersection() {
 		return start.getId();
 	}
-	
-	public long getIdEndIntersection(){
+
+	public long getIdEndIntersection() {
 		return end.getId();
 	}
-	
+
 	public Intersection getStart() {
 		return start;
 	}
 
 	public Intersection getEnd() {
 		return end;
-	}	
-	
+	}
+
 	@Override
 	public String toString() {
 		return "Section from " + getIdStartIntersection() + " to " + getIdEndIntersection();

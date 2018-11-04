@@ -45,13 +45,10 @@ public class DijkstraTest {
 		for (long i : distances.keySet()) {
 			System.out.println(i + ", d=" + distances.get(i) + ", predecessors =" + predecessors.get(i));
 		}
-		
-		/* Expected output : 
-		4, d=0.0, predecessors =4
-		5, d=4.0, predecessors =4
-		6, d=3.0, predecessors =4
-		7, d=5.0, predecessors =6
-		8, d=12.0, predecessors =5
-		*/
+
+		/*
+		 * Expected output : 4, d=0.0, predecessors =4 5, d=4.0, predecessors =4 6,
+		 * d=3.0, predecessors =4 7, d=5.0, predecessors =6 8, d=12.0, predecessors =5
+		 */
 	}
 }

@@ -10,8 +10,8 @@ import main.model.Intersection;
 import main.model.Plan;
 import main.model.Section;
 import main.model.TourCalculator;
-import model.tsp.TSP1;
-import model.tsp.TemplateTSP;
+import main.model.tsp.TSP1;
+import main.model.tsp.TemplateTSP;
 
 public class TSPTest {
 
@@ -33,7 +33,7 @@ public class TSPTest {
 	@Test
 	public void solveBasicTSP() {
 		TemplateTSP tsp = new TSP1();
-		tsp.chercherEtAfficherMeilleureSolution(10000, nbSommets, graph, duree);
+		tsp.searchAndDisplayBestSolution(10000, nbSommets, graph, duree);
 	}
 	
 	

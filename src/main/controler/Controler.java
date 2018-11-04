@@ -20,78 +20,75 @@ public class Controler {
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
-	
+
 	/**
-	 * Create application s controler
-	 * @param model, model package s entry point
+	 * Create application's controler
+	 * 
+	 * @param        model, model package s entry point
 	 * @param window
 	 */
-	public Controler(ModelInterface model){
+	public Controler(ModelInterface model) {
 		this.currentState = initState;
 		this.model = model;
-		this.window = new Window(this);	
+		this.window = new Window(this);
 	}
-	
+
 	/**
-	 * Load the xml formatted plan. Called when the "accueil" screen s button "Valider" is pushed. 
+	 * Load the xml formatted plan. Called when the welcome screen's button
+	 * "Valider" is pushed.
 	 */
-	public void openPlan(){
-		try{
+	public void openPlan() {
+		try {
 			currentState.openPlan(this, window);
-		}
-		catch(XMLException xml){ 
+		} catch (XMLException xml) {
 			System.out.println(xml);
-		}
-		catch(ParserConfigurationException parserConfig){
+		} catch (ParserConfigurationException parserConfig) {
 			System.out.println(parserConfig);
-		}
-		catch(SAXException sax){
+		} catch (SAXException sax) {
 			System.out.println(sax);
-		}
-		catch(IOException io){
+		} catch (IOException io) {
 			System.out.println(io);
 		}
 	}
-	
+
 	/**
-	 * Load the xml formatted delivery request. Called when the "plan" screen s button "Valider" is pushed. 
+	 * Load the xml formatted delivery request. Called when the "plan" screen s
+	 * button "Valider" is pushed.
 	 */
-	public void openDeliveries(){
-		try{
+	public void openDeliveries() {
+		try {
 			currentState.openDeliveries(this, window);
-		}
-		catch(XMLException xml){ 
+		} catch (XMLException xml) {
 			System.out.println(xml);
-		}
-		catch(ParserConfigurationException parserConfig){
+		} catch (ParserConfigurationException parserConfig) {
 			System.out.println(parserConfig);
-		}
-		catch(SAXException sax){
+		} catch (SAXException sax) {
 			System.out.println(sax);
-		}
-		catch(IOException io){
+		} catch (IOException io) {
 			System.out.println(io);
 		}
 	}
-	
+
 	/**
 	 * model s getter.
 	 */
 	public ModelInterface getModel() {
 		return model;
 	}
-	
+
 	/**
 	 * State s setter.
 	 */
 	public void setCurrentState(State currentState) {
 		this.currentState = currentState;
 	}
+
 	/**
 	 * get the controler current state
+	 * 
 	 * @return currentState
 	 */
-public State getCurrentState() {
-	return currentState;
-}
+	public State getCurrentState() {
+		return currentState;
+	}
 }

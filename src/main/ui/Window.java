@@ -12,11 +12,10 @@ import main.model.Plan;
 
 public class Window extends JFrame {
 
-
 	/* Attributes */
 	private Controler controler;
 	private int planScale = 1;
-	
+
 	/* Components */
 	private WindowHeader header;
 	private JPanel centerPanel;
@@ -24,7 +23,7 @@ public class Window extends JFrame {
 
 	/* Listeners */
 	private ButtonListener buttonListener;
-	
+
 	/* Components visibility */
 	private boolean headerVisibility = true;
 
@@ -107,7 +106,7 @@ public class Window extends JFrame {
 		rightPanel.add(container, BorderLayout.CENTER);
 		getContentPane().add(rightPanel, BorderLayout.EAST);
 	}
-	
+
 	/**
 	 * Create the panel with the city plan.
 	 */

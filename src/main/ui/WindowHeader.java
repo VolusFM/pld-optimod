@@ -29,8 +29,7 @@ public class WindowHeader extends JPanel {
 	/**
 	 * Create a header with title and buttons for the specified windows.
 	 * 
-	 * @param w
-	 *            the window
+	 * @param w the window
 	 */
 	public WindowHeader(Window w, boolean parametersButtonVisibility, boolean returnButtonVisibility) {
 		super();

@@ -9,8 +9,8 @@ import java.util.List;
 import javax.swing.JPanel;
 
 import main.model.Intersection;
-import main.model.Section;
 import main.model.Plan;
+import main.model.Section;
 
 public class PlanView extends JPanel {
 
@@ -28,15 +28,12 @@ public class PlanView extends JPanel {
 	private Graphics graphics;
 
 	/**
-	 * Create the graphical view for drawing the charged plan with the scale s
-	 * in the specified window w.
+	 * Create the graphical view for drawing the charged plan with the scale s in
+	 * the specified window w.
 	 * 
-	 * @param s
-	 *            the scale
-	 * @param w
-	 *            the window
-	 * @param p
-	 *            the plan to print
+	 * @param s the scale
+	 * @param w the window
+	 * @param p the plan to print
 	 */
 	public PlanView(int s, Window w, Plan p) {
 		super();
@@ -54,8 +51,7 @@ public class PlanView extends JPanel {
 	/**
 	 * Function called any time the view must be redraw.
 	 * 
-	 * @param g
-	 *            the graphics component
+	 * @param g the graphics component
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -78,13 +74,11 @@ public class PlanView extends JPanel {
 	}
 
 	/**
-	 * Method called any time we need to draw a plan section. Draw a line
-	 * between the two intersections of the section.
+	 * Method called any time we need to draw a plan section. Draw a line between
+	 * the two intersections of the section.
 	 * 
-	 * @param g
-	 *            the graphics component
-	 * @param section
-	 *            the section to print
+	 * @param g       the graphics component
+	 * @param section the section to print
 	 */
 	public void printSection(Graphics g, Section section) {
 		/* Values from the plan */
@@ -107,9 +101,8 @@ public class PlanView extends JPanel {
 	}
 
 	/**
-	 * Method used to extract max and min of latitudes and longitudes in the
-	 * current plan. (Used to normalize the values in order to print the
-	 * sections).
+	 * Method used to extract max and min of latitudes and longitudes in the current
+	 * plan. (Used to normalize the values in order to print the sections).
 	 */
 	private void findExtremes() {
 		/* Initialization */

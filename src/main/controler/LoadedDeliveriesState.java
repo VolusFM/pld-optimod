@@ -12,16 +12,16 @@ public class LoadedDeliveriesState extends DefaultState {
 		// TODO: add code to call tourCalculator
 		controler.setCurrentState(controler.planningState);
 	}
-	
+
 	public void moveDelivery(Controler controler, Window window) {
-		//TODO
+		// TODO
 	}
-	
+
 	public void addDelivery(Controler controler, Window window) {
-		//TODO : window.openNewDelivery
+		// TODO : window.openNewDelivery
 		controler.setCurrentState(controler.addState);
 	}
-	
+
 	public String stateToString() {
 		return "loadedDeliveryState";
 	}

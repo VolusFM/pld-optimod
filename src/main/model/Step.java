@@ -3,16 +3,14 @@ package main.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sun.org.apache.regexp.internal.recompile;
-
 public class Step {
 
-	private List <Section> sections;
-	
-	public Step(List <Section> sections){
+	private List<Section> sections;
+
+	public Step(List<Section> sections) {
 		this.sections = new ArrayList<>(sections);
 	}
-	
+
 	public double calculateLength() {
 		double sum = 0;
 		for (Section section : sections) {
@@ -20,7 +18,7 @@ public class Step {
 		}
 		return sum;
 	}
-	
+
 	@Override
 	public String toString() {
 		return sections.toString();
