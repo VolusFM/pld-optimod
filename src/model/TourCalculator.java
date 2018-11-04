@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.util.Pair;
@@ -35,7 +36,11 @@ public class TourCalculator {
 		deliveries = new ArrayList<>();
 	}
 
-	private static TourCalculator init(Plan map, List<Delivery> deliveries, Delivery depot) {
+	
+	@Deprecated
+	public static TourCalculator init(Plan map, List<Delivery> deliveries, Delivery depot) {
+		if (instance == null) getInstance();
+		
 		instance.deliveries = deliveries;
 		instance.map = map;
 		instance.depot = depot;
@@ -51,6 +56,14 @@ public class TourCalculator {
 	
 	public void addDelivery(Delivery d) {
 		this.deliveries.add(d);
+	}
+	
+	public void setDepot(Delivery depot) {
+		this.depot = depot;
+	}
+	
+	public void setMap(Plan map) {
+		this.map = map;
 	}
 	
 	
@@ -92,7 +105,7 @@ public class TourCalculator {
 	private void createGraph() {
 		/* Initialization */
 		nodesCount = 1 + deliveries.size(); // depot as first + deliveries
-
+		
 		delay = new int[nodesCount];
 		delay[0] = 0; // no delay in the depot
 		for (int i = 0; i < deliveries.size(); i++) {
@@ -119,15 +132,15 @@ public class TourCalculator {
 		Pair<double[], long[]> result = map.Dijkstra(source);
 		
 		double[] cost = result.getKey();
-		// FIXME : use the predecessors for something here
-
+		// FIXME : use the predecessors for something here -> create the Steps
+		
 		/* "Header" of the list : the ids of the nodes to use in the correct order */
 		long[] idsList = new long[nodesCount];		
 		idsList[0] = depot.getAddress().getId();
 		for (int i = 0; i < deliveries.size(); i++) {
 			idsList[i+1] = deliveries.get(i).getAddress().getId();
 		}
-
+		
 		/* We use the header to construct the cost line */
 		double[] costResult = new double[nodesCount];
 		for (int i = 0; i < nodesCount; i++) {
@@ -143,7 +156,6 @@ public class TourCalculator {
 	
 	/**
 	 * Wrapper function around TSP resolution, delegate responsability to TSP.
-	 * 
 	 * Execute the TSP algorithm, extract the needed information to create the tours
 	 */
 	private void resolveTSP() {
