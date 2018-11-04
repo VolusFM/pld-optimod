@@ -1,6 +1,8 @@
-import model.Plan;
-import model.TourCalculator;
-import xml.XMLDeserializer;
+package main;
+
+import main.model.Plan;
+import main.model.TourCalculator;
+import main.xml.XMLDeserializer;
 
 /**
  * 
