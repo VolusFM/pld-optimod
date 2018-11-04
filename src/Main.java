@@ -1,5 +1,3 @@
-import org.omg.CORBA.TCKind;
-
 import model.Plan;
 import model.TourCalculator;
 import xml.XMLDeserializer;
