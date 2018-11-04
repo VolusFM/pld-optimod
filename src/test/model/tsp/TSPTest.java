@@ -1,19 +1,15 @@
 package test.model.tsp;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import model.Delivery;
-import model.Intersection;
-import model.Plan;
-import model.Section;
-import model.TourCalculator;
+import main.model.Delivery;
+import main.model.Intersection;
+import main.model.Plan;
+import main.model.Section;
+import main.model.TourCalculator;
 import model.tsp.TSP1;
 import model.tsp.TemplateTSP;
 
