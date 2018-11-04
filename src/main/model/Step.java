@@ -7,7 +7,7 @@ import com.sun.org.apache.regexp.internal.recompile;
 
 public class Step {
 
-	private List <Section> sections;
+	private List<Section> sections;
 	
 	public Step(List <Section> sections){
 		this.sections = new ArrayList<>(sections);
@@ -26,4 +26,8 @@ public class Step {
 		return sections.toString();
 	}
 
+	
+	public List<Section> getSections() {
+		return sections;
+	}
 }

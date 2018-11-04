@@ -7,13 +7,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import main.model.ModelInterface;
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public class Controler {
+
 	private State currentState;
-	private Window window;
-	private ModelInterface model;
+	public Window window; // FIXME visibility
+//	private ModelInterface model;
+
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
@@ -26,9 +28,9 @@ public class Controler {
 	 * @param model, model package s entry point
 	 * @param window
 	 */
-	public Controler(ModelInterface model){
+	public Controler(){
 		this.currentState = initState;
-		this.model = model;
+//		this.model;
 		this.window = new Window(this);	
 	}
 	
@@ -77,9 +79,9 @@ public class Controler {
 	/**
 	 * model s getter.
 	 */
-	public ModelInterface getModel() {
-		return model;
-	}
+//	public ModelInterface getModel() {
+//		return model;
+//	}
 	
 	/**
 	 * State s setter.
@@ -94,4 +96,9 @@ public class Controler {
 public State getCurrentState() {
 	return currentState;
 }
+
+	public void openParameters() {
+		// TODO Auto-generated method stub
+		throw new RuntimeException("NYI");
+	}
 }

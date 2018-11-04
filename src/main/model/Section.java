@@ -15,7 +15,7 @@ public class Section {
 	}
 
 	public void print() {
-		System.out.println(streetName);	
+		System.out.println(streetName);
 	}
 
 	public double getLength() {

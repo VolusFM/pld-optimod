@@ -8,7 +8,7 @@ public class Delivery extends Observable {
 	private int duration;
 	private Calendar hour;
 	private Intersection address;
-	
+
 	public Delivery(int duration, Intersection address) {
 		this.duration = duration;
 		this.address = address;
@@ -17,7 +17,7 @@ public class Delivery extends Observable {
 	public int getDuration() {
 		return duration;
 	}
-	
+
 	public Calendar getHour() {
 		return hour;
 	}
@@ -28,5 +28,5 @@ public class Delivery extends Observable {
 
 	public Intersection getAddress() {
 		return address;
-	}	
+	}
 }

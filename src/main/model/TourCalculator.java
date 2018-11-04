@@ -57,16 +57,14 @@ public class TourCalculator {
 		}
 		return instance;
 	}
-	
+
 	public void addDelivery(Delivery d) {
 		this.deliveries.add(d);
 	}
-	
+
 	public void print() {
-		for (Delivery d : deliveries)
-		{
+		for (Delivery d : deliveries) {
 			System.out.println("got delivery with intersection id :" + d.getAddress().getId());
-			
 		}
 	}
 	
@@ -243,4 +241,7 @@ public class TourCalculator {
 		return list;
 	}
 	
+	public List<Delivery> getDeliveries() {
+		return deliveries;
+	}
 }
