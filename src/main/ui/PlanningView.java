@@ -1,9 +1,11 @@
 package main.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,12 +17,16 @@ import main.model.Tour;
 
 public class PlanningView extends JPanel {
 
-	/* Board */
+	/* Components */
 	private JTable planning;
+	private JButton addDeliveryPoint;
+	
+	/* Components texts */
+	private final String ADD_DELIVERY_POINT_BUTTON 	= "Ajouter un point de livraison";
 
 	/* Board attributes */
-	private final int columnsNumber = 4;
-	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Trajet" };
+	private final int columnsNumber 				= 4;
+	private final String[] boardTitle 				= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
 
 	/* Graphic components */
 	// private Graphics graphics;
@@ -69,15 +75,18 @@ public class PlanningView extends JPanel {
 				boardDatas[currentLastEmptyLine][0] = deliveryMan;
 				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
 				boardDatas[currentLastEmptyLine][2] = "H";
-				// TODO : calcul heure passage (Model ou IHM ?);
+				// TODO : calcul heure passage (Model);
 				boardDatas[currentLastEmptyLine][3] = "P";
-				// TODO : liste des noms de rues dans l'ordre (Model ou IHM ?)
+				// TODO : liste des noms de rues dans l'ordre (Model)
 				currentLastEmptyLine++;
 			}
 		}
 		/* Building board */
 		planning = new JTable(boardDatas, boardTitle);
+		PlanningListener planningListener = new PlanningListener(planning);
 		/* Displaying */
-		add(new JScrollPane(planning));
+		addDeliveryPoint = new JButton (ADD_DELIVERY_POINT_BUTTON);
+		add(addDeliveryPoint, BorderLayout.NORTH);
+		add(new JScrollPane(planning), BorderLayout.CENTER);
 	}
 }

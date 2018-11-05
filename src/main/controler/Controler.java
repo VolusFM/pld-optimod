@@ -95,7 +95,7 @@ public class Controler {
 	public State getCurrentState() {
 		return currentState;
 	}
-
+	
 	public void openParameters() {
 		// TODO Auto-generated method stub
 		throw new RuntimeException("NYI");
