@@ -12,20 +12,19 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
-import model.Plan;
-import xml.XMLDeserializer;
-import xml.XMLException;
+import main.model.Plan;
+import main.xml.XMLDeserializer;
+import main.xml.XMLException;
 
 public class XMLDeserializerTest {
 
 	private Plan plan;
-	
+
 	@Before
 	public void setUp() throws Exception {
 		plan = new Plan();
 	}
-	
-	
+
 	@Test
 	public void testLoadValidPlan() {
 		System.out.println("Please load 'petitPlanValide.xml'");
@@ -35,7 +34,7 @@ public class XMLDeserializerTest {
 			fail("Failed to parse valid plan");
 		}
 	}
-	
+
 	@Test
 	public void testLoadPlanWithUnvalidRoot() {
 		System.out.println("Please load 'petitPlanInvalidePasReseau.xml'");
@@ -49,7 +48,7 @@ public class XMLDeserializerTest {
 		}
 		fail("Unexpected exception or lack of exception");
 	}
-	
+
 	@Test
 	public void testLoadUnvalidPlan() {
 		System.out.println("Please load 'petitPlanInvalide.xml'");
@@ -63,7 +62,7 @@ public class XMLDeserializerTest {
 		}
 		fail("Unexpected exception or lack of exception");
 	}
-	
+
 	@Test
 	public void testLoadNotAnXMLFile() {
 		System.out.println("Please load 'petitPlanInvalideNonXml.not_xml'");
@@ -73,11 +72,11 @@ public class XMLDeserializerTest {
 			fail("Even though the file doesn't claim to be XML, if it is actually a valid XML file with a plan it is fine");
 		}
 	}
-	
+
 	@Test
 	public void testLoadFileWithoutReadPermission() {
 		System.out.println("Please load 'petitPlanValideSansDroitEnLecture.xml'");
-		
+
 		try {
 			XMLDeserializer.load(plan);
 		} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
@@ -88,11 +87,11 @@ public class XMLDeserializerTest {
 		}
 		fail("Unexpected exception or lack of exception");
 	}
-	
+
 	@Test
 	public void testLoadPlanWithWrongSectionLength() {
 		System.out.println("Please load 'petitPlanInvalideLongueurSection.xml'");
-		
+
 		try {
 			XMLDeserializer.load(plan);
 		} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
@@ -103,7 +102,5 @@ public class XMLDeserializerTest {
 		}
 		fail("Unexpected exception or lack of exception");
 	}
-	
-	
 
 }

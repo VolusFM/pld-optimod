@@ -1,11 +1,12 @@
 /**
  * 
  */
-package xml;
+package main.xml;
 
 import java.io.File;
+
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.*;
+import javax.swing.filechooser.FileFilter;
 
 /**
  * This class allows to open an XML file and get its content as a File object.
@@ -39,7 +40,7 @@ public class XMLFileOpener extends FileFilter {
 	 */
 	public File open() throws XMLException {
 		JFileChooser jFileChooserXML = new JFileChooser();
-		jFileChooserXML.setCurrentDirectory(new File("."));
+		jFileChooserXML.setCurrentDirectory(new File(".")); // set current dir to project dir
 		jFileChooserXML.setFileFilter(this);
 		jFileChooserXML.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -69,7 +70,8 @@ public class XMLFileOpener extends FileFilter {
 	/**
 	 * Get the extension of a file.
 	 * 
-	 * @param f is the file of which we want to the get the extension.
+	 * @param f
+	 *            is the file of which we want to the get the extension.
 	 * @return String, a string representing the file's extension.
 	 */
 	private String getExtension(File f) {

@@ -1,7 +1,4 @@
-package model;
-
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.LocatorEx.Snapshot;
-
+package main.model;
 
 public class Section {
 
@@ -18,27 +15,31 @@ public class Section {
 	}
 
 	public void print() {
-		System.out.println(streetName);	
+		System.out.println(streetName);
 	}
 
 	public double getLength() {
 		return length;
 	}
-	
-	public int getIdStartIntersection(){
+
+	public long getIdStartIntersection() {
 		return start.getId();
 	}
-	
-	public int getIdEndIntersection(){
+
+	public long getIdEndIntersection() {
 		return end.getId();
 	}
-	
+
 	public Intersection getStart() {
 		return start;
 	}
 
 	public Intersection getEnd() {
 		return end;
-	}	
-	
+	}
+
+	@Override
+	public String toString() {
+		return "Section from " + getIdStartIntersection() + " to " + getIdEndIntersection();
+	}
 }

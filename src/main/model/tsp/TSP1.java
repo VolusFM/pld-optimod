@@ -1,4 +1,4 @@
-package model.tsp;
+package main.model.tsp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
