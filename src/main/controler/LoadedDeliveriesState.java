@@ -13,7 +13,8 @@ public class LoadedDeliveriesState extends DefaultState {
 		// TODO: add code to call tourCalculator
 		
 		TourCalculator.getInstance().calculateTours(1);
-		window.invalidate(); // FIXME : force window to display again with path
+		window.displayTourPlanningPanel();
+		window.redraw();
 		
 		controler.setCurrentState(controler.planningState);
 	}

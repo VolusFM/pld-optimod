@@ -1,6 +1,8 @@
 package main.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class TourFactory {
@@ -13,8 +15,10 @@ public class TourFactory {
 		tourPlanning = new ArrayList<>();
 	}
 
-	public static Tour createTour(int deliveryMan, List<Step> steps, List<Delivery> deliveryPoints) {
-		Tour currentTour = new Tour(steps, deliveryPoints, deliveryMan);
+	public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
+		System.out.println(depot);
+		//calculateDeliveryHours(steps, depot, deliveries);
+		Tour currentTour = new Tour(steps, deliveries, deliveryMan);
 		tourPlanning.add(currentTour);
 		return currentTour;
 	}
@@ -27,4 +31,10 @@ public class TourFactory {
 		return tourPlanning;
 	}
 
+	private static void calculateDeliveryHours(List<Step> steps, Delivery depot, List<Delivery> deliveries) {
+		Calendar departureTime = depot.getHour();
+		for (Step s : steps) {
+			
+		}
+	}
 }
