@@ -6,10 +6,6 @@ public class Section {
 	private double length;
 	private Intersection start;
 	private Intersection end;
-	
-	public long getIdStartIntersection(){
-		return start.getId();
-	}
 
 	public Section(Intersection start, Intersection end, double length, String streetName) {
 		this.streetName = streetName;
@@ -19,11 +15,19 @@ public class Section {
 	}
 
 	public void print() {
-		System.out.println(streetName);	
+		System.out.println(streetName);
 	}
 
 	public double getLength() {
 		return length;
+	}
+
+	public long getIdStartIntersection() {
+		return start.getId();
+	}
+
+	public long getIdEndIntersection() {
+		return end.getId();
 	}
 
 	public Intersection getStart() {
@@ -32,6 +36,10 @@ public class Section {
 
 	public Intersection getEnd() {
 		return end;
-	}	
-	
+	}
+
+	@Override
+	public String toString() {
+		return "Section from " + getIdStartIntersection() + " to " + getIdEndIntersection();
+	}
 }

@@ -6,20 +6,22 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public interface State {
 	/**
 	 * Open the map
-	 * @param controleur
-	 * @param fenetre
+	 * 
+	 * @param controler
+	 * @param window
 	 */
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException;
 
 	/**
 	 * Open the deliveries request
+	 * 
 	 * @param controler
 	 * @param window
 	 * @throws XMLException
@@ -29,12 +31,13 @@ public interface State {
 	 */
 	public void openDeliveries(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException;
-	
-/**
- * Open parameters window
- * @param controler
- * @param window
- */
+
+	/**
+	 * Open parameters window
+	 * 
+	 * @param controler
+	 * @param window
+	 */
 	public void openParameters(Controler controler, Window window);
 	
 /**
@@ -43,16 +46,17 @@ public interface State {
  * @param window
  */
 	public void calculatePlanning(Controler controler, Window window);
-	
 	/**
 	 * Cancel the creation of a new delivery and go back to previous screen
+	 * 
 	 * @param controler
 	 * @param window
 	 */
 	public void cancelNewDelivery(Controler controler, Window window);
-	
+
 	/**
 	 * Open the Add Delivery Window
+	 * 
 	 * @param controler
 	 * @param window
 	 */

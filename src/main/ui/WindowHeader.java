@@ -21,6 +21,10 @@ public class WindowHeader extends JPanel {
 	private boolean parametersButtonVisibility = true;
 	private boolean returnButtonVisibility = true;
 
+	/* Button's action */
+	protected static final String ACTION_PARAMETERS = "PARAMETERS";
+	protected static final String ACTION_RETURN = "RETURN";
+
 	/* Components */
 	private JButton parametersButton;
 	private JButton returnButton;
@@ -29,10 +33,10 @@ public class WindowHeader extends JPanel {
 	/**
 	 * Create a header with title and buttons for the specified windows.
 	 * 
-	 * @param w
-	 *            the window
+	 * @param w the window
 	 */
-	public WindowHeader(Window w, boolean parametersButtonVisibility, boolean returnButtonVisibility) {
+	public WindowHeader(Window w, boolean parametersButtonVisibility, boolean returnButtonVisibility,
+			ButtonListener buttonListener) {
 		super();
 		setLayout(new BorderLayout());
 		setBackground(Color.white);
@@ -45,8 +49,8 @@ public class WindowHeader extends JPanel {
 		this.parametersButton.setFocusPainted(false);
 		this.parametersButtonVisibility = parametersButtonVisibility;
 		this.parametersButton.setVisible(this.parametersButtonVisibility);
-		// this.parametersButton.addActionListener(ecouteurDeBoutons); TODO:
-		// mettre les ecouteurs
+		this.parametersButton.setActionCommand(ACTION_PARAMETERS);
+		this.parametersButton.addActionListener(buttonListener);
 		add(parametersButton, BorderLayout.EAST);
 
 		this.returnButton = new JButton(RETURN);
@@ -54,8 +58,8 @@ public class WindowHeader extends JPanel {
 		this.returnButton.setFocusPainted(false);
 		this.returnButtonVisibility = returnButtonVisibility;
 		this.returnButton.setVisible(this.returnButtonVisibility);
-		// this.returnButton.addActionListener(ecouteurDeBoutons); TODO: mettre
-		// les ecouteurs
+		this.returnButton.setActionCommand(ACTION_RETURN);
+		this.returnButton.addActionListener(buttonListener);
 		add(returnButton, BorderLayout.WEST);
 	}
 

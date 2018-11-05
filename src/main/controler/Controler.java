@@ -7,72 +7,70 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import main.model.ModelInterface;
-import main.xml.XMLException;
 import main.ui.Window;
+import main.xml.XMLException;
 
 public class Controler {
+
 	private State currentState;
-	private Window window;
-	private ModelInterface model;
+	public Window window; // FIXME visibility
+//	private ModelInterface model;
+
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
-	
+	private ModelInterface model;
+
 	/**
-	 * Create application s controler
-	 * @param model, model package s entry point
+	 * Create application's controler
+	 * 
+	 * @param        model, model package s entry point
 	 * @param window
 	 */
 	public Controler(){ //TODO : check if model is still a parameter (abstract class) + how to use abstract class
 		this.currentState = initState;
 		this.window = new Window(this);	
 	}
-	
+
 	/**
-	 * Load the xml formatted plan. Called when the "accueil" screen s button "Valider" is pushed. 
+	 * Load the xml formatted plan. Called when the welcome screen's button
+	 * "Valider" is pushed.
 	 */
-	public void openPlan(){
-		try{
+	public void openPlan() {
+		try {
 			currentState.openPlan(this, window);
-		}
-		catch(XMLException xml){ 
+		} catch (XMLException xml) {
 			System.out.println(xml);
-		}
-		catch(ParserConfigurationException parserConfig){
+		} catch (ParserConfigurationException parserConfig) {
 			System.out.println(parserConfig);
-		}
-		catch(SAXException sax){
+		} catch (SAXException sax) {
 			System.out.println(sax);
-		}
-		catch(IOException io){
+		} catch (IOException io) {
 			System.out.println(io);
 		}
 	}
-	
+
 	/**
-	 * Load the xml formatted delivery request. Called when the "plan" screen s button "Valider" is pushed. 
+	 * Load the xml formatted delivery request. Called when the "plan" screen s
+	 * button "Valider" is pushed.
 	 */
-	public void openDeliveries(){
-		try{
+	public void openDeliveries() {
+		try {
 			currentState.openDeliveries(this, window);
-		}
-		catch(XMLException xml){ 
+		} catch (XMLException xml) {
 			System.out.println(xml);
-		}
-		catch(ParserConfigurationException parserConfig){
+		} catch (ParserConfigurationException parserConfig) {
 			System.out.println(parserConfig);
-		}
-		catch(SAXException sax){
+		} catch (SAXException sax) {
 			System.out.println(sax);
-		}
-		catch(IOException io){
+		} catch (IOException io) {
 			System.out.println(io);
 		}
 	}
-	
+
 	/**
 	 * Open parameters window
 	 */
@@ -149,21 +147,26 @@ public class Controler {
 	/**
 	 * model s getter.
 	 */
+
 	public ModelInterface getModel() {
 		return model;
 	}
-	
+
 	/**
 	 * State s setter.
 	 */
 	public void setCurrentState(State currentState) {
+		System.out.println("Changed from " + this.currentState.stateToString() + " to " + currentState.stateToString());
 		this.currentState = currentState;
 	}
+
 	/**
 	 * get the controler current state
+	 * 
 	 * @return currentState
 	 */
-public State getCurrentState() {
-	return currentState;
-}
+	public State getCurrentState() {
+		return currentState;
+	}
+
 }

@@ -8,8 +8,9 @@ public class ParametersState extends DefaultState {
 	public void confirmParameters(Controler controler, Window window) {
 		//TODO : display previous state
 		controler.setCurrentState(controler.loadedDeliveriesState);
+
 	}
-	
+
 	public String stateToString() {
 		return "parametersState";
 	}
