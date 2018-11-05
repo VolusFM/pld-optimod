@@ -22,7 +22,7 @@ public class PlanningView extends JPanel {
 
 	/* Board attributes */
 	private final int columnsNumber = 4;
-	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Trajet" };
+	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage" };
 
 	/* Graphic components */
 	// private Graphics graphics;
@@ -70,12 +70,11 @@ public class PlanningView extends JPanel {
 				Delivery currentDelivery = itDeliveries.next();
 				boardDatas[currentLastEmptyLine][0] = deliveryMan;
 				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
-				/*SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+				SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
 				Calendar hour = currentDelivery.getHour();
-				dateFormat.setTimeZone(hour.getTimeZone());*/
-				boardDatas[currentLastEmptyLine][2] = "H"; //dateFormat.format(hour.getTime()); 
+				dateFormat.setTimeZone(hour.getTimeZone());
+				boardDatas[currentLastEmptyLine][2] = dateFormat.format(hour.getTime()); 
 				// TODO : calcul heure passage (Model ou IHM ?);
-				boardDatas[currentLastEmptyLine][3] = "P";
 				// TODO : liste des noms de rues dans l'ordre (Model ou IHM ?)
 				currentLastEmptyLine++;
 			}
