@@ -13,6 +13,7 @@ import main.xml.XMLException;
 public class Controler {
 
 	private State currentState;
+	private State previousState;
 	public Window window; // FIXME visibility
 	
 	protected final InitState initState = new InitState();
@@ -39,6 +40,7 @@ public class Controler {
 	 */
 	public void openPlan() {
 		try {
+			previousState = currentState;
 			currentState.openPlan(this, window);
 		} catch (XMLException xml) {
 			System.out.println(xml);
@@ -57,6 +59,7 @@ public class Controler {
 	 */
 	public void openDeliveries() {
 		try {
+			previousState = currentState;
 			currentState.openDeliveries(this, window);
 		} catch (XMLException xml) {
 			System.out.println(xml);
@@ -74,6 +77,7 @@ public class Controler {
 	 */
 	public void openParameters() {
 		try {
+			previousState = currentState;
 			currentState.openParameters(this, window);
 		}
 		catch( Exception e) {
@@ -87,6 +91,7 @@ public class Controler {
 	 */
 	public void calculatePlanning() {
 		try {
+			previousState = currentState;
 			currentState.calculatePlanning(this, window);
 		}
 		catch( Exception e) {
@@ -100,6 +105,7 @@ public class Controler {
 	 */
 	public void addDelivery() {
 		try {
+			previousState = currentState;
 			currentState.addDelivery(this, window);
 		}
 		catch(Exception e) {
@@ -161,6 +167,14 @@ public class Controler {
 	 */
 	public State getCurrentState() {
 		return currentState;
+	}
+	
+	/**
+	 * get previous state.
+	 * @return
+	 */
+	public State getPreviousState() {
+		return previousState;
 	}
 
 }

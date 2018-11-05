@@ -11,7 +11,7 @@ public class ParametersState extends DefaultState {
 	public void confirmParameters(Controler controler, Window window) {
 		ModelInterface.setDeliveryMenCount(10); //window.getNumberDeliveryMan()
 		//TODO : display previous state
-		controler.setCurrentState(controler.loadedDeliveriesState);
+		controler.setCurrentState(controler.getPreviousState());
 	}
 
 	public String stateToString() {
