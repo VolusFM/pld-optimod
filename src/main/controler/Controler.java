@@ -30,9 +30,8 @@ public class Controler {
 	 * @param        model, model package s entry point
 	 * @param window
 	 */
-	public Controler(ModelInterface model) {
+	public Controler() {
 		this.currentState = initState;
-		this.model = model;
 		this.window = new Window(this);
 	}
 
