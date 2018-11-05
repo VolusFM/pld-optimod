@@ -157,7 +157,7 @@ public class TourCalculator {
 
 		List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
 
-		TourFactory.createTour(1, solutionSteps, deliveries); // FIXME : hardcoded 1 and deliveries
+		TourFactory.createTour(1, solutionSteps, depot, deliveries); // FIXME : hardcoded 1 and deliveries
 	}
 
 	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {

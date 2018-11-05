@@ -46,11 +46,6 @@ public abstract class ModelInterface {
 	public static List<Tour> getTourPlanning() {
 		return tourFactory.getTourPlanning();
 	}
-
-	public static void createTour(int deliveryMan, List<Step> steps, List<Delivery> deliveryPoints) {
-		setTourFactory(TourFactory.getInstance());
-		TourFactory.createTour(deliveryMan, steps, deliveryPoints);
-	}
 	
 	public static Delivery getDepot() {
 		return tourCalculator.getDepot();

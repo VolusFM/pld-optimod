@@ -113,7 +113,7 @@ public class Window extends JFrame {
 		/* Set content */
 		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
-		pack();
+		redraw();
 	}
 
 	/**
@@ -128,7 +128,7 @@ public class Window extends JFrame {
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
-		pack();
+		redraw();
 	}
 
 	/**
@@ -160,6 +160,14 @@ public class Window extends JFrame {
 		button.addActionListener(buttonListener);
 		return button;
 		
+	}
+	
+	/**
+	 * Update the graphics on the window, used when we don't add/remove components
+	 */
+	public void redraw() {
+		repaint();
+		revalidate();
 	}
 	
 }

@@ -1,6 +1,8 @@
 package main.ui;
 
 import java.awt.Color;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -68,7 +70,10 @@ public class PlanningView extends JPanel {
 				Delivery currentDelivery = itDeliveries.next();
 				boardDatas[currentLastEmptyLine][0] = deliveryMan;
 				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
-				boardDatas[currentLastEmptyLine][2] = "H";
+				/*SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+				Calendar hour = currentDelivery.getHour();
+				dateFormat.setTimeZone(hour.getTimeZone());*/
+				boardDatas[currentLastEmptyLine][2] = "H"; //dateFormat.format(hour.getTime()); 
 				// TODO : calcul heure passage (Model ou IHM ?);
 				boardDatas[currentLastEmptyLine][3] = "P";
 				// TODO : liste des noms de rues dans l'ordre (Model ou IHM ?)
