@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.util.Pair;
 import main.model.tsp.TSP1;
@@ -222,6 +223,63 @@ public class TourCalculator {
 		return list;
 	}
 	
+	/**
+	 * data clustering using k-means algorithm
+	 * @param clusterNb
+	 * @param intersections
+	 * @return
+	 */
+	public List<Cluster> kMeans(int clusterNb, List<Intersection> intersections, double epsilon){
+		List<Cluster> clusters = new ArrayList<Cluster>();
+		/*Cluster initialisation*/
+		for(int i = 0;i<clusterNb;i++){
+			int rdInt = ThreadLocalRandom.current().nextInt(0, intersections.size());
+			Pair<Double,Double> randomCentroid = new Pair<Double, Double>(intersections.get(rdInt).getLat(),intersections.get(rdInt).getLon());
+			Cluster newCluster = new Cluster(randomCentroid);
+			clusters.add(newCluster);
+			intersections.remove(rdInt);
+		}
+		
+		double convergenceCoeff = epsilon + 1;
+		while (convergenceCoeff > epsilon) {
+			/*Centroid repartition based on euclidian distance*/
+			for (Intersection intersection : intersections) {
+				Pair<Double, Double> intersectionData = new Pair<Double, Double>(intersection.getLat(),
+						intersection.getLon());
+				double min = calculateDistance(intersectionData, clusters.get(0).getCentroid());
+				Cluster assignedCluster = clusters.get(0);
+				for (Cluster cluster : clusters) {
+					double distance = calculateDistance(intersectionData, cluster.getCentroid());
+					if (distance < min) {
+						min = distance;
+						assignedCluster = cluster;
+					}
+				}
+				assignedCluster.addIntersection(intersection);
+			}
+			/*Recalculate centroid position*/
+			convergenceCoeff=0;
+			for (Cluster cluster : clusters) {
+				double barycentersLatitude = 0;
+				double barycentersLongitude = 0;
+				for (Intersection intersection : cluster.getIntersections()) {
+					barycentersLatitude += intersection.getLat();
+					barycentersLongitude += intersection.getLon();
+				}
+				barycentersLatitude = barycentersLatitude / cluster.getIntersections().size();
+				barycentersLongitude = barycentersLongitude / cluster.getIntersections().size();
+				Pair<Double, Double> newCentroid = new Pair<Double, Double>(barycentersLatitude, barycentersLongitude);
+				convergenceCoeff += calculateDistance(newCentroid, cluster.getCentroid());
+				cluster.setCentroid(newCentroid);
+			}
+		}
+		return clusters;
+		
+	}
+	public double calculateDistance(Pair<Double,Double> intersectionData,Pair<Double,Double> centroidData){
+		return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()),2)+ Math.pow((intersectionData.getValue() - centroidData.getValue()),2));
+	}
+	 
 	public List<Delivery> getDeliveries() {
 		return deliveries;
 	}

@@ -3,23 +3,44 @@ package main.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javafx.util.Pair;
+
 public class Cluster {
-	List<Intersection> intersections;
-	int maxNbIntersection;
+	private List<Intersection> intersections;
+	private Pair<Double,Double> centroid;
 	
 	/**
 	 * Create a cluster.
 	 * @param intersections
 	 */
-	public Cluster(ArrayList<Intersection> intersections, int maxNbIntersection){
-		this.intersections = new ArrayList<Intersection>(intersections);
-		this.maxNbIntersection = maxNbIntersection;
+	public Cluster(Pair<Double,Double> centroid){
+		this.centroid = centroid;
 	}
 	
-	public boolean addIntersection(Intersection intersection){
-		if(this.intersections.size()<this.maxNbIntersection){
-			this.intersections.add(intersection);
-		}
-		return (this.intersections.size()<this.maxNbIntersection);
+	public void addIntersection(Intersection intersection){
+		this.intersections.add(intersection);
+	}
+	/**
+	 * centroid getter
+	 * @return
+	 */
+	public Pair<Double, Double> getCentroid() {
+		return centroid;
+	}
+	
+	/**
+	 * intersections s getter
+	 * @return
+	 */
+	public List<Intersection> getIntersections() {
+		return intersections;
+	}
+	
+	/**
+	 * centroid s setter
+	 * @param centroid
+	 */
+	public void setCentroid(Pair<Double, Double> centroid) {
+		this.centroid = centroid;
 	}
 }

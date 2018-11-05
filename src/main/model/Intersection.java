@@ -42,4 +42,6 @@ public class Intersection {
 	public List<Section> getOutcomingSections() {
 		return outcomingSections;
 	}
+	
+	
 }
