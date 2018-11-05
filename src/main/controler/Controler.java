@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.model.Intersection;
 import main.model.ModelInterface;
 import main.ui.Window;
 import main.xml.XMLException;
@@ -103,5 +104,9 @@ public class Controler {
 
 	public void calculateTour() {
 		currentState.calculateTour(this, window);
+	}
+
+	public void clickedNearIntersection(Intersection findClosestIntersection) {
+		window.highlightSelectedIntersection(findClosestIntersection); // FIXME : do it with states
 	}
 }

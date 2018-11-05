@@ -53,7 +53,6 @@ public class PlanView extends JPanel {
 //		setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
-		addMouseListener(new PlanListener());
 	}
 	// TODO : mettre l'observer sur le plan.
 

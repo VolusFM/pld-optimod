@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.controler.Controler;
+import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Plan;
 
@@ -21,6 +22,8 @@ public class Window extends JFrame {
 	private WindowHeader header;
 	private JPanel centerPanel;
 	private JPanel rightPanel;
+	private PlanView planView;
+	private PlanningView planningView;
 
 	/* Listeners */
 	private ButtonListener buttonListener;
@@ -109,9 +112,10 @@ public class Window extends JFrame {
 		this.centerPanel = new JPanel();
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
-		PlanView planPanel = new PlanView(planScale, this, plan);
+		planView = new PlanView(planScale, this, plan);
+		planView.addMouseListener(new PlanListener(controler));
 		/* Set content */
-		centerPanel.add(planPanel);
+		centerPanel.add(planView);
 		add(centerPanel, BorderLayout.CENTER);
 		redraw();
 	}
@@ -141,9 +145,9 @@ public class Window extends JFrame {
 		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-		PlanningView planningPanel = new PlanningView(this);
+		planningView = new PlanningView(this);
 		rightPanel.add(planningText, BorderLayout.NORTH);
-		rightPanel.add(planningPanel, BorderLayout.CENTER);
+		rightPanel.add(planningView, BorderLayout.CENTER);
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
@@ -168,6 +172,10 @@ public class Window extends JFrame {
 	public void redraw() {
 		repaint();
 		revalidate();
+	}
+
+	public void highlightSelectedIntersection(Intersection findClosestIntersection) {
+		planningView.selectRow(findClosestIntersection);
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import main.model.Delivery;
+import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Step;
 import main.model.Tour;
@@ -22,9 +24,9 @@ public class PlanningView extends JPanel {
 	/* Components */
 	private JTable planning;
 	private JButton addDeliveryPoint;
-	
+
 	/* Components texts */
-	private final String ADD_DELIVERY_POINT_BUTTON 	= "Ajouter un point de livraison";
+	private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter un point de livraison";
 
 	/* Board attributes */
 	private final int columnsNumber = 3;
@@ -59,37 +61,57 @@ public class PlanningView extends JPanel {
 	 * Function called to create the planning panel.
 	 */
 	public void createBoardPanel() {
-		/* Building board dimensions */
-		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
-		Object[][] boardDatas = new Object[deliveries.size()][columnsNumber];
-		/* Building board datas */
-		Collection<Tour> tours = ModelInterface.getTourPlanning();
-		Iterator<Tour> itTours = tours.iterator();
-		int currentLastEmptyLine = 0;
-		while (itTours.hasNext()) {
-			Tour currentTour = itTours.next();
-			int deliveryMan = currentTour.getDeliveryManId();
-			Collection<Delivery> deliveryPoints = currentTour.getDeliveryPoints();
-			Collection<Step> steps = currentTour.getSteps();
-			Iterator<Delivery> itDeliveries = deliveryPoints.iterator();
-			while (itDeliveries.hasNext()) {
-				Delivery currentDelivery = itDeliveries.next();
-				boardDatas[currentLastEmptyLine][0] = deliveryMan;
-				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
-				SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
-				Calendar hour = currentDelivery.getHour();
-				dateFormat.setTimeZone(hour.getTimeZone());
-				boardDatas[currentLastEmptyLine][2] = dateFormat.format(hour.getTime()); 
+//		/* Building board dimensions */
+//		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
+//		Object[][] boardDatas = new Object[deliveries.size()][columnsNumber];
+//		/* Building board datas */
+//		Collection<Tour> tours = ModelInterface.getTourPlanning();
+//		Iterator<Tour> itTours = tours.iterator();
+//		
+//		int currentLastEmptyLine = 0;
+//		
+//		while (itTours.hasNext()) {
+//			Tour currentTour = itTours.next();
+//			int deliveryMan = currentTour.getDeliveryManId();
+//			Collection<Delivery> deliveryPoints = currentTour.getDeliveryPoints();
+//			Collection<Step> steps = currentTour.getSteps();
+//			Iterator<Delivery> itDeliveries = deliveryPoints.iterator();
+//			while (itDeliveries.hasNext()) {
+//				Delivery currentDelivery = itDeliveries.next();
+//				boardDatas[currentLastEmptyLine][0] = deliveryMan;
+//				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; "
+//						+ currentDelivery.getAddress().getLon() + ")";
+//				SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+//				Calendar hour = currentDelivery.getHour();
+//				dateFormat.setTimeZone(hour.getTimeZone());
+//				boardDatas[currentLastEmptyLine][2] = dateFormat.format(hour.getTime());
+//
+//				currentLastEmptyLine++;
+//			}
+//		}
+//		/* Building board */
+//		planning = new JTable(boardDatas, boardTitle);
+//		planning.setAutoCreateRowSorter(true);
+		
+		planning = new PlanningTable();
 
-				currentLastEmptyLine++;
-			}
-		}
-		/* Building board */
-		planning = new JTable(boardDatas, boardTitle);
 		PlanningListener planningListener = new PlanningListener(planning);
 		/* Displaying */
-		addDeliveryPoint = new JButton (ADD_DELIVERY_POINT_BUTTON);
+		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		add(addDeliveryPoint, BorderLayout.NORTH);
 		add(new JScrollPane(planning), BorderLayout.CENTER);
+	}
+
+	public void selectRow(Intersection closestIntersection) {		
+		List<Delivery> deliveries = ModelInterface.getDeliveries();
+		Iterator<Delivery> it = deliveries.iterator();
+		boolean found = false;
+		int i = 0;
+		while (!found && it.hasNext()) {
+			if (it.next().getAddress().getId() == closestIntersection.getId()) {
+				planning.setRowSelectionInterval(i, i);
+			}
+			i++;
+		}
 	}
 }

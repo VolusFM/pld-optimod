@@ -3,11 +3,22 @@ package main.ui;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import main.controler.Controler;
 import main.model.ModelInterface;
 import main.ui.PlanView.GeographicCoordinate;
 import main.ui.PlanView.ScreenCoordinate;
 
 public class PlanListener extends MouseAdapter {
+
+	Controler controler;
+	
+	
+	
+	public PlanListener(Controler controler) {
+		this.controler = controler;
+	}
+
+
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -15,6 +26,6 @@ public class PlanListener extends MouseAdapter {
 		GeographicCoordinate geographicCoordinate = ((PlanView) e.getSource()).convertToGeographicCoordinate(screenCoordinate);
 
 		System.out.println("Clicked at pos : (" + geographicCoordinate.latitude + "; " + geographicCoordinate.longitude + ")");
-		ModelInterface.getPlan().findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude);
+		controler.clickedNearIntersection(ModelInterface.getPlan().findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude));		
 	}
 }

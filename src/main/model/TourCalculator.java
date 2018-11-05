@@ -35,17 +35,6 @@ public class TourCalculator {
 		steps = new HashMap<>();
 	}
 
-	@Deprecated
-	public static TourCalculator init(Plan map, List<Delivery> deliveries, Delivery depot) {
-		if (instance == null)
-			getInstance();
-
-		instance.deliveries = deliveries;
-		instance.map = map;
-		instance.depot = depot;
-		return instance;
-	}
-
 	public static TourCalculator getInstance() {
 		if (instance == null) {
 			instance = new TourCalculator();
