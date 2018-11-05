@@ -1,11 +1,13 @@
 package main.ui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,11 +19,15 @@ import main.model.Tour;
 
 public class PlanningView extends JPanel {
 
-	/* Board */
+	/* Components */
 	private JTable planning;
+	private JButton addDeliveryPoint;
+	
+	/* Components texts */
+	private final String ADD_DELIVERY_POINT_BUTTON 	= "Ajouter un point de livraison";
 
 	/* Board attributes */
-	private final int columnsNumber = 4;
+	private final int columnsNumber = 3;
 	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage" };
 
 	/* Graphic components */
@@ -74,14 +80,16 @@ public class PlanningView extends JPanel {
 				Calendar hour = currentDelivery.getHour();
 				dateFormat.setTimeZone(hour.getTimeZone());
 				boardDatas[currentLastEmptyLine][2] = dateFormat.format(hour.getTime()); 
-				// TODO : calcul heure passage (Model ou IHM ?);
-				// TODO : liste des noms de rues dans l'ordre (Model ou IHM ?)
+
 				currentLastEmptyLine++;
 			}
 		}
 		/* Building board */
 		planning = new JTable(boardDatas, boardTitle);
+		PlanningListener planningListener = new PlanningListener(planning);
 		/* Displaying */
-		add(new JScrollPane(planning));
+		addDeliveryPoint = new JButton (ADD_DELIVERY_POINT_BUTTON);
+		add(addDeliveryPoint, BorderLayout.NORTH);
+		add(new JScrollPane(planning), BorderLayout.CENTER);
 	}
 }
