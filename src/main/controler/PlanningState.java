@@ -16,11 +16,15 @@ public class PlanningState extends DefaultState {
 	}
 	
 	public void moveDelivery(Controler controler, Window window) {
-		//TODO
+		// int newTourId = window.getNewTourId();
+		//Delivery movedDelivery = window.getMovedDelivery();
+		//ModelInterface.moveDelivery(newTourId, movedDelivery);
 	}
-	
+	public void deleteDelivery(Controler controler, Window window){
+		//ModelInterface.deleteDelivery(window.getDeletedDelivery());
+	}
 	public void addDelivery(Controler controler, Window window) {
-		//TODO : window.openNewDelivery
+		//TODO : window.openNewDelivery()
 		controler.setCurrentState(controler.addState);
 	}
 	

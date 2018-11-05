@@ -14,15 +14,13 @@ public class Controler {
 
 	private State currentState;
 	public Window window; // FIXME visibility
-//	private ModelInterface model;
-
+	
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
 	protected final PlanningState planningState = new PlanningState();
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
-	private ModelInterface model;
 
 	/**
 	 * Create application's controler
@@ -30,7 +28,7 @@ public class Controler {
 	 * @param        model, model package s entry point
 	 * @param window
 	 */
-	public Controler(){ //TODO : check if model is still a parameter (abstract class) + how to use abstract class
+	public Controler(){
 		this.currentState = initState;
 		this.window = new Window(this);	
 	}
@@ -79,8 +77,8 @@ public class Controler {
 			currentState.openParameters(this, window);
 		}
 		catch( Exception e) {
-			//TODO check exeption's handling + remove string when test done
-			System.out.println(e +"controler open parameter");
+			//TODO check exeption's handling
+			System.out.println(e);
 		}
 	}
 	
@@ -92,8 +90,8 @@ public class Controler {
 			currentState.calculatePlanning(this, window);
 		}
 		catch( Exception e) {
-			//TODO check exeption's handling + remove string when test done
-			System.out.println(e +" controler calculateTour");
+			//TODO check exeption's handling
+			System.out.println(e);
 		}
 	}
 	
@@ -144,13 +142,6 @@ public class Controler {
 			System.out.println(e);
 		}
 	}
-	/**
-	 * model s getter.
-	 */
-
-	public ModelInterface getModel() {
-		return model;
-	}
 
 	/**
 	 * State s setter.
@@ -160,6 +151,9 @@ public class Controler {
 		this.currentState = currentState;
 	}
 
+	public void deleteDelivery(){
+		currentState.deleteDelivery(this, window);
+	}
 	/**
 	 * get the controler current state
 	 * 

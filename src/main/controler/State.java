@@ -68,7 +68,17 @@ public interface State {
 	 * @param window
 	 */
 	public void confirmParameters(Controler controler, Window window);
-	
+	/**
+	 * Delete delivery
+	 * @param controler
+	 * @param window
+	 */
+	public void deleteDelivery(Controler controler, Window window);
+	/**
+	 * Confirm the addition of a new delivery
+	 * @param controler
+	 * @param window
+	 */
 	public void confirmNewDelivery(Controler controler, Window window);
 	/**
 	 * Get the state to a string for test use.

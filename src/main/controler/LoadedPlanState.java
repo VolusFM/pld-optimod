@@ -16,11 +16,7 @@ public class LoadedPlanState extends DefaultState {
 	public void openDeliveries(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
 		XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
-
-		
 		window.displayCalculateTourButtonPanel();
-
-
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 

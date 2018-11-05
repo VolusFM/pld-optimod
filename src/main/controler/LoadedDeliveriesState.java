@@ -1,5 +1,6 @@
 package main.controler;
 
+import main.model.ModelInterface;
 import main.model.TourCalculator;
 import main.ui.Window;
 
@@ -10,21 +11,10 @@ public class LoadedDeliveriesState extends DefaultState {
 	}
 
 	public void calculatePlanning(Controler controler, Window window) {
-		// TODO: add code to call tourCalculator
-		
-		TourCalculator.getInstance().calculateTours(1);
+		ModelInterface.getTourCalculator().getInstance().calculateTours(1); //TODO: ModelInterface.getDeliveryManNumber()
 		window.invalidate(); // FIXME : force window to display again with path
 		
 		controler.setCurrentState(controler.planningState);
-	}
-
-	public void moveDelivery(Controler controler, Window window) {
-		// TODO
-	}
-
-	public void addDelivery(Controler controler, Window window) {
-		// TODO : window.openNewDelivery
-		controler.setCurrentState(controler.addState);
 	}
 
 	public String stateToString() {
