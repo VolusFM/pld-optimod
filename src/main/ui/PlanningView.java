@@ -2,8 +2,6 @@ package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -23,12 +21,18 @@ public class PlanningView extends JPanel {
 	private JTable planning;
 	private JButton addDeliveryPoint;
 	
+	/* Listener */
+	private ButtonListener buttonListener ;
+	
 	/* Components texts */
-	private final String ADD_DELIVERY_POINT_BUTTON 	= "Ajouter un point de livraison";
+	private final String ADD_DELIVERY_POINT_BUTTON 		= "Ajouter un point de livraison";
+	
+	/* Actions */
+	protected final static String ACTION_ADDING_DELIVERY_POINT 	= "ADD_DELIVERY_POINT";
 
 	/* Board attributes */
-	private final int columnsNumber 				= 4;
-	private final String[] boardTitle 				= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
+	private final int columnsNumber 					= 4;
+	private final String[] boardTitle 					= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
 
 	/* Graphic components */
 	// private Graphics graphics;
@@ -47,6 +51,7 @@ public class PlanningView extends JPanel {
 	// FIXME : doc is not matching constructor
 	public PlanningView(Window w) {
 		super();
+		this.buttonListener = w.buttonListener;
 		/* Initialize */
 		setSize(600, 900);
 		/* Display */
@@ -91,7 +96,9 @@ public class PlanningView extends JPanel {
 		PlanningListener planningListener = new PlanningListener(planning);
 		/* Displaying */
 		addDeliveryPoint = new JButton (ADD_DELIVERY_POINT_BUTTON);
-		add(addDeliveryPoint, BorderLayout.NORTH);
-		add(new JScrollPane(planning), BorderLayout.CENTER);
+		addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
+		addDeliveryPoint.addActionListener(buttonListener);
+		this.add(addDeliveryPoint, BorderLayout.NORTH);
+		this.add(new JScrollPane(planning), BorderLayout.CENTER);
 	}
 }

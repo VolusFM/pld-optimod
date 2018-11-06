@@ -267,4 +267,5 @@ public class PlanView extends JPanel {
 			this.y = y;
 		}
 	}
+	
 }

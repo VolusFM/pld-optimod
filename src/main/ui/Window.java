@@ -21,9 +21,12 @@ public class Window extends JFrame {
 	private WindowHeader header;
 	private JPanel centerPanel;
 	private JPanel rightPanel;
+	protected static PlanView planPanel;
+	protected static PlanningView planningPanel;
+	protected static AddingDeliveryView addingPanel;
 
 	/* Listeners */
-	private ButtonListener buttonListener;
+	protected ButtonListener buttonListener;
 
 	/* Components visibility */
 	private boolean headerVisibility = true;
@@ -109,7 +112,7 @@ public class Window extends JFrame {
 		this.centerPanel = new JPanel();
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
-		PlanView planPanel = new PlanView(planScale, this, plan);
+		planPanel = new PlanView(planScale, this, plan);
 		/* Set content */
 		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
@@ -141,14 +144,26 @@ public class Window extends JFrame {
 		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-		PlanningView planningPanel = new PlanningView(this);
+		planningPanel = new PlanningView(this);
 		rightPanel.add(planningText, BorderLayout.NORTH);
 		rightPanel.add(planningPanel, BorderLayout.CENTER);
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
-
+	
+	/**
+	 * Create the panel with the planning of the tour as a board of delivery
+	 * men, locations, hours and list of roads.
+	 */
+	public void displayAddingDeliveryPanel() {
+		rightPanel.setVisible(false);
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		addingPanel = new AddingDeliveryView(this);
+		rightPanel.add(addingPanel, BorderLayout.SOUTH);
+		/* Set content */
+		rightPanel.setVisible(true);
+	}
 	
 	/**
 	 * Convenience method to create a new button with a given text and action, 

@@ -8,7 +8,7 @@ import main.ui.PlanView.GeographicCoordinate;
 import main.ui.PlanView.ScreenCoordinate;
 
 public class PlanListener extends MouseAdapter {
-
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		ScreenCoordinate screenCoordinate = new ScreenCoordinate((int) e.getPoint().getX(), (int) e.getPoint().getY());
@@ -16,5 +16,6 @@ public class PlanListener extends MouseAdapter {
 
 		System.out.println("Clicked at pos : (" + geographicCoordinate.latitude + "; " + geographicCoordinate.longitude + ")");
 		ModelInterface.getPlan().findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude);
+		
 	}
 }
