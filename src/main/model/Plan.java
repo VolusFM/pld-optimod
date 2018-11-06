@@ -170,6 +170,11 @@ public class Plan {
 
 		return closest;
 	}
+	
+	protected Section findClosestSection(double latitude, double longitude) {
+		System.out.println("hi");
+		return null;
+	}
 
 	/**
 	 * Get the distance between two points on the plan.

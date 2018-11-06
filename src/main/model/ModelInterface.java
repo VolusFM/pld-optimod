@@ -50,4 +50,12 @@ public abstract class ModelInterface {
 	public static Delivery getDepot() {
 		return tourCalculator.getDepot();
 	}
+
+	public static Section findClosestSection(double latitude, double longitude) {
+		return plan.findClosestSection(latitude, longitude);
+	}
+
+	public static Intersection findClosestIntersection(double latitude, double longitude) {
+		return plan.findClosestIntersection(latitude, longitude);
+	}
 }
