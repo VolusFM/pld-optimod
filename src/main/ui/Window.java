@@ -102,6 +102,7 @@ public class Window extends JFrame {
 		rightPanel.add(selectionButton);
 		/* Set content */
 		add(rightPanel, BorderLayout.EAST);
+		redraw();
 	}
 	
 	/**
@@ -113,7 +114,9 @@ public class Window extends JFrame {
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
 		planView = new PlanView(planScale, this, plan);
-		planView.addMouseListener(new PlanListener(controler));
+		PlanListener planListener = new PlanListener(controler);
+		planView.addMouseListener(planListener);
+		planView.addMouseMotionListener(planListener);
 		/* Set content */
 		centerPanel.add(planView);
 		add(centerPanel, BorderLayout.CENTER);

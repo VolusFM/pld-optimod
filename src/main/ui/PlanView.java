@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -53,6 +54,8 @@ public class PlanView extends JPanel {
 //		setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
+		//TODO tooltip pour les rues
+		//setToolTipText("TOOLTIP");
 	}
 	// TODO : mettre l'observer sur le plan.
 
@@ -102,6 +105,14 @@ public class PlanView extends JPanel {
 			}
 		}
 	}
+	
+	/*@Override
+	public String getToolTipText(MouseEvent event) {
+		System.out.println(event);
+		return "ABC";
+	}*/
+	
+	
 
 	/**
 	 * Method called any time we need to draw a plan section. Draw a line between
