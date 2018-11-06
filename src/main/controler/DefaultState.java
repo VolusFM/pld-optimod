@@ -6,13 +6,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.model.ModelInterface;
-import main.ui.RangeSelector;
-import main.ui.RangeSelector.SelectionCancelledException;
 import main.ui.Window;
 import main.xml.XMLException;;
 
 public class DefaultState implements State {
+
+	// TODO : check @Override annotation function
 
 	public void openPlan(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
@@ -22,7 +21,10 @@ public class DefaultState implements State {
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
 	}
 
-	public void calculateTour(Controler controler, Window window) {
+	public void openParameters(Controler controler, Window window) {
+	}
+
+	public void calculatePlanning(Controler controler, Window window) {
 	}
 
 	public void addDelivery(Controler controler, Window window) {
@@ -32,11 +34,20 @@ public class DefaultState implements State {
 	}
 
 	public String stateToString() {
-		// debug
+		// TODO : remove after tests
 		System.out.println("Stuck in default state");
 		return null;
 	}
 
-	public void openParameters(Controler controler, Window window) {
+	public void deleteDelivery(Controler controler, Window window) {
 	}
+
+	@Override
+	public void confirmParameters(Controler controler, Window window) {
+	}
+
+	@Override
+	public void confirmNewDelivery(Controler controler, Window window) {
+	}
+
 }

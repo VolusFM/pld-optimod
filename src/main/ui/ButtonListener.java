@@ -37,6 +37,10 @@ public class ButtonListener implements ActionListener {
 		case Window.ACTION_CALCULATE_TOUR:
 			controler.calculateTour();
 			break;
+		case PlanningView.ACTION_ADDING_DELIVERY_POINT :
+			// TODO : controleur.addDeleveryPoint() qui ouvre une modale qui demande clic plan
+			// puis avec choix livreur,heure et durée
+			break;
 			
 		default:
 			throw new RuntimeException("Unhandled action : " + e.getActionCommand());

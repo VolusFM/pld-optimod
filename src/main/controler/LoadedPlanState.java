@@ -15,16 +15,14 @@ public class LoadedPlanState extends DefaultState {
 
 	public void openDeliveries(Controler controler, Window window)
 			throws XMLException, ParserConfigurationException, SAXException, IOException {
-		XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
-
 		
+		XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
 		window.displayCalculateTourButtonPanel();
 		window.toggleDeliveryMenCountButtonVisiblity();
-
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 
-	public void openParameters(Controler controler) {
+	public void openParameters(Controler controler,Window window) {
 		// TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);
 	}

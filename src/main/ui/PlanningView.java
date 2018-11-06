@@ -22,6 +22,9 @@ public class PlanningView extends JPanel {
 	/* Components texts */
 	private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter un point de livraison";
 
+	/* Actions */
+	protected final static String ACTION_ADDING_DELIVERY_POINT = "ADD_DELIVERY_POINT";	
+	
 	/* Graphic components */
 	private Window window;
 
