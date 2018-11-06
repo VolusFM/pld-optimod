@@ -222,68 +222,87 @@ public class TourCalculator {
 
 		return list;
 	}
-	
+
 	/**
 	 * data clustering using k-means algorithm
+	 * 
 	 * @param clusterNb
 	 * @param intersections
 	 * @return
 	 */
-	public List<Cluster> kMeans(int clusterNb, List<Intersection> intersections, double epsilon){
+	public List<Cluster> kMeans(int clusterNb, List<Intersection> intersections, double epsilon) {
 		List<Cluster> clusters = new ArrayList<Cluster>();
-		/*Cluster initialisation*/
-		for(int i = 0;i<clusterNb;i++){
+		/* Cluster initialisation */
+		for (int i = 0; i < clusterNb; i++) {
 			int rdInt = ThreadLocalRandom.current().nextInt(0, intersections.size());
-			Pair<Double,Double> randomCentroid = new Pair<Double, Double>(intersections.get(rdInt).getLat(),intersections.get(rdInt).getLon());
+			Pair<Double, Double> randomCentroid = new Pair<Double, Double>(intersections.get(rdInt).getLat(),
+					intersections.get(rdInt).getLon());
 			Cluster newCluster = new Cluster(randomCentroid);
 			clusters.add(newCluster);
-			intersections.remove(rdInt);
 		}
-		
+
+		double maxConvergenceCoeff = epsilon + 1;
 		double convergenceCoeff = epsilon + 1;
-		while (convergenceCoeff > epsilon) {
-			/*Centroid repartition based on euclidian distance*/
+		while (maxConvergenceCoeff > epsilon) {
+			maxConvergenceCoeff = 0;
+			for (Cluster cluster : clusters) {
+				cluster.reinitializeClusters();
+			}
+			/* Centroid repartition based on euclidian distance */
 			for (Intersection intersection : intersections) {
 				Pair<Double, Double> intersectionData = new Pair<Double, Double>(intersection.getLat(),
 						intersection.getLon());
 				double min = calculateDistance(intersectionData, clusters.get(0).getCentroid());
-				Cluster assignedCluster = clusters.get(0);
-				for (Cluster cluster : clusters) {
-					double distance = calculateDistance(intersectionData, cluster.getCentroid());
+				int assignedClusterIndex = 0;
+				for (int i = 0; i < clusters.size(); i++) {
+					double distance = calculateDistance(intersectionData, clusters.get(i).getCentroid());
 					if (distance < min) {
 						min = distance;
-						assignedCluster = cluster;
+						assignedClusterIndex = i;
 					}
 				}
-				assignedCluster.addIntersection(intersection);
+				clusters.get(assignedClusterIndex).addIntersection(intersection);
 			}
-			/*Recalculate centroid position*/
-			convergenceCoeff=0;
+
+			/* Recalculate centroid position */
 			for (Cluster cluster : clusters) {
 				double barycentersLatitude = 0;
 				double barycentersLongitude = 0;
-				for (Intersection intersection : cluster.getIntersections()) {
-					barycentersLatitude += intersection.getLat();
-					barycentersLongitude += intersection.getLon();
+				
+				/* Take care of empty cluster so that they still have a centroid */
+				if(cluster.getIntersections().size() > 0) {
+					for (Intersection intersection : cluster.getIntersections()) {
+						barycentersLatitude += intersection.getLat();
+						barycentersLongitude += intersection.getLon();
+					}
+					barycentersLatitude = barycentersLatitude / cluster.getIntersections().size();
+					barycentersLongitude = barycentersLongitude / cluster.getIntersections().size();
 				}
-				barycentersLatitude = barycentersLatitude / cluster.getIntersections().size();
-				barycentersLongitude = barycentersLongitude / cluster.getIntersections().size();
+				else {
+					barycentersLatitude = cluster.getCentroid().getKey();
+					barycentersLongitude = cluster.getCentroid().getValue();
+				}
+				
 				Pair<Double, Double> newCentroid = new Pair<Double, Double>(barycentersLatitude, barycentersLongitude);
-				convergenceCoeff += calculateDistance(newCentroid, cluster.getCentroid());
+					convergenceCoeff = calculateDistance(newCentroid, cluster.getCentroid());
+					if (maxConvergenceCoeff < convergenceCoeff) {
+						maxConvergenceCoeff = convergenceCoeff;
+					}
 				cluster.setCentroid(newCentroid);
 			}
 		}
 		return clusters;
-		
 	}
-	public double calculateDistance(Pair<Double,Double> intersectionData,Pair<Double,Double> centroidData){
-		return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()),2)+ Math.pow((intersectionData.getValue() - centroidData.getValue()),2));
+
+	public double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
+		return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()), 2)
+				+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
 	}
-	 
+
 	public List<Delivery> getDeliveries() {
 		return deliveries;
 	}
-	
+
 	public Delivery getDepot() {
 		return depot;
 	}
