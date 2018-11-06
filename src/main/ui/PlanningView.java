@@ -33,7 +33,7 @@ public class PlanningView extends JPanel {
 	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage" };
 
 	/* Graphic components */
-	// private Graphics graphics;
+	private Window window;
 
 	/**
 	 * Create the graphical view for drawing the loaded plan with the scale s in
@@ -92,10 +92,12 @@ public class PlanningView extends JPanel {
 //		/* Building board */
 //		planning = new JTable(boardDatas, boardTitle);
 //		planning.setAutoCreateRowSorter(true);
-		
-		planning = new PlanningTable();
 
-		PlanningListener planningListener = new PlanningListener(planning);
+		planning = new PlanningTable();
+//		PlanningListener planningListener = new PlanningListener(planning, window);
+//		planning.getSelectionModel().addListSelectionListener(planningListener);
+		
+		
 		/* Displaying */
 		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		add(addDeliveryPoint, BorderLayout.NORTH);

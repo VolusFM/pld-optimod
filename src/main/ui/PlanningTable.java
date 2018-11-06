@@ -20,21 +20,23 @@ public class PlanningTable extends JTable {
 	public PlanningTable() {
 		setModel(new PlanningTableModel());
 		setAutoCreateRowSorter(true);
+//		getSelectionModel().addListSelectionListener(new PlanningListener(this));
 	}
+	
 	
 	public void selectRow(int rowIndex) {
 		int sortedIndex = getRowSorter().convertRowIndexToView(rowIndex);
 		setRowSelectionInterval(sortedIndex, sortedIndex);
 	}
+
 	
-	public static class PlanningTableModel implements TableModel {
-		
+	
+	private static class PlanningTableModel implements TableModel {
 		private final int columnsNumber = 3;
 		private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage" };
 
 		@Override
-		public void addTableModelListener(TableModelListener l) { 
-//			throw new NotImplementedException();
+		public void addTableModelListener(TableModelListener l) {
 		}
 
 		@Override
@@ -87,7 +89,6 @@ public class PlanningTable extends JTable {
 
 		@Override
 		public void removeTableModelListener(TableModelListener l) {
-//			throw new NotImplementedException();			
 		}
 
 		@Override
