@@ -6,27 +6,27 @@ import java.util.List;
 import javafx.util.Pair;
 
 public class Cluster {
-	private List<Intersection> intersections;
+	private List<Delivery> deliveries;
 	private Pair<Double,Double> centroid;
 	
 	/**
 	 * Create a cluster.
-	 * @param intersections
+	 * @param deliveries
 	 */
 	public Cluster(Pair<Double,Double> centroid){
 		this.centroid = centroid;
-		intersections = new ArrayList<Intersection>();
+		deliveries = new ArrayList<Delivery>();
 	}
 	
-	public void addIntersection(Intersection intersection){
-		this.intersections.add(intersection);
+	public void addDelivery(Delivery delivery){
+		this.deliveries.add(delivery);
 	}
 	
 	/**
 	 * 
 	 */
 	public void reinitializeClusters() {
-		intersections = new ArrayList<Intersection>();
+		deliveries = new ArrayList<Delivery>();
 	}
 	/**
 	 * centroid getter
@@ -37,11 +37,11 @@ public class Cluster {
 	}
 	
 	/**
-	 * intersections s getter
+	 * deliveries s getter
 	 * @return
 	 */
-	public List<Intersection> getIntersections() {
-		return intersections;
+	public List<Delivery> getDeliveries() {
+		return deliveries;
 	}
 	
 	/**
@@ -52,12 +52,37 @@ public class Cluster {
 		this.centroid = centroid;
 	}
 	
+	/**
+	 * 
+	 */
+	public void sortDeliveriesByEuclidienDistanceToCentroid() {
+		/*TODO : test*/
+		for (int i = 0; i< deliveries.size(); i++){
+			for (int j = i; j<deliveries.size()-1; j++) {
+				Pair<Double, Double> firstIntersectionData = new Pair<Double, Double>(deliveries.get(j).getAddress().getLat(),
+						deliveries.get(j).getAddress().getLon());
+				Pair<Double, Double> secondIntersectionData = new Pair<Double, Double>(deliveries.get(j+1).getAddress().getLat(),
+						deliveries.get(j+1).getAddress().getLon());
+				if(calculateDistanceToCentroid(firstIntersectionData)<calculateDistanceToCentroid(secondIntersectionData)) {
+					Delivery temp = deliveries.get(j);
+					deliveries.set(j, deliveries.get(j+1));
+					deliveries.set(j+1, temp);
+				}
+			}
+		}
+	}
+	
+	public double calculateDistanceToCentroid(Pair<Double, Double> intersectionData) {
+		return Math.sqrt(Math.pow((intersectionData.getKey() - centroid.getKey()), 2)
+				+ Math.pow((intersectionData.getValue() - centroid.getValue()), 2));
+	}
+	
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
 		String cluster = "Centroid : x = " + centroid.getKey().toString() + " y =" + centroid.getValue().toString() +"\n\r";
-		for (Intersection intersection : intersections) {
-			cluster += intersection.toString() +"\n\r";
+		for (Delivery delivery : deliveries) {
+			cluster += delivery.getAddress().toString() +"\n\r";
 		}
 		return cluster;
 	}

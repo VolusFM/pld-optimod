@@ -11,7 +11,7 @@ import main.model.tsp.TSP1;
 import main.model.tsp.TemplateTSP;
 
 public class TourCalculator {
-
+	/* TODO : check visibility. Why is there public in there ? */
 	private TourFactory tourFactory = TourFactory.getInstance();
 	private Plan map = ModelInterface.getPlan();
 	private List<Delivery> deliveries;
@@ -25,7 +25,10 @@ public class TourCalculator {
 	private double[][] costTSP;
 	private int nodesCount;
 	private int[] delay;
-
+	
+	/*Maximum iteration number of Kmeans*/
+	private static int MAXKMEANS = 1000; 
+	
 	private int calculationTimeLimitMs = 10000;
 
 	private HashMap<Pair<Long, Long>, Step> steps;
@@ -224,23 +227,33 @@ public class TourCalculator {
 	}
 
 	/**
-	 * data clustering using k-means algorithm
+	 * data clustering using k-means algorithm. Can return some empty clusters if
+	 * clusterNb is badly set, or is superior to intersections s size. It can also
+	 * happen depending on the random initialization.
 	 * 
-	 * @param clusterNb
-	 * @param intersections
+	 * @param               clusterNb, MUST BE under intersections s size, or kmeans
+	 *                      will throw an assertionError
+	 * @param dataPoints
+	 * @param epsilon
 	 * @return
 	 */
-	public List<Cluster> kMeans(int clusterNb, List<Intersection> intersections, double epsilon) {
+	public List<Cluster> kMeans(int clusterNb, List<Delivery> dataPoints, double epsilon) {
+		/* TODO : ask Leo about throwing exception */
+		/* TODO : add a time limit */
+		/* TODO : check visibility */
+		if (!(clusterNb <= dataPoints.size()) || (clusterNb == 0))
+			throw new AssertionError();
+		/* Cluster initialization */
 		List<Cluster> clusters = new ArrayList<Cluster>();
-		/* Cluster initialisation */
+		List<Delivery> dataPointsCopy = new ArrayList<Delivery> (dataPoints);
 		for (int i = 0; i < clusterNb; i++) {
-			int rdInt = ThreadLocalRandom.current().nextInt(0, intersections.size());
-			Pair<Double, Double> randomCentroid = new Pair<Double, Double>(intersections.get(rdInt).getLat(),
-					intersections.get(rdInt).getLon());
+			int rdInt = ThreadLocalRandom.current().nextInt(0, dataPointsCopy.size());
+			Pair<Double, Double> randomCentroid = new Pair<Double, Double>(dataPointsCopy.get(rdInt).getAddress().getLat(),
+					dataPointsCopy.get(rdInt).getAddress().getLon());
+			dataPointsCopy.remove(dataPointsCopy.get(rdInt));
 			Cluster newCluster = new Cluster(randomCentroid);
 			clusters.add(newCluster);
 		}
-
 		double maxConvergenceCoeff = epsilon + 1;
 		double convergenceCoeff = epsilon + 1;
 		while (maxConvergenceCoeff > epsilon) {
@@ -249,7 +262,8 @@ public class TourCalculator {
 				cluster.reinitializeClusters();
 			}
 			/* Centroid repartition based on euclidian distance */
-			for (Intersection intersection : intersections) {
+			for (Delivery delivery : dataPoints) {
+				Intersection intersection = delivery.getAddress();
 				Pair<Double, Double> intersectionData = new Pair<Double, Double>(intersection.getLat(),
 						intersection.getLon());
 				double min = calculateDistance(intersectionData, clusters.get(0).getCentroid());
@@ -261,7 +275,7 @@ public class TourCalculator {
 						assignedClusterIndex = i;
 					}
 				}
-				clusters.get(assignedClusterIndex).addIntersection(intersection);
+				clusters.get(assignedClusterIndex).addDelivery(delivery);
 			}
 
 			/* Recalculate centroid position */
@@ -270,28 +284,41 @@ public class TourCalculator {
 				double barycentersLongitude = 0;
 				
 				/* Take care of empty cluster so that they still have a centroid */
-				if(cluster.getIntersections().size() > 0) {
-					for (Intersection intersection : cluster.getIntersections()) {
-						barycentersLatitude += intersection.getLat();
-						barycentersLongitude += intersection.getLon();
+				if (cluster.getDeliveries().size() > 0) {
+					for (Delivery delivery : cluster.getDeliveries()) {
+						barycentersLatitude += delivery.getAddress().getLat();
+						barycentersLongitude += delivery.getAddress().getLon();
 					}
-					barycentersLatitude = barycentersLatitude / cluster.getIntersections().size();
-					barycentersLongitude = barycentersLongitude / cluster.getIntersections().size();
-				}
-				else {
+					barycentersLatitude = barycentersLatitude / cluster.getDeliveries().size();
+					barycentersLongitude = barycentersLongitude / cluster.getDeliveries().size();
+				} else {
 					barycentersLatitude = cluster.getCentroid().getKey();
 					barycentersLongitude = cluster.getCentroid().getValue();
 				}
-				
 				Pair<Double, Double> newCentroid = new Pair<Double, Double>(barycentersLatitude, barycentersLongitude);
-					convergenceCoeff = calculateDistance(newCentroid, cluster.getCentroid());
-					if (maxConvergenceCoeff < convergenceCoeff) {
-						maxConvergenceCoeff = convergenceCoeff;
-					}
+				convergenceCoeff = calculateDistance(newCentroid, cluster.getCentroid());
+				if (maxConvergenceCoeff < convergenceCoeff) {
+					maxConvergenceCoeff = convergenceCoeff;
+				}
 				cluster.setCentroid(newCentroid);
 			}
 		}
 		return clusters;
+	}
+
+	public List<Cluster> clusterizeData(int clusterNb, double epsilon) {
+		/*TODO : finish that faggot*/
+		for (int i =0; i<MAXKMEANS; i++) {
+			List<Cluster> currentClusters = this.kMeans(clusterNb, this.deliveries, epsilon);
+			int maxIntersectionNumber =(int)(this.deliveries.size()/clusterNb) + 1;
+			for (Cluster cluster : currentClusters ) {
+				int nbExceedingDeliveries = cluster.getDeliveries().size()-maxIntersectionNumber ;
+				while(nbExceedingDeliveries > 0) {
+					
+				}
+			}
+		}
+		return null;
 	}
 
 	public double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
