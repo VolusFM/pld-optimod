@@ -15,10 +15,18 @@ public class Cluster {
 	 */
 	public Cluster(Pair<Double,Double> centroid){
 		this.centroid = centroid;
+		intersections = new ArrayList<Intersection>();
 	}
 	
 	public void addIntersection(Intersection intersection){
 		this.intersections.add(intersection);
+	}
+	
+	/**
+	 * 
+	 */
+	public void reinitializeClusters() {
+		intersections = new ArrayList<Intersection>();
 	}
 	/**
 	 * centroid getter
@@ -42,5 +50,15 @@ public class Cluster {
 	 */
 	public void setCentroid(Pair<Double, Double> centroid) {
 		this.centroid = centroid;
+	}
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		String cluster = "Centroid : x = " + centroid.getKey().toString() + " y =" + centroid.getValue().toString() +"\n\r";
+		for (Intersection intersection : intersections) {
+			cluster += intersection.toString() +"\n\r";
+		}
+		return cluster;
 	}
 }

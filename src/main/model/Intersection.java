@@ -43,5 +43,9 @@ public class Intersection {
 		return outcomingSections;
 	}
 	
-	
+	@Override
+	public String toString() {
+		String intersection = "section num "+id+", lat = "+lat+", long ="+lon;
+		return intersection;
+	}
 }

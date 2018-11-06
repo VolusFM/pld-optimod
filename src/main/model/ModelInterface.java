@@ -55,4 +55,8 @@ public abstract class ModelInterface {
 	public static Delivery getDepot() {
 		return tourCalculator.getDepot();
 	}
+	
+	public static List<Cluster> kMeans(int clusterNb, List<Intersection> intersections, double epsilon){
+		return tourCalculator.kMeans(clusterNb, intersections, epsilon);
+	}
 }
