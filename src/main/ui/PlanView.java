@@ -119,11 +119,6 @@ public class PlanView extends JPanel {
 		}
 	}
 
-	/*
-	 * @Override public String getToolTipText(MouseEvent event) {
-	 * System.out.println(event); return "ABC"; }
-	 */
-
 	/**
 	 * Method called any time we need to draw a plan section. Draw a line
 	 * between the two intersections of the section.

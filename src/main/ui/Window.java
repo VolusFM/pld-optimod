@@ -22,11 +22,12 @@ public class Window extends JFrame {
 	private WindowHeader header;
 	private JPanel centerPanel;
 	private JPanel rightPanel;
-	private PlanView planView;
-	private PlanningView planningView;
+	protected static PlanView planPanel;
+	protected static PlanningView planningPanel;
+	protected static AddingDeliveryView addingPanel;
 
 	/* Listeners */
-	private ButtonListener buttonListener;
+	protected ButtonListener buttonListener;
 
 	/* Components visibility */
 	private boolean headerVisibility = true;
@@ -113,12 +114,12 @@ public class Window extends JFrame {
 		this.centerPanel = new JPanel();
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
-		planView = new PlanView(planScale, this, plan);
+		planPanel = new PlanView(planScale, this, plan);
 		PlanListener planListener = new PlanListener(controler);
-		planView.addMouseListener(planListener);
-		planView.addMouseMotionListener(planListener);
+		planPanel.addMouseListener(planListener);
+		planPanel.addMouseMotionListener(planListener);
 		/* Set content */
-		centerPanel.add(planView);
+		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
 		redraw();
 	}
@@ -150,13 +151,26 @@ public class Window extends JFrame {
 		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-		planningView = new PlanningView(this);
+		planningPanel = new PlanningView(this);
 		rightPanel.add(planningText, BorderLayout.NORTH);
-		rightPanel.add(planningView, BorderLayout.CENTER);
+		rightPanel.add(planningPanel, BorderLayout.CENTER);
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 		redraw();
+	}
+	
+	/**
+	 * Create the panel with the planning of the tour as a board of delivery
+	 * men, locations, hours and list of roads.
+	 */
+	public void displayAddingDeliveryPanel() {
+		rightPanel.setVisible(false);
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		addingPanel = new AddingDeliveryView(this);
+		rightPanel.add(addingPanel, BorderLayout.SOUTH);
+		/* Set content */
+		rightPanel.setVisible(true);
 	}
 
 	/**
@@ -179,8 +193,8 @@ public class Window extends JFrame {
 	}
 
 	public void highlightSelectedIntersection(Intersection intersection) {
-		planningView.selectRow(intersection);
-		planView.setHighlightedIntersection(intersection);
+		planningPanel.selectRow(intersection);
+		planPanel.setHighlightedIntersection(intersection);
 		redraw();
 	}
 
