@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
+import java.awt.Stroke;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -32,17 +32,22 @@ public class PlanView extends JPanel {
 	private double minLong;
 	private double maxLong;
 
+	/* Highlighted elements */
+	private Intersection highlightedIntersection;
+
 	/* Graphic components */
 	// private Graphics graphics;
 
-
 	/**
-	 * Create the graphical view for drawing the charged plan with the scale s in
-	 * the specified window w.
+	 * Create the graphical view for drawing the charged plan with the scale s
+	 * in the specified window w.
 	 * 
-	 * @param s the scale
-	 * @param w the window
-	 * @param p the plan to print
+	 * @param s
+	 *            the scale
+	 * @param w
+	 *            the window
+	 * @param p
+	 *            the plan to print
 	 */
 	// FIXME : constructor signature may change
 	public PlanView(int s, Window w, Plan p) {
@@ -51,18 +56,19 @@ public class PlanView extends JPanel {
 		this.scale = s;
 		this.plan = p;
 		this.findExtremes();
-//		setSize(400, 400);
+		// setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
-		//TODO tooltip pour les rues
-		//setToolTipText("TOOLTIP");
+		// TODO tooltip pour les rues
+		// setToolTipText("TOOLTIP");
 	}
 	// TODO : mettre l'observer sur le plan.
 
 	/**
 	 * Function called any time the view must be redraw.
 	 * 
-	 * @param g the graphics component
+	 * @param g
+	 *            the graphics component
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
@@ -83,7 +89,7 @@ public class PlanView extends JPanel {
 		/* Depot displaying */
 		graphics2d.setColor(Color.RED);
 		Delivery depot = ModelInterface.getDepot();
-		if (depot != null) {			
+		if (depot != null) {
 			printDelivery(graphics2d, depot);
 		}
 		/* Deliveries Displaying */
@@ -104,22 +110,28 @@ public class PlanView extends JPanel {
 				}
 			}
 		}
+		/* Highlighted intersection */
+		if (highlightedIntersection != null) {
+			graphics2d.setColor(Color.MAGENTA);
+			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
+			graphics2d.setStroke(stroke);
+			printIntersection(graphics2d, highlightedIntersection);
+		}
 	}
-	
-	/*@Override
-	public String getToolTipText(MouseEvent event) {
-		System.out.println(event);
-		return "ABC";
-	}*/
-	
-	
+
+	/*
+	 * @Override public String getToolTipText(MouseEvent event) {
+	 * System.out.println(event); return "ABC"; }
+	 */
 
 	/**
-	 * Method called any time we need to draw a plan section. Draw a line between
-	 * the two intersections of the section.
+	 * Method called any time we need to draw a plan section. Draw a line
+	 * between the two intersections of the section.
 	 * 
-	 * @param g       the graphics component
-	 * @param section the section to print
+	 * @param g
+	 *            the graphics component
+	 * @param section
+	 *            the section to print
 	 */
 	public void printSection(Graphics g, Section section) {
 		/* Values from the plan */
@@ -150,9 +162,19 @@ public class PlanView extends JPanel {
 		g.fillOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
 	}
 
+	public void printIntersection(Graphics g, Intersection intersection) {
+		/* Values from delivery */
+		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(intersection.getLat(), intersection.getLon());
+		/* Conversion */
+		ScreenCoordinate screenCoordinate = convertToScreenCoordinate(geographicCoordinate);
+		/* Display */
+		g.drawOval(screenCoordinate.getX() - 8, screenCoordinate.getY() - 8, 16, 16);
+	}
+
 	/**
-	 * Method used to extract max and min of latitudes and longitudes in the current
-	 * plan. (Used to normalize the values in order to print the sections).
+	 * Method used to extract max and min of latitudes and longitudes in the
+	 * current plan. (Used to normalize the values in order to print the
+	 * sections).
 	 */
 	private void findExtremes() {
 		/* Initialization */
@@ -207,10 +229,10 @@ public class PlanView extends JPanel {
 		/* Normalization */
 		double latSpan = (maxLat - minLat) / getHeight();
 		double longSpan = (maxLong - minLong) / getWidth();
-		
+
 		double lat = minLat + x * latSpan;
 		double lon = minLong + y * longSpan;
-		
+
 		return new GeographicCoordinate(lat, lon);
 	}
 
@@ -276,5 +298,9 @@ public class PlanView extends JPanel {
 		public void setY(int y) {
 			this.y = y;
 		}
+	}
+
+	public void setHighlightedIntersection(Intersection intersection) {
+		this.highlightedIntersection = intersection;
 	}
 }

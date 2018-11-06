@@ -104,7 +104,7 @@ public class Window extends JFrame {
 		add(rightPanel, BorderLayout.EAST);
 		redraw();
 	}
-	
+
 	/**
 	 * Create the panel with the city plan.
 	 */
@@ -128,7 +128,8 @@ public class Window extends JFrame {
 	 */
 	public void displayCalculateTourButtonPanel() {
 		rightPanel.setVisible(false);
-		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
+		rightPanel = new JPanel(); // XXX : setting a property then
+									// reconstructing is not clean
 		/* Create Content */
 		JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
 		rightPanel.add(selectionButton);
@@ -144,7 +145,8 @@ public class Window extends JFrame {
 	 */
 	public void displayTourPlanningPanel() {
 		rightPanel.setVisible(false);
-		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
+		rightPanel = new JPanel(); // XXX : setting a property then
+									// reconstructing is not clean
 		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
@@ -157,9 +159,8 @@ public class Window extends JFrame {
 		redraw();
 	}
 
-	
 	/**
-	 * Convenience method to create a new button with a given text and action, 
+	 * Convenience method to create a new button with a given text and action,
 	 * and to bind it to the action listener
 	 */
 	private JButton createButton(String text, String action) {
@@ -168,25 +169,27 @@ public class Window extends JFrame {
 		button.addActionListener(buttonListener);
 		return button;
 	}
-	
+
 	/**
-	 * Update the graphics on the window, used when we don't add/remove components
+	 * Update the graphics on the window
 	 */
 	private void redraw() {
 		repaint();
 		revalidate();
 	}
 
-	public void highlightSelectedIntersection(Intersection findClosestIntersection) {
-		planningView.selectRow(findClosestIntersection);
+	public void highlightSelectedIntersection(Intersection intersection) {
+		planningView.selectRow(intersection);
+		planView.setHighlightedIntersection(intersection);
+		redraw();
 	}
-	
+
 	public void toggleDeliveryMenCountButtonVisiblity() {
 		header.toggleDeliveryMenCountButtonVisibility();
 	}
-	
+
 	public void toggleReturnButtonVisibility() {
 		header.toggleReturnButtonVisibility();
 	}
-	
+
 }

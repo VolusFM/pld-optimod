@@ -1,21 +1,13 @@
 package main.controler;
 
-import java.io.IOException;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.ui.Window;
-import main.xml.XMLException;
 
 public class Controler {
 
 	private State currentState;
 	public Window window; // FIXME visibility
-//	private ModelInterface model;
 
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
@@ -28,7 +20,8 @@ public class Controler {
 	/**
 	 * Create application's controler
 	 * 
-	 * @param        model, model package s entry point
+	 * @param model,
+	 *            model package s entry point
 	 * @param window
 	 */
 	public Controler() {
@@ -84,7 +77,7 @@ public class Controler {
 	public State getCurrentState() {
 		return currentState;
 	}
-	
+
 	public void openParameters() {
 		currentState.openParameters(this, window);
 	}
@@ -94,6 +87,7 @@ public class Controler {
 	}
 
 	public void clickedNearIntersection(Intersection findClosestIntersection) {
-		window.highlightSelectedIntersection(findClosestIntersection); // FIXME : do it with states
+		// FIXME : do it with states ?
+		window.highlightSelectedIntersection(findClosestIntersection);
 	}
 }
