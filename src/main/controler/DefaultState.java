@@ -38,13 +38,5 @@ public class DefaultState implements State {
 	}
 
 	public void openParameters(Controler controler, Window window) {
-		// XXX : for testing purposes only, need to get the good range
-		// TODO : move this in the appropriate state (likely
-		// LoadedDeliveryState)
-		try {
-			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, 42, "Please select the delivery men count", "Range selector"));
-		} catch (SelectionCancelledException e) {
-			System.out.println("Selection was cancelled, ignoring...");
-		}
 	}
 }

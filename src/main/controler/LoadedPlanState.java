@@ -19,7 +19,7 @@ public class LoadedPlanState extends DefaultState {
 
 		
 		window.displayCalculateTourButtonPanel();
-
+		window.toggleDeliveryMenCountButtonVisiblity();
 
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}

@@ -29,6 +29,10 @@ public class TourCalculator {
 
 	private HashMap<Pair<Long, Long>, Step> steps;
 
+	
+	private int deliveryMenCount;
+	
+	
 	private TourCalculator() {
 		tourFactory = TourFactory.getInstance();
 		deliveries = new ArrayList<>();
@@ -59,9 +63,13 @@ public class TourCalculator {
 	public void setMap(Plan map) {
 		this.map = map;
 	}
+	
+	public void setDeliveryMenCount(int deliveryMenCount) {
+		this.deliveryMenCount = deliveryMenCount;
+	}
 
-	public void calculateTours(int deliveryMenCount) {
-		// FIXME : for now, assumes a deleveryMenCount of 1
+	public void calculateTours() {
+		// FIXME : assumes a deleveryMenCount of 1
 
 		/* Creates the sub-graph */
 		createGraph();
@@ -74,11 +82,10 @@ public class TourCalculator {
 	/**
 	 * Creates the graph to be used with TSP algorithm
 	 * 
-	 * It uses the plan and all the deliveries, as well as the depot XXX : how do we
-	 * know which delivery is the depot ? (-> added the depot as an attribute)
+	 * It uses the plan and all the deliveries, as well as the depot
 	 * 
 	 * It creates a sub-graph, containing only the useful nodes (deliveries and
-	 * depot), and the arrows corresopnd to the shortest path found between the 2
+	 * depot), and the arrows correspond to the shortest path found between the 2
 	 * nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list

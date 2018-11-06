@@ -109,7 +109,6 @@ public class PlanningView extends JPanel {
 		int i = 0;
 		while (!found && it.hasNext()) {
 			if (it.next().getAddress().getId() == closestIntersection.getId()) {
-//				planning.setRowSelectionInterval(i, i);
 				planning.selectRow(i);
 				found = true;
 			}

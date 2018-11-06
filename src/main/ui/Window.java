@@ -55,7 +55,7 @@ public class Window extends JFrame {
 		this.controler = controler;
 		buttonListener = new ButtonListener(controler);
 		/* Header */
-		this.header = new WindowHeader(this, true, false, buttonListener);
+		this.header = new WindowHeader(this, buttonListener);
 		this.header.setVisible(headerVisibility);
 		getContentPane().add(header, BorderLayout.NORTH);
 		/* Plan Selection Panel */
@@ -154,6 +154,7 @@ public class Window extends JFrame {
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
+		redraw();
 	}
 
 	
@@ -166,19 +167,26 @@ public class Window extends JFrame {
 		button.setActionCommand(action);
 		button.addActionListener(buttonListener);
 		return button;
-		
 	}
 	
 	/**
 	 * Update the graphics on the window, used when we don't add/remove components
 	 */
-	public void redraw() {
+	private void redraw() {
 		repaint();
 		revalidate();
 	}
 
 	public void highlightSelectedIntersection(Intersection findClosestIntersection) {
 		planningView.selectRow(findClosestIntersection);
+	}
+	
+	public void toggleDeliveryMenCountButtonVisiblity() {
+		header.toggleDeliveryMenCountButtonVisibility();
+	}
+	
+	public void toggleReturnButtonVisibility() {
+		header.toggleReturnButtonVisibility();
 	}
 	
 }

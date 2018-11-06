@@ -72,7 +72,7 @@ public class TSPTest {
         
         
 //        TourCalculator.init(plan, deliveries, new Delivery(0, i1)); FIXME
-        TourCalculator.getInstance().calculateTours(0);
+        TourCalculator.getInstance().calculateTours();
 	}
 
 	

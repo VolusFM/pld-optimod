@@ -43,14 +43,8 @@ public class Controler {
 	public void openPlan() {
 		try {
 			currentState.openPlan(this, window);
-		} catch (XMLException xml) {
-			System.out.println(xml);
-		} catch (ParserConfigurationException parserConfig) {
-			System.out.println(parserConfig);
-		} catch (SAXException sax) {
-			System.out.println(sax);
-		} catch (IOException io) {
-			System.out.println(io);
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 
@@ -61,14 +55,8 @@ public class Controler {
 	public void openDeliveries() {
 		try {
 			currentState.openDeliveries(this, window);
-		} catch (XMLException xml) {
-			System.out.println(xml);
-		} catch (ParserConfigurationException parserConfig) {
-			System.out.println(parserConfig);
-		} catch (SAXException sax) {
-			System.out.println(sax);
-		} catch (IOException io) {
-			System.out.println(io);
+		} catch (Exception e) {
+			System.out.println(e);
 		}
 	}
 
@@ -98,8 +86,7 @@ public class Controler {
 	}
 	
 	public void openParameters() {
-		// TODO Auto-generated method stub
-		throw new RuntimeException("NYI");
+		currentState.openParameters(this, window);
 	}
 
 	public void calculateTour() {

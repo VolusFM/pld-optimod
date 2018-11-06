@@ -8,7 +8,8 @@ public abstract class ModelInterface {
 	private static Plan plan = new Plan();
 	private static TourCalculator tourCalculator = TourCalculator.getInstance();
 	private static TourFactory tourFactory = TourFactory.getInstance();
-
+	
+	
 	public static Plan getPlan() {
 		return plan;
 	}
@@ -31,7 +32,8 @@ public abstract class ModelInterface {
 
 	public static void setDeliveryMenCount(int count) {
 		System.out.println("setDeliveryMenCount to " + count); // FIXME do actual implementation
-		throw new RuntimeException("NYI");
+		
+//		tourCalculator.setDeliveryMenCount(count);
 	}
 
 	public static List<Delivery> getDeliveries() {
