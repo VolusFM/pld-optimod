@@ -22,7 +22,7 @@ import main.model.Tour;
 public class PlanningView extends JPanel {
 
 	/* Components */
-	private JTable planning;
+	private PlanningTable planning;
 	private JButton addDeliveryPoint;
 
 	/* Components texts */
@@ -109,7 +109,9 @@ public class PlanningView extends JPanel {
 		int i = 0;
 		while (!found && it.hasNext()) {
 			if (it.next().getAddress().getId() == closestIntersection.getId()) {
-				planning.setRowSelectionInterval(i, i);
+//				planning.setRowSelectionInterval(i, i);
+				planning.selectRow(i);
+				found = true;
 			}
 			i++;
 		}

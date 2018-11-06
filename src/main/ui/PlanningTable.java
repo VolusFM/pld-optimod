@@ -12,6 +12,7 @@ import com.sun.xml.internal.org.jvnet.mimepull.MIMEConfig;
 import main.model.Delivery;
 import main.model.ModelInterface;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import sun.reflect.generics.visitor.Reifier;
 
 public class PlanningTable extends JTable {
 	
@@ -21,7 +22,10 @@ public class PlanningTable extends JTable {
 		setAutoCreateRowSorter(true);
 	}
 	
-	
+	public void selectRow(int rowIndex) {
+		int sortedIndex = getRowSorter().convertRowIndexToView(rowIndex);
+		setRowSelectionInterval(sortedIndex, sortedIndex);
+	}
 	
 	public static class PlanningTableModel implements TableModel {
 		
@@ -90,6 +94,5 @@ public class PlanningTable extends JTable {
 		public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 			throw new NotImplementedException();
 		}
-		
 	}
 }
