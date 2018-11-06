@@ -2,6 +2,7 @@ package main.controler;
 
 import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Section;
 import main.ui.Window;
 
 public class Controler {
@@ -89,5 +90,9 @@ public class Controler {
 	public void clickedNearIntersection(Intersection findClosestIntersection) {
 		// FIXME : do it with states ?
 		window.highlightSelectedIntersection(findClosestIntersection);
+	}
+
+	public void clickedNearSection(Section findClosestSection) {
+		window.highlightSelectedSection(findClosestSection);
 	}
 }

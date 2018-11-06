@@ -11,6 +11,7 @@ import main.controler.Controler;
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Plan;
+import main.model.Section;
 
 public class Window extends JFrame {
 
@@ -190,6 +191,10 @@ public class Window extends JFrame {
 
 	public void toggleReturnButtonVisibility() {
 		header.toggleReturnButtonVisibility();
+	}
+
+	public void highlightSelectedSection(Section findClosestSection) {
+		planView.setHighlightedSection(findClosestSection);
 	}
 
 }

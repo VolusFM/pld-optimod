@@ -42,4 +42,8 @@ public class Section {
 	public String toString() {
 		return "Section from " + getIdStartIntersection() + " to " + getIdEndIntersection();
 	}
+
+	public String getStreetName() {
+		return streetName;
+	}
 }

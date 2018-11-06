@@ -11,14 +11,10 @@ import main.ui.PlanView.ScreenCoordinate;
 public class PlanListener extends MouseAdapter {
 
 	Controler controler;
-	
-	
-	
+
 	public PlanListener(Controler controler) {
 		this.controler = controler;
 	}
-
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -27,11 +23,12 @@ public class PlanListener extends MouseAdapter {
 
 		System.out.println("Clicked at pos : (" + geographicCoordinate.latitude + "; " + geographicCoordinate.longitude + ")");
 		controler.clickedNearIntersection(ModelInterface.findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude));
+		controler.clickedNearSection(ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
+
 	}
-	
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		System.out.println(e);
+		// System.out.println(e);
 	}
 }

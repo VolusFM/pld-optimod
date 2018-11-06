@@ -36,7 +36,9 @@ public class Plan {
 
 	/**
 	 * Retrieve an Intersection using its id.
-	 * @param id is the id of the Intersection we are looking for.
+	 * 
+	 * @param id
+	 *            is the id of the Intersection we are looking for.
 	 * @return Intersection, the Intersection mapped by id in graph.
 	 */
 	public Intersection getIntersectionById(long id) {
@@ -61,6 +63,7 @@ public class Plan {
 
 	/**
 	 * Getter for graph.
+	 * 
 	 * @return HashMap<Long, Intersection>, the graph of the plan.
 	 */
 	public HashMap<Long, Intersection> getGraph() {
@@ -141,8 +144,11 @@ public class Plan {
 
 	/**
 	 * Find the Intersection closest to where the user clicked.
-	 * @param latitude is the latitude of the point where the user clicked.
-	 * @param longitude is the longitude of the point where the user clicked.
+	 * 
+	 * @param latitude
+	 *            is the latitude of the point where the user clicked.
+	 * @param longitude
+	 *            is the longitude of the point where the user clicked.
 	 * @return Intersection, the closest Intersection.
 	 */
 	public Intersection findClosestIntersection(double latitude, double longitude) {
@@ -170,22 +176,64 @@ public class Plan {
 
 		return closest;
 	}
-	
+
 	protected Section findClosestSection(double latitude, double longitude) {
-		System.out.println("hi");
-		return null;
+		GeographicCoordinate reference = new GeographicCoordinate(latitude, longitude);
+		double minDistance;
+		double currentDistance;
+		Section closest;
+		Section current;
+
+		Iterator<Section> sectionsIterator = listAllSection().iterator();
+		closest = sectionsIterator.next();
+
+		Intersection start;
+		Intersection end;
+
+		start = getIntersectionById(closest.getIdStartIntersection());
+		end = getIntersectionById(closest.getIdEndIntersection());
+		minDistance = distanceBetweenLine(reference, new GeographicCoordinate(start.getLat(), start.getLon()), new GeographicCoordinate(end.getLat(), end.getLon()));
+
+		while (sectionsIterator.hasNext()) {
+			current = sectionsIterator.next();
+			start = getIntersectionById(current.getIdStartIntersection());
+			end = getIntersectionById(current.getIdEndIntersection());
+
+			currentDistance = distanceBetweenLine(reference, new GeographicCoordinate(start.getLat(), start.getLon()), new GeographicCoordinate(end.getLat(), end.getLon()));
+
+			if (currentDistance < minDistance) {
+				minDistance = currentDistance;
+				closest = current;
+			}
+		}
+
+		System.out.println("Closest intersection is : " + closest.getStreetName() + " with distance : " + minDistance);
+
+		return closest;
 	}
 
 	/**
 	 * Get the distance between two points on the plan.
-	 * @param coordinate contains the coordinates of the first point.
-	 * @param anotherCoordinate contains the coordinates of the second point. 
+	 * 
+	 * @param coordinate
+	 *            contains the coordinates of the first point.
+	 * @param anotherCoordinate
+	 *            contains the coordinates of the second point.
 	 * @return double, the distance between the two points.
 	 */
 	private double distanceBetween(GeographicCoordinate coordinate, GeographicCoordinate anotherCoordinate) {
-		return (Math.sqrt((coordinate.getLatitude() - anotherCoordinate.getLatitude())
-				* (coordinate.getLatitude() - anotherCoordinate.getLatitude())
-				+ (coordinate.getLongitude() - anotherCoordinate.getLongitude())
-						* (coordinate.getLongitude() - anotherCoordinate.getLongitude())));
+		return Math.sqrt((coordinate.getLatitude() - anotherCoordinate.getLatitude()) * (coordinate.getLatitude() - anotherCoordinate.getLatitude()) + (coordinate.getLongitude() - anotherCoordinate.getLongitude()) * (coordinate.getLongitude() - anotherCoordinate.getLongitude()));
+	}
+
+	private double distanceBetweenLine(GeographicCoordinate point, GeographicCoordinate oneExtremity, GeographicCoordinate anotherExtremity) {
+		return Math.abs(distanceBetween(point, oneExtremity) + distanceBetween(point, anotherExtremity) - distanceBetween(oneExtremity, anotherExtremity));
+	}
+
+	private List<Section> listAllSection() {
+		List<Section> sections = new ArrayList<Section>();
+		for (Intersection intersection : graph.values()) {
+			sections.addAll(intersection.getOutcomingSections());
+		}
+		return sections;
 	}
 }
