@@ -133,9 +133,6 @@ public class Plan {
 				closest = current;
 			}
 		}
-		
-		System.out.println("Closest is id : " + closest.getId() + " with distance : " + minDistance);
-		
 		return closest;
 	}
 

@@ -18,12 +18,25 @@ public class Cluster {
 		deliveries = new ArrayList<Delivery>();
 	}
 	
+	/**
+	 * add delivery
+	 * @param delivery
+	 */
 	public void addDelivery(Delivery delivery){
 		this.deliveries.add(delivery);
 	}
 	
 	/**
-	 * 
+	 * removes the delivery at the specified index and returns it
+	 * @param index
+	 * @return
+	 */
+	public Delivery popDelivery(int index){
+		return this.deliveries.remove(index);
+	}
+	
+	/**
+	 * empties deliveries
 	 */
 	public void reinitializeClusters() {
 		deliveries = new ArrayList<Delivery>();
@@ -53,12 +66,12 @@ public class Cluster {
 	}
 	
 	/**
-	 * 
+	 * sort deliveries in a decreasing order based on euclidian distance to centroid
 	 */
-	public void sortDeliveriesByEuclidienDistanceToCentroid() {
+	public void sortDeliveriesByEuclidianDistanceToCentroid() {
 		/*TODO : test*/
-		for (int i = 0; i< deliveries.size(); i++){
-			for (int j = i; j<deliveries.size()-1; j++) {
+		for (int i = 0; i< deliveries.size()-1; i++){
+			for (int j = 0; j<deliveries.size()-i-1; j++) {
 				Pair<Double, Double> firstIntersectionData = new Pair<Double, Double>(deliveries.get(j).getAddress().getLat(),
 						deliveries.get(j).getAddress().getLon());
 				Pair<Double, Double> secondIntersectionData = new Pair<Double, Double>(deliveries.get(j+1).getAddress().getLat(),

@@ -1,6 +1,7 @@
 package main.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -25,10 +26,11 @@ public class TourCalculator {
 	private double[][] costTSP;
 	private int nodesCount;
 	private int[] delay;
-	
-	/*Maximum iteration number of Kmeans*/
-	private static int MAXKMEANS = 1000; 
-	
+
+	/* Maximum iteration number of Kmeans */
+	private static int MAXKMEANS = 100;
+	private static double MAXDOUBLE = Double.MAX_VALUE;
+
 	private int calculationTimeLimitMs = 10000;
 
 	private HashMap<Pair<Long, Long>, Step> steps;
@@ -75,6 +77,10 @@ public class TourCalculator {
 		this.map = map;
 	}
 
+	/**
+	 * 
+	 * @param deliveryMenCount
+	 */
 	public void calculateTours(int deliveryMenCount) {
 		// FIXME : for now, assumes a deleveryMenCount of 1
 
@@ -89,19 +95,20 @@ public class TourCalculator {
 	/**
 	 * Creates the graph to be used with TSP algorithm
 	 * 
-	 * It uses the plan and all the deliveries, as well as the depot XXX : how do we
-	 * know which delivery is the depot ? (-> added the depot as an attribute)
+	 * It uses the plan and all the deliveries, as well as the depot XXX : how
+	 * do we know which delivery is the depot ? (-> added the depot as an
+	 * attribute)
 	 * 
 	 * It creates a sub-graph, containing only the useful nodes (deliveries and
-	 * depot), and the arrows corresopnd to the shortest path found between the 2
-	 * nodes in the main graph
+	 * depot), and the arrows corresopnd to the shortest path found between the
+	 * 2 nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list
-	 * deliveries will not be modified) And it expect that the depot will always be
-	 * the first in both list (this is actually a pre-condution in the TSP
+	 * deliveries will not be modified) And it expect that the depot will always
+	 * be the first in both list (this is actually a pre-condution in the TSP
 	 * algotithm)
 	 */
-	private void createGraph() {
+	public void createGraph() {
 		/* Initialization */
 		nodesCount = 1 + deliveries.size(); // depot as first + deliveries
 
@@ -122,8 +129,8 @@ public class TourCalculator {
 	}
 
 	/**
-	 * Disjkstra helper function, create the useful row for TSP cost matrix based on
-	 * the result of the algorithm
+	 * Disjkstra helper function, create the useful row for TSP cost matrix
+	 * based on the result of the algorithm
 	 */
 	private double[] dijkstraHelper(Intersection source) {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
@@ -131,7 +138,10 @@ public class TourCalculator {
 		HashMap<Long, Double> cost = result.getKey();
 		HashMap<Long, Long> predecessors = result.getValue();
 
-		/* "Header" of the list : the ids of the nodes to use in the correct order */
+		/*
+		 * "Header" of the list : the ids of the nodes to use in the correct
+		 * order
+		 */
 		long[] idsList = new long[nodesCount];
 		idsList[0] = depot.getAddress().getId();
 		for (int i = 0; i < deliveries.size(); i++) {
@@ -153,7 +163,8 @@ public class TourCalculator {
 
 	/**
 	 * Wrapper function around TSP resolution, delegate responsability to TSP.
-	 * Execute the TSP algorithm, extract the needed information to create the tours
+	 * Execute the TSP algorithm, extract the needed information to create the
+	 * tours
 	 */
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
@@ -161,7 +172,10 @@ public class TourCalculator {
 
 		List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
 
-		TourFactory.createTour(1, solutionSteps, deliveries); // FIXME : hardcoded 1 and deliveries
+		TourFactory.createTour(1, solutionSteps, deliveries); // FIXME :
+																// hardcoded 1
+																// and
+																// deliveries
 	}
 
 	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
@@ -181,8 +195,6 @@ public class TourCalculator {
 			intersectionsIds.add(sourceId);
 
 			Collections.reverse(intersectionsIds);
-
-			System.out.println(intersectionsIds);
 
 			ArrayList<Section> sections = new ArrayList<>();
 			for (int i = 0; i < intersectionsIds.size() - 1; i++) {
@@ -227,12 +239,13 @@ public class TourCalculator {
 	}
 
 	/**
-	 * data clustering using k-means algorithm. Can return some empty clusters if
-	 * clusterNb is badly set, or is superior to intersections s size. It can also
-	 * happen depending on the random initialization.
+	 * data clustering using k-means algorithm. Can return some empty clusters
+	 * if clusterNb is badly set, or is superior to intersections s size. It can
+	 * also happen depending on the random initialization.
 	 * 
-	 * @param               clusterNb, MUST BE under intersections s size, or kmeans
-	 *                      will throw an assertionError
+	 * @param clusterNb,
+	 *            MUST BE strictly under dataPoints s size, or kmeans will throw an
+	 *            assertionError
 	 * @param dataPoints
 	 * @param epsilon
 	 * @return
@@ -242,14 +255,14 @@ public class TourCalculator {
 		/* TODO : add a time limit */
 		/* TODO : check visibility */
 		if (!(clusterNb <= dataPoints.size()) || (clusterNb == 0))
-			throw new AssertionError();
+			throw new AssertionError("Kmean was called with incorrect clusterNb.");
 		/* Cluster initialization */
 		List<Cluster> clusters = new ArrayList<Cluster>();
-		List<Delivery> dataPointsCopy = new ArrayList<Delivery> (dataPoints);
+		List<Delivery> dataPointsCopy = new ArrayList<Delivery>(dataPoints);
 		for (int i = 0; i < clusterNb; i++) {
 			int rdInt = ThreadLocalRandom.current().nextInt(0, dataPointsCopy.size());
-			Pair<Double, Double> randomCentroid = new Pair<Double, Double>(dataPointsCopy.get(rdInt).getAddress().getLat(),
-					dataPointsCopy.get(rdInt).getAddress().getLon());
+			Pair<Double, Double> randomCentroid = new Pair<Double, Double>(
+					dataPointsCopy.get(rdInt).getAddress().getLat(), dataPointsCopy.get(rdInt).getAddress().getLon());
 			dataPointsCopy.remove(dataPointsCopy.get(rdInt));
 			Cluster newCluster = new Cluster(randomCentroid);
 			clusters.add(newCluster);
@@ -282,8 +295,10 @@ public class TourCalculator {
 			for (Cluster cluster : clusters) {
 				double barycentersLatitude = 0;
 				double barycentersLongitude = 0;
-				
-				/* Take care of empty cluster so that they still have a centroid */
+
+				/*
+				 * Take care of empty cluster so that they still have a centroid
+				 */
 				if (cluster.getDeliveries().size() > 0) {
 					for (Delivery delivery : cluster.getDeliveries()) {
 						barycentersLatitude += delivery.getAddress().getLat();
@@ -306,19 +321,102 @@ public class TourCalculator {
 		return clusters;
 	}
 
+	/**
+	 * calculate best set of clusters in a array of MAXKMEANS set of clusters.  
+	 * @param clusterNb, MUST BE strictly under deliveries s size, or error will be thrown
+	 * @param epsilon
+	 * @return
+	 */
 	public List<Cluster> clusterizeData(int clusterNb, double epsilon) {
-		/*TODO : finish that faggot*/
-		for (int i =0; i<MAXKMEANS; i++) {
+		List<Cluster> bestClusters = new ArrayList<Cluster>();
+		double minCoeff = MAXDOUBLE;
+		int maxIntersectionNumber = (int) (this.deliveries.size() / clusterNb) + 1;
+		for (int i = 0; i < MAXKMEANS; i++) {
 			List<Cluster> currentClusters = this.kMeans(clusterNb, this.deliveries, epsilon);
-			int maxIntersectionNumber =(int)(this.deliveries.size()/clusterNb) + 1;
-			for (Cluster cluster : currentClusters ) {
-				int nbExceedingDeliveries = cluster.getDeliveries().size()-maxIntersectionNumber ;
-				while(nbExceedingDeliveries > 0) {
-					
+			HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+			for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
+				Cluster cluster = currentClusters.get(currentClusterIndex);
+				int nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
+				cluster.sortDeliveriesByEuclidianDistanceToCentroid();
+
+				/*
+				 * move exceeding Deliveries to the cluster containing the
+				 * nearest intersection
+				 */
+				while (nbExceedingDeliveries > 0) {
+					Delivery toMove = cluster.popDelivery(0);
+					int indexToMove = deliveries.indexOf(toMove);
+					if (indexToMove == -1) {
+						throw new AssertionError("Delivery present in cluster does not exist.");
+					}
+					double[] distanceToToMove = costTSP[indexToMove];
+					double min = distanceToToMove[1];
+					int minIndex = 0;
+					/*TODO : better initialization of min and minIndex*/
+					if(idDeliveryToIdCluster.get(minIndex) == currentClusterIndex){
+						min = distanceToToMove[2];
+						minIndex = 1;
+					}
+					/*
+					 * find the nearest intersection to toMove contained in a
+					 * not full cluster (which is not the current cluster)
+					 */
+					for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
+						int indexDelivery = indexCostTSP - 1;
+						boolean isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery))
+								.getDeliveries().size()) < maxIntersectionNumber);
+						if ((distanceToToMove[indexCostTSP] < min) && (isClusterNotFull)
+								&& (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
+							min = distanceToToMove[indexCostTSP];
+							minIndex = indexDelivery;
+						}
+					} 
+					/* move exceeding delivery to nearest delivery cluster */
+					Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
+					Cluster nearestCluster = currentClusters.get(idNearestCluster);
+					nearestCluster.addDelivery(toMove);
+					idDeliveryToIdCluster.put(minIndex, idNearestCluster);
+					nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
 				}
 			}
+			/* evaluate cluster by adding distance to centroid*/
+			double coeff = 0;
+			for(Cluster cluster : currentClusters){
+				for (Delivery delivery : cluster.getDeliveries()){
+					Pair<Double, Double>deliveryData = new Pair <Double, Double>(delivery.getAddress().getLat(), delivery.getAddress().getLon());
+					coeff += cluster.calculateDistanceToCentroid(deliveryData);
+				}
+			}
+			if (coeff < minCoeff){
+				minCoeff = coeff;
+				bestClusters = currentClusters;
+			}
 		}
-		return null;
+		return bestClusters;
+	}
+
+	/**
+	 * construct a HashMap with delivery index as key and cluster index as
+	 * value.
+	 * 
+	 * @param clusters
+	 * @return
+	 */
+	private HashMap<Integer, Integer> clusterListToHashMap(List<Cluster> clusters) {
+		HashMap<Integer, Integer> idDeliveryToIdCluster = new HashMap<Integer, Integer>();
+		for (int deliveryIndex = 0; deliveryIndex < deliveries.size(); deliveryIndex++) {
+			int clusterIndex = 0;
+			boolean foundCluster = false;
+			Delivery toFind = deliveries.get(deliveryIndex);
+			while ((clusterIndex < clusters.size()) && (!foundCluster)) {
+				if (clusters.get(clusterIndex).getDeliveries().contains(toFind)) {
+					foundCluster = true;
+					idDeliveryToIdCluster.put(deliveryIndex, clusterIndex);
+				}
+				clusterIndex++;
+			}
+		}
+		return idDeliveryToIdCluster;
 	}
 
 	public double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
