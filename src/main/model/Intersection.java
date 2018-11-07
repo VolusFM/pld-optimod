@@ -42,4 +42,29 @@ public class Intersection {
 	public List<Section> getOutcomingSections() {
 		return outcomingSections;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Intersection other = (Intersection) obj;
+		if (id != other.id)
+			return false;
+		if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
+			return false;
+		if (Double.doubleToLongBits(lon) != Double.doubleToLongBits(other.lon))
+			return false;
+		if (outcomingSections == null) {
+			if (other.outcomingSections != null)
+				return false;
+		} else if (!outcomingSections.equals(other.outcomingSections))
+			return false;
+		return true;
+	}
+	
+	
 }

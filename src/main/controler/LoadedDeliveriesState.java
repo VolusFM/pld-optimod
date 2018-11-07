@@ -1,6 +1,8 @@
 package main.controler;
 
+import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Section;
 import main.model.TourCalculator;
 import main.ui.RangeSelector;
 import main.ui.Window;
@@ -26,7 +28,9 @@ public class LoadedDeliveriesState extends DefaultState {
 		controler.setCurrentState(controler.planningState);
 	}
 
+	
 	public String stateToString() {
 		return "loadedDeliveryState";
 	}
+	
 }

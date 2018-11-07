@@ -65,4 +65,18 @@ public class TourFactory {
 			
 		}
 	}
+
+	public List<Tour> findToursContainingSection(Section section) {
+		ArrayList<Tour> tours = new ArrayList<>();
+		for (Tour tour : tourPlanning) {
+			for (Step st : tour.getSteps()) {
+				for (Section s : st.getSections()) {
+					if (section.equals(s)) {
+						tours.add(tour);
+					}
+				}
+			}
+		}
+		return tours;
+	}
 }

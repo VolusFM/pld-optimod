@@ -151,7 +151,7 @@ public class Plan {
 	 *            is the longitude of the point where the user clicked.
 	 * @return Intersection, the closest Intersection.
 	 */
-	public Intersection findClosestIntersection(double latitude, double longitude) {
+	protected Intersection findClosestIntersection(double latitude, double longitude) {
 		GeographicCoordinate reference = new GeographicCoordinate(latitude, longitude);
 		double minDistance;
 		double currentDistance;
@@ -184,7 +184,7 @@ public class Plan {
 		Section closest;
 		Section current;
 
-		Iterator<Section> sectionsIterator = listAllSection().iterator();
+		Iterator<Section> sectionsIterator = listAllSections().iterator();
 		closest = sectionsIterator.next();
 
 		Intersection start;
@@ -229,7 +229,7 @@ public class Plan {
 		return Math.abs(distanceBetween(point, oneExtremity) + distanceBetween(point, anotherExtremity) - distanceBetween(oneExtremity, anotherExtremity));
 	}
 
-	private List<Section> listAllSection() {
+	private List<Section> listAllSections() {
 		List<Section> sections = new ArrayList<Section>();
 		for (Intersection intersection : graph.values()) {
 			sections.addAll(intersection.getOutcomingSections());

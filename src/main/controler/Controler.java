@@ -143,13 +143,12 @@ public class Controler {
 		currentState.calculatePlanning(this, window);
 	}
 
-	public void clickedNearIntersection(Intersection findClosestIntersection) {
-		// FIXME : do it with states ?
-		window.highlightSelectedIntersection(findClosestIntersection);
+	public void clickedNearIntersection(Intersection closestIntersection) {
+		currentState.clickedNearIntersection(this, window, closestIntersection);
 	}
 
-	public void clickedNearSection(Section findClosestSection) {
-		window.highlightSelectedSection(findClosestSection);
+	public void clickedNearSection(Section closestSection) {
+		currentState.clickedNearSection(this, window, closestSection);
 	}
 
 	/**

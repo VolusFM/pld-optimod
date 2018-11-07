@@ -31,9 +31,7 @@ public abstract class ModelInterface {
 	}
 
 	public static void setDeliveryMenCount(int count) {
-		System.out.println("setDeliveryMenCount to " + count); // FIXME do actual implementation
-		
-//		tourCalculator.setDeliveryMenCount(count);
+		tourCalculator.setDeliveryMenCount(count);
 	}
 
 	public static List<Delivery> getDeliveries() {
@@ -59,5 +57,9 @@ public abstract class ModelInterface {
 
 	public static Intersection findClosestIntersection(double latitude, double longitude) {
 		return plan.findClosestIntersection(latitude, longitude);
+	}
+	
+	public static List<Tour> findTourContainingSection(Section section) {
+		return tourFactory.findToursContainingSection(section);
 	}
 }
