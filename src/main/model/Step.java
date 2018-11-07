@@ -11,13 +11,15 @@ public class Step {
 
 	public Step(List<Section> sections) {
 		this.sections = new ArrayList<>(sections);
-		// System.out.println("section : " + sections.get(0));
-		// System.out.println("inters : " + sections.get(0).getStart());
-		if (sections.get(0) != null && sections.get(sections.size() - 1) != null) { //FIXME why can they be null ?
+		 //System.out.println("section : " + sections.get(0));
+		 //System.out.println("inters : " + sections.get(0).getStart());
+//		if (sections.size() > 0) { //FIXME why can they be null ?
 			startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
 			endDelivery = TourCalculator.getInstance()
 					.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
-		}
+//		} else {
+//			System.out.println("Wrong section : " + sections);
+//		}
 	}
 
 	public double calculateLength() {

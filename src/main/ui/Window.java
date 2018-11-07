@@ -1,8 +1,9 @@
 package main.ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -235,21 +236,24 @@ public class Window extends JFrame {
 	
 	
 	public void listSectionsOfStep(Step step) {
-		System.out.println("listSectionsOfStep");
 		southPanel.removeAll();
 
 		southPanel.setVisible(false);
 
-		List<Section> sections = new ArrayList<>();
+		Set<String> streetNames = new LinkedHashSet<>();
 		
 		for (Section section : step.getSections()) {
-			sections.add(section);
+			streetNames.add(section.getStreetName());
 		}
 		
 		String html = "<html>";
 		
-		for (Section section : sections) {
-			html += (" " + section.getStreetName() + " ");
+		Iterator<String> it = streetNames.iterator();
+		
+		html += it.next();
+		
+		while (it.hasNext()) {
+			html += " - " + it.next();
 		}
 		
 		html += "</html>";

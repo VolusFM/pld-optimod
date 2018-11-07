@@ -29,10 +29,8 @@ public class TourCalculator {
 
 	private HashMap<Pair<Long, Long>, Step> steps;
 
-	
 	private int deliveryMenCount;
-	
-	
+
 	private TourCalculator() {
 		tourFactory = TourFactory.getInstance();
 		deliveries = new ArrayList<>();
@@ -50,12 +48,6 @@ public class TourCalculator {
 		this.deliveries.add(d);
 	}
 
-	public void print() {
-		for (Delivery d : deliveries) {
-			System.out.println("got delivery with intersection id :" + d.getAddress().getId());
-		}
-	}
-
 	public void setDepot(Delivery depot) {
 		this.depot = depot;
 	}
@@ -63,11 +55,11 @@ public class TourCalculator {
 	public void setMap(Plan map) {
 		this.map = map;
 	}
-	
+
 	public void setDeliveryMenCount(int deliveryMenCount) {
 		this.deliveryMenCount = deliveryMenCount;
 	}
-	
+
 	public Delivery findCorrespondingDelivery(Intersection intersection) {
 		for (Delivery delivery : deliveries) {
 			if (delivery.getAddress().equals(intersection)) {
@@ -97,12 +89,12 @@ public class TourCalculator {
 	 * It uses the plan and all the deliveries, as well as the depot
 	 * 
 	 * It creates a sub-graph, containing only the useful nodes (deliveries and
-	 * depot), and the arrows correspond to the shortest path found between the 2
-	 * nodes in the main graph
+	 * depot), and the arrows correspond to the shortest path found between the
+	 * 2 nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list
-	 * deliveries will not be modified) And it expect that the depot will always be
-	 * the first in both list (this is actually a pre-condution in the TSP
+	 * deliveries will not be modified) And it expect that the depot will always
+	 * be the first in both list (this is actually a pre-condution in the TSP
 	 * algotithm)
 	 */
 	private void createGraph() {
@@ -126,8 +118,8 @@ public class TourCalculator {
 	}
 
 	/**
-	 * Disjkstra helper function, create the useful row for TSP cost matrix based on
-	 * the result of the algorithm
+	 * Disjkstra helper function, create the useful row for TSP cost matrix
+	 * based on the result of the algorithm
 	 */
 	private double[] dijkstraHelper(Intersection source) {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
@@ -135,7 +127,10 @@ public class TourCalculator {
 		HashMap<Long, Double> cost = result.getKey();
 		HashMap<Long, Long> predecessors = result.getValue();
 
-		/* "Header" of the list : the ids of the nodes to use in the correct order */
+		/*
+		 * "Header" of the list : the ids of the nodes to use in the correct
+		 * order
+		 */
 		long[] idsList = new long[nodesCount];
 		idsList[0] = depot.getAddress().getId();
 		for (int i = 0; i < deliveries.size(); i++) {
@@ -157,7 +152,8 @@ public class TourCalculator {
 
 	/**
 	 * Wrapper function around TSP resolution, delegate responsability to TSP.
-	 * Execute the TSP algorithm, extract the needed information to create the tours
+	 * Execute the TSP algorithm, extract the needed information to create the
+	 * tours
 	 */
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
@@ -165,7 +161,10 @@ public class TourCalculator {
 
 		List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
 
-		TourFactory.createTour(1, solutionSteps, depot, deliveries); // FIXME : hardcoded 1 and deliveries
+		TourFactory.createTour(1, solutionSteps, depot, deliveries); // FIXME :
+																		// hardcoded
+																		// 1 and
+																		// deliveries
 	}
 
 	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
@@ -174,23 +173,42 @@ public class TourCalculator {
 			if (id.equals(sourceId)) {
 				continue;
 			}
+			
+			boolean unaccessible = false;
 
 			ArrayList<Long> intersectionsIds = new ArrayList<>();
 			Long currentId = id;
 			do {
 				intersectionsIds.add(currentId);
 				currentId = predecessors.get(currentId);
+
+				if (currentId == null) {
+					unaccessible = true;
+					break;
+				}
+
 			} while (currentId != sourceId);
+			
+			if (unaccessible) {
+				continue;
+			}
 
 			intersectionsIds.add(sourceId);
 
 			Collections.reverse(intersectionsIds);
 
-			System.out.println(intersectionsIds);
-
 			ArrayList<Section> sections = new ArrayList<>();
 			for (int i = 0; i < intersectionsIds.size() - 1; i++) {
-				sections.add(findSectionBetween(intersectionsIds.get(i), intersectionsIds.get(i + 1)));
+				Section s = findSectionBetween(intersectionsIds.get(i), intersectionsIds.get(i + 1));
+				if (s != null) {
+					sections.add(s);
+				} else {
+					unaccessible = true;
+				}
+			}
+			
+			if (unaccessible) {
+				continue;
 			}
 
 			Step step = new Step(sections);
@@ -205,7 +223,10 @@ public class TourCalculator {
 			if (section.getIdEndIntersection() == idEnd) {
 				return section;
 			}
+
 		}
+//		System.out.println("no section between " + idStart + " and " + idEnd);
+
 		return null;
 	}
 
@@ -229,11 +250,11 @@ public class TourCalculator {
 
 		return list;
 	}
-	
+
 	public List<Delivery> getDeliveries() {
 		return deliveries;
 	}
-	
+
 	public Delivery getDepot() {
 		return depot;
 	}

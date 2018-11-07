@@ -26,10 +26,6 @@ public class Intersection {
 		outcomingSections = new ArrayList<>();
 	}
 
-	public void print() {
-		for (Section s : outcomingSections)
-			s.print();
-	}
 
 	public double getLat() {
 		return lat;

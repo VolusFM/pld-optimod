@@ -18,7 +18,7 @@ public class TourFactory {
 	public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
 		System.out.println(depot);
 		calculateDeliveryHours(steps, depot, deliveries);
-		Tour currentTour = new Tour(steps, deliveries, deliveryMan);
+		Tour currentTour = new Tour(depot, steps, deliveries, deliveryMan);
 		tourPlanning.add(currentTour);
 		return currentTour;
 	}
