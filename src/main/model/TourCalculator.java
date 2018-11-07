@@ -322,7 +322,7 @@ public class TourCalculator {
 	}
 
 	/**
-	 * calculate best set of clusters in a array of MAXKMEANS set of clusters.  
+	 * calculate best set of clusters in a array of MAXKMEANS set of clusters. THE GRAPH MUST BE CREATE
 	 * @param clusterNb, MUST BE strictly under deliveries s size, or error will be thrown
 	 * @param epsilon
 	 * @return

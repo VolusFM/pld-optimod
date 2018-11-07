@@ -69,7 +69,6 @@ public class Cluster {
 	 * sort deliveries in a decreasing order based on euclidian distance to centroid
 	 */
 	public void sortDeliveriesByEuclidianDistanceToCentroid() {
-		/*TODO : test*/
 		for (int i = 0; i< deliveries.size()-1; i++){
 			for (int j = 0; j<deliveries.size()-i-1; j++) {
 				Pair<Double, Double> firstIntersectionData = new Pair<Double, Double>(deliveries.get(j).getAddress().getLat(),
@@ -86,6 +85,7 @@ public class Cluster {
 	}
 	
 	public double calculateDistanceToCentroid(Pair<Double, Double> intersectionData) {
+		/*TODO : in private ??*/
 		return Math.sqrt(Math.pow((intersectionData.getKey() - centroid.getKey()), 2)
 				+ Math.pow((intersectionData.getValue() - centroid.getValue()), 2));
 	}
