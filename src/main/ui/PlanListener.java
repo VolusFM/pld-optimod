@@ -22,6 +22,7 @@ public class PlanListener extends MouseAdapter {
 		GeographicCoordinate geographicCoordinate = ((PlanView) e.getSource()).convertToGeographicCoordinate(screenCoordinate);
 
 		System.out.println("Clicked at pos : (" + geographicCoordinate.latitude + "; " + geographicCoordinate.longitude + ")");
+
 		controler.clickedNearIntersection(ModelInterface.findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude));
 		controler.clickedNearSection(ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
 

@@ -8,8 +8,7 @@ public abstract class ModelInterface {
 	private static Plan plan = new Plan();
 	private static TourCalculator tourCalculator = TourCalculator.getInstance();
 	private static TourFactory tourFactory = TourFactory.getInstance();
-	
-	
+
 	public static Plan getPlan() {
 		return plan;
 	}

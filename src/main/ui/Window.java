@@ -164,7 +164,23 @@ public class Window extends JFrame {
 		add(rightPanel, BorderLayout.EAST);
 		redraw();
 	}
-
+	/**
+	 * Remove the panel use for creating a new delivery point
+	 */
+	public void hideAddingDeliveryPanel() {
+		rightPanel.setVisible(false);
+		rightPanel.removeAll();
+		/* Create Content */
+		rightPanel.setLayout(new BorderLayout());
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		planningPanel = new PlanningView(this);
+		rightPanel.add(planningText, BorderLayout.NORTH);
+		rightPanel.add(planningPanel, BorderLayout.CENTER);
+		/* Set content */
+		rightPanel.setVisible(true);
+		add(rightPanel, BorderLayout.EAST);
+	}
+	
 	/**
 	 * Create the panel with the planning of the tour as a board of delivery
 	 * men, locations, hours and list of roads.
@@ -190,7 +206,8 @@ public class Window extends JFrame {
 	}
 
 	/**
-	 * Update the graphics on the window
+	 * Update the graphics on the window, used when we don't add/remove
+	 * components
 	 */
 	private void redraw() {
 		repaint();

@@ -38,10 +38,17 @@ public class ButtonListener implements ActionListener {
 			controler.calculateTour();
 			break;
 		case PlanningView.ACTION_ADDING_DELIVERY_POINT :
-			// TODO : controleur.addDeleveryPoint() qui ouvre une modale qui demande clic plan
-			// puis avec choix livreur,heure et durée
+			controler.window.displayAddingDeliveryPanel();
+			// TODO : controleur.addDeleveryPoint() qui appelle l'IHM
 			break;
-			
+		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY :
+			// TODO : controleur.validateAddingDeleveryPoint() qui crée la nouvelle
+			// livraison et maj l'affichage (et enleve la fenetre d'ajout)
+			break;
+		case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY :
+			controler.window.hideAddingDeliveryPanel();
+			// TODO : controleur.cancelAddingDeliveryPoint() qui appelle l'IHM
+			break;
 		default:
 			throw new RuntimeException("Unhandled action : " + e.getActionCommand());
 		}
