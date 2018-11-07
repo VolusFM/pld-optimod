@@ -2,45 +2,46 @@ package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+
 import java.awt.GridLayout;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 
 import main.model.Delivery;
+import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Step;
-import main.model.Tour;
 
 public class PlanningView extends JPanel {
 
 	/* Components */
-	private JTable planning;
+	private PlanningTable planning;
 	private JButton addDeliveryPoint;
+
 	private JButton cancelModifications;
 
 	/* Listener */
 	private ButtonListener buttonListener;
 
 	/* Components texts */
-	private final String ADD_DELIVERY_POINT_BUTTON 					= "Ajouter un point de livraison";
-	private final String CANCEL_MODIFICATIONS_BUTTON 				= "Annuler la dernière modification";
+	private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter un point de livraison";
+	private final String CANCEL_MODIFICATIONS_BUTTON = "Annuler la dernière modification";
 
 	/* Actions */
-	protected final static String ACTION_ADDING_DELIVERY_POINT 		= "ADD_DELIVERY_POINT";
-	protected final static String ACTION_CANCELLING_MODIFICATIONS 	= "CANCEL_MODIFICATIONS";
+	protected final static String ACTION_ADDING_DELIVERY_POINT = "ADD_DELIVERY_POINT";
+	protected final static String ACTION_CANCELLING_MODIFICATIONS = "CANCEL_MODIFICATIONS";
 
 	/* Board attributes */
-	private final int columnsNumber									= 4;
-	private final String[] boardTitle 								= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
+	private final int columnsNumber = 4;
+	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Trajet" };
 
 	/* Graphic components */
-	// private Graphics graphics;
+	private Window window;
 
 	/**
 	 * Create the graphical view for drawing the loaded plan with the scale s in
@@ -59,6 +60,7 @@ public class PlanningView extends JPanel {
 		this.buttonListener = w.buttonListener;
 		/* Initialize */
 		setSize(600, 900);
+		this.window = w;
 		/* Display */
 		setBackground(Color.WHITE);
 		createBoardPanel();
@@ -69,40 +71,12 @@ public class PlanningView extends JPanel {
 	 * Function called to create the planning panel.
 	 */
 	public void createBoardPanel() {
-		/* Building board dimensions */
-		Collection<Delivery> deliveries = ModelInterface.getDeliveries();
-		Object[][] boardDatas = new Object[deliveries.size()][columnsNumber];
-		/* Building board datas */
-		Collection<Tour> tours = ModelInterface.getTourPlanning();
-		Iterator<Tour> itTours = tours.iterator();
-		int currentLastEmptyLine = 0;
-		while (itTours.hasNext()) {
-			Tour currentTour = itTours.next();
-			int deliveryMan = currentTour.getDeliveryManId();
-			Collection<Delivery> deliveryPoints = currentTour.getDeliveryPoints();
-			Collection<Step> steps = currentTour.getSteps();
-			Iterator<Delivery> itDeliveries = deliveryPoints.iterator();
-			while (itDeliveries.hasNext()) {
-				Delivery currentDelivery = itDeliveries.next();
-				boardDatas[currentLastEmptyLine][0] = deliveryMan;
-				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; "
-						+ currentDelivery.getAddress().getLon() + ")";
-				/*
-				 * SimpleDateFormat dateFormat = new
-				 * SimpleDateFormat("HH-mm-ss"); Calendar hour =
-				 * currentDelivery.getHour();
-				 * dateFormat.setTimeZone(hour.getTimeZone());
-				 */
-				boardDatas[currentLastEmptyLine][2] = "H"; // dateFormat.format(hour.getTime());
-				// TODO : calcul heure passage (Model ou IHM ?);
-				boardDatas[currentLastEmptyLine][3] = "P";
-				// TODO : liste des noms de rues dans l'ordre (Model)
-				currentLastEmptyLine++;
-			}
-		}
+
 		/* Building board */
-		planning = new JTable(boardDatas, boardTitle);
-		PlanningListener planningListener = new PlanningListener(planning);
+		planning = new PlanningTable();
+		PlanningListener planningListener = new PlanningListener(planning, window);
+		planning.getSelectionModel().addListSelectionListener(planningListener);
+		
 		/* Buttons */
 		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
@@ -124,4 +98,19 @@ public class PlanningView extends JPanel {
 		totalViewPanel.add(tablePanel);
 		this.add(totalViewPanel);
 	}
+
+	public void selectRow(Intersection closestIntersection) {
+		List<Delivery> deliveries = ModelInterface.getDeliveries();
+		Iterator<Delivery> it = deliveries.iterator();
+		boolean found = false;
+		int i = 0;
+		while (!found && it.hasNext()) {
+			if (it.next().getAddress().getId() == closestIntersection.getId()) {
+				planning.selectRow(i);
+				found = true;
+			}
+			i++;
+		}
+	}
+
 }

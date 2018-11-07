@@ -1,8 +1,20 @@
 package main.controler;
 
+import main.model.Delivery;
+import main.model.ModelInterface;
 import main.ui.Window;
 
-public class AddDeliveryState extends DefaultState {
+public class AddDeliveryState extends DefaultState{
+
+
+	/**
+	 * Cancel the new delivery and go back to planningState
+	 * @param controler
+	 * @param window
+	 */
+	public void cancelNewDelivery(Controler controler, Window window) {
+		controler.setCurrentState(controler.planningState);
+	}
 
 	/**
 	 * Confirms the delivery's addition
@@ -10,23 +22,15 @@ public class AddDeliveryState extends DefaultState {
 	 * @param controler
 	 * @param window
 	 */
-	public void addDelivery(Controler controler, Window window) {
-
-	}
-
-	/**
-	 * Cancel the new delivery and go back to TourCalculatedState
-	 * 
-	 * @param controler
-	 * @param window
-	 */
-	public void cancelNewDelivery(Controler controler, Window window) {
-		// For now, the state is set to tourCalculated
+	public void confirmNewDelivery(Controler controler, Window window) {
+		
+		Delivery toAdd = new Delivery(0,null); //TODO: get actual info from window
+		ModelInterface.addDelivery(toAdd);
 		controler.setCurrentState(controler.planningState);
 	}
 
 	public String stateToString() {
-		return "AddDeliveryState";
+		return "addDeliveryState";
 	}
 
 }

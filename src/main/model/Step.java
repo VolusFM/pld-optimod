@@ -6,6 +6,7 @@ import java.util.List;
 public class Step {
 
 	private List<Section> sections;
+	private Delivery startDelivery;
 
 	public Step(List<Section> sections) {
 		this.sections = new ArrayList<>(sections);

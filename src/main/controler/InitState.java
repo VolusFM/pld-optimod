@@ -25,8 +25,10 @@ public class InitState extends DefaultState {
 	}
 
 	public void openParameters(Controler controler) {
+
 		// TODO : add code to open parameter window
-		controler.setCurrentState(controler.parametersState);
+//		controler.setCurrentState(controler.parametersState);
+
 	}
 
 	public String stateToString() {

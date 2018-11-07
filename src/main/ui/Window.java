@@ -8,6 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.controler.Controler;
+import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Plan;
 
@@ -55,7 +56,7 @@ public class Window extends JFrame {
 		this.controler = controler;
 		buttonListener = new ButtonListener(controler);
 		/* Header */
-		this.header = new WindowHeader(this, true, false, buttonListener);
+		this.header = new WindowHeader(this, buttonListener);
 		this.header.setVisible(headerVisibility);
 		getContentPane().add(header, BorderLayout.NORTH);
 		/* Plan Selection Panel */
@@ -102,6 +103,7 @@ public class Window extends JFrame {
 		rightPanel.add(selectionButton);
 		/* Set content */
 		add(rightPanel, BorderLayout.EAST);
+		redraw();
 	}
 
 	/**
@@ -113,6 +115,9 @@ public class Window extends JFrame {
 		/* Create Content */
 		Plan plan = ModelInterface.getPlan();
 		planPanel = new PlanView(planScale, this, plan);
+		PlanListener planListener = new PlanListener(controler);
+		planPanel.addMouseListener(planListener);
+		planPanel.addMouseMotionListener(planListener);
 		/* Set content */
 		centerPanel.add(planPanel);
 		add(centerPanel, BorderLayout.CENTER);
@@ -152,17 +157,7 @@ public class Window extends JFrame {
 		/* Set content */
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
-	}
-
-	/**
-	 * Create the panel use for creating a new delivery point
-	 */
-	public void displayAddingDeliveryPanel() {
-		rightPanel.setVisible(false);
-		addingPanel = new AddingDeliveryView(this);
-		/* Set content */
-		rightPanel.add(addingPanel, BorderLayout.SOUTH);
-		rightPanel.setVisible(true);
+		redraw();
 	}
 
 	/**
@@ -183,6 +178,19 @@ public class Window extends JFrame {
 	}
 
 	/**
+	 * Create the panel with the planning of the tour as a board of delivery
+	 * men, locations, hours and list of roads.
+	 */
+	public void displayAddingDeliveryPanel() {
+		rightPanel.setVisible(false);
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		addingPanel = new AddingDeliveryView(this);
+		rightPanel.add(addingPanel, BorderLayout.SOUTH);
+		/* Set content */
+		rightPanel.setVisible(true);
+	}
+
+	/**
 	 * Convenience method to create a new button with a given text and action,
 	 * and to bind it to the action listener
 	 */
@@ -197,9 +205,23 @@ public class Window extends JFrame {
 	 * Update the graphics on the window, used when we don't add/remove
 	 * components
 	 */
-	public void redraw() {
+	private void redraw() {
 		repaint();
 		revalidate();
+	}
+
+	public void highlightSelectedIntersection(Intersection intersection) {
+		planningPanel.selectRow(intersection);
+		planPanel.setHighlightedIntersection(intersection);
+		redraw();
+	}
+
+	public void toggleDeliveryMenCountButtonVisiblity() {
+		header.toggleDeliveryMenCountButtonVisibility();
+	}
+
+	public void toggleReturnButtonVisibility() {
+		header.toggleReturnButtonVisibility();
 	}
 
 }

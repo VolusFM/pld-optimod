@@ -11,30 +11,29 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class AddingDeliveryView extends JPanel {
-	
+
 	private Window window;
-	
-	/* Components */ 
+	/* Components */
 	private JTextField latitudeField;
 	private JTextField longitudeField;
 	private JTextField durationField;
 	private JComboBox<Integer> deliveryMenBox;
 	private JButton validationButton;
 	private JButton cancelationButton;
-	
+
 	/* Buttons Actions */
-	protected final static String ACTION_VALIDATION_ADDING_DELIVERY 	= "Valider le nouveau point de livraison";
-	protected final static String ACTION_CANCELATION_ADDING_DELIVERY 	= "Annuler le nouveau point de livraison";
-	
+	protected final static String ACTION_VALIDATION_ADDING_DELIVERY = "Valider le nouveau point de livraison";
+	protected final static String ACTION_CANCELATION_ADDING_DELIVERY = "Annuler le nouveau point de livraison";
+
 	/* Labels texts */
-	private final String validationText 								= "Valider";
-	private final String cancelationText 								= "Annuler";
-	private final String durationText 									= "Duree : ";
-	private final String latitudeText 									= "Latitude : ";
-	private final String longitudeText 									= "Longitude : ";
-	private final String deliveryMenText 								= "Livreur : ";
-	private final String instructionsText1 								= "Saisissez les informations de cette noouvelle livraison";
-	private final String instructionsText2 								= "(cliquez sur le plan pour obtenir les coordonées GPS d'une adresse).";
+	private final String validationText = "Valider";
+	private final String cancelationText = "Annuler";
+	private final String durationText = "Duree : ";
+	private final String latitudeText = "Latitude : ";
+	private final String longitudeText = "Longitude : ";
+	private final String deliveryMenText = "Livreur : ";
+	private final String instructionsText1 = "Saisissez les informations de cette noouvelle livraison";
+	private final String instructionsText2 = "(cliquez sur le plan pour obtenir les coordonées GPS d'une adresse).";
 
 	/**
 	 * Create the view to defined a new delivery point.
@@ -44,6 +43,8 @@ public class AddingDeliveryView extends JPanel {
 	public AddingDeliveryView(Window w) {
 		super();
 		window = w;
+		/* Initialize */
+		setSize(600, 500);
 		/* Display */
 		setBackground(Color.WHITE);
 		createAddingDeliveryPanel();
@@ -58,6 +59,7 @@ public class AddingDeliveryView extends JPanel {
 		JLabel latitudeLabel = new JLabel(latitudeText);
 		JLabel longitudeLabel = new JLabel(longitudeText);
 		JLabel deliveryMenLabel = new JLabel(deliveryMenText);
+
 		JLabel instructionsLabel1 = new JLabel(instructionsText1);
 		JLabel instructionsLabel2 = new JLabel(instructionsText2);
 		/* Components */
@@ -82,11 +84,13 @@ public class AddingDeliveryView extends JPanel {
 		latitudePanel.add(latitudeField, BorderLayout.EAST);
 		JPanel longitudePanel = new JPanel();
 		longitudePanel.add(longitudeLabel, BorderLayout.WEST);
+
 		longitudePanel.add(longitudeField, BorderLayout.EAST);
 		JPanel deliveryMenPanel = new JPanel();
 		deliveryMenPanel.add(deliveryMenLabel, BorderLayout.WEST);
 		deliveryMenPanel.add(deliveryMenBox, BorderLayout.EAST);
 		/* Displaying */
+
 		JPanel totalPanel =  new JPanel();
 		JPanel instructionsPanel = new JPanel();
 		JPanel formPanel = new JPanel();

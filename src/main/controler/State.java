@@ -39,15 +39,13 @@ public interface State {
 	 * @param window
 	 */
 	public void openParameters(Controler controler, Window window);
-
-	/**
-	 * Calculate a tour planning with a given number of tour
-	 * 
-	 * @param controler
-	 * @param window
-	 */
-	public void calculateTour(Controler controler, Window window);
-
+	
+/**
+ * Calculate a tour planning with a given number of tour
+ * @param controler
+ * @param window
+ */
+	public void calculatePlanning(Controler controler, Window window);
 	/**
 	 * Cancel the creation of a new delivery and go back to previous screen
 	 * 
@@ -63,7 +61,25 @@ public interface State {
 	 * @param window
 	 */
 	public void addDelivery(Controler controler, Window window);
-
+	
+	/**
+	 * Confims parameters change
+	 * @param controler
+	 * @param window
+	 */
+	public void confirmParameters(Controler controler, Window window);
+	/**
+	 * Delete delivery
+	 * @param controler
+	 * @param window
+	 */
+	public void deleteDelivery(Controler controler, Window window);
+	/**
+	 * Confirm the addition of a new delivery
+	 * @param controler
+	 * @param window
+	 */
+	public void confirmNewDelivery(Controler controler, Window window);
 	/**
 	 * Get the state to a string for test use.
 	 */
