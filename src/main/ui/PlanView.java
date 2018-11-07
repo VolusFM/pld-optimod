@@ -5,12 +5,16 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.Stroke;
+import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JPanel;
+import javax.swing.ToolTipManager;
 
 import main.model.Delivery;
 import main.model.Intersection;
@@ -34,6 +38,7 @@ public class PlanView extends JPanel {
 
 	/* Highlighted elements */
 	private Intersection highlightedIntersection;
+	private Section highlightedSection;
 
 	/* Graphic attributes */
 	private double xConstant = 1.4;
@@ -59,8 +64,7 @@ public class PlanView extends JPanel {
 		this.findExtremes();
 		/* Display */
 		setBackground(Color.WHITE);
-		// TODO tooltip pour les rues
-		// setToolTipText("TOOLTIP");
+		setToolTipText("");
 	}
 	// TODO : mettre l'observer sur le plan.
 
@@ -116,6 +120,13 @@ public class PlanView extends JPanel {
 			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
 			graphics2d.setStroke(stroke);
 			printIntersection(graphics2d, highlightedIntersection);
+		}
+		/* Highlighted section */
+		if (highlightedSection != null) {
+			graphics2d.setColor(Color.MAGENTA);
+			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
+			graphics2d.setStroke(stroke);
+			printSection(graphics2d, highlightedSection);
 		}
 	}
 
@@ -298,4 +309,22 @@ public class PlanView extends JPanel {
 	public void setHighlightedIntersection(Intersection intersection) {
 		this.highlightedIntersection = intersection;
 	}
+
+	public void setHighlightedSection(Section findClosestSection) {
+		this.highlightedSection = findClosestSection;
+		setToolTipText(highlightedSection.getStreetName());
+		ToolTipManager manager = ToolTipManager.sharedInstance();
+		manager.setInitialDelay(0);
+		manager.setReshowDelay(0);
+		manager.setDismissDelay(1000);
+
+		Point mousePos = MouseInfo.getPointerInfo().getLocation();
+		int x = mousePos.x - getLocationOnScreen().x;
+		int y = mousePos.y - getLocationOnScreen().y;
+		MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false);
+
+		ToolTipManager.sharedInstance().mouseMoved(phantom);
+
+	}
+
 }

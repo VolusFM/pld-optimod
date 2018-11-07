@@ -2,6 +2,7 @@ package main.controler;
 
 import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Section;
 import main.ui.Window;
 
 public class Controler {
@@ -142,9 +143,12 @@ public class Controler {
 		currentState.calculatePlanning(this, window);
 	}
 
-	public void clickedNearIntersection(Intersection findClosestIntersection) {
-		// FIXME : do it with states ?
-		window.highlightSelectedIntersection(findClosestIntersection);
+	public void clickedNearIntersection(Intersection closestIntersection) {
+		currentState.clickedNearIntersection(this, window, closestIntersection);
+	}
+
+	public void clickedNearSection(Section closestSection) {
+		currentState.clickedNearSection(this, window, closestSection);
 	}
 
 	/**

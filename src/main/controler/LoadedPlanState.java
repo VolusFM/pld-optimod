@@ -6,6 +6,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.model.Intersection;
 import main.model.ModelInterface;
 import main.ui.Window;
 import main.xml.XMLDeserializer;
@@ -19,6 +20,8 @@ public class LoadedPlanState extends DefaultState {
 		XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
 		window.displayCalculateTourButtonPanel();
 		window.toggleDeliveryMenCountButtonVisiblity();
+
+		
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 

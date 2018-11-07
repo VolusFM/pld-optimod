@@ -5,7 +5,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.ScrollPane;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -17,6 +18,9 @@ import main.controler.Controler;
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Plan;
+import main.model.Section;
+import main.model.Step;
+import main.model.Tour;
 
 public class Window extends JFrame {
 
@@ -182,7 +186,6 @@ public class Window extends JFrame {
 		add(rightPanel, BorderLayout.EAST);
 		redraw();
 	}
-
 	/**
 	 * Create the panel with the planning of the tour as a board of delivery
 	 * men, locations, hours and list of roads.
@@ -197,7 +200,7 @@ public class Window extends JFrame {
 	public void hideAddingDeliveryPanel() {
 		planningPanel.hideAddingDeliveryPanel();
 	}
-
+	
 	/**
 	 * Method used to set the lat and long fields of the adding form
 	 * 
@@ -257,4 +260,38 @@ public class Window extends JFrame {
 		header.toggleReturnButtonVisibility();
 	}
 
+	public void highlightSelectedSection(Section findClosestSection) {
+		planPanel.setHighlightedSection(findClosestSection);
+	}
+	
+	
+	public void listSectionsOfTour(Tour tour, Section currentSection) {
+		List<Section> sections = new ArrayList<>();
+		
+		for (Step step : tour.getSteps()) {
+			for (Section section : step.getSections()) {
+				sections.add(section);
+			}
+		}
+		
+		String html = "<html>";
+		
+		for (Section section : sections) {
+			if (section.getIdStartIntersection() == currentSection.getIdStartIntersection()
+				&& section.getIdEndIntersection() == currentSection.getIdEndIntersection()) {
+				html += ("<b> " + section.getStreetName() + " </b>");
+			} else {
+				html += (" " + section.getStreetName() + " ");
+			}
+		}
+		
+		html += "</html>";
+		
+		JLabel label = new JLabel(html);
+		
+		JPanel south = new JPanel();
+		south.add(label);
+		
+		add(south, BorderLayout.SOUTH);
+	}
 }

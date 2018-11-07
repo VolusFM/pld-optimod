@@ -6,6 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.model.Intersection;
+import main.model.Section;
 import main.ui.Window;
 import main.xml.XMLException;;
 
@@ -48,6 +50,14 @@ public class DefaultState implements State {
 
 	@Override
 	public void confirmNewDelivery(Controler controler, Window window) {
+	}
+	
+	@Override
+	public void clickedNearIntersection(Controler controler, Window window, Intersection intersection) {
+	}
+	
+	@Override
+	public void clickedNearSection(Controler controler, Window window, Section section) {
 	}
 
 }

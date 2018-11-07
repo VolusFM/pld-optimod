@@ -14,7 +14,7 @@ import main.ui.PlanView.ScreenCoordinate;
 public class PlanListener extends MouseAdapter {
 
 	Controler controler;
-	
+
 	public PlanListener(Controler controler) {
 		this.controler = controler;
 	}
@@ -28,17 +28,15 @@ public class PlanListener extends MouseAdapter {
 		
 		Intersection closest = ModelInterface.findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude);
 
+
 		controler.clickedNearIntersection(closest);		
 		
-		// FIXME : doesn't work and NullPointerException
-		controler.window.setLatLonFieldsOfAddingPanel(closest.getLat(), closest.getLon());
-		
-		
+		controler.clickedNearSection(ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
+
 	}
-	
-	
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
-//		System.out.println(e);
+		// System.out.println(e);
 	}
 }

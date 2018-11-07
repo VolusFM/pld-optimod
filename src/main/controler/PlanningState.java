@@ -1,6 +1,8 @@
 package main.controler;
 
+import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Section;
 import main.ui.RangeSelector;
 import main.ui.RangeSelector.SelectionCancelledException;
 import main.ui.Window;
@@ -36,6 +38,17 @@ public class PlanningState extends DefaultState {
 	public void addDelivery(Controler controler, Window window) {
 		// TODO : window.openNewDelivery()
 		controler.setCurrentState(controler.addState);
+	}
+	
+	
+	@Override
+	public void clickedNearSection(Controler controler, Window window, Section section) {
+		window.highlightSelectedSection(section);
+	}
+
+	@Override
+	public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
+		window.highlightSelectedIntersection(closestIntersection);
 	}
 
 	public String stateToString() {
