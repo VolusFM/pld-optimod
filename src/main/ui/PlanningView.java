@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.swing.JScrollPane;
 import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Tour;
 
 public class PlanningView extends JPanel {
 
@@ -93,14 +95,22 @@ public class PlanningView extends JPanel {
 		buttonRangePanel.add(addDeliveryPoint, BorderLayout.WEST);
 		buttonRangePanel.add(cancelModifications, BorderLayout.EAST);
 		tablePanel.add(new JScrollPane(planning));
-		totalViewPanel.setLayout(new GridLayout (2,1));
+		totalViewPanel.setLayout(new GridLayout(2,1));
 		totalViewPanel.add(buttonRangePanel);
 		totalViewPanel.add(tablePanel);
 		this.add(totalViewPanel);
 	}
 
 	public void selectRow(Intersection closestIntersection) {
-		List<Delivery> deliveries = ModelInterface.getDeliveries();
+		List<Tour> tours = ModelInterface.getTourPlanning();
+		List<Delivery> deliveries = new ArrayList<>();
+
+		for (Tour tour : tours) {
+			for (Delivery delivery : tour.getDeliveryPoints()) {
+				deliveries.add(delivery);
+			}
+		}
+		
 		Iterator<Delivery> it = deliveries.iterator();
 		boolean found = false;
 		int i = 0;

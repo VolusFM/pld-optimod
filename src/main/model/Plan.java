@@ -111,10 +111,6 @@ public class Plan {
 
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = new Pair<>(distances, predecessors);
 		
-		
-//		System.out.println("dist " + distances.get(254581659));
-//		System.out.println("pred " + predecessors.get(254581659));
-		
 		return result;
 	}
 
