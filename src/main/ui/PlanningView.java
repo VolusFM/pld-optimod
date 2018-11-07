@@ -2,9 +2,11 @@ package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.Collection;
 import java.util.Iterator;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,19 +22,22 @@ public class PlanningView extends JPanel {
 	/* Components */
 	private JTable planning;
 	private JButton addDeliveryPoint;
-	
+	private JButton cancelModifications;
+
 	/* Listener */
-	private ButtonListener buttonListener ;
-	
+	private ButtonListener buttonListener;
+
 	/* Components texts */
-	private final String ADD_DELIVERY_POINT_BUTTON 		= "Ajouter un point de livraison";
-	
+	private final String ADD_DELIVERY_POINT_BUTTON 					= "Ajouter un point de livraison";
+	private final String CANCEL_MODIFICATIONS_BUTTON 				= "Annuler la dernière modification";
+
 	/* Actions */
-	protected final static String ACTION_ADDING_DELIVERY_POINT 	= "ADD_DELIVERY_POINT";
+	protected final static String ACTION_ADDING_DELIVERY_POINT 		= "ADD_DELIVERY_POINT";
+	protected final static String ACTION_CANCELLING_MODIFICATIONS 	= "CANCEL_MODIFICATIONS";
 
 	/* Board attributes */
-	private final int columnsNumber 					= 4;
-	private final String[] boardTitle 					= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
+	private final int columnsNumber									= 4;
+	private final String[] boardTitle 								= { "Livreur", "Adresse", "Heure de passage", "Trajet" };
 
 	/* Graphic components */
 	// private Graphics graphics;
@@ -80,11 +85,15 @@ public class PlanningView extends JPanel {
 			while (itDeliveries.hasNext()) {
 				Delivery currentDelivery = itDeliveries.next();
 				boardDatas[currentLastEmptyLine][0] = deliveryMan;
-				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; " + currentDelivery.getAddress().getLon() + ")";
-				/*SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
-				Calendar hour = currentDelivery.getHour();
-				dateFormat.setTimeZone(hour.getTimeZone());*/
-				boardDatas[currentLastEmptyLine][2] = "H"; //dateFormat.format(hour.getTime()); 
+				boardDatas[currentLastEmptyLine][1] = "(" + currentDelivery.getAddress().getLat() + "; "
+						+ currentDelivery.getAddress().getLon() + ")";
+				/*
+				 * SimpleDateFormat dateFormat = new
+				 * SimpleDateFormat("HH-mm-ss"); Calendar hour =
+				 * currentDelivery.getHour();
+				 * dateFormat.setTimeZone(hour.getTimeZone());
+				 */
+				boardDatas[currentLastEmptyLine][2] = "H"; // dateFormat.format(hour.getTime());
 				// TODO : calcul heure passage (Model ou IHM ?);
 				boardDatas[currentLastEmptyLine][3] = "P";
 				// TODO : liste des noms de rues dans l'ordre (Model)
@@ -94,11 +103,25 @@ public class PlanningView extends JPanel {
 		/* Building board */
 		planning = new JTable(boardDatas, boardTitle);
 		PlanningListener planningListener = new PlanningListener(planning);
-		/* Displaying */
-		addDeliveryPoint = new JButton (ADD_DELIVERY_POINT_BUTTON);
+		/* Buttons */
+		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
 		addDeliveryPoint.addActionListener(buttonListener);
-		this.add(addDeliveryPoint, BorderLayout.NORTH);
-		this.add(new JScrollPane(planning), BorderLayout.CENTER);
+		cancelModifications  = new JButton(CANCEL_MODIFICATIONS_BUTTON);
+		cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
+		cancelModifications.addActionListener(buttonListener);
+		/* Displaying */
+		JPanel totalViewPanel = new JPanel();
+		JPanel buttonRangePanel = new JPanel();
+		buttonRangePanel.setSize(600, 200);
+		JPanel tablePanel = new JPanel();
+		tablePanel.setSize(600, 600);
+		buttonRangePanel.add(addDeliveryPoint, BorderLayout.WEST);
+		buttonRangePanel.add(cancelModifications, BorderLayout.EAST);
+		tablePanel.add(new JScrollPane(planning));
+		totalViewPanel.setLayout(new GridLayout (2,1));
+		totalViewPanel.add(buttonRangePanel);
+		totalViewPanel.add(tablePanel);
+		this.add(totalViewPanel);
 	}
 }

@@ -103,7 +103,7 @@ public class Window extends JFrame {
 		/* Set content */
 		add(rightPanel, BorderLayout.EAST);
 	}
-	
+
 	/**
 	 * Create the panel with the city plan.
 	 */
@@ -124,7 +124,8 @@ public class Window extends JFrame {
 	 */
 	public void displayCalculateTourButtonPanel() {
 		rightPanel.setVisible(false);
-		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
+		rightPanel = new JPanel(); // XXX : setting a property then
+									// reconstructing is not clean
 		/* Create Content */
 		JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
 		rightPanel.add(selectionButton);
@@ -140,7 +141,8 @@ public class Window extends JFrame {
 	 */
 	public void displayTourPlanningPanel() {
 		rightPanel.setVisible(false);
-		rightPanel = new JPanel(); // XXX : setting a property then reconstructing is not clean
+		rightPanel = new JPanel(); // XXX : setting a property then
+									// reconstructing is not clean
 		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
@@ -151,22 +153,37 @@ public class Window extends JFrame {
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 	}
-	
+
 	/**
-	 * Create the panel with the planning of the tour as a board of delivery
-	 * men, locations, hours and list of roads.
+	 * Create the panel use for creating a new delivery point
 	 */
 	public void displayAddingDeliveryPanel() {
 		rightPanel.setVisible(false);
-		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
 		addingPanel = new AddingDeliveryView(this);
-		rightPanel.add(addingPanel, BorderLayout.SOUTH);
 		/* Set content */
+		rightPanel.add(addingPanel, BorderLayout.SOUTH);
 		rightPanel.setVisible(true);
 	}
-	
+
 	/**
-	 * Convenience method to create a new button with a given text and action, 
+	 * Remove the panel use for creating a new delivery point
+	 */
+	public void hideAddingDeliveryPanel() {
+		rightPanel.setVisible(false);
+		rightPanel.removeAll();
+		/* Create Content */
+		rightPanel.setLayout(new BorderLayout());
+		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		planningPanel = new PlanningView(this);
+		rightPanel.add(planningText, BorderLayout.NORTH);
+		rightPanel.add(planningPanel, BorderLayout.CENTER);
+		/* Set content */
+		rightPanel.setVisible(true);
+		add(rightPanel, BorderLayout.EAST);
+	}
+
+	/**
+	 * Convenience method to create a new button with a given text and action,
 	 * and to bind it to the action listener
 	 */
 	private JButton createButton(String text, String action) {
@@ -174,15 +191,15 @@ public class Window extends JFrame {
 		button.setActionCommand(action);
 		button.addActionListener(buttonListener);
 		return button;
-		
 	}
-	
+
 	/**
-	 * Update the graphics on the window, used when we don't add/remove components
+	 * Update the graphics on the window, used when we don't add/remove
+	 * components
 	 */
 	public void redraw() {
 		repaint();
 		revalidate();
 	}
-	
+
 }
