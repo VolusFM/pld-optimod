@@ -35,8 +35,9 @@ public class PlanView extends JPanel {
 	/* Highlighted elements */
 	private Intersection highlightedIntersection;
 
-	/* Graphic components */
-	// private Graphics graphics;
+	/* Graphic attributes */
+	private double xConstant = 1.4;
+	private double yConstant = 0.7;
 
 	/**
 	 * Create the graphical view for drawing the charged plan with the scale s
@@ -56,7 +57,6 @@ public class PlanView extends JPanel {
 		this.scale = s;
 		this.plan = p;
 		this.findExtremes();
-		// setSize(400, 400);
 		/* Display */
 		setBackground(Color.WHITE);
 		// TODO tooltip pour les rues
@@ -212,8 +212,8 @@ public class PlanView extends JPanel {
 		lat = (lat - minLat) / (maxLat - minLat);
 		lon = (lon - minLong) / (maxLong - minLong);
 		/* Scaling */
-		int x = (int) Math.round(lat * getHeight());
-		int y = (int) Math.round(lon * getWidth());
+		int x = (int) Math.round(xConstant * lat * getHeight());
+		int y = (int) Math.round(yConstant * lon * getWidth());
 
 		return new ScreenCoordinate(x, y);
 	}
@@ -222,8 +222,8 @@ public class PlanView extends JPanel {
 		int x = screenCoordinate.getX();
 		int y = screenCoordinate.getY();
 		/* Normalization */
-		double latSpan = (maxLat - minLat) / getHeight();
-		double longSpan = (maxLong - minLong) / getWidth();
+		double latSpan = (maxLat - minLat) /( xConstant * getHeight());
+		double longSpan = (maxLong - minLong) /( yConstant * getWidth());
 
 		double lat = minLat + x * latSpan;
 		double lon = minLong + y * longSpan;

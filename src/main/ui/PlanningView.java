@@ -2,13 +2,12 @@ package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-
-import java.awt.GridLayout;
-import java.util.Collection;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -22,8 +21,9 @@ public class PlanningView extends JPanel {
 	/* Components */
 	private PlanningTable planning;
 	private JButton addDeliveryPoint;
-
 	private JButton cancelModifications;
+	private JPanel totalViewPanel;
+	private AddingDeliveryView addingPanel;
 
 	/* Listener */
 	private ButtonListener buttonListener;
@@ -42,6 +42,7 @@ public class PlanningView extends JPanel {
 
 	/* Graphic components */
 	private Window window;
+	private GridBagConstraints displayConstraint;
 
 	/**
 	 * Create the graphical view for drawing the loaded plan with the scale s in
@@ -58,8 +59,6 @@ public class PlanningView extends JPanel {
 	public PlanningView(Window w) {
 		super();
 		this.buttonListener = w.buttonListener;
-		/* Initialize */
-		setSize(600, 900);
 		this.window = w;
 		/* Display */
 		setBackground(Color.WHITE);
@@ -71,12 +70,10 @@ public class PlanningView extends JPanel {
 	 * Function called to create the planning panel.
 	 */
 	public void createBoardPanel() {
-
 		/* Building board */
 		planning = new PlanningTable();
 		PlanningListener planningListener = new PlanningListener(planning, window);
-		planning.getSelectionModel().addListSelectionListener(planningListener);
-		
+		planning.getSelectionModel().addListSelectionListener(planningListener);		
 		/* Buttons */
 		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
@@ -84,21 +81,74 @@ public class PlanningView extends JPanel {
 		cancelModifications  = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 		cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 		cancelModifications.addActionListener(buttonListener);
-		/* Displaying */
-		JPanel totalViewPanel = new JPanel();
+		/* Panels */
+		totalViewPanel = new JPanel();
 		JPanel buttonRangePanel = new JPanel();
-		buttonRangePanel.setSize(600, 200);
 		JPanel tablePanel = new JPanel();
-		tablePanel.setSize(600, 600);
 		buttonRangePanel.add(addDeliveryPoint, BorderLayout.WEST);
 		buttonRangePanel.add(cancelModifications, BorderLayout.EAST);
 		tablePanel.add(new JScrollPane(planning));
-		totalViewPanel.setLayout(new GridLayout (2,1));
-		totalViewPanel.add(buttonRangePanel);
-		totalViewPanel.add(tablePanel);
+		totalViewPanel.setLayout(new GridBagLayout());
+		/* GridBagLayout Displaying */
+		displayConstraint = new GridBagConstraints();
+		// Buttons Panels upper and larger
+		displayConstraint.gridx = displayConstraint.gridy = 0; 
+		displayConstraint.gridwidth = GridBagConstraints.REMAINDER; 
+		displayConstraint.gridheight = 1; 
+		displayConstraint.anchor = GridBagConstraints.LINE_START; 
+		displayConstraint.insets = new Insets(5, 0, 5, 0); 
+		totalViewPanel.add(buttonRangePanel, displayConstraint);
+		// Table just behind and fill the place
+		displayConstraint.gridx = 0;
+		displayConstraint.gridy = 1;
+		displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+		displayConstraint.gridheight = 1; 
+		displayConstraint.weightx = 1.;
+		displayConstraint.weighty = 1.;
+		displayConstraint.fill = GridBagConstraints.BOTH;
+		displayConstraint.anchor = GridBagConstraints.LINE_START;
+		displayConstraint.insets = new Insets(5, 0, 5, 0);
+		totalViewPanel.add(tablePanel, displayConstraint);
 		this.add(totalViewPanel);
 	}
-
+	
+	/** 
+	 * Method displaying the elements to add a new delivery point 
+	 */
+	protected void displayAddingDeliveryPanel(){
+		totalViewPanel.setVisible(false);
+		addingPanel = new AddingDeliveryView(window);
+		/* GridBagLayout Displaying */
+		displayConstraint.gridx = 0;
+		displayConstraint.gridy = 2;
+		displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+		displayConstraint.gridheight = 1; 
+		displayConstraint.weightx = 1.;
+		displayConstraint.weighty = 1.;
+		displayConstraint.fill = GridBagConstraints.BOTH;
+		displayConstraint.anchor = GridBagConstraints.LINE_START;
+		displayConstraint.insets = new Insets(5, 0, 5, 0);
+		/* Displaying */
+		totalViewPanel.add(addingPanel, displayConstraint);
+		totalViewPanel.setVisible(true);
+	}
+	
+	/** 
+	 * Method hiding the elements to add a new delivery point 
+	 */
+	protected void hideAddingDeliveryPanel(){
+		totalViewPanel.setVisible(false);
+		addingPanel.setVisible(false);
+		addingPanel.removeAll();
+		totalViewPanel.setVisible(true);
+	}
+	
+	/**
+	 * Method used to synchronize the textual view with the plan 
+	 * A click in the plan select the corresponding rox of the planning
+	 * if existing
+	 * @param closestIntersection
+	 */
 	public void selectRow(Intersection closestIntersection) {
 		List<Delivery> deliveries = ModelInterface.getDeliveries();
 		Iterator<Delivery> it = deliveries.iterator();
