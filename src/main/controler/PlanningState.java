@@ -1,8 +1,10 @@
 package main.controler;
 
+import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
+import main.model.Step;
 import main.ui.RangeSelector;
 import main.ui.RangeSelector.SelectionCancelledException;
 import main.ui.Window;
@@ -49,6 +51,14 @@ public class PlanningState extends DefaultState {
 	@Override
 	public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
 		window.highlightSelectedIntersection(closestIntersection);
+		
+		
+		Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
+		if (selectedDelivery != null) {
+			Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
+			System.out.println(step);
+			window.listSectionsOfStep(step);
+		}
 	}
 
 	public String stateToString() {

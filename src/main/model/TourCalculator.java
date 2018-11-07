@@ -67,6 +67,18 @@ public class TourCalculator {
 	public void setDeliveryMenCount(int deliveryMenCount) {
 		this.deliveryMenCount = deliveryMenCount;
 	}
+	
+	public Delivery findCorrespondingDelivery(Intersection intersection) {
+		for (Delivery delivery : deliveries) {
+			if (delivery.getAddress().equals(intersection)) {
+				return delivery;
+			}
+		}
+		if (depot.getAddress().equals(intersection)) {
+			return depot;
+		}
+		return null;
+	}
 
 	public void calculateTours() {
 		// FIXME : assumes a deleveryMenCount of 1
@@ -159,7 +171,7 @@ public class TourCalculator {
 	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
 		long sourceId = source.getId();
 		for (Long id : predecessors.keySet()) {
-			if (id == sourceId) {
+			if (id.equals(sourceId)) {
 				continue;
 			}
 

@@ -7,9 +7,17 @@ public class Step {
 
 	private List<Section> sections;
 	private Delivery startDelivery;
+	private Delivery endDelivery;
 
 	public Step(List<Section> sections) {
 		this.sections = new ArrayList<>(sections);
+		// System.out.println("section : " + sections.get(0));
+		// System.out.println("inters : " + sections.get(0).getStart());
+		if (sections.get(0) != null && sections.get(sections.size() - 1) != null) { //FIXME why can they be null ?
+			startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
+			endDelivery = TourCalculator.getInstance()
+					.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
+		}
 	}
 
 	public double calculateLength() {
@@ -27,5 +35,13 @@ public class Step {
 
 	public List<Section> getSections() {
 		return sections;
+	}
+
+	public Delivery getStartDelivery() {
+		return startDelivery;
+	}
+
+	public Delivery getEndDelivery() {
+		return endDelivery;
 	}
 }

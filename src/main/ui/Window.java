@@ -15,7 +15,6 @@ import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 import main.model.Step;
-import main.model.Tour;
 
 public class Window extends JFrame {
 
@@ -27,6 +26,8 @@ public class Window extends JFrame {
 	private WindowHeader header;
 	private JPanel centerPanel;
 	private JPanel rightPanel;
+	private JPanel southPanel = new JPanel();
+	
 	protected static PlanView planPanel;
 	protected static PlanningView planningPanel;
 	protected static AddingDeliveryView addingPanel;
@@ -39,11 +40,11 @@ public class Window extends JFrame {
 
 	/* Component's text */
 	private final String WINDOW_TITLE = "Optimod";
-	private final String TEXT_DELIVERY_SELECTION = "SÃ©lectionnez un fichier de demande de livraison au format XML :";
-	private final String TEXT_PLAN_SELECTION = "SÃ©lectionnez un fichier de plan au format XML :";
+	private final String TEXT_DELIVERY_SELECTION = "Sélectionnez un fichier de demande de livraison au format XML :";
+	private final String TEXT_PLAN_SELECTION = "Sélectionnez un fichier de plan au format XML :";
 	private final String BUTTON_BROWSE = "Parcourir";
-	private final String BUTTON_TOUR_CALCUL = "Planifier la tournÃ©e";
-	private final String TEXT_PLANNING_BOARD = "Planning des tournÃ©es obtenu :";
+	private final String BUTTON_TOUR_CALCUL = "Planifier la tournée";
+	private final String TEXT_PLANNING_BOARD = "Planning des tournées obtenu :";
 
 	/* Button's action */
 	protected static final String ACTION_SELECTION_PLAN = "LOAD_PLAN";
@@ -233,33 +234,32 @@ public class Window extends JFrame {
 	}
 	
 	
-	public void listSectionsOfTour(Tour tour, Section currentSection) {
+	public void listSectionsOfStep(Step step) {
+		System.out.println("listSectionsOfStep");
+		southPanel.removeAll();
+
+		southPanel.setVisible(false);
+
 		List<Section> sections = new ArrayList<>();
 		
-		for (Step step : tour.getSteps()) {
-			for (Section section : step.getSections()) {
-				sections.add(section);
-			}
+		for (Section section : step.getSections()) {
+			sections.add(section);
 		}
 		
 		String html = "<html>";
 		
 		for (Section section : sections) {
-			if (section.getIdStartIntersection() == currentSection.getIdStartIntersection()
-				&& section.getIdEndIntersection() == currentSection.getIdEndIntersection()) {
-				html += ("<b> " + section.getStreetName() + " </b>");
-			} else {
-				html += (" " + section.getStreetName() + " ");
-			}
+			html += (" " + section.getStreetName() + " ");
 		}
 		
 		html += "</html>";
 		
 		JLabel label = new JLabel(html);
 		
-		JPanel south = new JPanel();
-		south.add(label);
-		
-		add(south, BorderLayout.SOUTH);
+		southPanel.add(label);
+		southPanel.setVisible(true);
+
+		add(southPanel, BorderLayout.SOUTH);
+		redraw();
 	}
 }

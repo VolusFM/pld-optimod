@@ -58,7 +58,11 @@ public abstract class ModelInterface {
 		return plan.findClosestIntersection(latitude, longitude);
 	}
 	
-	public static List<Tour> findTourContainingSection(Section section) {
-		return tourFactory.findToursContainingSection(section);
+	public static Step findStepBeforeDelivery(Delivery delivery) {
+		return tourFactory.findStepBeforeDelivery(delivery);
+	}
+	
+	public static Delivery findCorrespondingDelivery(Intersection intersection) {
+		return tourCalculator.findCorrespondingDelivery(intersection);
 	}
 }
