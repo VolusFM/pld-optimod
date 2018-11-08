@@ -25,7 +25,7 @@ public class TourCalculator {
 	private int nodesCount;
 	private int[] delay;
 
-	private int calculationTimeLimitMs = 10000;
+	private int calculationTimeLimitMs = 1000000;
 
 	private HashMap<Pair<Long, Long>, Step> steps;
 
@@ -161,10 +161,8 @@ public class TourCalculator {
 
 		List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
 
-		TourFactory.createTour(1, solutionSteps, depot, deliveries); // FIXME :
-																		// hardcoded
-																		// 1 and
-																		// deliveries
+		TourFactory.createTour(1, solutionSteps, depot, deliveries);
+		// FIXME : hardcoded 1 and deliveries
 	}
 
 	private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
@@ -173,25 +171,19 @@ public class TourCalculator {
 			if (id.equals(sourceId)) {
 				continue;
 			}
-			
-			boolean unaccessible = false;
+
+			// Filter useful nodes, we don't need to create steps between every
+			// single intersection
+			if (findCorrespondingDelivery(ModelInterface.getPlan().getIntersectionById(id)) == null) {
+				continue;
+			}
 
 			ArrayList<Long> intersectionsIds = new ArrayList<>();
 			Long currentId = id;
 			do {
 				intersectionsIds.add(currentId);
 				currentId = predecessors.get(currentId);
-
-				if (currentId == null) {
-					unaccessible = true;
-					break;
-				}
-
 			} while (currentId != sourceId);
-			
-			if (unaccessible) {
-				continue;
-			}
 
 			intersectionsIds.add(sourceId);
 
@@ -202,18 +194,11 @@ public class TourCalculator {
 				Section s = findSectionBetween(intersectionsIds.get(i), intersectionsIds.get(i + 1));
 				if (s != null) {
 					sections.add(s);
-				} else {
-					unaccessible = true;
 				}
-			}
-			
-			if (unaccessible) {
-				continue;
 			}
 
 			Step step = new Step(sections);
 			Pair<Long, Long> pair = new Pair<Long, Long>(sourceId, id);
-
 			steps.put(pair, step);
 		}
 	}
@@ -225,8 +210,6 @@ public class TourCalculator {
 			}
 
 		}
-//		System.out.println("no section between " + idStart + " and " + idEnd);
-
 		return null;
 	}
 
@@ -234,10 +217,8 @@ public class TourCalculator {
 		List<Step> list = new ArrayList<Step>();
 		for (int i = 0; i < solution.length - 1; i++) {
 			/* Convert ids used with TSP to ids used in Model */
-			long idStart = solution[i] == 0 ? depot.getAddress().getId()
-					: deliveries.get(solution[i] - 1).getAddress().getId();
-			long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId()
-					: deliveries.get(solution[i + 1] - 1).getAddress().getId();
+			long idStart = solution[i] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i] - 1).getAddress().getId();
+			long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i + 1] - 1).getAddress().getId();
 
 			list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
 		}
@@ -257,5 +238,54 @@ public class TourCalculator {
 
 	public Delivery getDepot() {
 		return depot;
+	}
+
+	public void removeDeliveryFromTour(Delivery delivery, Tour tour) {
+		/* XXX : not futureproof yet, uses the steps hashmap */
+		/* Doesn't need any recalculation */
+
+		System.out.println(tour.getSteps());
+
+		if (delivery.equals(depot)) {
+			System.out.println(("Cant remove depot"));
+			return;
+		}
+
+		if (tour.getSteps().size() < 3) {
+			System.out.println(("Cant remove last delivery"));
+			return;
+
+		}
+
+		/* Find the delivery in the steps */
+		Step stepBeforeDelivery = TourFactory.getInstance().findStepBeforeDelivery(delivery);
+
+		int indexOfStepBeforeDelivery = tour.getSteps().indexOf(stepBeforeDelivery);
+		int indexOfStepAfterDelivery = indexOfStepBeforeDelivery + 1;
+		Step stepAfterDelivery = tour.getSteps().get(indexOfStepAfterDelivery);
+
+		System.out.println("stepBeforeDelivery :" + stepBeforeDelivery + "(" + indexOfStepBeforeDelivery + ")");
+		System.out.println("stepAfterDelivery :" + stepAfterDelivery + "(" + indexOfStepAfterDelivery + ")");
+
+		/* Link the deliveries before and after the one removed */
+		Delivery deliveryBefore = stepBeforeDelivery.getStartDelivery();
+		Delivery deliveryAfter = stepAfterDelivery.getEndDelivery();
+
+		/*
+		 * The new step will be in place of the step before the delivery and
+		 * will use the shortest path between them
+		 */
+		tour.getSteps().add(indexOfStepBeforeDelivery + 1, steps.get(new Pair<Long, Long>(deliveryBefore.getAddress().getId(), deliveryAfter.getAddress().getId())));
+
+		/* Remove the steps before and after the delivery */
+		tour.getSteps().remove(stepBeforeDelivery);
+		tour.getSteps().remove(stepAfterDelivery);
+
+		/* Remove the delivery */
+		tour.removeDelivery(delivery);
+		deliveries.remove(delivery);
+
+		System.out.println(tour.getSteps());
+
 	}
 }
