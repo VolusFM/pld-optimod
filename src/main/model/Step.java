@@ -11,15 +11,8 @@ public class Step {
 
 	public Step(List<Section> sections) {
 		this.sections = new ArrayList<>(sections);
-		 //System.out.println("section : " + sections.get(0));
-		 //System.out.println("inters : " + sections.get(0).getStart());
-//		if (sections.size() > 0) { //FIXME why can they be null ?
-			startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
-			endDelivery = TourCalculator.getInstance()
-					.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
-//		} else {
-//			System.out.println("Wrong section : " + sections);
-//		}
+		startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
+		endDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
 	}
 
 	public double calculateLength() {
@@ -32,7 +25,7 @@ public class Step {
 
 	@Override
 	public String toString() {
-		return sections.toString();
+		return "Step from " + startDelivery.getAddress().getId() + " to " + endDelivery.getAddress().getId();
 	}
 
 	public List<Section> getSections() {
