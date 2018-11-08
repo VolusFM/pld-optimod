@@ -65,6 +65,8 @@ public class PlanView extends JPanel {
 		/* Display */
 		setBackground(Color.WHITE);
 		setToolTipText("");
+		/* Allow the panel to emit key events */
+		setFocusable(true);
 	}
 	// TODO : mettre l'observer sur le plan.
 
@@ -233,8 +235,8 @@ public class PlanView extends JPanel {
 		int x = screenCoordinate.getX();
 		int y = screenCoordinate.getY();
 		/* Normalization */
-		double latSpan = (maxLat - minLat) /( xConstant * getHeight());
-		double longSpan = (maxLong - minLong) /( yConstant * getWidth());
+		double latSpan = (maxLat - minLat) / (xConstant * getHeight());
+		double longSpan = (maxLong - minLong) / (yConstant * getWidth());
 
 		double lat = minLat + x * latSpan;
 		double lon = minLong + y * longSpan;
@@ -322,9 +324,6 @@ public class PlanView extends JPanel {
 		int x = mousePos.x - getLocationOnScreen().x;
 		int y = mousePos.y - getLocationOnScreen().y;
 		MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false);
-
 		ToolTipManager.sharedInstance().mouseMoved(phantom);
-
 	}
-
 }
