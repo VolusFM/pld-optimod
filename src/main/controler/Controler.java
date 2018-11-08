@@ -1,7 +1,6 @@
 package main.controler;
 
 import main.model.Intersection;
-import main.model.ModelInterface;
 import main.model.Section;
 import main.ui.Window;
 
@@ -17,10 +16,15 @@ public class Controler {
 	protected final ParametersState parametersState = new ParametersState();
 	protected final AddDeliveryState addState = new AddDeliveryState();
 
+	/* Selected elements in model */
+	// XXX : is this the right place ?
+	private Intersection selectedIntersection;
+
 	/**
 	 * Create application's controler
 	 * 
-	 * @param        model, model package s entry point
+	 * @param model,
+	 *            model package s entry point
 	 * @param window
 	 */
 	public Controler() {
@@ -158,5 +162,19 @@ public class Controler {
 	 */
 	public State getPreviousState() {
 		return previousState;
+	}
+
+	///
+	public Intersection getSelectedIntersection() {
+		return selectedIntersection;
+	}
+
+	public void setSelectedIntersection(Intersection selectedIntersection) {
+		this.selectedIntersection = selectedIntersection;
+	}
+
+	// XXX
+	public Window getWindow() {
+		return window;
 	}
 }
