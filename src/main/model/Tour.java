@@ -24,6 +24,10 @@ public class Tour {
 		return deliveriesAndDepot;
 	}
 
+	public void removeDelivery(Delivery delivery) {
+		deliveryPoints.remove(delivery);
+	}
+
 	public List<Step> getSteps() {
 		return steps;
 	}

@@ -19,8 +19,7 @@ public class PlanningState extends DefaultState {
 
 	public void openParameters(Controler controler, Window window) {
 		try {
-			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(),
-					"Please select the delivery men count", "Range selector"));
+			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(), "Please select the delivery men count", "Range selector"));
 		} catch (SelectionCancelledException e) {
 			System.out.println("Selection was cancelled, ignoring...");
 		}
@@ -41,8 +40,7 @@ public class PlanningState extends DefaultState {
 		// TODO : window.openNewDelivery()
 		controler.setCurrentState(controler.addState);
 	}
-	
-	
+
 	@Override
 	public void clickedNearSection(Controler controler, Window window, Section section) {
 		window.highlightSelectedSection(section);
@@ -51,14 +49,14 @@ public class PlanningState extends DefaultState {
 	@Override
 	public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
 		window.highlightSelectedIntersection(closestIntersection);
-		
-		
+
 		Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
 		if (selectedDelivery != null) {
 			Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
-			System.out.println(step);
 			window.listSectionsOfStep(step);
 		}
+
+		controler.setSelectedIntersection(closestIntersection);
 	}
 
 	public String stateToString() {

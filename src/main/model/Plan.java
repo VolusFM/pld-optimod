@@ -86,9 +86,7 @@ public class Plan {
 		}
 
 		unSettledId.add(sourceIntersection.getId());
-
-		distances.put(sourceIntersection.getId(), 0.); // 0. because 0 is not a
-														// double
+		distances.put(sourceIntersection.getId(), 0.);
 
 		while (!unSettledId.isEmpty()) {
 			long idEvaluationIntersectionId = findIntersectionWithLowestDistance(distances, unSettledId);
@@ -110,7 +108,7 @@ public class Plan {
 		}
 
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = new Pair<>(distances, predecessors);
-		
+
 		return result;
 	}
 
@@ -163,9 +161,6 @@ public class Plan {
 				closest = current;
 			}
 		}
-
-		System.out.println("Closest is id : " + closest.getId() + " with distance : " + minDistance);
-
 		return closest;
 	}
 
@@ -198,9 +193,6 @@ public class Plan {
 				closest = current;
 			}
 		}
-
-		System.out.println("Closest intersection is : " + closest.getStreetName() + " with distance : " + minDistance);
-
 		return closest;
 	}
 

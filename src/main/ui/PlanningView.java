@@ -32,15 +32,11 @@ public class PlanningView extends JPanel {
 
 	/* Components texts */
 	private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter un point de livraison";
-	private final String CANCEL_MODIFICATIONS_BUTTON = "Annuler la dernière modification";
+	private final String CANCEL_MODIFICATIONS_BUTTON = "Annuler la derniï¿½re modification";
 
 	/* Actions */
 	protected final static String ACTION_ADDING_DELIVERY_POINT = "ADD_DELIVERY_POINT";
 	protected final static String ACTION_CANCELLING_MODIFICATIONS = "CANCEL_MODIFICATIONS";
-
-	/* Board attributes */
-	private final int columnsNumber = 4;
-	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Trajet" };
 
 	/* Graphic components */
 	private Window window;
@@ -75,12 +71,12 @@ public class PlanningView extends JPanel {
 		/* Building board */
 		planning = new PlanningTable();
 		PlanningListener planningListener = new PlanningListener(planning, window);
-		planning.getSelectionModel().addListSelectionListener(planningListener);		
+		planning.getSelectionModel().addListSelectionListener(planningListener);
 		/* Buttons */
 		addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
 		addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
 		addDeliveryPoint.addActionListener(buttonListener);
-		cancelModifications  = new JButton(CANCEL_MODIFICATIONS_BUTTON);
+		cancelModifications = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 		cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 		cancelModifications.addActionListener(buttonListener);
 		/* Panels */
@@ -91,25 +87,25 @@ public class PlanningView extends JPanel {
 		buttonRangePanel.add(cancelModifications, BorderLayout.EAST);
 		tablePanel.add(new JScrollPane(planning));
 
-		//totalViewPanel.setLayout(new GridLayout(2,1));
-		//totalViewPanel.add(buttonRangePanel);
-		//totalViewPanel.add(tablePanel);
+		// totalViewPanel.setLayout(new GridLayout(2,1));
+		// totalViewPanel.add(buttonRangePanel);
+		// totalViewPanel.add(tablePanel);
 
 		totalViewPanel.setLayout(new GridBagLayout());
 		/* GridBagLayout Displaying */
 		displayConstraint = new GridBagConstraints();
 		// Buttons Panels upper and larger
-		displayConstraint.gridx = displayConstraint.gridy = 0; 
-		displayConstraint.gridwidth = GridBagConstraints.REMAINDER; 
-		displayConstraint.gridheight = 1; 
-		displayConstraint.anchor = GridBagConstraints.LINE_START; 
-		displayConstraint.insets = new Insets(5, 0, 5, 0); 
+		displayConstraint.gridx = displayConstraint.gridy = 0;
+		displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+		displayConstraint.gridheight = 1;
+		displayConstraint.anchor = GridBagConstraints.LINE_START;
+		displayConstraint.insets = new Insets(5, 0, 5, 0);
 		totalViewPanel.add(buttonRangePanel, displayConstraint);
 		// Table just behind and fill the place
 		displayConstraint.gridx = 0;
 		displayConstraint.gridy = 1;
 		displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-		displayConstraint.gridheight = 1; 
+		displayConstraint.gridheight = 1;
 		displayConstraint.weightx = 1.;
 		displayConstraint.weighty = 1.;
 		displayConstraint.fill = GridBagConstraints.BOTH;
@@ -119,18 +115,18 @@ public class PlanningView extends JPanel {
 
 		this.add(totalViewPanel);
 	}
-	
-	/** 
-	 * Method displaying the elements to add a new delivery point 
+
+	/**
+	 * Method displaying the elements to add a new delivery point
 	 */
-	protected void displayAddingDeliveryPanel(){
+	protected void displayAddingDeliveryPanel() {
 		totalViewPanel.setVisible(false);
 		addingPanel = new AddingDeliveryView(window);
 		/* GridBagLayout Displaying */
 		displayConstraint.gridx = 0;
 		displayConstraint.gridy = 2;
 		displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-		displayConstraint.gridheight = 1; 
+		displayConstraint.gridheight = 1;
 		displayConstraint.weightx = 1.;
 		displayConstraint.weighty = 1.;
 		displayConstraint.fill = GridBagConstraints.BOTH;
@@ -140,24 +136,25 @@ public class PlanningView extends JPanel {
 		totalViewPanel.add(addingPanel, displayConstraint);
 		totalViewPanel.setVisible(true);
 	}
-	
-	/** 
-	 * Method hiding the elements to add a new delivery point 
+
+	/**
+	 * Method hiding the elements to add a new delivery point
 	 */
-	protected void hideAddingDeliveryPanel(){
+	protected void hideAddingDeliveryPanel() {
 		totalViewPanel.setVisible(false);
 		addingPanel.setVisible(false);
 		addingPanel.removeAll();
 		totalViewPanel.setVisible(true);
 	}
-	
+
 	/**
-	 * Method used to synchronize the textual view with the plan 
-	 * A click in the plan select the corresponding rox of the planning
-	 * if existing
+	 * Method used to synchronize the textual view with the plan A click in the
+	 * plan select the corresponding rox of the planning if existing
+	 * 
 	 * @param closestIntersection
 	 */
 	public void selectRow(Intersection closestIntersection) {
+		// XXX : move such logic somewhere else
 		List<Tour> tours = ModelInterface.getTourPlanning();
 		List<Delivery> deliveries = new ArrayList<>();
 
@@ -166,7 +163,7 @@ public class PlanningView extends JPanel {
 				deliveries.add(delivery);
 			}
 		}
-		
+
 		Iterator<Delivery> it = deliveries.iterator();
 		boolean found = false;
 		int i = 0;

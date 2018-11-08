@@ -8,7 +8,7 @@ import java.util.List;
 public class TourFactory {
 
 	private static List<Tour> tourPlanning;
-	/** Instance unique pré-initialisée */
+	/** Instance unique prÃ©-initialisÃ©e */
 	private static TourFactory INSTANCE = new TourFactory();
 
 	private TourFactory() {
@@ -39,8 +39,8 @@ public class TourFactory {
 			boolean foundDelivery = false;
 
 			Iterator<Delivery> it = deliveries.iterator();
-			Delivery delivery = depot; // If we don't find the delivery, it's
-										// the depot
+			Delivery delivery = depot;
+			// If we don't find the delivery, it's the depot
 
 			while (!foundDelivery && it.hasNext()) {
 				Delivery d = it.next();
@@ -65,37 +65,38 @@ public class TourFactory {
 		}
 	}
 
-	public Step findStepBeforeDelivery(Delivery delivery) {
+	protected Step findStepBeforeDelivery(Delivery delivery) {
 		for (Tour tour : tourPlanning) {
 			if (tour.getDeliveryPoints().contains(delivery)) {
 				for (Step step : tour.getSteps()) {
-					 // XXX == or equals ?
-					if (step.getEndDelivery() == delivery) {
+					if (step.getEndDelivery().equals(delivery)) {
 						return step;
 					}
 				}
 			}
 		}
+
+		System.out.println("NULLLLLLL");
 		return null;
 	}
 
-	// public List<Tour> findToursContainingSection(Section section) {
-	// ArrayList<Tour> tours = new ArrayList<>();
-	// for (Tour tour : tourPlanning) {
-	// for (Step st : tour.getSteps()) {
-	// for (Section s : st.getSections()) {
-	// if (section.equals(s)) {
-	// tours.add(tour);
-	// }
-	// }
-	// }
-	// }
-	//
-	// if (tours.size() == 0) {
-	// System.out.println("NO TOUR FOUND");
-	// tours.add(tourPlanning.get(0));
-	// }
-	//
-	// return tours;
-	// }
+	public List<Tour> findToursContainingSection(Section section) {
+		ArrayList<Tour> tours = new ArrayList<>();
+		for (Tour tour : tourPlanning) {
+			for (Step st : tour.getSteps()) {
+				for (Section s : st.getSections()) {
+					if (section.equals(s)) {
+						tours.add(tour);
+					}
+				}
+			}
+		}
+
+		if (tours.size() == 0) {
+			System.out.println("NO TOUR FOUND");
+			tours.add(tourPlanning.get(0));
+		}
+
+		return tours;
+	}
 }

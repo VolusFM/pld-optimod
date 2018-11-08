@@ -33,24 +33,25 @@ public class Window extends JFrame {
 	private JPanel centerPanel;
 	private JPanel rightPanel;
 	private JPanel southPanel = new JPanel();
-	
+
 	protected static PlanView planPanel;
 	protected static PlanningView planningPanel;
 	protected static AddingDeliveryView addingPanel;
 
 	/* Listeners */
 	protected ButtonListener buttonListener;
+	protected KeyListener keyListener;
 
 	/* Components visibility */
 	private boolean headerVisibility = true;
 
 	/* Component's text */
 	private final String WINDOW_TITLE = "Optimod";
-	private final String TEXT_DELIVERY_SELECTION = "Sélectionnez un fichier de demande de livraison au format XML :";
-	private final String TEXT_PLAN_SELECTION = "Sélectionnez un fichier de plan au format XML :";
+	private final String TEXT_DELIVERY_SELECTION = "SÃ©lectionnez un fichier de demande de livraison au format XML :";
+	private final String TEXT_PLAN_SELECTION = "SÃ©lectionnez un fichier de plan au format XML :";
 	private final String BUTTON_BROWSE = "Parcourir";
-	private final String BUTTON_TOUR_CALCUL = "Planifier la tournée";
-	private final String TEXT_PLANNING_BOARD = "Planning des tournées obtenu :";
+	private final String BUTTON_TOUR_CALCUL = "Planifier la tournÃ©e";
+	private final String TEXT_PLANNING_BOARD = "Planning des tournÃ©es obtenu :";
 
 	/* Button's action */
 	protected static final String ACTION_SELECTION_PLAN = "LOAD_PLAN";
@@ -67,6 +68,7 @@ public class Window extends JFrame {
 		/* Initialize */
 		this.controler = controler;
 		buttonListener = new ButtonListener(controler);
+		keyListener = new KeyListener(controler);
 		rightPanel = new JPanel();
 		rightPanel.setPreferredSize(new Dimension(500, 900));
 		/* Header */
@@ -133,7 +135,8 @@ public class Window extends JFrame {
 		planPanel = new PlanView(planScale, this, plan);
 		PlanListener planListener = new PlanListener(controler);
 		planPanel.addMouseListener(planListener);
-		planPanel.addMouseMotionListener(planListener);
+		planPanel.addKeyListener(keyListener);
+
 		/* GridbagLayoutDisplaying */
 		GridBagConstraints displayConstraint = new GridBagConstraints();
 		displayConstraint.gridx = 0;
@@ -188,6 +191,7 @@ public class Window extends JFrame {
 		add(rightPanel, BorderLayout.EAST);
 		redraw();
 	}
+
 	/**
 	 * Create the panel with the planning of the tour as a board of delivery
 	 * men, locations, hours and list of roads.
@@ -202,7 +206,7 @@ public class Window extends JFrame {
 	public void hideAddingDeliveryPanel() {
 		planningPanel.hideAddingDeliveryPanel();
 	}
-	
+
 	/**
 	 * Method used to set the lat and long fields of the adding form
 	 * 
@@ -212,8 +216,8 @@ public class Window extends JFrame {
 	 *            the longitude value
 	 */
 	public void setLatLonFieldsOfAddingPanel(double lat, double lon) {
-		this.addingPanel.latitudeField.setText(" "+lat);
-		this.addingPanel.longitudeField.setText(" "+lon);
+		this.addingPanel.latitudeField.setText(" " + lat);
+		this.addingPanel.longitudeField.setText(" " + lon);
 	}
 
 	/**
@@ -231,7 +235,8 @@ public class Window extends JFrame {
 	 * Update the graphics on the window, used when we don't add/remove
 	 * components
 	 */
-	private void redraw() {
+	// FIXME visibility -> private
+	public void redraw() {
 		repaint();
 		revalidate();
 	}
@@ -265,33 +270,32 @@ public class Window extends JFrame {
 	public void highlightSelectedSection(Section findClosestSection) {
 		planPanel.setHighlightedSection(findClosestSection);
 	}
-	
-	
+
 	public void listSectionsOfStep(Step step) {
 		southPanel.removeAll();
 
 		southPanel.setVisible(false);
 
 		Set<String> streetNames = new LinkedHashSet<>();
-		
+
 		for (Section section : step.getSections()) {
 			streetNames.add(section.getStreetName());
 		}
-		
+
 		String html = "<html>";
-		
+
 		Iterator<String> it = streetNames.iterator();
-		
+
 		html += it.next();
-		
+
 		while (it.hasNext()) {
 			html += " - " + it.next();
 		}
-		
+
 		html += "</html>";
-		
+
 		JLabel label = new JLabel(html);
-		
+
 		southPanel.add(label);
 		southPanel.setVisible(true);
 
