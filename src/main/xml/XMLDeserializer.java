@@ -87,10 +87,12 @@ public class XMLDeserializer {
 	 * @return
 	 * @throws XMLException
 	 */
-	private static Section createSection(Element elt, Plan plan) throws XMLException { // TODO : naming
+	private static Section createSection(Element elt, Plan plan) throws XMLException {
+		// TODO : naming
 		long idDeparture = Long.parseLong(elt.getAttribute("origine"));
 		long idArrival = Long.parseLong(elt.getAttribute("destination"));
-		Intersection departure = plan.getIntersectionById(idDeparture); // XXX : is this OK ?
+		Intersection departure = plan.getIntersectionById(idDeparture);
+		// XXX : is this OK ?
 		Intersection arrival = plan.getIntersectionById(idArrival);
 
 		String streetName = elt.getAttribute("nomRue");
@@ -105,8 +107,7 @@ public class XMLDeserializer {
 	}
 
 	// XXX : this assumes the plan to be loaded, right ?
-	public static void load(Plan plan, TourCalculator calculator)
-			throws ParserConfigurationException, SAXException, IOException, XMLException {
+	public static void load(Plan plan, TourCalculator calculator) throws ParserConfigurationException, SAXException, IOException, XMLException {
 		File xml = XMLFileOpener.getInstance().open();
 		DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = docBuilder.parse(xml);
@@ -118,8 +119,7 @@ public class XMLDeserializer {
 		}
 	}
 
-	private static void buildFromDOMXML(Element rootNode, Plan plan, TourCalculator calculator)
-			throws XMLException, NumberFormatException {
+	private static void buildFromDOMXML(Element rootNode, Plan plan, TourCalculator calculator) throws XMLException, NumberFormatException {
 		Node depot = rootNode.getElementsByTagName("entrepot").item(0);
 		NodeList deliveriesNodes = rootNode.getElementsByTagName("livraison");
 
@@ -145,7 +145,7 @@ public class XMLDeserializer {
 			int hour = Integer.parseInt(date[0]);
 			int minutes = Integer.parseInt(date[1]);
 			int seconds = Integer.parseInt(date[2]);
-			departureTime.set(Calendar.HOUR, hour);
+			departureTime.set(Calendar.HOUR_OF_DAY, hour);
 			departureTime.set(Calendar.MINUTE, minutes);
 			departureTime.set(Calendar.SECOND, seconds);
 			Delivery d = new Delivery(0, departure);
