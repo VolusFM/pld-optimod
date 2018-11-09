@@ -292,7 +292,45 @@ public class TourCalculator {
 		tour.calculateDeliveryHours();
 	}
 
-	public void addDeliveryToTour() {
+	public void addDeliveryToTour(Delivery delivery, Tour tour) {
+		/*
+		 * To avoid the need to change older deliveries hour, we append the
+		 * delivery to the tour
+		 */
 
+		/*
+		 * We create the step between the last delivery of the tour and the new
+		 * delivery
+		 */
+
+		/*
+		 * We first use Dijkstra on the last delivery and new delivery, and then
+		 * we create the new steps for this delivery (last delivery -> new
+		 * delivery, and new delivery -> depot)
+		 */
+
+		// Pair<HashMap<Long, Double>, HashMap<Long, Long>> result =
+		// map.Dijkstra(delivery.getAddress());
+		// HashMap<Long, Long> predecessors = result.getValue();
+		//
+		// createSteps(predecessors, delivery.getAddress());
+		//
+		// Step stepFromLatestDeliveryToNewDelivery =
+
+		/*
+		 * We remove the last current step
+		 */
+
+		/*
+		 * We add the last two new steps
+		 */
+
+		/*
+		 * We add the new delivery
+		 */
+
+		/*
+		 * We update the times for the modified tour
+		 */
 	}
 }
