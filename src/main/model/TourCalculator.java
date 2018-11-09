@@ -244,7 +244,7 @@ public class TourCalculator {
 		/* XXX : not futureproof yet, uses the steps hashmap */
 		/* Doesn't need any recalculation */
 
-		System.out.println(tour.getSteps());
+		// System.out.println(tour.getSteps());
 
 		if (delivery.equals(depot)) {
 			System.out.println(("Cant remove depot"));
@@ -264,8 +264,12 @@ public class TourCalculator {
 		int indexOfStepAfterDelivery = indexOfStepBeforeDelivery + 1;
 		Step stepAfterDelivery = tour.getSteps().get(indexOfStepAfterDelivery);
 
-		System.out.println("stepBeforeDelivery :" + stepBeforeDelivery + "(" + indexOfStepBeforeDelivery + ")");
-		System.out.println("stepAfterDelivery :" + stepAfterDelivery + "(" + indexOfStepAfterDelivery + ")");
+		/*
+		 * System.out.println("stepBeforeDelivery :" + stepBeforeDelivery + "("
+		 * + indexOfStepBeforeDelivery + ")");
+		 * System.out.println("stepAfterDelivery :" + stepAfterDelivery + "(" +
+		 * indexOfStepAfterDelivery + ")");
+		 */
 
 		/* Link the deliveries before and after the one removed */
 		Delivery deliveryBefore = stepBeforeDelivery.getStartDelivery();
@@ -285,7 +289,10 @@ public class TourCalculator {
 		tour.removeDelivery(delivery);
 		deliveries.remove(delivery);
 
-		System.out.println(tour.getSteps());
+		tour.calculateDeliveryHours();
+	}
+
+	public void addDeliveryToTour() {
 
 	}
 }
