@@ -19,13 +19,11 @@ public class KeyListener extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-
 			Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
 			if (delivery != null) {
 				TourCalculator.getInstance().removeDeliveryFromTour(delivery, ModelInterface.getTourPlanning().get(0));
 				controler.getWindow().redraw();
 			}
-
 		}
 	}
 }

@@ -24,5 +24,7 @@ public class PlanListener extends MouseAdapter {
 		controler.clickedNearIntersection(ModelInterface.findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude));
 		controler.clickedNearSection(ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
 
+		// XXX
+		controler.getWindow().forceFocusOnPlanView();
 	}
 }

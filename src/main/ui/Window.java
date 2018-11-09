@@ -302,4 +302,8 @@ public class Window extends JFrame {
 		add(southPanel, BorderLayout.SOUTH);
 		redraw();
 	}
+
+	public void forceFocusOnPlanView() {
+		planPanel.requestFocus();
+	}
 }
