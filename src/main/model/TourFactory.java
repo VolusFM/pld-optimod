@@ -43,6 +43,19 @@ public class TourFactory {
 		System.out.println("NULLLLLLL");
 		return null;
 	}
+	
+	/**
+	 * find deliveries list for a delivery man ID.
+	 * @param deliveryManId
+	 * @return
+	 */
+	public List<Delivery> getDeliveriesById(int deliveryManId){
+		int i=0;
+		while( (tourPlanning.get(i).getDeliveryManId()!=deliveryManId )&&(i<tourPlanning.size()) ) {
+			i=i+1;
+		}
+		return tourPlanning.get(i).getDeliveryPoints();
+	}
 
 	public List<Tour> findToursContainingSection(Section section) {
 		ArrayList<Tour> tours = new ArrayList<>();
