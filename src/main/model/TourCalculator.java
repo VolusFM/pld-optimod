@@ -9,13 +9,15 @@ import javafx.util.Pair;
 import main.model.tsp.TSP1;
 import main.model.tsp.TemplateTSP;
 
+/**
+ * TourCalculator is a singleton class which handles the calclation of tours
+ */
 public class TourCalculator {
 
 	private TourFactory tourFactory = TourFactory.getInstance();
 	private Plan map = ModelInterface.getPlan();
 	private List<Delivery> deliveries;
-
-	private Delivery depot; // XXX
+	private Delivery depot;
 
 	/* Unique instance */
 	private static TourCalculator instance = null;
@@ -29,7 +31,7 @@ public class TourCalculator {
 
 	private HashMap<Pair<Long, Long>, Step> steps;
 
-	private int deliveryMenCount;
+	private int deliveryMenCount = 1;
 
 	private TourCalculator() {
 		tourFactory = TourFactory.getInstance();
@@ -44,23 +46,71 @@ public class TourCalculator {
 		return instance;
 	}
 
+	/**
+	 * XXX see comment
+	 * 
+	 * @param d
+	 */
 	public void addDelivery(Delivery d) {
 		// FIXME : see addDeliveryToTour
 		this.deliveries.add(d);
 	}
 
+	/**
+	 * Set the depot for the tours
+	 * 
+	 * @param depot
+	 *            : the Delivery corresponding to the depot
+	 */
 	public void setDepot(Delivery depot) {
 		this.depot = depot;
 	}
 
+	/**
+	 * Set the map
+	 * 
+	 * @param map
+	 *            : the plan for the deliveries
+	 */
 	public void setMap(Plan map) {
 		this.map = map;
 	}
 
+	/**
+	 * Set the delivery men count
+	 * 
+	 * @param deliveryMenCount
+	 *            : the number of deliveries, and also the number of tours
+	 */
 	public void setDeliveryMenCount(int deliveryMenCount) {
 		this.deliveryMenCount = deliveryMenCount;
 	}
 
+	/**
+	 * Get the list of deliveries to do (excluding the depot)
+	 * 
+	 * @return the List of Deliveries to include in tours
+	 */
+	public List<Delivery> getDeliveries() {
+		return deliveries;
+	}
+
+	/**
+	 * Get the depot for the current deliveries
+	 * 
+	 * @return the Delivery corresponding to the depot
+	 */
+	public Delivery getDepot() {
+		return depot;
+	}
+
+	/**
+	 * Find the delivery taking place at the intersection, if any
+	 * 
+	 * @param intersection
+	 *            : the intersection
+	 * @return the corresponding if it exists, or null if it doesn't
+	 */
 	public Delivery findCorrespondingDelivery(Intersection intersection) {
 		for (Delivery delivery : deliveries) {
 			if (delivery.getAddress().equals(intersection)) {
@@ -73,6 +123,10 @@ public class TourCalculator {
 		return null;
 	}
 
+	/**
+	 * Do the calculation based on the map, depot and deliveries, to create the
+	 * tours
+	 */
 	public void calculateTours() {
 		// FIXME : assumes a deleveryMenCount of 1
 
@@ -94,9 +148,9 @@ public class TourCalculator {
 	 * 2 nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list
-	 * deliveries will not be modified) And it expect that the depot will always
-	 * be the first in both list (this is actually a pre-condution in the TSP
-	 * algotithm)
+	 * deliveries will not be modified) And it expects that the depot will
+	 * always be the first in both list (<b>this is actually a pre-condition in
+	 * the TSP algotithm</b>)
 	 */
 	private void createGraph() {
 		/* Initialization */
@@ -120,7 +174,8 @@ public class TourCalculator {
 
 	/**
 	 * Disjkstra helper function, create the useful row for TSP cost matrix
-	 * based on the result of the algorithm
+	 * based on the result of the algorithm, and create the steps related to
+	 * Dijkstra result
 	 */
 	private double[] dijkstraHelper(Intersection source) {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
@@ -129,8 +184,8 @@ public class TourCalculator {
 		HashMap<Long, Long> predecessors = result.getValue();
 
 		/*
-		 * "Header" of the list : the ids of the nodes to use in the correct
-		 * order
+		 * idsList is the "header" of the list : the ids of the nodes to use in
+		 * the correct order
 		 */
 		long[] idsList = new long[nodesCount];
 		idsList[0] = depot.getAddress().getId();
@@ -138,7 +193,7 @@ public class TourCalculator {
 			idsList[i + 1] = deliveries.get(i).getAddress().getId();
 		}
 
-		/* We use the header to construct the cost line */
+		/* We use the "header" to construct the cost line */
 		double[] costResult = new double[nodesCount];
 		for (int i = 0; i < nodesCount; i++) {
 			costResult[i] = cost.get(idsList[i]);
@@ -158,7 +213,8 @@ public class TourCalculator {
 	 */
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
-		tsp.searchAndDisplayBestSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
+
+		tsp.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
 
 		List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
 
@@ -204,16 +260,35 @@ public class TourCalculator {
 		}
 	}
 
+	/**
+	 * Find the section, if it exists, between two intersections
+	 * 
+	 * @param idStart
+	 *            the id of the departure intersection
+	 * @param idEnd
+	 *            the id of the arriving intersection
+	 * @return the Section from the departure intersection to the arriving
+	 *         intersection, it it exists
+	 */
 	private Section findSectionBetween(Long idStart, Long idEnd) {
 		for (Section section : map.getIntersectionById(idStart).getOutcomingSections()) {
 			if (section.getIdEndIntersection() == idEnd) {
 				return section;
 			}
-
 		}
 		return null;
 	}
 
+	/**
+	 * Creates the list of steps corresponding to the TSP solution
+	 * 
+	 * @param solution
+	 *            : the array of integers (which represents the intersections in
+	 *            order, in the TSP solution)
+	 * @return a List of Steps corresponding to the steps used by the TSP to
+	 *         make a tour, including the step from the last delivery to the
+	 *         depot
+	 */
 	private List<Step> findStepsFromResult(Integer[] solution) {
 		List<Step> list = new ArrayList<Step>();
 		for (int i = 0; i < solution.length - 1; i++) {
@@ -233,16 +308,8 @@ public class TourCalculator {
 		return list;
 	}
 
-	public List<Delivery> getDeliveries() {
-		return deliveries;
-	}
-
-	public Delivery getDepot() {
-		return depot;
-	}
-
 	public void removeDeliveryFromTour(Delivery delivery, Tour tour) {
-		/* XXX : not futureproof yet, uses the steps hashmap */
+		// XXX : not futureproof yet, uses the steps hashmap
 		/* Doesn't need any recalculation */
 
 		// System.out.println(tour.getSteps());

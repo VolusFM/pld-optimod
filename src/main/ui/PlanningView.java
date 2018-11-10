@@ -46,14 +46,9 @@ public class PlanningView extends JPanel {
 	 * Create the graphical view for drawing the loaded plan with the scale s in
 	 * the specified window w.
 	 * 
-	 * @param s
-	 *            the scale
 	 * @param w
 	 *            the window
-	 * @param p
-	 *            the plan to print
 	 */
-	// FIXME : doc is not matching constructor
 	public PlanningView(Window w) {
 		super();
 		this.buttonListener = w.buttonListener;

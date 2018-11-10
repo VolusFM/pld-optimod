@@ -22,10 +22,6 @@ public class Controler {
 
 	/**
 	 * Create application's controler
-	 * 
-	 * @param model,
-	 *            model package s entry point
-	 * @param window
 	 */
 	public Controler() {
 		this.currentState = initState;
@@ -157,13 +153,17 @@ public class Controler {
 	/**
 	 * get previous state.
 	 * 
-	 * @return
+	 * @return the previous state, which was set before the current state
 	 */
 	public State getPreviousState() {
 		return previousState;
 	}
 
-	///
+	/**
+	 * Get the intersection which is selected if the view
+	 * 
+	 * @return the selected Intersection, or null if none is selected
+	 */
 	public Intersection getSelectedIntersection() {
 		return selectedIntersection;
 	}

@@ -166,10 +166,10 @@ public class TestControlerState {
 	}
 
 	/**
-	 * Test if controler is in adddeliveryState
+	 * Test if controler is in addDeliveryState
 	 * 
 	 * @param controler
-	 * @return
+	 * @return true if the current state is addDeliveryState, false otherwise
 	 */
 	public static boolean addDeliveryStateTest(Controler controler) {
 		return (controler.getCurrentState().stateToString() == "addDeliveryState");
@@ -179,7 +179,7 @@ public class TestControlerState {
 	 * test if controler is in loadedDeliveryState
 	 * 
 	 * @param controler
-	 * @return
+	 * @return true if the current state is loadedDeliveryState, false otherwise
 	 */
 	public static boolean loadedDeliveryStateTest(Controler controler) {
 		return (controler.getCurrentState().stateToString() == "loadedDeliveryState");
@@ -189,7 +189,7 @@ public class TestControlerState {
 	 * Test if controler is in loadedPlanState
 	 * 
 	 * @param controler
-	 * @return
+	 * @return true if the current state is loadedPlanState, false otherwise
 	 */
 	public static boolean loadedPlanStateTest(Controler controler) {
 		return (controler.getCurrentState().stateToString() == "loadedPlanState");
@@ -199,7 +199,7 @@ public class TestControlerState {
 	 * Test if controler is in ParametersState
 	 * 
 	 * @param controler
-	 * @return
+	 * @return true if the current state is parametersState, false otherwise
 	 */
 	public static boolean parametersStateTest(Controler controler) {
 		return (controler.getCurrentState().stateToString() == "parametersState");
@@ -209,7 +209,7 @@ public class TestControlerState {
 	 * Test if controler is in planningState
 	 * 
 	 * @param controler
-	 * @return
+	 * @return true if the current state is planningState, false otherwise
 	 */
 	public static boolean planningStateTest(Controler controler) {
 		return (controler.getCurrentState().stateToString() == "planningState");

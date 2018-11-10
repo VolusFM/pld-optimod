@@ -109,7 +109,8 @@ public interface State {
 	 *            the current controller
 	 * @param window
 	 *            the application window
-	 * @param
+	 * @param intersection
+	 *            the closest intersection from the click
 	 */
 	public void clickedNearIntersection(Controler controler, Window window, Intersection intersection);
 
