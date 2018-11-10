@@ -308,8 +308,16 @@ public class TourCalculator {
 		return list;
 	}
 
+	/**
+	 * Remove a delivery from its tour, and update the steps and time for the
+	 * tour
+	 * 
+	 * @param delivery
+	 * @param tour
+	 */
 	public void removeDeliveryFromTour(Delivery delivery, Tour tour) {
 		// XXX : not futureproof yet, uses the steps hashmap
+		// XXX : remove tour argument and calculate it ?
 		/* Doesn't need any recalculation */
 
 		// System.out.println(tour.getSteps());
@@ -327,7 +335,6 @@ public class TourCalculator {
 
 		/* Find the delivery in the steps */
 		Step stepBeforeDelivery = TourFactory.getInstance().findStepBeforeDelivery(delivery);
-
 		int indexOfStepBeforeDelivery = tour.getSteps().indexOf(stepBeforeDelivery);
 		int indexOfStepAfterDelivery = indexOfStepBeforeDelivery + 1;
 		Step stepAfterDelivery = tour.getSteps().get(indexOfStepAfterDelivery);
@@ -377,12 +384,11 @@ public class TourCalculator {
 		 * delivery, and new delivery -> depot)
 		 */
 
-		// Pair<HashMap<Long, Double>, HashMap<Long, Long>> result =
-		// map.Dijkstra(delivery.getAddress());
-		// HashMap<Long, Long> predecessors = result.getValue();
-		//
-		// createSteps(predecessors, delivery.getAddress());
-		//
+		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(delivery.getAddress());
+		HashMap<Long, Long> predecessors = result.getValue();
+
+		createSteps(predecessors, delivery.getAddress());
+
 		// Step stepFromLatestDeliveryToNewDelivery =
 
 		/*
@@ -400,5 +406,93 @@ public class TourCalculator {
 		/*
 		 * We update the times for the modified tour
 		 */
+	}
+
+	/**
+	 * Adds a new delivery in a tour, after a selected delivery
+	 * 
+	 * @param newDelivery
+	 *            the new Delivery to add to the tour
+	 * @param precedingDelivery
+	 *            the Delivery which will precede the new one
+	 */
+	public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery) {
+		/*
+		 * Some calculations required (Dijkstra for new steps), but no
+		 * re-execution of TSP or K-means
+		 */
+
+		/* We add the new Delivery to the list of deliveries */
+		// FIXME : we need to stop relying on this list for ordering
+		deliveries.add(newDelivery);
+
+		/* We find the tour corresponding to the preceding Delivery */
+		Tour tour = TourFactory.getInstance().findTourContainingDelivery(precedingDelivery);
+
+		/* We add the newDelivery to the tour */
+		tour.addDeliveryAtIndex(newDelivery, tour.getDeliveryPoints().indexOf(precedingDelivery));
+
+		System.out.println("/*****************************/");
+
+		System.out.println("Step before modification : " + tour.getSteps());
+		System.out.println("Deliveries before modification : " + tour.getDeliveryPoints());
+
+		System.out.println();
+		/*
+		 * We create the step between the preceding delivery and the new
+		 * delivery, as well as the step between the new delivery and the
+		 * delivery after the preceding delivery in the current tour
+		 */
+		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result;
+		HashMap<Long, Long> predecessors;
+
+		result = map.Dijkstra(precedingDelivery.getAddress());
+		predecessors = result.getValue();
+		createSteps(predecessors, precedingDelivery.getAddress());
+
+		result = map.Dijkstra(newDelivery.getAddress());
+		predecessors = result.getValue();
+		createSteps(predecessors, newDelivery.getAddress());
+
+		/*
+		 * We remove the step between the preceding Delivery and the delivery
+		 * after the preceding delivery in the current tour
+		 */
+		Step stepBeforePrecedingDelivery = TourFactory.getInstance().findStepBeforeDelivery(precedingDelivery);
+		int indexOfStepBeforePrecedingDelivery = tour.getSteps().indexOf(stepBeforePrecedingDelivery);
+		if (indexOfStepBeforePrecedingDelivery == tour.getSteps().size() - 1) {
+			indexOfStepBeforePrecedingDelivery = -1;
+		}
+		Step stepAfterPrecedingDelivery = tour.getSteps().get(indexOfStepBeforePrecedingDelivery + 1);
+
+		Delivery deliveryAfterNewDelivery = stepAfterPrecedingDelivery.getEndDelivery();
+
+		int indexOfStepAfterPrecedingDelivery = tour.getSteps().indexOf(stepAfterPrecedingDelivery);
+		tour.getSteps().remove(stepAfterPrecedingDelivery);
+		// XXX : add a proper method in tour
+
+		/* We update the steps of the tour */
+		Step stepFromPrecedingDeliveryToNewDelivery = steps.get(new Pair<Long, Long>(precedingDelivery.getAddress().getId(), newDelivery.getAddress().getId()));
+		Step stepFromNewDeliveryToItsNextDelivery = steps.get(new Pair<Long, Long>(newDelivery.getAddress().getId(), deliveryAfterNewDelivery.getAddress().getId()));
+		tour.getSteps().add(indexOfStepAfterPrecedingDelivery, stepFromPrecedingDeliveryToNewDelivery);
+		tour.getSteps().add(indexOfStepAfterPrecedingDelivery + 1, stepFromNewDeliveryToItsNextDelivery);
+		// XXX : add a proper method in tour
+
+		System.out.println("Index : " + indexOfStepAfterPrecedingDelivery);
+		System.out.println();
+		System.out.println("Preceding delivery : " + precedingDelivery);
+		System.out.println("Succeding delivery : " + deliveryAfterNewDelivery);
+		System.out.println("New delivery : " + newDelivery);
+		System.out.println();
+		System.out.println("Removed step : " + stepAfterPrecedingDelivery);
+		System.out.println("New step 1 : " + stepFromPrecedingDeliveryToNewDelivery);
+		System.out.println("New step 2 : " + stepFromNewDeliveryToItsNextDelivery);
+		System.out.println();
+		System.out.println("Step after modification : " + tour.getSteps());
+		System.out.println("Deliveries aftermodification : " + tour.getDeliveryPoints());
+		tour.testCoherency();
+
+		/* We update the times for the modified tour */
+		tour.calculateDeliveryHours();
 	}
 }
