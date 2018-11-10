@@ -95,17 +95,16 @@ public class TourCalculator {
 	/**
 	 * Creates the graph to be used with TSP algorithm
 	 * 
-	 * It uses the plan and all the deliveries, as well as the depot XXX : how
-	 * do we know which delivery is the depot ? (-> added the depot as an
-	 * attribute)
+	 * It uses the plan and all the deliveries, as well as the depot XXX : how do we
+	 * know which delivery is the depot ? (-> added the depot as an attribute)
 	 * 
 	 * It creates a sub-graph, containing only the useful nodes (deliveries and
-	 * depot), and the arrows corresopnd to the shortest path found between the
-	 * 2 nodes in the main graph
+	 * depot), and the arrows corresopnd to the shortest path found between the 2
+	 * nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list
-	 * deliveries will not be modified) And it expect that the depot will always
-	 * be the first in both list (this is actually a pre-condution in the TSP
+	 * deliveries will not be modified) And it expect that the depot will always be
+	 * the first in both list (this is actually a pre-condution in the TSP
 	 * algotithm)
 	 */
 	public void createGraph() {
@@ -129,8 +128,8 @@ public class TourCalculator {
 	}
 
 	/**
-	 * Disjkstra helper function, create the useful row for TSP cost matrix
-	 * based on the result of the algorithm
+	 * Disjkstra helper function, create the useful row for TSP cost matrix based on
+	 * the result of the algorithm
 	 */
 	private double[] dijkstraHelper(Intersection source) {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
@@ -139,8 +138,7 @@ public class TourCalculator {
 		HashMap<Long, Long> predecessors = result.getValue();
 
 		/*
-		 * "Header" of the list : the ids of the nodes to use in the correct
-		 * order
+		 * "Header" of the list : the ids of the nodes to use in the correct order
 		 */
 		long[] idsList = new long[nodesCount];
 		idsList[0] = depot.getAddress().getId();
@@ -163,8 +161,7 @@ public class TourCalculator {
 
 	/**
 	 * Wrapper function around TSP resolution, delegate responsability to TSP.
-	 * Execute the TSP algorithm, extract the needed information to create the
-	 * tours
+	 * Execute the TSP algorithm, extract the needed information to create the tours
 	 */
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
@@ -239,13 +236,12 @@ public class TourCalculator {
 	}
 
 	/**
-	 * data clustering using k-means algorithm. Can return some empty clusters
-	 * if clusterNb is badly set, or is superior to intersections s size. It can
-	 * also happen depending on the random initialization.
+	 * data clustering using k-means algorithm. Can return some empty clusters if
+	 * clusterNb is badly set, or is superior to intersections s size. It can also
+	 * happen depending on the random initialization.
 	 * 
-	 * @param clusterNb,
-	 *            MUST BE strictly under dataPoints s size, or kmeans will throw an
-	 *            assertionError
+	 * @param            clusterNb, MUST BE strictly under dataPoints s size, or
+	 *                   kmeans will throw an assertionError
 	 * @param dataPoints
 	 * @param epsilon
 	 * @return
@@ -320,10 +316,14 @@ public class TourCalculator {
 		}
 		return clusters;
 	}
-
+	
 	/**
-	 * calculate best set of clusters in a array of MAXKMEANS set of clusters. THE GRAPH MUST BE CREATE
-	 * @param clusterNb, MUST BE strictly under deliveries s size, or error will be thrown
+	 * calculate best set of clusters in a array of MAXKMEANS set of clusters. Will
+	 * not take into account empty cluster. The graph must be created before this
+	 * method is called. Need at least two deliveries.
+	 * 
+	 * @param         clusterNb, if clusterNb>deliveries s size, only deliveries s
+	 *                size cluster will be return.
 	 * @param epsilon
 	 * @return
 	 */
@@ -331,8 +331,28 @@ public class TourCalculator {
 		List<Cluster> bestClusters = new ArrayList<Cluster>();
 		double minCoeff = MAXDOUBLE;
 		int maxIntersectionNumber = (int) (this.deliveries.size() / clusterNb) + 1;
+		if (deliveries.size() < 2)
+			throw new AssertionError("ClusterizeData was called with less than 2 deliveries in memories");
+		/* particular case where one cluster only have one delivery */
+		if (clusterNb >= deliveries.size()) {
+			for (Delivery delivery : deliveries) {
+				Pair<Double, Double> centroid = new Pair<Double, Double>(delivery.getAddress().getLat(),
+						delivery.getAddress().getLon());
+				Cluster cluster = new Cluster(centroid);
+				cluster.addDelivery(delivery);
+				bestClusters.add(cluster);
+			}
+			return bestClusters;
+		}
 		for (int i = 0; i < MAXKMEANS; i++) {
 			List<Cluster> currentClusters = this.kMeans(clusterNb, this.deliveries, epsilon);
+			/* delete empty clusters */
+			for (int idCluster = 0; idCluster < currentClusters.size(); idCluster++) {
+				if (currentClusters.get(idCluster).getDeliveries().isEmpty()) {
+					currentClusters.remove(idCluster);
+				}
+				idCluster--;
+			}
 			HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 			for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
 				Cluster cluster = currentClusters.get(currentClusterIndex);
@@ -340,8 +360,7 @@ public class TourCalculator {
 				cluster.sortDeliveriesByEuclidianDistanceToCentroid();
 
 				/*
-				 * move exceeding Deliveries to the cluster containing the
-				 * nearest intersection
+				 * move exceeding Deliveries to the cluster containing the nearest intersection
 				 */
 				while (nbExceedingDeliveries > 0) {
 					Delivery toMove = cluster.popDelivery(0);
@@ -349,17 +368,17 @@ public class TourCalculator {
 					if (indexToMove == -1) {
 						throw new AssertionError("Delivery present in cluster does not exist.");
 					}
+
 					double[] distanceToToMove = costTSP[indexToMove];
 					double min = distanceToToMove[1];
 					int minIndex = 0;
-					/*TODO : better initialization of min and minIndex*/
-					if(idDeliveryToIdCluster.get(minIndex) == currentClusterIndex){
+					if (idDeliveryToIdCluster.get(minIndex) == currentClusterIndex) {
 						min = distanceToToMove[2];
 						minIndex = 1;
 					}
 					/*
-					 * find the nearest intersection to toMove contained in a
-					 * not full cluster (which is not the current cluster)
+					 * find the nearest intersection to toMove contained in a not full cluster
+					 * (which is not the current cluster)
 					 */
 					for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
 						int indexDelivery = indexCostTSP - 1;
@@ -370,24 +389,24 @@ public class TourCalculator {
 							min = distanceToToMove[indexCostTSP];
 							minIndex = indexDelivery;
 						}
-					} 
+					}
 					/* move exceeding delivery to nearest delivery cluster */
 					Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
-					Cluster nearestCluster = currentClusters.get(idNearestCluster);
-					nearestCluster.addDelivery(toMove);
+					currentClusters.get(idNearestCluster).addDelivery(toMove);
 					idDeliveryToIdCluster.put(minIndex, idNearestCluster);
 					nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
 				}
 			}
-			/* evaluate cluster by adding distance to centroid*/
+			/* evaluate cluster by adding distance to centroid */
 			double coeff = 0;
-			for(Cluster cluster : currentClusters){
-				for (Delivery delivery : cluster.getDeliveries()){
-					Pair<Double, Double>deliveryData = new Pair <Double, Double>(delivery.getAddress().getLat(), delivery.getAddress().getLon());
+			for (Cluster cluster : currentClusters) {
+				for (Delivery delivery : cluster.getDeliveries()) {
+					Pair<Double, Double> deliveryData = new Pair<Double, Double>(delivery.getAddress().getLat(),
+							delivery.getAddress().getLon());
 					coeff += cluster.calculateDistanceToCentroid(deliveryData);
 				}
 			}
-			if (coeff < minCoeff){
+			if (coeff < minCoeff) {
 				minCoeff = coeff;
 				bestClusters = currentClusters;
 			}
@@ -396,8 +415,7 @@ public class TourCalculator {
 	}
 
 	/**
-	 * construct a HashMap with delivery index as key and cluster index as
-	 * value.
+	 * construct a HashMap with delivery index as key and cluster index as value.
 	 * 
 	 * @param clusters
 	 * @return
