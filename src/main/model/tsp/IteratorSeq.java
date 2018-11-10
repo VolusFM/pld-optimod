@@ -12,9 +12,9 @@ public class IteratorSeq implements Iterator<Integer> {
 	 * Create an iterator to iterate on unseenNodes
 	 * 
 	 * @param unseenNodes
-	 * @param sommetCrt
+	 * @param currentNode
 	 */
-	public IteratorSeq(Collection<Integer> unseenNodes, int sommetCrt) {
+	public IteratorSeq(Collection<Integer> unseenNodes, int currentNode) {
 		// FIXME why is sommetCrt here ?
 		this.candidates = new Integer[unseenNodes.size()];
 		numberOfCandidates = 0;

@@ -3,39 +3,38 @@ package main.model.tsp;
 public interface TSP {
 
 	/**
-	 * @return true si chercheSolution() s'est terminee parce que la limite de
-	 *         temps avait ete atteinte, avant d'avoir pu explorer tout l'espace
-	 *         de recherche,
+	 * @return true if searchSolution() ended because of the time limit, and it
+	 *         did not have time to search through the whole search space
 	 */
-	public Boolean getTempsLimiteAtteint();
+	public Boolean isTimeLimitReached();
 
 	/**
-	 * Cherche un circuit de duree minimale passant par chaque sommet (compris
-	 * entre 0 et nbSommets-1)
+	 * Search for a loop of the minimal length (in terms of time) passing by
+	 * every ndoe (including 0 and nodeCount-1)
 	 * 
-	 * @param tpsLimite
-	 *            : limite (en millisecondes) sur le temps d'execution de
-	 *            chercheSolution
-	 * @param nbSommets
-	 *            : nombre de sommets du graphe
-	 * @param cout
-	 *            : cout[i][j] = duree pour aller de i a j, avec 0 <= i <
-	 *            nbSommets et 0 <= j < nbSommets
-	 * @param duree
-	 *            : duree[i] = duree pour visiter le sommet i, avec 0 <= i <
-	 *            nbSommets
+	 * @param timeLimit
+	 *            : limit (in milliseconds) on the executing time of this method
+	 * @param nodeCount
+	 *            : count of nodes in the graph
+	 * @param costMatrix
+	 *            : costMatrix[i][j] = time to go from i to j, with 0 <= i <
+	 *            nodeCount and 0 <= j < nodeConnt
+	 * @param duration
+	 *            : duration[i] = time to visit the node i, with 0 <= i <
+	 *            nodeCount
 	 */
-	public void searchSolution(int tpsLimite, int nbSommets, double[][] cout, int[] duree);
+	public void searchSolution(int timeLimit, int nodeCount, double[][] costMatrix, int[] duration);
 
 	/**
 	 * @param i
-	 * @return le sommet visite en i-eme position dans la solution calculee par
-	 *         chercheSolution
+	 * @return the i-th node visited in the solution calculated by
+	 *         searchSolution
 	 */
 	public Integer getBestSolution(int i);
 
 	/**
-	 * @return la duree de la solution calculee par chercheSolution
+	 * @return the length (in terms of time) of the best solution calculated by
+	 *         searchSolution
 	 */
 	public double getBestSolutionCost();
 }

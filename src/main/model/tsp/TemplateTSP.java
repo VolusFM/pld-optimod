@@ -10,7 +10,7 @@ public abstract class TemplateTSP implements TSP {
 	private double bestSolutionCost = 0;
 	private Boolean timelimitReached;
 
-	public Boolean getTempsLimiteAtteint() {
+	public Boolean isTimeLimitReached() {
 		return timelimitReached;
 	}
 
@@ -131,7 +131,7 @@ public abstract class TemplateTSP implements TSP {
 	public void searchAndDisplayBestSolution(int maxTime, int numberOfNodes, double[][] graph, int[] duration) {
 		searchSolution(maxTime, numberOfNodes, graph, duration);
 
-		if (getTempsLimiteAtteint()) {
+		if (isTimeLimitReached()) {
 			System.err.println("Not enough time to find best solution");
 			return;
 		}
