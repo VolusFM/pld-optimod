@@ -18,22 +18,13 @@ public class PlanningListener implements ListSelectionListener {
 		this.window = window;
 	}
 
-	//
-	// @Override
-	// public void mouseClicked(MouseEvent e) {
-	// if (e.getClickCount() == 2) {
-	// Point p = e.getPoint();
-	// int row = planning.rowAtPoint(p);
-	// System.out.println("N° ligne cliquée : " + row);
-	// // TODO : controleur.modifLigne(row) qui ouvre une range selector (1
-	// // à nbr livreurs)
-	// // et change le delivery man de la ligne avec le retour de la range
-	// // selector
-	// }
-	// }
-
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+		if (planning.getSelectedRow() == -1) {
+			// no selected row, ignore
+			return;
+		}
+
 		String address = (String) planning.getValueAt(planning.getSelectedRow(), 1);
 
 		String[] fragments = address.substring(1, address.length() - 1).split("; ");
