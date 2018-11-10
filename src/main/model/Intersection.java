@@ -26,7 +26,6 @@ public class Intersection {
 		outcomingSections = new ArrayList<>();
 	}
 
-
 	public double getLat() {
 		return lat;
 	}
@@ -61,6 +60,5 @@ public class Intersection {
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -37,5 +37,5 @@ public class Delivery extends Observable {
 		dateFormat.setTimeZone(hour.getTimeZone());
 		return "Delivery [duration=" + duration + ", hour=" + dateFormat.format(hour.getTime()) + ", address=" + address + "]";
 	}
-	
+
 }

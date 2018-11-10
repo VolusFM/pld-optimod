@@ -15,12 +15,10 @@ public class DefaultState implements State {
 
 	// TODO : check @Override annotation function
 
-	public void openPlan(Controler controler, Window window)
-			throws XMLException, ParserConfigurationException, SAXException, IOException {
+	public void openPlan(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException {
 	}
 
-	public void openDeliveries(Controler controler, Window window)
-			throws XMLException, ParserConfigurationException, SAXException, IOException {
+	public void openDeliveries(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException {
 	}
 
 	public void openParameters(Controler controler, Window window) {
@@ -51,11 +49,11 @@ public class DefaultState implements State {
 	@Override
 	public void confirmNewDelivery(Controler controler, Window window) {
 	}
-	
+
 	@Override
 	public void clickedNearIntersection(Controler controler, Window window, Intersection intersection) {
 	}
-	
+
 	@Override
 	public void clickedNearSection(Controler controler, Window window, Section section) {
 	}

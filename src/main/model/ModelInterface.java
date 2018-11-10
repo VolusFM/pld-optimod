@@ -4,7 +4,6 @@ import java.util.List;
 
 public abstract class ModelInterface {
 
-
 	private static Plan plan = new Plan();
 	private static TourCalculator tourCalculator = TourCalculator.getInstance();
 	private static TourFactory tourFactory = TourFactory.getInstance();
@@ -45,7 +44,7 @@ public abstract class ModelInterface {
 	public static List<Tour> getTourPlanning() {
 		return tourFactory.getTourPlanning();
 	}
-	
+
 	public static Delivery getDepot() {
 		return tourCalculator.getDepot();
 	}
@@ -57,11 +56,11 @@ public abstract class ModelInterface {
 	public static Intersection findClosestIntersection(double latitude, double longitude) {
 		return plan.findClosestIntersection(latitude, longitude);
 	}
-	
+
 	public static Step findStepBeforeDelivery(Delivery delivery) {
 		return tourFactory.findStepBeforeDelivery(delivery);
 	}
-	
+
 	public static Delivery findCorrespondingDelivery(Intersection intersection) {
 		return tourCalculator.findCorrespondingDelivery(intersection);
 	}

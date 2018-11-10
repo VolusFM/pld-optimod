@@ -11,8 +11,7 @@ public abstract class RangeSelector {
 
 	public static int getIntegerInRange(int min, int max, String message, String title) throws SelectionCancelledException {
 		try {
-			return (Integer) JOptionPane.showInputDialog(null, message, title,
-					JOptionPane.PLAIN_MESSAGE, null, IntStream.rangeClosed(min, max).boxed().toArray(), 1);
+			return (Integer) JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE, null, IntStream.rangeClosed(min, max).boxed().toArray(), 1);
 		} catch (NullPointerException e) {
 			throw new SelectionCancelledException();
 		}

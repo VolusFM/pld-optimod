@@ -14,7 +14,6 @@ public class Section {
 		this.end = end;
 	}
 
-
 	public double getLength() {
 		return length;
 	}
@@ -72,6 +71,5 @@ public class Section {
 			return false;
 		return true;
 	}
-	
-	
+
 }

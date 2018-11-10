@@ -4,11 +4,11 @@ import main.model.Delivery;
 import main.model.ModelInterface;
 import main.ui.Window;
 
-public class AddDeliveryState extends DefaultState{
-
+public class AddDeliveryState extends DefaultState {
 
 	/**
 	 * Cancel the new delivery and go back to planningState
+	 * 
 	 * @param controler
 	 * @param window
 	 */
@@ -23,8 +23,9 @@ public class AddDeliveryState extends DefaultState{
 	 * @param window
 	 */
 	public void confirmNewDelivery(Controler controler, Window window) {
-		
-		Delivery toAdd = new Delivery(0,null); //TODO: get actual info from window
+
+		Delivery toAdd = new Delivery(0, null);
+		// TODO: get actual info from window
 		ModelInterface.addDelivery(toAdd);
 		controler.setCurrentState(controler.planningState);
 	}

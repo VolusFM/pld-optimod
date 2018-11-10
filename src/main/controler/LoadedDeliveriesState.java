@@ -1,24 +1,20 @@
 package main.controler;
 
-import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Section;
-import main.model.TourCalculator;
 import main.ui.RangeSelector;
-import main.ui.Window;
 import main.ui.RangeSelector.SelectionCancelledException;
+import main.ui.Window;
 
 public class LoadedDeliveriesState extends DefaultState {
 	public void openParameters(Controler controler, Window window) {
 
 		try {
-			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(),
-					"Please select the delivery men count", "Range selector"));
+			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(), "Please select the delivery men count", "Range selector"));
 		} catch (SelectionCancelledException e) {
 			System.out.println("Selection was cancelled, ignoring...");
 		}
 
-//		controler.setCurrentState(controler.parametersState);
+		// controler.setCurrentState(controler.parametersState);
 	}
 
 	public void calculatePlanning(Controler controler, Window window) {
@@ -28,9 +24,8 @@ public class LoadedDeliveriesState extends DefaultState {
 		controler.setCurrentState(controler.planningState);
 	}
 
-	
 	public String stateToString() {
 		return "loadedDeliveryState";
 	}
-	
+
 }

@@ -45,6 +45,7 @@ public class TourCalculator {
 	}
 
 	public void addDelivery(Delivery d) {
+		// FIXME : see addDeliveryToTour
 		this.deliveries.add(d);
 	}
 
