@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
@@ -23,6 +24,12 @@ public class PlanningTable extends JTable {
 	public void selectRow(int rowIndex) {
 		int sortedIndex = getRowSorter().convertRowIndexToView(rowIndex);
 		setRowSelectionInterval(sortedIndex, sortedIndex);
+	}
+
+	@Override
+	public void tableChanged(TableModelEvent e) {
+		super.tableChanged(e);
+		System.out.println("TABLE CHANGED");
 	}
 
 	private static class PlanningTableModel implements TableModel {
@@ -100,6 +107,7 @@ public class PlanningTable extends JTable {
 			while (tours.get(currentTourIndex).getDeliveryPoints().size() < rowIndex) {
 				currentTourIndex++;
 			}
+
 			return tours.get(currentTourIndex);
 		}
 	}
