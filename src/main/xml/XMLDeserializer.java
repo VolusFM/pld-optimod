@@ -130,14 +130,18 @@ public class XMLDeserializer {
 
 	}
 
-	private static Delivery createDelivery(Element elt, Plan plan) {
+	private static Delivery createDelivery(Element elt, Plan plan) throws XMLException {
 
-		Intersection departure = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));
+		Intersection address = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));
+
+		if (address == null) {
+			throw new XMLException("The delivery file has a delivery with unknown address");
+		}
 
 		if (elt.hasAttribute("duree")) { // Actual delivery
 			int duration = Integer.parseInt(elt.getAttribute("duree"));
 
-			return new Delivery(duration, departure);
+			return new Delivery(duration, address);
 		} else { // Not a delivery but a depot
 			Calendar departureTime = GregorianCalendar.getInstance();
 			// Parse date
@@ -148,7 +152,7 @@ public class XMLDeserializer {
 			departureTime.set(Calendar.HOUR_OF_DAY, hour);
 			departureTime.set(Calendar.MINUTE, minutes);
 			departureTime.set(Calendar.SECOND, seconds);
-			Delivery d = new Delivery(0, departure);
+			Delivery d = new Delivery(0, address);
 			d.setHour(departureTime);
 			return d;
 		}
