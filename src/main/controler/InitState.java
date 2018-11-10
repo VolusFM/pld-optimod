@@ -13,9 +13,7 @@ import main.xml.XMLException;;
 
 public class InitState extends DefaultState {
 
-	public void openPlan(Controler controler, Window window)
-
-			throws XMLException, ParserConfigurationException, SAXException, IOException {
+	public void openPlan(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException {
 		XMLDeserializer.load(ModelInterface.getPlan());
 
 		window.displayPlanView();
@@ -27,7 +25,7 @@ public class InitState extends DefaultState {
 	public void openParameters(Controler controler) {
 
 		// TODO : add code to open parameter window
-//		controler.setCurrentState(controler.parametersState);
+		// controler.setCurrentState(controler.parametersState);
 
 	}
 
