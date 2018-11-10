@@ -14,7 +14,6 @@ public class TourFactory {
 	}
 
 	public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
-		System.out.println(depot);
 		Tour currentTour = new Tour(depot, steps, deliveries, deliveryMan);
 		currentTour.calculateDeliveryHours();
 		tourPlanning.add(currentTour);
@@ -62,5 +61,28 @@ public class TourFactory {
 		}
 
 		return tours;
+	}
+
+	/**
+	 * find deliveries list for a delivery man ID.
+	 * 
+	 * @param deliveryManId
+	 * @return the list of deliveries for the delivery man
+	 */
+	public List<Delivery> getDeliveriesById(int deliveryManId) {
+		int i = 0;
+		while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
+			i = i + 1;
+		}
+		return tourPlanning.get(i).getDeliveryPoints();
+	}
+
+	public Tour findTourContainingDelivery(Delivery delivery) {
+		for (Tour tour : tourPlanning) {
+			if (tour.getDeliveryPoints().contains(delivery)) {
+				return tour;
+			}
+		}
+		return null;
 	}
 }
