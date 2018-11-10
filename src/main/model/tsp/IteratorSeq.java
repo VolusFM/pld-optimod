@@ -3,6 +3,9 @@ package main.model.tsp;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * {@link IteratorSeq} represents an iterator on the unseenNodes of a graph
+ */
 public class IteratorSeq implements Iterator<Integer> {
 
 	private Integer[] candidates;

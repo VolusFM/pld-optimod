@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+/**
+ * TemplateTSP is an super-class with convenient methods to execute a TSP
+ */
 public abstract class TemplateTSP implements TSP {
 
 	private Integer[] bestSolution;
@@ -32,6 +35,13 @@ public abstract class TemplateTSP implements TSP {
 		return bestSolution[i];
 	}
 
+	/**
+	 * Get the nodes corresponding to the best solution for the execution of
+	 * this TSP
+	 * 
+	 * @return an array of integers corresponding to the nodes to travel to, in
+	 *         order
+	 */
 	public Integer[] getBestSolution() {
 		return bestSolution;
 	}
@@ -127,9 +137,20 @@ public abstract class TemplateTSP implements TSP {
 
 	/**
 	 * Helper method that takes everything needed and calculate the solution
+	 * 
+	 * @param timeLimit
+	 *            : limit (in milliseconds) on the executing time of this method
+	 * @param nodeCount
+	 *            : count of nodes in the graph
+	 * @param costMatrix
+	 *            : costMatrix[i][j] = time to go from i to j, with 0 <= i <
+	 *            nodeCount and 0 <= j < nodeConnt
+	 * @param duration
+	 *            : duration[i] = time to visit the node i, with 0 <= i <
+	 *            nodeCount
 	 */
-	public void searchAndDisplayBestSolution(int maxTime, int numberOfNodes, double[][] graph, int[] duration) {
-		searchSolution(maxTime, numberOfNodes, graph, duration);
+	public void searchAndDisplayBestSolution(int timeLimit, int nodeCount, double[][] costMatrix, int[] duration) {
+		searchSolution(timeLimit, nodeCount, costMatrix, duration);
 
 		if (isTimeLimitReached()) {
 			System.err.println("Not enough time to find best solution");
@@ -145,16 +166,16 @@ public abstract class TemplateTSP implements TSP {
 		int initialNode = 0;
 		int nextNode;
 		int i;
-		for (i = 1; i < numberOfNodes; i++) {
+		for (i = 1; i < nodeCount; i++) {
 			System.out.println("Étape " + i + " :");
 			nextNode = getBestSolution(i);
-			System.out.println("Aller de " + currentNode + " à " + nextNode + " (pour un coût de " + graph[currentNode][nextNode] + ", et une attente de " + duration[nextNode] + " à l'arrivée)");
+			System.out.println("Aller de " + currentNode + " à " + nextNode + " (pour un coût de " + costMatrix[currentNode][nextNode] + ", et une attente de " + duration[nextNode] + " à l'arrivée)");
 			currentNode = nextNode;
 			System.out.println();
 
 		}
 		System.out.println("Étape " + i + " (finale : retour au dépot) :");
-		System.out.println("Aller de " + currentNode + " à " + initialNode + " (pour un coût de " + graph[currentNode][initialNode] + ")");
+		System.out.println("Aller de " + currentNode + " à " + initialNode + " (pour un coût de " + costMatrix[currentNode][initialNode] + ")");
 	}
 
 }

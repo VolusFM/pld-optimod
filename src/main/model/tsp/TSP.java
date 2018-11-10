@@ -1,5 +1,8 @@
 package main.model.tsp;
 
+/**
+ * Interface for a TSP algorithm
+ */
 public interface TSP {
 
 	/**
