@@ -353,48 +353,50 @@ public class TourCalculator {
 				}
 				idCluster--;
 			}
-			HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
-			for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
-				Cluster cluster = currentClusters.get(currentClusterIndex);
-				int nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
-				cluster.sortDeliveriesByEuclidianDistanceToCentroid();
-
-				/*
-				 * move exceeding Deliveries to the cluster containing the nearest intersection
-				 */
-				while (nbExceedingDeliveries > 0) {
-					Delivery toMove = cluster.popDelivery(0);
-					int indexToMove = deliveries.indexOf(toMove);
-					if (indexToMove == -1) {
-						throw new AssertionError("Delivery present in cluster does not exist.");
-					}
-
-					double[] distanceToToMove = costTSP[indexToMove];
-					double min = distanceToToMove[1];
-					int minIndex = 0;
-					if (idDeliveryToIdCluster.get(minIndex) == currentClusterIndex) {
-						min = distanceToToMove[2];
-						minIndex = 1;
-					}
+			if( currentClusters.size()==clusterNb) {
+				HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+				for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
+					Cluster cluster = currentClusters.get(currentClusterIndex);
+					int nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
+					cluster.sortDeliveriesByEuclidianDistanceToCentroid();
+	
 					/*
-					 * find the nearest intersection to toMove contained in a not full cluster
-					 * (which is not the current cluster)
+					 * move exceeding Deliveries to the cluster containing the nearest intersection
 					 */
-					for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
-						int indexDelivery = indexCostTSP - 1;
-						boolean isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery))
-								.getDeliveries().size()) < maxIntersectionNumber);
-						if ((distanceToToMove[indexCostTSP] < min) && (isClusterNotFull)
-								&& (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
-							min = distanceToToMove[indexCostTSP];
-							minIndex = indexDelivery;
+					while (nbExceedingDeliveries > 0) {
+						Delivery toMove = cluster.popDelivery(0);
+						int indexToMove = deliveries.indexOf(toMove);
+						if (indexToMove == -1) {
+							throw new AssertionError("Delivery present in cluster does not exist.");
 						}
+	
+						double[] distanceToToMove = costTSP[indexToMove];
+						double min = distanceToToMove[1];
+						int minIndex = 0;
+						if (idDeliveryToIdCluster.get(minIndex) == currentClusterIndex) {
+							min = distanceToToMove[2];
+							minIndex = 1;
+						}
+						/*
+						 * find the nearest intersection to toMove contained in a not full cluster
+						 * (which is not the current cluster)
+						 */
+						for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
+							int indexDelivery = indexCostTSP - 1;
+							boolean isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery))
+									.getDeliveries().size()) < maxIntersectionNumber);
+							if ((distanceToToMove[indexCostTSP] < min) && (isClusterNotFull)
+									&& (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
+								min = distanceToToMove[indexCostTSP];
+								minIndex = indexDelivery;
+							}
+						}
+						/* move exceeding delivery to nearest delivery cluster */
+						Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
+						currentClusters.get(idNearestCluster).addDelivery(toMove);
+						idDeliveryToIdCluster.put(minIndex, idNearestCluster);
+						nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
 					}
-					/* move exceeding delivery to nearest delivery cluster */
-					Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
-					currentClusters.get(idNearestCluster).addDelivery(toMove);
-					idDeliveryToIdCluster.put(minIndex, idNearestCluster);
-					nbExceedingDeliveries = cluster.getDeliveries().size() - maxIntersectionNumber;
 				}
 			}
 			/* evaluate cluster by adding distance to centroid */
