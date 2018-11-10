@@ -8,7 +8,7 @@ public class Controler {
 
 	private State currentState;
 	private State previousState;
-	public Window window; // FIXME visibility
+	private Window window;
 	protected final InitState initState = new InitState();
 	protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
 	protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
