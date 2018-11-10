@@ -38,6 +38,7 @@ public class PlanView extends JPanel {
 
 	/* Highlighted elements */
 	private Intersection highlightedIntersection;
+	private Intersection rightClickedIntersection;
 	private Section highlightedSection;
 
 	/* Graphic attributes */
@@ -130,6 +131,14 @@ public class PlanView extends JPanel {
 			graphics2d.setStroke(stroke);
 			printSection(graphics2d, highlightedSection);
 		}
+		/* Rightclicked intersection */
+		if (rightClickedIntersection != null) {
+			graphics2d.setColor(Color.CYAN);
+			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
+			graphics2d.setStroke(stroke);
+			printIntersection(graphics2d, rightClickedIntersection);
+		}
+
 	}
 
 	/**
@@ -325,5 +334,10 @@ public class PlanView extends JPanel {
 		int y = mousePos.y - getLocationOnScreen().y;
 		MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false);
 		ToolTipManager.sharedInstance().mouseMoved(phantom);
+	}
+
+	public void setRightClickedIntersection(Intersection intersection) {
+		rightClickedIntersection = intersection;
+
 	}
 }

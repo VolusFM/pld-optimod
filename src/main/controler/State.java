@@ -128,4 +128,6 @@ public interface State {
 	 * Get the state to a string for test use.
 	 */
 	public String stateToString();
+
+	public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
 }

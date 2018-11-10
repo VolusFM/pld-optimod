@@ -253,6 +253,11 @@ public class Window extends JFrame {
 		redraw();
 	}
 
+	public void highlightRightClickedIntersection(Intersection intersection) {
+		planPanel.setRightClickedIntersection(intersection);
+		redraw();
+	}
+
 	/**
 	 * Method to hide/show the parameters button from the header
 	 */

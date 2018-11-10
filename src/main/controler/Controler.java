@@ -19,6 +19,7 @@ public class Controler {
 
 	/* Selected elements in model */
 	private Intersection selectedIntersection;
+	private Intersection rightClickedIntersection;
 
 	/**
 	 * Create application's controler
@@ -150,6 +151,10 @@ public class Controler {
 		currentState.clickedNearSection(this, window, closestSection);
 	}
 
+	public void rightClickedNearIntersection(Intersection intersection) {
+		currentState.rightClickedNearIntersection(this, window, intersection);
+	}
+
 	/**
 	 * get previous state.
 	 * 
@@ -170,6 +175,14 @@ public class Controler {
 
 	public void setSelectedIntersection(Intersection selectedIntersection) {
 		this.selectedIntersection = selectedIntersection;
+	}
+
+	public Intersection getRightClickedIntersection() {
+		return rightClickedIntersection;
+	}
+
+	public void setRightClickedIntersection(Intersection rightClickedIntersection) {
+		this.rightClickedIntersection = rightClickedIntersection;
 	}
 
 	// XXX

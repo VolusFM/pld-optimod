@@ -59,6 +59,13 @@ public class PlanningState extends DefaultState {
 		controler.setSelectedIntersection(closestIntersection);
 	}
 
+	@Override
+	public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
+		window.highlightRightClickedIntersection(intersection);
+
+		controler.setRightClickedIntersection(intersection);
+	}
+
 	public String stateToString() {
 		return "planningState";
 	}

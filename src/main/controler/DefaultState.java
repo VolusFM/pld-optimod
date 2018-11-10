@@ -13,26 +13,31 @@ import main.xml.XMLException;;
 
 public class DefaultState implements State {
 
-	// TODO : check @Override annotation function
-
+	@Override
 	public void openPlan(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException {
 	}
 
+	@Override
 	public void openDeliveries(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException {
 	}
 
+	@Override
 	public void openParameters(Controler controler, Window window) {
 	}
 
+	@Override
 	public void calculatePlanning(Controler controler, Window window) {
 	}
 
+	@Override
 	public void addDelivery(Controler controler, Window window) {
 	}
 
+	@Override
 	public void cancelNewDelivery(Controler controler, Window window) {
 	}
 
+	@Override
 	public String stateToString() {
 		// TODO : remove after tests
 		System.out.println("Stuck in default state");
@@ -56,6 +61,10 @@ public class DefaultState implements State {
 
 	@Override
 	public void clickedNearSection(Controler controler, Window window, Section section) {
+	}
+
+	@Override
+	public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
 	}
 
 }
