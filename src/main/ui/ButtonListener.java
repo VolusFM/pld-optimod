@@ -37,16 +37,17 @@ public class ButtonListener implements ActionListener {
 		case Window.ACTION_CALCULATE_TOUR:
 			controler.calculateTour();
 			break;
-		case PlanningView.ACTION_ADDING_DELIVERY_POINT :
-			controler.window.displayAddingDeliveryPanel();
+		case PlanningView.ACTION_ADDING_DELIVERY_POINT:
+			controler.getWindow().displayAddingDeliveryPanel();
 			// TODO : controleur.addDeleveryPoint() qui appelle l'IHM
 			break;
-		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY :
-			// TODO : controleur.validateAddingDeleveryPoint() qui crée la nouvelle
+		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY:
+			// TODO : controleur.validateAddingDeleveryPoint() qui crÃ©e la
+			// nouvelle
 			// livraison et maj l'affichage (et enleve la fenetre d'ajout)
 			break;
-		case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY :
-			controler.window.hideAddingDeliveryPanel();
+		case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY:
+			controler.getWindow().hideAddingDeliveryPanel();
 			// TODO : controleur.cancelAddingDeliveryPoint() qui appelle l'IHM
 			break;
 		default:
