@@ -2,6 +2,7 @@ package main.controler;
 
 import main.model.Intersection;
 import main.model.Section;
+import main.ui.ExceptionModal;
 import main.ui.Window;
 
 public class Controler {
@@ -17,7 +18,6 @@ public class Controler {
 	protected final AddDeliveryState addState = new AddDeliveryState();
 
 	/* Selected elements in model */
-	// XXX : is this the right place ?
 	private Intersection selectedIntersection;
 
 	/**
@@ -41,7 +41,7 @@ public class Controler {
 			previousState = currentState;
 			currentState.openPlan(this, window);
 		} catch (Exception e) {
-			System.out.println(e);
+			ExceptionModal.showErrorModal(e);
 		}
 	}
 
@@ -54,7 +54,7 @@ public class Controler {
 			previousState = currentState;
 			currentState.openDeliveries(this, window);
 		} catch (Exception e) {
-			System.out.println(e);
+			ExceptionModal.showErrorModal(e);
 		}
 	}
 
@@ -66,8 +66,7 @@ public class Controler {
 			previousState = currentState;
 			currentState.calculatePlanning(this, window);
 		} catch (Exception e) {
-			// TODO check exeption's handling
-			System.out.println(e);
+			ExceptionModal.showErrorModal(e);
 		}
 	}
 
@@ -79,7 +78,7 @@ public class Controler {
 			previousState = currentState;
 			currentState.addDelivery(this, window);
 		} catch (Exception e) {
-			// TODO : check exception handling + remove string when test done
+			ExceptionModal.showErrorModal(e);
 			System.out.println(e + "controler adddelivery");
 		}
 	}
@@ -91,7 +90,7 @@ public class Controler {
 		try {
 			currentState.cancelNewDelivery(this, window);
 		} catch (Exception e) {
-			// TODO check handling + remove message
+			ExceptionModal.showErrorModal(e);
 			System.out.println(e + "controler cancelnewdelivery");
 		}
 	}
@@ -103,7 +102,7 @@ public class Controler {
 		try {
 			currentState.confirmParameters(this, window);
 		} catch (Exception e) {
-			System.out.println(e);
+			ExceptionModal.showErrorModal(e);
 		}
 	}
 
@@ -114,7 +113,7 @@ public class Controler {
 		try {
 			currentState.confirmNewDelivery(this, window);
 		} catch (Exception e) {
-			System.out.println(e);
+			ExceptionModal.showErrorModal(e);
 		}
 	}
 
