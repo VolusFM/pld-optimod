@@ -1,6 +1,8 @@
 package main.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javafx.util.Pair;
@@ -69,19 +71,22 @@ public class Cluster {
 	 * sort deliveries in a decreasing order based on euclidian distance to centroid
 	 */
 	public void sortDeliveriesByEuclidianDistanceToCentroid() {
-		for (int i = 0; i< deliveries.size()-1; i++){
-			for (int j = 0; j<deliveries.size()-i-1; j++) {
-				Pair<Double, Double> firstIntersectionData = new Pair<Double, Double>(deliveries.get(j).getAddress().getLat(),
-						deliveries.get(j).getAddress().getLon());
-				Pair<Double, Double> secondIntersectionData = new Pair<Double, Double>(deliveries.get(j+1).getAddress().getLat(),
-						deliveries.get(j+1).getAddress().getLon());
-				if(calculateDistanceToCentroid(firstIntersectionData)<calculateDistanceToCentroid(secondIntersectionData)) {
-					Delivery temp = deliveries.get(j);
-					deliveries.set(j, deliveries.get(j+1));
-					deliveries.set(j+1, temp);
+		Collections.sort(deliveries, new Comparator<Delivery>() {
+			public int compare(Delivery firstDelivery, Delivery secondDelivery) {
+				double firstDistance = calculateDistanceToCentroid(new Pair<Double, Double>(
+						firstDelivery.getAddress().getLat(), firstDelivery.getAddress().getLon()));
+				double secondDistance = calculateDistanceToCentroid(new Pair<Double, Double>(
+						secondDelivery.getAddress().getLat(), secondDelivery.getAddress().getLon()));
+				if (firstDistance < secondDistance) {
+					return 1;
 				}
+				if (firstDistance > secondDistance) {
+					return -1;
+				}
+				return 0;
 			}
-		}
+		});
+
 	}
 	
 	public double calculateDistanceToCentroid(Pair<Double, Double> intersectionData) {
