@@ -37,7 +37,7 @@ public class AddingDeliveryView extends JPanel {
 	private final String longitudeText									= "Longitude : ";
 	private final String deliveryMenText 								= "Livreur : ";
 	private final String instructionsText1 								= "Saisissez les informations de cette nouvelle livraison";
-	private final String instructionsText2 								= "(cliquez sur le plan pour obtenir les coordonées GPS d'une adresse).";
+	private final String instructionsText2 								= "(cliquez sur le plan pour obtenir les coordonï¿½es GPS d'une adresse).";
 
 	/**
 	 * Create the view to defined a new delivery point.
