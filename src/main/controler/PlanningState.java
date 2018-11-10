@@ -33,7 +33,7 @@ public class PlanningState extends DefaultState {
 	}
 
 	public void deleteDelivery(Controler controler, Window window) {
-		// ModelInterface.deleteDelivery(window.getDeletedDelivery());
+		ModelInterface.deleteDelivery(window.getDeletedDelivery());
 	}
 
 	public void addDelivery(Controler controler, Window window) {

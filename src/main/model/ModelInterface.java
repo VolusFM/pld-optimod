@@ -35,6 +35,11 @@ public abstract class ModelInterface {
 	public static List<Delivery> getDeliveries() {
 		return tourCalculator.getDeliveries();
 	}
+	
+	public static void deleteDelivery(Delivery delivery) {
+		Tour tourContainingDelivery = tourFactory.findToursContainingDelivery(delivery);
+		tourCalculator.removeDeliveryFromTour(delivery, tourContainingDelivery);
+	}
 
 	public static void addDelivery(Delivery toAdd) {
 		setTourCalculator(TourCalculator.getInstance());

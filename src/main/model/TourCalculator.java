@@ -273,6 +273,8 @@ public class TourCalculator {
 		 */
 
 		/* Link the deliveries before and after the one removed */
+		/* TODO : Check, isn't there a problem here ? Isn't that 
+		 * Delivery deliveryBefore= stepBeforeDelivery.getEndDelivery(); ?*/
 		Delivery deliveryBefore = stepBeforeDelivery.getStartDelivery();
 		Delivery deliveryAfter = stepAfterDelivery.getEndDelivery();
 

@@ -76,4 +76,15 @@ public class TourFactory {
 
 		return tours;
 	}
+	
+	public Tour findToursContainingDelivery(Delivery delivery) {
+		for(Tour tour : tourPlanning) {
+			for(Delivery currentDelivery : tour.getDeliveryPoints()) {
+				if (currentDelivery.equals(delivery)) {
+					return tour;
+				}
+			}
+		}
+		return null;
+	}
 }
