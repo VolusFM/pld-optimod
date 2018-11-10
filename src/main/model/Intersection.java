@@ -61,4 +61,9 @@ public class Intersection {
 		return true;
 	}
 
+	@Override
+	public String toString() {
+		return Long.toString(id);
+	}
+
 }

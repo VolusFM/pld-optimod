@@ -1,6 +1,5 @@
 package main.model;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Observable;
 
@@ -33,9 +32,7 @@ public class Delivery extends Observable {
 
 	@Override
 	public String toString() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
-		dateFormat.setTimeZone(hour.getTimeZone());
-		return "Delivery [duration=" + duration + ", hour=" + dateFormat.format(hour.getTime()) + ", address=" + address + "]";
+		return "Delivery at " + address;
 	}
 
 }

@@ -39,4 +39,5 @@ public class Step {
 	public Delivery getEndDelivery() {
 		return endDelivery;
 	}
+
 }

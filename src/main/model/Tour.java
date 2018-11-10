@@ -62,6 +62,8 @@ public class Tour {
 			if (delivery.equals(depot)) {
 				// XXX : we don't update the depot, it messes stuff up if we
 				// recalculate durations
+				// means the depot will show its departure duration in the
+				// planning, which seems fine
 				continue;
 			}
 
@@ -71,11 +73,21 @@ public class Tour {
 			Calendar deliveryTime = (Calendar) departureTime.clone();
 			delivery.setHour(deliveryTime);
 
-			System.out.println(delivery.getAddress().getId() + ":" + deliveryTime.getTime().toString());
-
 			departureTime.add(Calendar.SECOND, delivery.getDuration());
 		}
 
 		// FIXME : doesnt work well when tour ends the next day
+	}
+
+	public void addDeliveryAtIndex(Delivery delivery, int index) {
+		deliveryPoints.add(index, delivery);
+	}
+
+	public void testCoherency() {
+		for (int i = 0; i < steps.size() - 2; i++) {
+			if (!steps.get(i).getEndDelivery().equals(steps.get(i + 1).getStartDelivery())) {
+				throw new RuntimeException("Step is not coherent");
+			}
+		}
 	}
 }
