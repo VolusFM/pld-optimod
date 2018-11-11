@@ -12,7 +12,7 @@ import main.xml.XMLDeserializer;
 import main.xml.XMLException;
 
 /**
- * LoadedPlanState is the state in which only the plan has been loaded.
+ * LoadedPlanState is the state in which only the plan has been loaded
  *
  */
 public class LoadedPlanState extends DefaultState {
@@ -25,17 +25,6 @@ public class LoadedPlanState extends DefaultState {
 	window.toggleDeliveryMenCountButtonVisiblity();
 
 	controler.setCurrentState(controler.loadedDeliveriesState);
-    }
-
-    /**
-     * Open parameters modal.
-     * 
-     * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
-     */
-    public void openParameters(Controler controler, Window window) {
-	// TODO : add code to open parameter window
-	controler.setCurrentState(controler.parametersState);
     }
 
     public String stateToString() {

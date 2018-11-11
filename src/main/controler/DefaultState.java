@@ -54,10 +54,6 @@ public class DefaultState implements State {
     }
 
     @Override
-    public void confirmParameters(Controler controler, Window window) {
-    }
-
-    @Override
     public void confirmNewDelivery(Controler controler, Window window) {
     }
 

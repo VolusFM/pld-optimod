@@ -80,14 +80,6 @@ public interface State {
     public void addDelivery(Controler controler, Window window);
 
     /**
-     * Confirm parameters change.
-     * 
-     * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
-     */
-    public void confirmParameters(Controler controler, Window window);
-
-    /**
      * Delete a delivery.
      * 
      * @param controler is the application's controler.

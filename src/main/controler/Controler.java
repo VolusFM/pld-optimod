@@ -18,7 +18,6 @@ public class Controler {
     protected final LoadedPlanState loadedPlanState = new LoadedPlanState();
     protected final LoadedDeliveriesState loadedDeliveriesState = new LoadedDeliveriesState();
     protected final PlanningState planningState = new PlanningState();
-    protected final ParametersState parametersState = new ParametersState();
     protected final AddDeliveryState addState = new AddDeliveryState();
 
     /* Selected elements in model */
@@ -93,17 +92,6 @@ public class Controler {
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	    System.out.println(e + "controler cancelnewdelivery");
-	}
-    }
-
-    /**
-     * Confirm new count of delivery men.
-     */
-    public void confirmParameters() {
-	try {
-	    currentState.confirmParameters(this, window);
-	} catch (Exception e) {
-	    ExceptionModal.showErrorModal(e);
 	}
     }
 
