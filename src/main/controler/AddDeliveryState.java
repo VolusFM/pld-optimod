@@ -4,6 +4,11 @@ import main.model.Delivery;
 import main.model.ModelInterface;
 import main.ui.Window;
 
+/**
+ * AddDeliveryState is the state in which the user is trying to add a new
+ * delivery to the planning.
+ *
+ */
 public class AddDeliveryState extends DefaultState {
 
     /**
