@@ -5,8 +5,8 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Step;
-import main.ui.RangeSelector;
-import main.ui.RangeSelector.SelectionCancelledException;
+import main.ui.InputDialogSelector;
+import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
 
 public class PlanningState extends DefaultState {
@@ -19,7 +19,7 @@ public class PlanningState extends DefaultState {
 
 	public void openParameters(Controler controler, Window window) {
 		try {
-			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(), "Please select the delivery men count", "Range selector"));
+			ModelInterface.setDeliveryMenCount(InputDialogSelector.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
 		} catch (SelectionCancelledException e) {
 			System.out.println("Selection was cancelled, ignoring...");
 		}

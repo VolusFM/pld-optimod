@@ -136,7 +136,11 @@ public class Controler {
 	}
 
 	public void openParameters() {
-		currentState.openParameters(this, window);
+		try {
+			currentState.openParameters(this, window);
+		} catch (Exception e) {
+			ExceptionModal.showErrorModal(e);
+		}
 	}
 
 	public void calculateTour() {

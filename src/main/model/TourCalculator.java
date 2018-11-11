@@ -59,8 +59,7 @@ public class TourCalculator {
 	/**
 	 * Set the depot for the tours
 	 * 
-	 * @param depot
-	 *            : the Delivery corresponding to the depot
+	 * @param depot : the Delivery corresponding to the depot
 	 */
 	public void setDepot(Delivery depot) {
 		this.depot = depot;
@@ -69,8 +68,7 @@ public class TourCalculator {
 	/**
 	 * Set the map
 	 * 
-	 * @param map
-	 *            : the plan for the deliveries
+	 * @param map : the plan for the deliveries
 	 */
 	public void setMap(Plan map) {
 		this.map = map;
@@ -79,11 +77,17 @@ public class TourCalculator {
 	/**
 	 * Set the delivery men count
 	 * 
-	 * @param deliveryMenCount
-	 *            : the number of deliveries, and also the number of tours
+	 * @param deliveryMenCount : the number of deliveries, and also the number of
+	 *                         tours
+	 * @throws IllegalArgumentException, if deliveryMenCount isn't strictly
+	 *                                   positive.
 	 */
 	public void setDeliveryMenCount(int deliveryMenCount) {
-		this.deliveryMenCount = deliveryMenCount;
+		if (deliveryMenCount <= 0) {
+			throw new IllegalArgumentException("Le nombre de livreurs doit être strictement positif.");
+		} else {
+			this.deliveryMenCount = deliveryMenCount;
+		}
 	}
 
 	/**
@@ -107,8 +111,7 @@ public class TourCalculator {
 	/**
 	 * Find the delivery taking place at the intersection, if any
 	 * 
-	 * @param intersection
-	 *            : the intersection
+	 * @param intersection : the intersection
 	 * @return the corresponding if it exists, or null if it doesn't
 	 */
 	public Delivery findCorrespondingDelivery(Intersection intersection) {
@@ -144,13 +147,13 @@ public class TourCalculator {
 	 * It uses the plan and all the deliveries, as well as the depot
 	 * 
 	 * It creates a sub-graph, containing only the useful nodes (deliveries and
-	 * depot), and the arrows correspond to the shortest path found between the
-	 * 2 nodes in the main graph
+	 * depot), and the arrows correspond to the shortest path found between the 2
+	 * nodes in the main graph
 	 * 
 	 * It assumes the ordering of deliveries remain the same (i.e. the list
-	 * deliveries will not be modified) And it expects that the depot will
-	 * always be the first in both list (<b>this is actually a pre-condition in
-	 * the TSP algotithm</b>)
+	 * deliveries will not be modified) And it expects that the depot will always be
+	 * the first in both list (<b>this is actually a pre-condition in the TSP
+	 * algotithm</b>)
 	 */
 	private void createGraph() {
 		/* Initialization */
@@ -173,9 +176,8 @@ public class TourCalculator {
 	}
 
 	/**
-	 * Disjkstra helper function, create the useful row for TSP cost matrix
-	 * based on the result of the algorithm, and create the steps related to
-	 * Dijkstra result
+	 * Disjkstra helper function, create the useful row for TSP cost matrix based on
+	 * the result of the algorithm, and create the steps related to Dijkstra result
 	 */
 	private double[] dijkstraHelper(Intersection source) {
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
@@ -184,8 +186,8 @@ public class TourCalculator {
 		HashMap<Long, Long> predecessors = result.getValue();
 
 		/*
-		 * idsList is the "header" of the list : the ids of the nodes to use in
-		 * the correct order
+		 * idsList is the "header" of the list : the ids of the nodes to use in the
+		 * correct order
 		 */
 		long[] idsList = new long[nodesCount];
 		idsList[0] = depot.getAddress().getId();
@@ -208,8 +210,7 @@ public class TourCalculator {
 
 	/**
 	 * Wrapper function around TSP resolution, delegate responsability to TSP.
-	 * Execute the TSP algorithm, extract the needed information to create the
-	 * tours
+	 * Execute the TSP algorithm, extract the needed information to create the tours
 	 */
 	private void resolveTSP() {
 		TemplateTSP tsp = new TSP1();
@@ -263,10 +264,8 @@ public class TourCalculator {
 	/**
 	 * Find the section, if it exists, between two intersections
 	 * 
-	 * @param idStart
-	 *            the id of the departure intersection
-	 * @param idEnd
-	 *            the id of the arriving intersection
+	 * @param idStart the id of the departure intersection
+	 * @param idEnd   the id of the arriving intersection
 	 * @return the Section from the departure intersection to the arriving
 	 *         intersection, it it exists
 	 */
@@ -282,19 +281,19 @@ public class TourCalculator {
 	/**
 	 * Creates the list of steps corresponding to the TSP solution
 	 * 
-	 * @param solution
-	 *            : the array of integers (which represents the intersections in
-	 *            order, in the TSP solution)
-	 * @return a List of Steps corresponding to the steps used by the TSP to
-	 *         make a tour, including the step from the last delivery to the
-	 *         depot
+	 * @param solution : the array of integers (which represents the intersections
+	 *                 in order, in the TSP solution)
+	 * @return a List of Steps corresponding to the steps used by the TSP to make a
+	 *         tour, including the step from the last delivery to the depot
 	 */
 	private List<Step> findStepsFromResult(Integer[] solution) {
 		List<Step> list = new ArrayList<Step>();
 		for (int i = 0; i < solution.length - 1; i++) {
 			/* Convert ids used with TSP to ids used in Model */
-			long idStart = solution[i] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i] - 1).getAddress().getId();
-			long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId() : deliveries.get(solution[i + 1] - 1).getAddress().getId();
+			long idStart = solution[i] == 0 ? depot.getAddress().getId()
+					: deliveries.get(solution[i] - 1).getAddress().getId();
+			long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId()
+					: deliveries.get(solution[i + 1] - 1).getAddress().getId();
 
 			list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
 		}
@@ -309,8 +308,7 @@ public class TourCalculator {
 	}
 
 	/**
-	 * Remove a delivery from its tour, and update the steps and time for the
-	 * tour
+	 * Remove a delivery from its tour, and update the steps and time for the tour
 	 * 
 	 * @param delivery
 	 * @param tour
@@ -340,10 +338,9 @@ public class TourCalculator {
 		Step stepAfterDelivery = tour.getSteps().get(indexOfStepAfterDelivery);
 
 		/*
-		 * System.out.println("stepBeforeDelivery :" + stepBeforeDelivery + "("
-		 * + indexOfStepBeforeDelivery + ")");
-		 * System.out.println("stepAfterDelivery :" + stepAfterDelivery + "(" +
-		 * indexOfStepAfterDelivery + ")");
+		 * System.out.println("stepBeforeDelivery :" + stepBeforeDelivery + "(" +
+		 * indexOfStepBeforeDelivery + ")"); System.out.println("stepAfterDelivery :" +
+		 * stepAfterDelivery + "(" + indexOfStepAfterDelivery + ")");
 		 */
 
 		/* Link the deliveries before and after the one removed */
@@ -351,10 +348,11 @@ public class TourCalculator {
 		Delivery deliveryAfter = stepAfterDelivery.getEndDelivery();
 
 		/*
-		 * The new step will be in place of the step before the delivery and
-		 * will use the shortest path between them
+		 * The new step will be in place of the step before the delivery and will use
+		 * the shortest path between them
 		 */
-		tour.getSteps().add(indexOfStepBeforeDelivery + 1, steps.get(new Pair<Long, Long>(deliveryBefore.getAddress().getId(), deliveryAfter.getAddress().getId())));
+		tour.getSteps().add(indexOfStepBeforeDelivery + 1, steps
+				.get(new Pair<Long, Long>(deliveryBefore.getAddress().getId(), deliveryAfter.getAddress().getId())));
 
 		/* Remove the steps before and after the delivery */
 		tour.getSteps().remove(stepBeforeDelivery);
@@ -369,19 +367,18 @@ public class TourCalculator {
 
 	public void addDeliveryToTour(Delivery delivery, Tour tour) {
 		/*
-		 * To avoid the need to change older deliveries hour, we append the
-		 * delivery to the tour
+		 * To avoid the need to change older deliveries hour, we append the delivery to
+		 * the tour
 		 */
 
 		/*
-		 * We create the step between the last delivery of the tour and the new
-		 * delivery
+		 * We create the step between the last delivery of the tour and the new delivery
 		 */
 
 		/*
-		 * We first use Dijkstra on the last delivery and new delivery, and then
-		 * we create the new steps for this delivery (last delivery -> new
-		 * delivery, and new delivery -> depot)
+		 * We first use Dijkstra on the last delivery and new delivery, and then we
+		 * create the new steps for this delivery (last delivery -> new delivery, and
+		 * new delivery -> depot)
 		 */
 
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(delivery.getAddress());
@@ -411,15 +408,13 @@ public class TourCalculator {
 	/**
 	 * Adds a new delivery in a tour, after a selected delivery
 	 * 
-	 * @param newDelivery
-	 *            the new Delivery to add to the tour
-	 * @param precedingDelivery
-	 *            the Delivery which will precede the new one
+	 * @param newDelivery       the new Delivery to add to the tour
+	 * @param precedingDelivery the Delivery which will precede the new one
 	 */
 	public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery) {
 		/*
-		 * Some calculations required (Dijkstra for new steps), but no
-		 * re-execution of TSP or K-means
+		 * Some calculations required (Dijkstra for new steps), but no re-execution of
+		 * TSP or K-means
 		 */
 
 		/* We add the new Delivery to the list of deliveries */
@@ -439,9 +434,9 @@ public class TourCalculator {
 
 		System.out.println();
 		/*
-		 * We create the step between the preceding delivery and the new
-		 * delivery, as well as the step between the new delivery and the
-		 * delivery after the preceding delivery in the current tour
+		 * We create the step between the preceding delivery and the new delivery, as
+		 * well as the step between the new delivery and the delivery after the
+		 * preceding delivery in the current tour
 		 */
 		Pair<HashMap<Long, Double>, HashMap<Long, Long>> result;
 		HashMap<Long, Long> predecessors;
@@ -455,8 +450,8 @@ public class TourCalculator {
 		createSteps(predecessors, newDelivery.getAddress());
 
 		/*
-		 * We remove the step between the preceding Delivery and the delivery
-		 * after the preceding delivery in the current tour
+		 * We remove the step between the preceding Delivery and the delivery after the
+		 * preceding delivery in the current tour
 		 */
 		Step stepBeforePrecedingDelivery = TourFactory.getInstance().findStepBeforeDelivery(precedingDelivery);
 		int indexOfStepBeforePrecedingDelivery = tour.getSteps().indexOf(stepBeforePrecedingDelivery);
@@ -472,8 +467,10 @@ public class TourCalculator {
 		// XXX : add a proper method in tour
 
 		/* We update the steps of the tour */
-		Step stepFromPrecedingDeliveryToNewDelivery = steps.get(new Pair<Long, Long>(precedingDelivery.getAddress().getId(), newDelivery.getAddress().getId()));
-		Step stepFromNewDeliveryToItsNextDelivery = steps.get(new Pair<Long, Long>(newDelivery.getAddress().getId(), deliveryAfterNewDelivery.getAddress().getId()));
+		Step stepFromPrecedingDeliveryToNewDelivery = steps
+				.get(new Pair<Long, Long>(precedingDelivery.getAddress().getId(), newDelivery.getAddress().getId()));
+		Step stepFromNewDeliveryToItsNextDelivery = steps.get(
+				new Pair<Long, Long>(newDelivery.getAddress().getId(), deliveryAfterNewDelivery.getAddress().getId()));
 		tour.getSteps().add(indexOfStepAfterPrecedingDelivery, stepFromPrecedingDeliveryToNewDelivery);
 		tour.getSteps().add(indexOfStepAfterPrecedingDelivery + 1, stepFromNewDeliveryToItsNextDelivery);
 		// XXX : add a proper method in tour
