@@ -17,6 +17,9 @@ public class TourCalculator {
      private TourFactory tourFactory = TourFactory.getInstance();
      private Plan map = ModelInterface.getPlan();
      private List<Delivery> deliveries;
+
+     private List<List<Delivery>> deliveriesForEachTour;
+
      private Delivery depot;
 
      /* Unique instance */
@@ -27,11 +30,19 @@ public class TourCalculator {
      private int nodesCount;
      private int[] delay;
 
+     /* TSP related fields for multiple tours */
+     private List<double[][]> costsTSPForEachTour = new ArrayList<>();
+     private List<Integer> nodesCountForEachTour = new ArrayList<>();
+     private List<int[]> delayForEachTour = new ArrayList<>();
+
      private int calculationTimeLimitMs = 1000000;
 
      private HashMap<Pair<Long, Long>, Step> steps;
+     // XXX : I REALLY hope we don't need a specific steps instance by tour
 
      private int deliveryMenCount = 1;
+
+     private TemplateTSP TSPimplementation = new TSP1();
 
      /**
       * Create the tour calculator.
@@ -39,6 +50,7 @@ public class TourCalculator {
      private TourCalculator() {
 	  tourFactory = TourFactory.getInstance();
 	  deliveries = new ArrayList<>();
+	  deliveriesForEachTour = new ArrayList<List<Delivery>>();
 	  steps = new HashMap<>();
      }
 
@@ -91,7 +103,7 @@ public class TourCalculator {
       */
      public void setDeliveryMenCount(int deliveryMenCount) {
 	  if (deliveryMenCount <= 0) {
-	       throw new IllegalArgumentException("Le nombre de livreurs doit �tre strictement positif.");
+	       throw new IllegalArgumentException("Le nombre de livreurs doit être strictement positif.");
 	  } else {
 	       this.deliveryMenCount = deliveryMenCount;
 	  }
@@ -139,13 +151,22 @@ public class TourCalculator {
       * tours
       */
      public void calculateTours() {
-	  // FIXME : assumes a deleveryMenCount of 1
-
-	  /* Creates the sub-graph */
+	  /* Creates the global sub-graph, with all deliveries */
 	  createGraph();
+
+	  // TODO : do the K-means fragmentation if needed
+	  // K-means responsability : fill the deliveriesForEachTour
+	  deliveriesForEachTour.add(deliveries);
+
+	  // XXX : else resolve the big TSP
 
 	  /* Solves TSP within the sub-graph, and create the tours */
 	  resolveTSP();
+
+	  for (int i = 0; i < deliveryMenCount; i++) {
+	       createSubGraph(i);
+	       resolveTSPSubGraph(i);
+	  }
 
      }
 
@@ -184,6 +205,38 @@ public class TourCalculator {
      }
 
      /**
+      * Create a restricted graph to be used with the TSP algorithm (see
+      * createGraph())
+      * 
+      * @param index
+      */
+     public void createSubGraph(int index) {
+	  // Attempts to stays as close as possible to orginial implementation
+	  List<Delivery> deliveries = deliveriesForEachTour.get(index);
+
+	  /* Initialization */
+	  int nodesCount = 1 + deliveries.size(); // depot as first + deliveries
+	  nodesCountForEachTour.add(index, nodesCount);
+
+	  int[] delay = new int[nodesCount];
+	  delay[0] = 0; // no delay in the depot
+	  for (int i = 0; i < deliveries.size(); i++) {
+	       delay[i + 1] = deliveries.get(i).getDuration();
+	  }
+	  delayForEachTour.add(index, delay);
+
+	  double[][] costTSP = new double[nodesCount][nodesCount];
+
+	  /* Calculation of costs with Dijkstra */
+	  // First line of matrix is depot; other lines are the delivery points
+	  costTSP[0] = dijkstraHelperSubGraph(index, depot.getAddress());
+	  for (int i = 0; i < deliveries.size(); i++) {
+	       costTSP[i + 1] = dijkstraHelperSubGraph(index, deliveries.get(i).getAddress());
+	  }
+	  costsTSPForEachTour.add(index, costTSP);
+     }
+
+     /**
       * Dijkstra helper function, create the useful row for TSP cost matrix
       * based on the result of the algorithm, and create the steps related to
       * Dijkstra result
@@ -218,19 +271,66 @@ public class TourCalculator {
      }
 
      /**
+      * Dijkstra helper function, create the useful row for TSP cost matrix
+      * based on the result of the algorithm, and create the steps related to
+      * Dijkstra result Sub-graph implementation, see dijkstraHelper
+      */
+     private double[] dijkstraHelperSubGraph(int index, Intersection source) {
+	  Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
+	  // XXX : this is what we need to be careful about ^^^^^
+
+	  HashMap<Long, Double> cost = result.getKey();
+	  HashMap<Long, Long> predecessors = result.getValue();
+
+	  int nodesCount = nodesCountForEachTour.get(index);
+	  List<Delivery> deliveries = deliveriesForEachTour.get(index);
+	  /*
+	   * idsList is the "header" of the list : the ids of the nodes to use
+	   * in the correct order
+	   */
+	  long[] idsList = new long[nodesCount];
+	  idsList[0] = depot.getAddress().getId();
+	  for (int i = 0; i < deliveries.size(); i++) {
+	       idsList[i + 1] = deliveries.get(i).getAddress().getId();
+	  }
+
+	  /* We use the "header" to construct the cost line */
+	  double[] costResult = new double[nodesCount];
+	  for (int i = 0; i < nodesCount; i++) {
+	       costResult[i] = cost.get(idsList[i]);
+	  }
+
+	  /* We also create the steps */
+	  // XXX : I don't know if we need to change this v
+	  createSteps(predecessors, source);
+
+	  /* And we return the cost */
+	  return costResult;
+     }
+
+     /**
       * Wrapper function around TSP resolution, delegate responsibility to TSP.
       * Execute the TSP algorithm, extract the needed information to create the
       * tours
       */
      private void resolveTSP() {
-	  TemplateTSP tsp = new TSP1();
+	  TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
 
-	  tsp.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
+	  List<Step> solutionSteps = findStepsFromResult(TSPimplementation.getBestSolution());
 
-	  List<Step> solutionSteps = findStepsFromResult(tsp.getBestSolution());
+	  if (deliveryMenCount == 1) {
+	       // do not bother recalculating, hardcoding is fine
+	       // TourFactory.createTour(1, solutionSteps, depot, deliveries);
+	  }
+     }
 
-	  TourFactory.createTour(1, solutionSteps, depot, deliveries);
-	  // FIXME : hardcoded 1 and deliveries
+     private void resolveTSPSubGraph(int index) {
+	  TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCountForEachTour.get(index),
+		    costsTSPForEachTour.get(index), delayForEachTour.get(index));
+
+	  List<Step> solutionSteps = findStepsFromResultSubGraph(index, TSPimplementation.getBestSolution());
+
+	  TourFactory.createTour(index, solutionSteps, depot, deliveriesForEachTour.get(index));
      }
 
      /**
@@ -247,9 +347,8 @@ public class TourCalculator {
 	       }
 
 	       // Filter useful nodes, we don't need to create steps between
-	       // every
-	       // single intersection
-	       if (findCorrespondingDelivery(ModelInterface.getPlan().getIntersectionById(id)) == null) {
+	       // every single intersection
+	       if (findCorrespondingDelivery(map.getIntersectionById(id)) == null) {
 		    continue;
 	       }
 
@@ -318,6 +417,27 @@ public class TourCalculator {
 
 	  /* Add latest step : last delivery -> depot */
 	  long idStart = deliveries.get(solution[solution.length - 1] - 1).getAddress().getId();
+	  long idEnd = depot.getAddress().getId();
+
+	  list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+
+	  return list;
+     }
+
+     private List<Step> findStepsFromResultSubGraph(int index, Integer[] solution) {
+	  List<Step> list = new ArrayList<Step>();
+	  for (int i = 0; i < solution.length - 1; i++) {
+	       /* Convert ids used with TSP to ids used in Model */
+	       long idStart = solution[i] == 0 ? depot.getAddress().getId()
+			 : deliveriesForEachTour.get(index).get(solution[i] - 1).getAddress().getId();
+	       long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId()
+			 : deliveriesForEachTour.get(index).get(solution[i + 1] - 1).getAddress().getId();
+
+	       list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+	  }
+
+	  /* Add latest step : last delivery -> depot */
+	  long idStart = deliveriesForEachTour.get(index).get(solution[solution.length - 1] - 1).getAddress().getId();
 	  long idEnd = depot.getAddress().getId();
 
 	  list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
@@ -395,6 +515,7 @@ public class TourCalculator {
       * @param precedingDelivery the Delivery which will precede the new one
       */
      public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery) {
+	  // XXX : not future proof either
 	  /*
 	   * Some calculations required (Dijkstra for new steps), but no
 	   * re-execution of TSP or K-means
