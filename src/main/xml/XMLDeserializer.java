@@ -44,7 +44,7 @@ public class XMLDeserializer {
 		if (root.getNodeName().equals("reseau")) {
 			buildFromDOMXML(root, plan);
 		} else {
-			throw new XMLException("Le contenu du fichier ne correspond pas à un plan.");
+			throw new XMLException("Le contenu du fichier ne correspond pas ï¿½ un plan.");
 		}
 	}
 
@@ -100,7 +100,7 @@ public class XMLDeserializer {
 		double length = Double.parseDouble(elt.getAttribute("longueur"));
 
 		if (length <= 0) {
-			throw new XMLException("Erreur lors du chargement : la longueur d'un tronçon de rue doit être positive.");
+			throw new XMLException("Erreur lors du chargement : la longueur d'un tronï¿½on de rue doit ï¿½tre positive.");
 		}
 
 		return new Section(departure, arrival, length, streetName);
@@ -115,7 +115,7 @@ public class XMLDeserializer {
 		if (root.getNodeName().equals("demandeDeLivraisons")) {
 			buildFromDOMXML(root, plan, calculator);
 		} else {
-			throw new XMLException("Le contenu du fichier ne correspond pas à une demande de livraison.");
+			throw new XMLException("Le contenu du fichier ne correspond pas ï¿½ une demande de livraison.");
 		}
 	}
 
