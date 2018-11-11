@@ -210,6 +210,7 @@ public class Window extends JFrame {
     /**
      * Method used to set the lat and long fields of the adding form
      * 
+     * 
      * @param lat
      *            the latitude value
      * @param lon
@@ -233,7 +234,8 @@ public class Window extends JFrame {
 
     /**
      * Update the graphics on the window, used when we don't add/remove
-     * components
+     * components Update the graphics on the window, used when we don't
+     * add/remove components
      */
     // FIXME visibility -> private
     public void redraw() {

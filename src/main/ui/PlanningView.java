@@ -173,7 +173,6 @@ public class PlanningView extends JPanel {
 
     public void redrawTable() {
 	planning.redrawTable();
-
     }
 
 }
