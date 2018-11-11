@@ -43,8 +43,8 @@ public class Controler {
 	}
 
 	/**
-	 * Load the xml formatted delivery request. Called when the plan screen's
-	 * button "Valider" is pushed.
+	 * Load the xml formatted delivery request. Called when the plan screen's button
+	 * "Valider" is pushed.
 	 */
 	public void openDeliveries() {
 		try {
@@ -158,6 +158,7 @@ public class Controler {
 
 	/**
 	 * TODO doc
+	 * 
 	 * @param closestIntersection
 	 */
 	public void clickedNearIntersection(Intersection closestIntersection) {
@@ -166,6 +167,7 @@ public class Controler {
 
 	/**
 	 * TODO doc
+	 * 
 	 * @param closestSection
 	 */
 	public void clickedNearSection(Section closestSection) {
@@ -174,6 +176,7 @@ public class Controler {
 
 	/**
 	 * TODO doc
+	 * 
 	 * @param intersection
 	 */
 	public void rightClickedNearIntersection(Intersection intersection) {

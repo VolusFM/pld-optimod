@@ -44,7 +44,7 @@ public class XMLDeserializer {
 		if (root.getNodeName().equals("reseau")) {
 			buildFromDOMXML(root, plan);
 		} else {
-			throw new XMLException("File's content doesn't match that of a plan");
+			throw new XMLException("Le contenu du fichier ne correspond pas à un plan.");
 		}
 	}
 
@@ -100,7 +100,7 @@ public class XMLDeserializer {
 		double length = Double.parseDouble(elt.getAttribute("longueur"));
 
 		if (length <= 0) {
-			throw new XMLException("Error when loading file : length of a section must be positive");
+			throw new XMLException("Erreur lors du chargement : la longueur d'un tronçon de rue doit être positive.");
 		}
 
 		return new Section(departure, arrival, length, streetName);
@@ -115,7 +115,7 @@ public class XMLDeserializer {
 		if (root.getNodeName().equals("demandeDeLivraisons")) {
 			buildFromDOMXML(root, plan, calculator);
 		} else {
-			throw new XMLException("File's content doesn't match that of a deliveries request");
+			throw new XMLException("Le contenu du fichier ne correspond pas à une demande de livraison.");
 		}
 	}
 
@@ -135,7 +135,7 @@ public class XMLDeserializer {
 		Intersection address = plan.getIntersectionById(Long.parseLong(elt.getAttribute("adresse")));
 
 		if (address == null) {
-			throw new XMLException("The delivery file has a delivery with unknown address");
+			throw new XMLException("Erreur lors du chargement : une livraison doit avoir une adresse connue.");
 		}
 
 		if (elt.hasAttribute("duree")) { // Actual delivery
