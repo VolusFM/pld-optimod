@@ -10,32 +10,32 @@ import main.model.TourCalculator;
 
 public class KeyListener extends KeyAdapter {
 
-	private Controler controler;
+    private Controler controler;
 
-	public KeyListener(Controler controler) {
-		this.controler = controler;
+    public KeyListener(Controler controler) {
+	this.controler = controler;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+	if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+	    if (delivery != null) {
+
+		TourCalculator.getInstance().removeDeliveryFromTour(delivery, ModelInterface.getTourPlanning().get(0));
+		controler.getWindow().redraw();
+	    }
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-			Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
-			if (delivery != null) {
+	if (e.getKeyCode() == KeyEvent.VK_INSERT) {
+	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+	    if (delivery != null) {
 
-				TourCalculator.getInstance().removeDeliveryFromTour(delivery, ModelInterface.getTourPlanning().get(0));
-				controler.getWindow().redraw();
-			}
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_INSERT) {
-			Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
-			if (delivery != null) {
-
-				Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
-				TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, delivery);
-				controler.getWindow().redraw();
-			}
-		}
-
+		Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
+		TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, delivery);
+		controler.getWindow().redraw();
+	    }
 	}
+
+    }
 }
