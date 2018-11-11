@@ -424,9 +424,8 @@ public class TourCalculator {
 							}
 						}
 						if (minIndex == -1) {
-							/*TODO : set something more meaningful here so as to not have infinite loop*/
-							/* SHOULD NOT HAPPENS*/
-							currentClusters.get(currentClusterIndex).addDelivery(toMove);
+							throw new AssertionError("Error in clusterizeData in TourCalculator : no cluster was found to "
+									+ "put an exceeding delivery. This error SHOULD NOT happend");
 						} else {
 							/* move exceeding delivery to nearest delivery's cluster */
 							Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
