@@ -7,20 +7,20 @@ import main.ui.Window;
 public class AddDeliveryState extends DefaultState {
 
 	/**
-	 * Cancel the new delivery and go back to planningState
+	 * Cancel the new delivery and go back to planningState.
 	 * 
-	 * @param controler
-	 * @param window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void cancelNewDelivery(Controler controler, Window window) {
 		controler.setCurrentState(controler.planningState);
 	}
 
 	/**
-	 * Confirms the delivery's addition
+	 * Confirms the delivery's addition.
 	 * 
-	 * @param controler
-	 * @param window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void confirmNewDelivery(Controler controler, Window window) {
 

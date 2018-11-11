@@ -5,6 +5,7 @@ import main.controler.Controler;
 /**
  * @author Montigny
  *
+ *         Entry point of the application.
  */
 public class Main {
 

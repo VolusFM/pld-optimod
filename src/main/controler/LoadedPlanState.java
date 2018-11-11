@@ -22,6 +22,12 @@ public class LoadedPlanState extends DefaultState {
 		controler.setCurrentState(controler.loadedDeliveriesState);
 	}
 
+	/**
+	 * Open parameters modal.
+	 * 
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
+	 */
 	public void openParameters(Controler controler, Window window) {
 		// TODO : add code to open parameter window
 		controler.setCurrentState(controler.parametersState);

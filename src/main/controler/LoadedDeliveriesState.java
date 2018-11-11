@@ -6,10 +6,18 @@ import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
 
 public class LoadedDeliveriesState extends DefaultState {
+	
+	/**
+	 * Open parameters modal.
+	 * 
+	 * @param controler is the application's controler.
+	 * @param window is the application's graphical window.
+	 */
 	public void openParameters(Controler controler, Window window) {
 
 		try {
-			ModelInterface.setDeliveryMenCount(InputDialogSelector.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
+			ModelInterface.setDeliveryMenCount(InputDialogSelector
+					.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
 		} catch (SelectionCancelledException e) {
 			System.out.println("Selection was cancelled, ignoring...");
 		}
@@ -17,8 +25,14 @@ public class LoadedDeliveriesState extends DefaultState {
 		// controler.setCurrentState(controler.parametersState);
 	}
 
+	/**
+	 * Calculate the planning for the given deliveries request and plan.
+	 * 
+	 * @param controler is the application's controler.
+	 * @param window is the application's graphical window.
+	 */
 	public void calculatePlanning(Controler controler, Window window) {
-		ModelInterface.getTourCalculator().getInstance().calculateTours();
+		ModelInterface.getTourCalculator().calculateTours();
 		window.displayTourPlanningPanel();
 
 		controler.setCurrentState(controler.planningState);

@@ -22,7 +22,7 @@ public class Controler {
 	private Intersection rightClickedIntersection;
 
 	/**
-	 * Create application's controler
+	 * Create the application's controler and window.
 	 */
 	public Controler() {
 		this.currentState = initState;
@@ -43,7 +43,7 @@ public class Controler {
 	}
 
 	/**
-	 * Load the xml formatted delivery request. Called when the "plan" screen s
+	 * Load the xml formatted delivery request. Called when the plan screen's
 	 * button "Valider" is pushed.
 	 */
 	public void openDeliveries() {
@@ -56,7 +56,7 @@ public class Controler {
 	}
 
 	/**
-	 * Calculate planning for the asked tour number
+	 * Calculate planning for the given delivery men count.
 	 */
 	public void calculatePlanning() {
 		try {
@@ -68,7 +68,7 @@ public class Controler {
 	}
 
 	/**
-	 * Add a new delivery to a tour
+	 * Add a new delivery to a tour.
 	 */
 	public void addDelivery() {
 		try {
@@ -81,7 +81,7 @@ public class Controler {
 	}
 
 	/**
-	 * Cancel addition of a new delivery
+	 * Cancel addition of a new delivery.
 	 */
 	public void cancelNewDelivery() {
 		try {
@@ -93,7 +93,7 @@ public class Controler {
 	}
 
 	/**
-	 * Confirms new number of tour
+	 * Confirm new count of delivery men.
 	 */
 	public void confirmParameters() {
 		try {
@@ -104,7 +104,7 @@ public class Controler {
 	}
 
 	/**
-	 * Confirm new delivery addition
+	 * Confirm new delivery addition.
 	 */
 	public void confirmNewDelivery() {
 		try {
@@ -115,26 +115,32 @@ public class Controler {
 	}
 
 	/**
-	 * State s setter.
+	 * State setter.
 	 */
 	public void setCurrentState(State currentState) {
 		System.out.println("Changed from " + this.currentState.stateToString() + " to " + currentState.stateToString());
 		this.currentState = currentState;
 	}
 
+	/**
+	 * Remove a delivery from a tour.
+	 */
 	public void deleteDelivery() {
 		currentState.deleteDelivery(this, window);
 	}
 
 	/**
-	 * get the controler current state
+	 * Get the controler's current state.
 	 * 
-	 * @return currentState
+	 * @return State, the current state of the controler.
 	 */
 	public State getCurrentState() {
 		return currentState;
 	}
 
+	/**
+	 * Open delivery men count selection modal.
+	 */
 	public void openParameters() {
 		try {
 			currentState.openParameters(this, window);
@@ -143,35 +149,50 @@ public class Controler {
 		}
 	}
 
+	/**
+	 * XXX : what's the use of this ?
+	 */
 	public void calculateTour() {
 		currentState.calculatePlanning(this, window);
 	}
 
+	/**
+	 * TODO doc
+	 * @param closestIntersection
+	 */
 	public void clickedNearIntersection(Intersection closestIntersection) {
 		currentState.clickedNearIntersection(this, window, closestIntersection);
 	}
 
+	/**
+	 * TODO doc
+	 * @param closestSection
+	 */
 	public void clickedNearSection(Section closestSection) {
 		currentState.clickedNearSection(this, window, closestSection);
 	}
 
+	/**
+	 * TODO doc
+	 * @param intersection
+	 */
 	public void rightClickedNearIntersection(Intersection intersection) {
 		currentState.rightClickedNearIntersection(this, window, intersection);
 	}
 
 	/**
-	 * get previous state.
+	 * Get previous state.
 	 * 
-	 * @return the previous state, which was set before the current state
+	 * @return State, the previous state.
 	 */
 	public State getPreviousState() {
 		return previousState;
 	}
 
 	/**
-	 * Get the intersection which is selected if the view
+	 * Get the intersection which is selected in the view.
 	 * 
-	 * @return the selected Intersection, or null if none is selected
+	 * @return the selected Intersection, or null if none was selected.
 	 */
 	public Intersection getSelectedIntersection() {
 		return selectedIntersection;

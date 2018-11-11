@@ -12,122 +12,113 @@ import main.ui.Window;
 import main.xml.XMLException;
 
 public interface State {
-	/**
-	 * Open the map
-	 * 
-	 * @param controler
-	 * @param window
-	 */
-	public void openPlan(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException;
 
 	/**
-	 * Open the deliveries request
+	 * Open the plan.
 	 * 
-	 * @param controler
-	 * @param window
-	 * @throws XMLException
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
+	 */
+	public void openPlan(Controler controler, Window window)
+			throws XMLException, ParserConfigurationException, SAXException, IOException;
+
+	/**
+	 * Open the deliveries request.
+	 * 
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
+	 * @throws XMLException                 if the file's contents are invalid.
 	 * @throws ParserConfigurationException
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public void openDeliveries(Controler controler, Window window) throws XMLException, ParserConfigurationException, SAXException, IOException;
+	public void openDeliveries(Controler controler, Window window)
+			throws XMLException, ParserConfigurationException, SAXException, IOException;
 
 	/**
-	 * Open parameters window
+	 * Open parameters window.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void openParameters(Controler controler, Window window);
 
 	/**
-	 * Calculate a tour planning with a given number of tour
+	 * Calculate a tour planning with a given number of delivery men.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void calculatePlanning(Controler controler, Window window);
 
 	/**
-	 * Cancel the creation of a new delivery and go back to previous screen
+	 * Cancel the creation of a new delivery and go back to previous screen.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void cancelNewDelivery(Controler controler, Window window);
 
 	/**
-	 * Open the Add Delivery Window
+	 * Open the Add Delivery Window.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void addDelivery(Controler controler, Window window);
 
 	/**
-	 * Confims parameters change
+	 * Confim parameters change.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void confirmParameters(Controler controler, Window window);
 
 	/**
-	 * Delete delivery
+	 * Delete a delivery.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void deleteDelivery(Controler controler, Window window);
 
 	/**
-	 * Confirm the addition of a new delivery
+	 * Confirm the addition of a new delivery.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
 	 */
 	public void confirmNewDelivery(Controler controler, Window window);
 
 	/**
-	 * Clicked near an Intersection
+	 * Handle a click near an Intersection.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
-	 * @param intersection
-	 *            the closest intersection from the click
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
+	 * @param intersection the intersection closest to the click.
 	 */
 	public void clickedNearIntersection(Controler controler, Window window, Intersection intersection);
 
 	/**
-	 * Clicked near a section
+	 * Handle a click near a Section.
 	 * 
-	 * @param controler
-	 *            the current controller
-	 * @param window
-	 *            the application window
+	 * @param controler is the application's controler.
+	 * @param window    is the application's graphical window.
+	 * @param section the section closest to the click.
 	 */
 	public void clickedNearSection(Controler controler, Window window, Section section);
+
+	/**
+	 * XXX ?
+	 * @param controler
+	 * @param window
+	 * @param intersection
+	 */
+	public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
 
 	/**
 	 * Get the state to a string for test use.
 	 */
 	public String stateToString();
-
-	public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
 }
