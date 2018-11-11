@@ -10,7 +10,7 @@ import javafx.util.Pair;
 public class Cluster {
 	private List<Delivery> deliveries;
 	private Pair<Double,Double> centroid;
-	
+	private boolean isBalenced;
 	/**
 	 * Create a cluster.
 	 * @param deliveries
@@ -18,6 +18,7 @@ public class Cluster {
 	public Cluster(Pair<Double,Double> centroid){
 		this.centroid = centroid;
 		deliveries = new ArrayList<Delivery>();
+		isBalenced = false;
 	}
 	
 	/**
@@ -60,11 +61,27 @@ public class Cluster {
 	}
 	
 	/**
+	 * isBalenced s getter
+	 * @return
+	 */
+	public boolean isBalenced() {
+		return isBalenced;
+	}
+	
+	/**
 	 * centroid s setter
 	 * @param centroid
 	 */
 	public void setCentroid(Pair<Double, Double> centroid) {
 		this.centroid = centroid;
+	}
+	
+	/**
+	 * isBalenced s setter
+	 * @param centroid
+	 */
+	public void setIsBalenced(boolean isBalenced) {
+		this.isBalenced= isBalenced;
 	}
 	
 	/**
