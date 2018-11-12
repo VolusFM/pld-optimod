@@ -1,82 +1,131 @@
 package main.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 import java.util.List;
 
+/**
+ * 
+ * TourFactory handles the creation and stockage of Tour objects.
+ *
+ */
 public class TourFactory {
 
-	private static List<Tour> tourPlanning;
-	/** Initialized Unique Instance */
-	private static TourFactory INSTANCE = new TourFactory();
 
-	private TourFactory() {
-		tourPlanning = new ArrayList<>();
-	}
+    private static List<Tour> tourPlanning;
+    /** Initialized Unique Instance */
+    private static TourFactory instance = new TourFactory();
 
-	public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
-		System.out.println(depot);
-		calculateDeliveryHours(steps, depot, deliveries);
-		Tour currentTour = new Tour(steps, deliveries, deliveryMan);
-		tourPlanning.add(currentTour);
-		return currentTour;
-	}
+    private TourFactory() {
+	tourPlanning = new ArrayList<>();
+    }
 
-	public static TourFactory getInstance() {
-		return INSTANCE;
-	}
+    /**
+     * Create a tour.
+     * 
+     * @param deliveryMan is the delivery man who has to realize the tour.
+     * @param steps are the steps between each delivery.
+     * @param depot is the depot where the tour starts and ends.
+     * @param deliveries is the list of delivery points.
+     * @return Tour, the created tour.
+     */
+    public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
+	Tour currentTour = new Tour(depot, steps, deliveries, deliveryMan);
+	currentTour.calculateDeliveryHours();
+	tourPlanning.add(currentTour);
+	return currentTour;
+    }
 
-	protected List<Tour> getTourPlanning() {
-		return tourPlanning;
-	}
+    /**
+     * Get the unique instance of the class.
+     * 
+     * @return TourFactory, the unique instance of the class.
+     */
+    public static TourFactory getInstance() {
+	return instance;
+    }
 
-	private static void calculateDeliveryHours(List<Step> steps, Delivery depot, List<Delivery> deliveries) {
-		Calendar departureTime = depot.getHour();
-		for (Step s : steps) {
-			List<Section> sections = s.getSections();
-			long lastIntersectionId = sections.get(sections.size() - 1).getEnd().getId();
-			boolean foundDelivery = false;
-			
-			Iterator<Delivery> it = deliveries.iterator();
-			Delivery delivery = depot; // If we don't find the delivery, it's the depot
-			
-			while (!foundDelivery && it.hasNext()) {
-				Delivery d = it.next();
-				
-				if (lastIntersectionId == d.getAddress().getId()) {
-					delivery = d;
-					foundDelivery = true;
-				}
-			}
-			
-			long travelTimeInSeconds = Math.round(s.calculateLength() * 3600 / 15000); // XXX : which unit is used ?
-			
-			
-			departureTime.add(Calendar.SECOND, (int) travelTimeInSeconds);
-			Calendar deliveryTime = (Calendar) departureTime.clone();	
-			delivery.setHour(deliveryTime);
-			
-			departureTime.add(Calendar.SECOND, delivery.getDuration());
-			
-			
-			System.out.println(travelTimeInSeconds);
-			System.out.println(s.calculateLength());
-			
+    /**
+     * Getter for the planning of tour.
+     * 
+     * @return List, a list of all the calculated Tour objects.
+     */
+    protected List<Tour> getTourPlanning() {
+	return tourPlanning;
+    }
+
+    /**
+     * Find the step leading to a delivery.
+     * 
+     * @param delivery is the delivery at the end of the step we're looking for.
+     * @return Step, the Step leading to the delivery.
+     */
+    protected Step findStepBeforeDelivery(Delivery delivery) {
+	for (Tour tour : tourPlanning) {
+	    if (tour.getDeliveryPoints().contains(delivery)) {
+		for (Step step : tour.getSteps()) {
+		    if (step.getEndDelivery().equals(delivery)) {
+			return step;
+		    }
 		}
+	    }
 	}
 
-	public List<Tour> findToursContainingSection(Section section) {
-		ArrayList<Tour> tours = new ArrayList<>();
-		for (Tour tour : tourPlanning) {
-			for (Step st : tour.getSteps()) {
-				for (Section s : st.getSections()) {
-					if (section.equals(s)) {
-						tours.add(tour);
-					}
-				}
-			}
+	return null;
+    }
+
+    /**
+     * Get the tours containing a specific section.
+     * 
+     * @param section is the section on which to filter the results.
+     * @return List, the list of tours containing the given section.
+     */
+    public List<Tour> findToursContainingSection(Section section) {
+	ArrayList<Tour> tours = new ArrayList<>();
+	for (Tour tour : tourPlanning) {
+	    for (Step st : tour.getSteps()) {
+		for (Section s : st.getSections()) {
+		    if (section.equals(s)) {
+			tours.add(tour);
+		    }
 		}
-		return tours;
+	    }
 	}
+
+	if (tours.size() == 0) {
+	    System.out.println("NO TOUR FOUND");
+	    tours.add(tourPlanning.get(0));
+	}
+
+	return tours;
+    }
+
+    /**
+     * Find deliveries for a given delivery man id.
+     * 
+     * @param deliveryManId is the id of the delivery man on which to filter the
+     *            results.
+     * @return the list of deliveries given to the delivery man
+     */
+    public List<Delivery> getDeliveriesById(int deliveryManId) {
+	int i = 0;
+	while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
+	    i = i + 1;
+	}
+	return tourPlanning.get(i).getDeliveryPoints();
+    }
+
+    /**
+     * Find the tour containing a specific delivery.
+     * 
+     * @param delivery is the delivery on which to filter the results.
+     * @return Tour, the tour containing the delivery.
+     */
+    public Tour findTourContainingDelivery(Delivery delivery) {
+	for (Tour tour : tourPlanning) {
+	    if (tour.getDeliveryPoints().contains(delivery)) {
+		return tour;
+	    }
+	}
+	return null;
+    }
 }

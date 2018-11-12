@@ -1,36 +1,47 @@
 package main.controler;
 
-import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Section;
-import main.model.TourCalculator;
-import main.ui.RangeSelector;
+import main.ui.InputDialogSelector;
+import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
-import main.ui.RangeSelector.SelectionCancelledException;
 
+/**
+ * LoadedDeliveriesState is the state in which a plan and a deliveries request
+ * have been loaded.
+ *
+ */
 public class LoadedDeliveriesState extends DefaultState {
-	public void openParameters(Controler controler, Window window) {
 
-		try {
-			ModelInterface.setDeliveryMenCount(RangeSelector.getIntegerInRange(1, ModelInterface.getDeliveries().size(),
-					"Please select the delivery men count", "Range selector"));
-		} catch (SelectionCancelledException e) {
-			System.out.println("Selection was cancelled, ignoring...");
-		}
-
-//		controler.setCurrentState(controler.parametersState);
+    /**
+     * Open parameters modal.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void openParameters(Controler controler, Window window) {
+	try {
+	    ModelInterface.setDeliveryMenCount(InputDialogSelector
+		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
+	} catch (SelectionCancelledException e) {
+	    System.out.println("Selection was cancelled, ignoring...");
 	}
+    }
 
-	public void calculatePlanning(Controler controler, Window window) {
-		ModelInterface.getTourCalculator().getInstance().calculateTours();
-		window.displayTourPlanningPanel();
-		window.toggleDeliveryMenCountButtonVisiblity();
-		controler.setCurrentState(controler.planningState);
-	}
+    /**
+     * Calculate the planning for the given deliveries request and plan.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void calculatePlanning(Controler controler, Window window) {
+	ModelInterface.getTourCalculator().getInstance().calculateTours();
+	window.displayTourPlanningPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
+	controler.setCurrentState(controler.planningState);
+    }
 
-	
-	public String stateToString() {
-		return "loadedDeliveryState";
-	}
-	
+    public String stateToString() {
+	return "loadedDeliveryState";
+    }
+
 }

@@ -11,27 +11,43 @@ import main.ui.Window;
 import main.xml.XMLDeserializer;
 import main.xml.XMLException;;
 
+/**
+ * InitState is the initial state of the application, when it's just been
+ * started.
+ *
+ */
 public class InitState extends DefaultState {
 
-	public void openPlan(Controler controler, Window window)
+    /**
+     * Load a plan's XML file.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void openPlan(Controler controler, Window window)
+	    throws XMLException, ParserConfigurationException, SAXException, IOException {
+	XMLDeserializer.load(ModelInterface.getPlan());
 
-			throws XMLException, ParserConfigurationException, SAXException, IOException {
-		XMLDeserializer.load(ModelInterface.getPlan());
+	window.displayPlanView();
+	window.displayDeliveryRequestSelectionPanel();
 
-		window.displayPlanView();
-		window.displayDeliveryRequestSelectionPanel();
+	controler.setCurrentState(controler.loadedPlanState);
+    }
 
-		controler.setCurrentState(controler.loadedPlanState);
-	}
+    /**
+     * XXX
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void openParameters(Controler controler, Window window) {
 
-	public void openParameters(Controler controler) {
+	// TODO : add code to open parameter window
+	// controler.setCurrentState(controler.parametersState);
 
-		// TODO : add code to open parameter window
-//		controler.setCurrentState(controler.parametersState);
+    }
 
-	}
-
-	public String stateToString() {
-		return "initState";
-	}
+    public String stateToString() {
+	return "initState";
+    }
 }

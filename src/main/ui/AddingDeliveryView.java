@@ -20,6 +20,7 @@ import main.model.ModelInterface;
 
 public class AddingDeliveryView extends JPanel {
 
+
 	private Window window;
 	/* Components */
 	protected JTextField latitudeField;
@@ -29,9 +30,9 @@ public class AddingDeliveryView extends JPanel {
 	private JButton validationButton;
 	private JButton cancelationButton;
 
-	/* Buttons Actions */
-	protected final static String ACTION_VALIDATION_ADDING_DELIVERY 	= "Valider le nouveau point de livraison";
-	protected final static String ACTION_CANCELATION_ADDING_DELIVERY 	= "Annuler le nouveau point de livraison";
+    /* Buttons Actions */
+    protected final static String ACTION_VALIDATION_ADDING_DELIVERY = "Valider le nouveau point de livraison";
+    protected final static String ACTION_CANCELATION_ADDING_DELIVERY = "Annuler le nouveau point de livraison";
 
 	/* Labels texts */
 	private final String validationText 								= "Valider";

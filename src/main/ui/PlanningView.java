@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.swing.JScrollPane;
 import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Tour;
 
 public class PlanningView extends JPanel {
 
@@ -164,24 +166,37 @@ public class PlanningView extends JPanel {
 		totalViewPanel.setVisible(true);
 	}
 	
-	/**
-	 * Method used to synchronize the textual view with the plan 
-	 * A click in the plan select the corresponding rox of the planning
-	 * if existing
-	 * @param closestIntersection
-	 */
-	public void selectRow(Intersection closestIntersection) {
-		List<Delivery> deliveries = ModelInterface.getDeliveries();
+
+    /**
+     * Method used to synchronize the textual view with the plan A click in the
+     * plan select the corresponding rox of the planning if existing
+     * 
+     * @param closestIntersection
+     */
+    public void selectRow(Intersection closestIntersection) {
+		// XXX : move such logic somewhere else
+		List<Tour> tours = ModelInterface.getTourPlanning();
+		List<Delivery> deliveries = new ArrayList<>();
+	
+		for (Tour tour : tours) {
+		    for (Delivery delivery : tour.getDeliveryPoints()) {
+			deliveries.add(delivery);
+		    }
+		}
 		Iterator<Delivery> it = deliveries.iterator();
 		boolean found = false;
 		int i = 0;
 		while (!found && it.hasNext()) {
-			if (it.next().getAddress().getId() == closestIntersection.getId()) {
-				planning.selectRow(i);
-				found = true;
-			}
-			i++;
+		    if (it.next().getAddress().getId() == closestIntersection.getId()) {
+			planning.selectRow(i);
+			found = true;
+		    }
+		    i++;
 		}
-	}
+    }
+
+    public void redrawTable() {
+    	planning.redrawTable();
+    }
 
 }

@@ -6,31 +6,28 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.model.Intersection;
 import main.model.ModelInterface;
 import main.ui.Window;
 import main.xml.XMLDeserializer;
 import main.xml.XMLException;
 
+/**
+ * LoadedPlanState is the state in which only the plan has been loaded
+ *
+ */
 public class LoadedPlanState extends DefaultState {
 
-	public void openDeliveries(Controler controler, Window window)
-			throws XMLException, ParserConfigurationException, SAXException, IOException {
-		
-		XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
-		window.displayCalculateTourButtonPanel();
-		window.toggleDeliveryMenCountButtonVisiblity();
+    public void openDeliveries(Controler controler, Window window)
+	    throws XMLException, ParserConfigurationException, SAXException, IOException {
 
-		
-		controler.setCurrentState(controler.loadedDeliveriesState);
-	}
+	XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
+	window.displayCalculateTourButtonPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
 
-	public void openParameters(Controler controler,Window window) {
-		// TODO : add code to open parameter window
-		controler.setCurrentState(controler.parametersState);
-	}
+	controler.setCurrentState(controler.loadedDeliveriesState);
+    }
 
-	public String stateToString() {
-		return "loadedPlanState";
-	}
+    public String stateToString() {
+	return "loadedPlanState";
+    }
 }
