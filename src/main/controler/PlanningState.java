@@ -24,9 +24,7 @@ public class PlanningState extends DefaultState {
      */
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
-	//window.displayTourPlanningPanel();
-	window.redraw();
-
+	window.displayTourPlanningPanel();
     }
 
     /**
@@ -42,7 +40,6 @@ public class PlanningState extends DefaultState {
 	} catch (SelectionCancelledException e) {
 	    System.out.println("Selection was cancelled, ignoring...");
 	}
-	// controler.setCurrentState(controler.parametersState);
     }
 
     /**

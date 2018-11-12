@@ -179,10 +179,6 @@ public class TourCalculator {
 	}
 	
 	List<Tour> planning = TourFactory.getInstance().getTourPlanning();
-	for (Tour t : planning) {
-	    System.out.println(t.toString());
-	}
-	System.out.println("slt");
     }
 
     /**
