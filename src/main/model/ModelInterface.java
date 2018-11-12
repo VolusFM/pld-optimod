@@ -157,4 +157,11 @@ public abstract class ModelInterface {
     public static int getDeliveryMenCount(){
 	return tourCalculator.getDeliveryMenCount();
     }
+    
+    /**
+     * Find the deliveries for a specified delivery man id
+     */
+    public static List<Delivery> getDeliveriesById(int deliveryManId){
+	return tourFactory.getDeliveriesById(deliveryManId);
+    }
 }

@@ -63,7 +63,7 @@ public class Delivery {
 
     @Override
     public String toString() {
-	return "D at " + address;
+	return "("+address.getLat()+";"+address.getLon()+") - "+hour;
     }
 
     @Override
