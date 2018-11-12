@@ -208,7 +208,7 @@ public class TourCalculator {
 	for (int i = 0; i < deliveries.size(); i++) {
 	    costTSP[i + 1] = dijkstraHelper(deliveries.get(i).getAddress());
 	}
-	
+
     }
 
     /**
@@ -717,6 +717,86 @@ public class TourCalculator {
     }
 
     /**
+     * Private method used to create a cluster list when cluster number is > to
+     * deliveries size
+     * 
+     * @param clusterNb
+     * @return
+     */
+    private List<Cluster> createTrivialClusters(int clusterNb) {
+	List<Cluster> bestClusters = new ArrayList<Cluster>();
+	for (Delivery delivery : deliveries) {
+	    Pair<Double, Double> centroid = new Pair<Double, Double>(delivery.getAddress().getLat(),
+		    delivery.getAddress().getLon());
+	    Cluster cluster = new Cluster(centroid);
+	    cluster.addDelivery(delivery);
+	    bestClusters.add(cluster);
+	}
+	return bestClusters;
+    }
+
+    /**
+     * Private method used to check is a cluster list contains empty clusters
+     * 
+     * @param clusterList
+     * @return
+     */
+    private boolean hasEmptyCluster(List<Cluster> clusterList) {
+	boolean hasEmptyCluster = false;
+	int indexCluster = 0;
+	while (!hasEmptyCluster && indexCluster < clusterList.size()) {
+	    if (clusterList.get(indexCluster).getDeliveries().isEmpty()) {
+		hasEmptyCluster = true;
+	    }
+	    indexCluster++;
+	}
+	return hasEmptyCluster;
+    }
+
+    /**
+     * return id of the nearest delivery from toMove, which belong to a not
+     * full, not balanced cluster from currentClusters and which is from a
+     * different cluster than currentClusterIndex
+     * 
+     * @param toMove
+     * @param currentClusters
+     * @param currentClusterIndex
+     * @param remainingAdditionalDeliveries, represent the number of cluster not
+     *            balanced with one more delivery
+     * @return
+     */
+    private int nearestDeliveryInClusters(Delivery toMove, List<Cluster> currentClusters, int currentClusterIndex,
+	    int remainingAdditionalDeliveries ) {
+	int minIndex = -1;
+	HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+	int evenDeliveryNumber = (int) (this.deliveries.size() / currentClusters.size());
+	double[] distanceToToMove = costTSP[deliveries.indexOf(toMove)];
+	double minDistance = MAXDOUBLE;
+	for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
+	    int indexDelivery = indexCostTSP - 1;
+	    /*
+	     * in case this is the last cluster with additional deliveries
+	     */
+	    boolean isClusterNotFull;
+	    if (remainingAdditionalDeliveries > 0) {
+		isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).getDeliveries()
+			.size()) < evenDeliveryNumber + 1);
+	    } else {
+		isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).getDeliveries()
+			.size()) < evenDeliveryNumber);
+	    }
+
+	    if ((distanceToToMove[indexCostTSP] < minDistance) && (isClusterNotFull)
+		    && !(currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).isBalanced())
+		    && (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
+		minDistance = distanceToToMove[indexCostTSP];
+		minIndex = indexDelivery;
+	    }
+	}
+	return minIndex;
+    }
+
+    /**
      * calculate best set of clusters in a array of MAXKMEANS set of clusters.
      * Will not take into account empty cluster. The graph must be created
      * before this method is called. Need at least two deliveries.
@@ -727,64 +807,36 @@ public class TourCalculator {
      * @return
      */
     public List<Cluster> clusterizeData(int clusterNb, double epsilon) {
-	/* Handling exceptions */
-	if (deliveries.size() < 2)
-	    throw new AssertionError("ClusterizeData was called with less than 2 deliveries in memories");
 	/* particular case where each cluster only has one delivery */
-	List<Cluster> bestClusters = new ArrayList<Cluster>();
 	if (clusterNb >= deliveries.size()) {
-	    for (Delivery delivery : deliveries) {
-		Pair<Double, Double> centroid = new Pair<Double, Double>(delivery.getAddress().getLat(),
-			delivery.getAddress().getLon());
-		Cluster cluster = new Cluster(centroid);
-		cluster.addDelivery(delivery);
-		bestClusters.add(cluster);
-	    }
-	    return bestClusters;
+	    return createTrivialClusters(clusterNb);
 	}
 	/* General case */
+	List<Cluster> bestClusters = new ArrayList<Cluster>();
 	double minCoeff = MAXDOUBLE;
-
 	/* Selection of best cluster set on MAXKMEANS iterations */
 	for (int i = 0; i < MAXKMEANS; i++) {
 	    List<Cluster> currentClusters = this.kMeans(clusterNb, this.deliveries, epsilon);
-	    /*
-	     * sort the cluster from the one with the most delivery to the one
-	     * with the least delivery
-	     */
 	    int evenDeliveryNumber = (int) (this.deliveries.size() / clusterNb);
-	    int remainingAdditionalDeliveries = this.deliveries.size() % clusterNb; // This
-										    // represent
-										    // how
-										    // many
-										    // clusters
-										    // have
-										    // one
-										    // more
-										    // delivery
+	    /* This represent how many clusters have one more delivery */
+	    int remainingAdditionalDeliveries = this.deliveries.size() % clusterNb;
 	    /* Ignore sets with empty clusters */
-	    boolean hasEmptyCluster = false;
-	    int indexCluster = 0;
-	    while (!hasEmptyCluster && indexCluster < currentClusters.size()) {
-		if (currentClusters.get(indexCluster).getDeliveries().isEmpty()) {
-		    hasEmptyCluster = true;
-		}
-		indexCluster++;
-	    }
+	    boolean hasEmptyCluster = hasEmptyCluster(currentClusters);
 	    if (!hasEmptyCluster) {
-		int maxIntersectionNumber;
+		/* Re-balances clusterList */
 		for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
+		    /*
+		     * sort the cluster from the one with the most delivery to
+		     * the one with the least delivery
+		     */
 		    Collections.sort(currentClusters, new Comparator<Cluster>() {
 			public int compare(Cluster a1, Cluster a2) {
-			    return a2.getDeliveries().size() - a1.getDeliveries().size(); // assumes
-											  // you
-											  // want
-											  // biggest
-											  // to
-											  // smallest
+			    return a2.getDeliveries().size() - a1.getDeliveries().size();
 			}
 		    });
 		    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+
+		    int maxIntersectionNumber;
 		    /* Check if there can be an additional delivery */
 		    if ((currentClusters.get(currentClusterIndex).getDeliveries().size() > evenDeliveryNumber)
 			    && (remainingAdditionalDeliveries > 0)) {
@@ -796,47 +848,22 @@ public class TourCalculator {
 		    int nbExceedingDeliveries = currentClusters.get(currentClusterIndex).getDeliveries().size()
 			    - maxIntersectionNumber;
 		    currentClusters.get(currentClusterIndex).sortDeliveriesByEuclidianDistanceToCentroid();
-
 		    /*
 		     * move exceeding Deliveries to the cluster containing the
 		     * nearest intersection
 		     */
 		    while ((nbExceedingDeliveries > 0)) {
-			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
+			Delivery toMove = currentClusters.get(currentClusterIndex).getDeliveries().get(0);
 			int indexToMove = deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
 			    throw new AssertionError("Delivery present in cluster does not exist.");
 			}
-			double[] distanceToToMove = costTSP[indexToMove];
-			double minDistance = MAXDOUBLE;
-			int minIndex = -1;
-
 			/*
 			 * find the nearest delivery contained in a not full
 			 * cluster (which is not the current cluster)
 			 */
-			for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
-			    int indexDelivery = indexCostTSP - 1;
-			    /*
-			     * in case this is the last cluster with additional
-			     * deliveries
-			     */
-			    boolean isClusterNotFull;
-			    if (remainingAdditionalDeliveries > 0) {
-				isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery))
-					.getDeliveries().size()) < evenDeliveryNumber + 1);
-			    } else {
-				isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery))
-					.getDeliveries().size()) < evenDeliveryNumber);
-			    }
-
-			    if ((distanceToToMove[indexCostTSP] < minDistance) && (isClusterNotFull)
-				    && !(currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).isBalanced())
-				    && (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
-				minDistance = distanceToToMove[indexCostTSP];
-				minIndex = indexDelivery;
-			    }
-			}
+			int minIndex = nearestDeliveryInClusters(toMove, currentClusters, currentClusterIndex,
+				remainingAdditionalDeliveries);
 			if (minIndex == -1) {
 			    throw new AssertionError(
 				    "Error in clusterizeData in TourCalculator : no cluster was found to "
@@ -846,10 +873,8 @@ public class TourCalculator {
 			     * move exceeding delivery to nearest delivery's
 			     * cluster
 			     */
+			    toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			    Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
-			    // System.out.println("supposed size " +
-			    // maxIntersectionNumber + "real size" +
-			    // currentClusters.get(currentClusterIndex).getDeliveries().size());
 			    currentClusters.get(idNearestCluster).addDelivery(toMove);
 			    idDeliveryToIdCluster.put(minIndex, idNearestCluster);
 			    nbExceedingDeliveries = currentClusters.get(currentClusterIndex).getDeliveries().size()
@@ -862,11 +887,7 @@ public class TourCalculator {
 	    /* evaluate cluster by adding distance to centroid */
 	    double coeff = 0;
 	    for (Cluster cluster : currentClusters) {
-		for (Delivery delivery : cluster.getDeliveries()) {
-		    Pair<Double, Double> deliveryData = new Pair<Double, Double>(delivery.getAddress().getLat(),
-			    delivery.getAddress().getLon());
-		    coeff += cluster.calculateDistanceToCentroid(deliveryData);
-		}
+		coeff += cluster.calculateCoefficient();
 	    }
 	    if (coeff < minCoeff) {
 		minCoeff = coeff;
