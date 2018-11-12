@@ -843,18 +843,9 @@ public class TourCalculator {
 	    boolean hasEmptyCluster = hasEmptyCluster(currentClusters);
 	    if (!hasEmptyCluster) {
 		/* Re-balances clusterList */
-		for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
-		    /*
-		     * sort the cluster from the one with the most delivery to
-		     * the one with the least delivery
-		     */
-		    
-		    Collections.sort(currentClusters, new Comparator<Cluster>() {
-			public int compare(Cluster a1, Cluster a2) {
-			    return a2.getDeliveries().size() - a1.getDeliveries().size();
-			}
-		    });
-		    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+	    int currentClusterIndex = getBiggestUnbalanced(currentClusters);
+	    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+		while (currentClusterIndex != -1) {
 		    int maxIntersectionNumber;
 		    /* Check if there can be an additional delivery */
 		    if ((currentClusters.get(currentClusterIndex).getDeliveries().size() > evenDeliveryNumber)
@@ -899,7 +890,8 @@ public class TourCalculator {
 				    - maxIntersectionNumber;
 			}
 		    }
-		    currentClusters.get(currentClusterIndex).setIsBalenced(true);
+		    currentClusters.get(currentClusterIndex).setIsBalanced(true);
+		    currentClusterIndex = getBiggestUnbalanced(currentClusters);
 		}
 	    }
 	    /* evaluate cluster by adding distance to centroid */
@@ -915,6 +907,17 @@ public class TourCalculator {
 	return bestClusters;
     }
 
+    private int getBiggestUnbalanced(List<Cluster> clusters) {
+    	int indexCluster = -1;
+    	int maxSize = 0;
+    	for (int index = 0; index < clusters.size();index++) {
+    		if(clusters.get(index).getDeliveries().size() > maxSize && !(clusters.get(index).isBalanced())) {
+    			maxSize = clusters.get(index).getDeliveries().size();
+    			indexCluster = index;
+    		}
+    	}
+    	return indexCluster;
+    }
     /**
      * construct a HashMap with delivery index as key and cluster index as
      * value.
