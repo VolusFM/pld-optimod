@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JTable;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -18,12 +19,20 @@ public class PlanningTable extends JTable {
 
      public PlanningTable() {
 	  setModel(new PlanningTableModel());
+	  setSelectionModel(new PlanningSelectionModel());
 	  setAutoCreateRowSorter(true);
      }
 
-     public void selectRow(int rowIndex) {
-	  int sortedIndex = getRowSorter().convertRowIndexToView(rowIndex);
-	  setRowSelectionInterval(sortedIndex, sortedIndex);
+     public void selectRow(List<Integer> indexes) {
+	  ((PlanningSelectionModel) getSelectionModel()).shouldFireEvents = false;
+	  clearSelection();
+	  int sortedIndex;
+	  for (Integer index : indexes) {
+	       sortedIndex = getRowSorter().convertRowIndexToView(index);
+	       addRowSelectionInterval(sortedIndex, sortedIndex);
+	  }
+	  ((PlanningSelectionModel) getSelectionModel()).shouldFireEvents = true;
+
      }
 
      public void redrawTable() {
@@ -180,6 +189,31 @@ public class PlanningTable extends JTable {
 	       // return
 	       // tours.get(currentTourIndex).getDeliveryPoints().get(rowIndex -
 	       // drift);
+	  }
+     }
+
+     private static class PlanningSelectionModel extends DefaultListSelectionModel {
+	  private boolean shouldFireEvents = true;
+
+	  @Override
+	  protected void fireValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
+	       if (shouldFireEvents) {
+		    super.fireValueChanged(firstIndex, lastIndex, isAdjusting);
+	       }
+	  }
+
+	  @Override
+	  protected void fireValueChanged(boolean isAdjusting) {
+	       if (shouldFireEvents) {
+		    super.fireValueChanged(isAdjusting);
+	       }
+	  }
+
+	  @Override
+	  protected void fireValueChanged(int firstIndex, int lastIndex) {
+	       if (shouldFireEvents) {
+		    super.fireValueChanged(firstIndex, lastIndex);
+	       }
 	  }
 
      }
