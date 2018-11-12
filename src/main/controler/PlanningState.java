@@ -63,8 +63,10 @@ public class PlanningState extends DefaultState {
     public void removeDelivery(Controler controler, Window window) {
 	Intersection i = controler.getSelectedIntersection();
 	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
-	ModelInterface.removeDelivery(toRemove);
-	window.redraw();
+	if (toRemove != null) {
+	    ModelInterface.removeDelivery(toRemove);
+	    window.redraw();
+	}
     }
 
     /**
