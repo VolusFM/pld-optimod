@@ -45,11 +45,12 @@ public class Window extends JFrame {
 
 	/* Component's text */
 	private final String WINDOW_TITLE = "Optimod";
-	private final String TEXT_DELIVERY_SELECTION = "SÈlectionnez un fichier de demande de livraison au format XML :";
-	private final String TEXT_PLAN_SELECTION = "SÈlectionnez un fichier de plan au format XML :";
+	private final String TEXT_DELIVERY_SELECTION = "S√©lectionnez un fichier de demande de livraison au format XML :";
+	private final String TEXT_PLAN_SELECTION = "S√©lectionnez un fichier de plan au format XML :";
 	private final String BUTTON_BROWSE = "Parcourir";
-	private final String BUTTON_TOUR_CALCUL = "Planifier la tournÈe";
-	private final String TEXT_PLANNING_BOARD = "Planning des tournÈes obtenu :";
+	private final String BUTTON_TOUR_CALCUL = "Planifier la tourn√©e";
+	private final String TEXT_PLANNING_BOARD = "Planning des tourn√©es obtenu :";
+	private final String TEXT_DELIVERY_LENGTH_COUNT = "Nombre de Livreurs param√©tr√© :";
 
 	/* Button's action */
 	protected static final String ACTION_SELECTION_PLAN = "LOAD_PLAN";
@@ -177,13 +178,22 @@ public class Window extends JFrame {
 		rightPanel.setVisible(false);
 		rightPanel = new JPanel();
 		rightPanel.setPreferredSize(new Dimension(500, 900));
-		/* Create Content */
 		rightPanel.setLayout(new BorderLayout());
+		/* Create Content */
+		JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
 		JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+		JLabel count = new JLabel(""+ModelInterface.getDeliveryMenCount());
 		planningPanel = new PlanningView(this);
-		rightPanel.add(planningText, BorderLayout.NORTH);
-		rightPanel.add(planningPanel, BorderLayout.CENTER);
+		/* Panels */
+		JPanel planning = new JPanel();
+		planning.add(planningText, BorderLayout.NORTH);
+		planning.add(planningPanel, BorderLayout.CENTER);
+		JPanel countPanel = new JPanel();
+		countPanel.add(deliveryMenCount, BorderLayout.NORTH);
+		countPanel.add(count, BorderLayout.CENTER);
 		/* Set content */
+		rightPanel.add(countPanel, BorderLayout.NORTH);
+		rightPanel.add(planning, BorderLayout.CENTER);
 		rightPanel.setVisible(true);
 		add(rightPanel, BorderLayout.EAST);
 		redraw();

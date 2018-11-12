@@ -131,16 +131,16 @@ public abstract class TemplateTSP implements TSP {
 		int nextNode;
 		int i;
 		for (i = 1; i < numberOfNodes; i++) {
-			System.out.println("Étape " + i + " :");
+			System.out.println("Etape " + i + " :");
 			nextNode = getBestSolution(i);
 			System.out.println("Aller de " + currentNode + " à " + nextNode + " (pour un coût de "
 					+ graph[currentNode][nextNode] + ", et une attente de " + duration[nextNode]
-					+ " à l'arrivée)");
+					+ " à l'arrivee)");
 			currentNode = nextNode;
 			System.out.println();
 
 		}
-		System.out.println("Étape " + i + " (finale : retour au dépot) :");
+		System.out.println("Etape " + i + " (finale : retour au depot) :");
 		System.out.println("Aller de " + currentNode + " à " + initialNode + " (pour un coût de "
 				+ graph[currentNode][initialNode] + ")");
 	}

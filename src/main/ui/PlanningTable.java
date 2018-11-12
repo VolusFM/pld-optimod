@@ -66,8 +66,6 @@ public class PlanningTable extends JTable {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
 			Calendar hour = delivery.getHour();
 			dateFormat.setTimeZone(hour.getTimeZone());
-
-			
 			
 			switch (columnIndex) {
 			case 0:

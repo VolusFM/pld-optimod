@@ -24,7 +24,7 @@ public class PlanningListener implements ListSelectionListener {
 	// if (e.getClickCount() == 2) {
 	// Point p = e.getPoint();
 	// int row = planning.rowAtPoint(p);
-	// System.out.println("N° ligne cliquée : " + row);
+	// System.out.println("N° ligne cliquee : " + row);
 	// // TODO : controleur.modifLigne(row) qui ouvre une range selector (1
 	// // à nbr livreurs)
 	// // et change le delivery man de la ligne avec le retour de la range

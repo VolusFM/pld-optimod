@@ -30,7 +30,7 @@ public class PlanningView extends JPanel {
 
 	/* Components texts */
 	private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter une livraison";
-	private final String SUPRESS_DELIVERY_POINT_BUTTON = "Supprimer la livraison sélectionnée";
+	private final String SUPRESS_DELIVERY_POINT_BUTTON = "Supprimer la livraison sÃ©lectionnÃ©e";
 	private final String CANCEL_MODIFICATIONS_BUTTON = "Annuler";
 
 	/* Actions */
@@ -85,10 +85,11 @@ public class PlanningView extends JPanel {
 		cancelModifications  = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 		cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 		cancelModifications.addActionListener(buttonListener);
-		/* Button Panel */ // 3 buttons aligned and filling the line
+		/* Button Panel */ 
 		JPanel buttonRangePanel = new JPanel();
 		buttonRangePanel.setPreferredSize(new Dimension(600,30));
 		displayConstraint = new GridBagConstraints();
+		// 3 buttons aligned and filling the line
 		displayConstraint.gridx = 0;
 		displayConstraint.gridy = 0; 
 		displayConstraint.gridwidth = GridBagConstraints.REMAINDER; 
@@ -114,6 +115,7 @@ public class PlanningView extends JPanel {
 		displayConstraint.gridy = 0; 
 		displayConstraint.gridwidth = GridBagConstraints.REMAINDER; 
 		displayConstraint.gridheight = 1; 
+		displayConstraint.fill = GridBagConstraints.BOTH;
 		displayConstraint.anchor = GridBagConstraints.LINE_START; 
 		displayConstraint.insets = new Insets(5, 0, 5, 0); 
 		totalViewPanel.add(buttonRangePanel, displayConstraint);

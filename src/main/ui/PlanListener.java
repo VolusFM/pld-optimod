@@ -31,7 +31,11 @@ public class PlanListener extends MouseAdapter {
 		controler.clickedNearIntersection(closest);		
 		
 		controler.clickedNearSection(ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
-
+		
+		if (controler.window.planningPanel.addingPanel != null){
+			controler.window.planningPanel.addingPanel.latitudeField.setText(""+closest.getLat());
+			controler.window.planningPanel.addingPanel.longitudeField.setText(""+closest.getLon());
+		}
 	}
 
 	@Override

@@ -25,7 +25,6 @@ public class AddingDeliveryView extends JPanel {
 	protected JTextField latitudeField;
 	protected JTextField longitudeField;
 	protected JFormattedTextField  durationField;
-	protected JComboBox<Integer> deliveryMenBox;
 	protected JComboBox<String> precedingDeliveryBox;
 	private JButton validationButton;
 	private JButton cancelationButton;
@@ -40,15 +39,10 @@ public class AddingDeliveryView extends JPanel {
 	private final String durationText 									= "Duree : ";
 	private final String latitudeText 									= "Latitude : ";
 	private final String longitudeText									= "Longitude : ";
-	private final String deliveryMenText 								= "Livreur : ";
-	private final String previousDeliveryHoursText 						= "Horaire de la précédente livraison : ";	
+	private final String previousDeliveryHoursText 						= "SÃ©lection de la prÃ©cÃ©dente livraison : ";	
 	private final String instructionsText1 								= "Saisissez les informations de cette nouvelle livraison";
-	private final String instructionsText2 								= "(cliquez sur le plan pour obtenir les coordonées GPS d'une adresse).";
-	
-	/* Errors Messages */
-	private final String emptyValues 									= "Veuillez remplir tous les champs du formulaire.";
-	private final String badTypesValues									= "Veuillez saisir des valeurs correctes selon les informations demandées.";
-	
+	private final String instructionsText2 								= "(cliquez sur le plan pour obtenir les coordonÃ©es GPS d'une adresse, et";
+	private final String instructionsText3 								= " cliquez dans le tableau pour obtenir les informations d'une livraison).";
 	
 	/**
 	 * Create the view to defined a new delivery point.
@@ -73,15 +67,14 @@ public class AddingDeliveryView extends JPanel {
 		JLabel durationLabel = new JLabel(durationText);
 		JLabel latitudeLabel = new JLabel(latitudeText);
 		JLabel longitudeLabel = new JLabel(longitudeText);
-		JLabel deliveryMenLabel = new JLabel(deliveryMenText);
 		JLabel previousDeliveryLabel = new JLabel(previousDeliveryHoursText);
 		JLabel instructionsLabel1 = new JLabel(instructionsText1);
 		JLabel instructionsLabel2 = new JLabel(instructionsText2);
+		JLabel instructionsLabel3 = new JLabel(instructionsText3);
 		/* Components */
 		latitudeField = new JTextField();
 		longitudeField = new JTextField();
 		durationField = new JFormattedTextField (NumberFormat.getIntegerInstance());
-		deliveryMenBox = new JComboBox<Integer>(createDeliveryMenIdVector());
 		precedingDeliveryBox = new JComboBox<String>();
 		validationButton = new JButton(validationText);
 		validationButton.setBackground(Color.GREEN);
@@ -95,7 +88,6 @@ public class AddingDeliveryView extends JPanel {
 		latitudeField.setPreferredSize(new Dimension(100, 20));
 		longitudeField.setPreferredSize(new Dimension(100, 20));
 		durationField.setPreferredSize(new Dimension(100, 20));
-		deliveryMenBox.setPreferredSize(new Dimension(100, 20));
 		precedingDeliveryBox.setPreferredSize(new Dimension(175, 20));
 		/* GridBagLayout Display */
 		JPanel totalPanel = new JPanel();
@@ -115,95 +107,81 @@ public class AddingDeliveryView extends JPanel {
 		displayConstraint.gridx = 0;
 		displayConstraint.gridy = 1;
 		totalPanel.add(instructionsLabel2, displayConstraint);
+		displayConstraint.gridx = 0;
+		displayConstraint.gridy = 2;
+		totalPanel.add(instructionsLabel3, displayConstraint);
 		/* Form */
 		displayConstraint.gridwidth = 1;
 		displayConstraint.fill = GridBagConstraints.NONE;
 		/* Duration label and field */
 		displayConstraint.gridx = 0;
-		displayConstraint.gridy = 2;
+		displayConstraint.gridy = 3;
 		totalPanel.add(durationLabel, displayConstraint);
 		displayConstraint.gridx = 1;
-		displayConstraint.gridy = 2;
+		displayConstraint.gridy = 3;
 		totalPanel.add(durationField, displayConstraint);
 		/* Latitude label and field */
 		displayConstraint.gridx = 2;
-		displayConstraint.gridy = 2;
+		displayConstraint.gridy = 3;
 		totalPanel.add(latitudeLabel, displayConstraint);
 		displayConstraint.gridx = 3;
-		displayConstraint.gridy = 2;
+		displayConstraint.gridy = 3;
 		totalPanel.add(latitudeField, displayConstraint);
-		/* Delivery Men label and box */
-		displayConstraint.gridx = 0;
-		displayConstraint.gridy = 3;
-		totalPanel.add(deliveryMenLabel, displayConstraint);
-		displayConstraint.gridx = 1;
-		displayConstraint.gridy = 3;
-		totalPanel.add(deliveryMenBox, displayConstraint);
 		/* Longitude label and field */
 		displayConstraint.gridx = 2;
-		displayConstraint.gridy = 3;
+		displayConstraint.gridy = 4;
 		totalPanel.add(longitudeLabel, displayConstraint);
 		displayConstraint.gridx = 3;
-		displayConstraint.gridy = 3;
+		displayConstraint.gridy = 4;
 		totalPanel.add(longitudeField, displayConstraint);
 		/* Previous delivery box */
 		displayConstraint.gridx = 0;
-		displayConstraint.gridy = 4;
+		displayConstraint.gridy = 5;
 		displayConstraint.gridwidth = 2;
 		totalPanel.add(previousDeliveryLabel, displayConstraint);
 		displayConstraint.gridx = 2;
-		displayConstraint.gridy = 4;
+		displayConstraint.gridy = 5;
 		displayConstraint.anchor = GridBagConstraints.LINE_END;
 		totalPanel.add(precedingDeliveryBox, displayConstraint);
 		/* Validation Button */
 		displayConstraint.gridx = 0;
-		displayConstraint.gridy = 5;
+		displayConstraint.gridy = 6;
 		displayConstraint.anchor = GridBagConstraints.LINE_START;
 		totalPanel.add(validationButton, displayConstraint);
 		/* Cancelation Button */
 		displayConstraint.gridx = 3;
-		displayConstraint.gridy = 5;
+		displayConstraint.gridy = 6;
 		displayConstraint.anchor = GridBagConstraints.LINE_END;
 		displayConstraint.insets = new Insets(5, 5, 5, 12);
 		totalPanel.add(cancelationButton, displayConstraint);
 		this.add(totalPanel);
 	}
-	
-	/**
-	 *  Function used to initialize our combobox with delivery men id
-	 */
-	private Vector<Integer> createDeliveryMenIdVector(){
-		Vector<Integer> deliveryMenId = new Vector<Integer>();
-		for (int i = 1; i <= ModelInterface.getDeliveryMenCount(); i++){
-			deliveryMenId.add(new Integer(i));
-		}
-		return deliveryMenId;
-	}
-	
+		
 	/** 
 	 * Functions used to get the values selected by the user on the form
 	 */
-	protected int getSelectedDeliveryMen(){
-		return (int) deliveryMenBox.getSelectedItem();
-	}
-	
 	protected int getSelectedDuration(){
-		return Integer.valueOf(durationField.getText());
+		try {
+			return Integer.valueOf(durationField.getText());
+		}catch (NumberFormatException e){
+			return -1;
+		}
 	}
 	
 	protected double getSelectedLat(){
-		return Double.valueOf(latitudeField.getText());
+		try {
+			return Double.valueOf(latitudeField.getText());
+		}catch (NumberFormatException e){
+			return -1;
+		}
 	}
 	
 	protected double getSelectedLon(){
-		return Double.valueOf(longitudeField.getText());
+		try{
+			return Double.valueOf(longitudeField.getText());
+		}catch (NumberFormatException e){
+			return -1;
+		}
 	}
-	
-	/**
-	 * Function use to create a modal view with the specified error message	 * 
-	 */
-	private void createModalError(String message){
-		JOptionPane modal = new JOptionPane();
-		modal.showMessageDialog(null, message, "Erreur", JOptionPane.ERROR_MESSAGE); 
-	}
+		
 }
