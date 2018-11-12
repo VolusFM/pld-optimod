@@ -766,9 +766,8 @@ public class TourCalculator {
      * @return
      */
     private int nearestDeliveryInClusters(Delivery toMove, List<Cluster> currentClusters, int currentClusterIndex,
-	    int remainingAdditionalDeliveries ) {
+	    int remainingAdditionalDeliveries,HashMap<Integer, Integer> idDeliveryToIdCluster ) {
 	int minIndex = -1;
-	HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 	int evenDeliveryNumber = (int) (this.deliveries.size() / currentClusters.size());
 	double[] distanceToToMove = costTSP[deliveries.indexOf(toMove)];
 	double minDistance = MAXDOUBLE;
@@ -829,13 +828,13 @@ public class TourCalculator {
 		     * sort the cluster from the one with the most delivery to
 		     * the one with the least delivery
 		     */
+		    
 		    Collections.sort(currentClusters, new Comparator<Cluster>() {
 			public int compare(Cluster a1, Cluster a2) {
 			    return a2.getDeliveries().size() - a1.getDeliveries().size();
 			}
 		    });
 		    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
-
 		    int maxIntersectionNumber;
 		    /* Check if there can be an additional delivery */
 		    if ((currentClusters.get(currentClusterIndex).getDeliveries().size() > evenDeliveryNumber)
@@ -852,8 +851,8 @@ public class TourCalculator {
 		     * move exceeding Deliveries to the cluster containing the
 		     * nearest intersection
 		     */
-		    while ((nbExceedingDeliveries > 0)) {
-			Delivery toMove = currentClusters.get(currentClusterIndex).getDeliveries().get(0);
+    		    while ((nbExceedingDeliveries > 0)) {
+			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			int indexToMove = deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
 			    throw new AssertionError("Delivery present in cluster does not exist.");
@@ -863,7 +862,7 @@ public class TourCalculator {
 			 * cluster (which is not the current cluster)
 			 */
 			int minIndex = nearestDeliveryInClusters(toMove, currentClusters, currentClusterIndex,
-				remainingAdditionalDeliveries);
+				remainingAdditionalDeliveries, idDeliveryToIdCluster);
 			if (minIndex == -1) {
 			    throw new AssertionError(
 				    "Error in clusterizeData in TourCalculator : no cluster was found to "
@@ -873,7 +872,6 @@ public class TourCalculator {
 			     * move exceeding delivery to nearest delivery's
 			     * cluster
 			     */
-			    toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			    Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
 			    currentClusters.get(idNearestCluster).addDelivery(toMove);
 			    idDeliveryToIdCluster.put(minIndex, idNearestCluster);
