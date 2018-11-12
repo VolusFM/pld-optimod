@@ -61,4 +61,8 @@ public abstract class ModelInterface {
 	public static List<Tour> findTourContainingSection(Section section) {
 		return tourFactory.findToursContainingSection(section);
 	}
+	
+	public static int getDeliveryMenCount(){
+		return tourCalculator.getDeliveryMenCount();
+	}
 }

@@ -117,14 +117,16 @@ public class PlanView extends JPanel {
 		/* Highlighted intersection */
 		if (highlightedIntersection != null) {
 			graphics2d.setColor(Color.MAGENTA);
-			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
+			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+					new float[] { 2.0f, 0.5f }, 0.0f);
 			graphics2d.setStroke(stroke);
 			printIntersection(graphics2d, highlightedIntersection);
 		}
 		/* Highlighted section */
 		if (highlightedSection != null) {
 			graphics2d.setColor(Color.MAGENTA);
-			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, new float[] { 2.0f, 0.5f }, 0.0f);
+			Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
+					new float[] { 2.0f, 0.5f }, 0.0f);
 			graphics2d.setStroke(stroke);
 			printSection(graphics2d, highlightedSection);
 		}
@@ -141,13 +143,16 @@ public class PlanView extends JPanel {
 	 */
 	public void printSection(Graphics g, Section section) {
 		/* Values from the plan */
-		GeographicCoordinate startGeographicCoordinate = new GeographicCoordinate(section.getStart().getLat(), section.getStart().getLon());
-		GeographicCoordinate endGeographicCoordinate = new GeographicCoordinate(section.getEnd().getLat(), section.getEnd().getLon());
+		GeographicCoordinate startGeographicCoordinate = new GeographicCoordinate(section.getStart().getLat(),
+				section.getStart().getLon());
+		GeographicCoordinate endGeographicCoordinate = new GeographicCoordinate(section.getEnd().getLat(),
+				section.getEnd().getLon());
 		/* Conversion */
 		ScreenCoordinate startScreenCoordinate = convertToScreenCoordinate(startGeographicCoordinate);
 		ScreenCoordinate endScreenCoordinate = convertToScreenCoordinate(endGeographicCoordinate);
 		/* Display */
-		g.drawLine(startScreenCoordinate.getX(), startScreenCoordinate.getY(), endScreenCoordinate.getX(), endScreenCoordinate.getY());
+		g.drawLine(startScreenCoordinate.getX(), startScreenCoordinate.getY(), endScreenCoordinate.getX(),
+				endScreenCoordinate.getY());
 	}
 
 	/**
@@ -161,16 +166,27 @@ public class PlanView extends JPanel {
 	 */
 	public void printDelivery(Graphics g, Delivery delivery) {
 		/* Values from delivery */
-		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(delivery.getAddress().getLat(), delivery.getAddress().getLon());
+		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(delivery.getAddress().getLat(),
+				delivery.getAddress().getLon());
 		/* Conversion */
 		ScreenCoordinate screenCoordinate = convertToScreenCoordinate(geographicCoordinate);
 		/* Display */
 		g.fillOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
 	}
 
+	/**
+	 * Method called any time we need to draw an intersection. Draw a circle at
+	 * the specified point.
+	 * 
+	 * @param g
+	 *            the graphics component
+	 * @param intersection
+	 *            the intersection to print
+	 */
 	public void printIntersection(Graphics g, Intersection intersection) {
 		/* Values from delivery */
-		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(intersection.getLat(), intersection.getLon());
+		GeographicCoordinate geographicCoordinate = new GeographicCoordinate(intersection.getLat(),
+				intersection.getLon());
 		/* Conversion */
 		ScreenCoordinate screenCoordinate = convertToScreenCoordinate(geographicCoordinate);
 		/* Display */
@@ -210,12 +226,13 @@ public class PlanView extends JPanel {
 		}
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		// XXX : not so clean... figure out a better (dynamic) way
-		return new Dimension(800, 800);
-	}
-
+	/**
+	 * Conversion function
+	 * 
+	 * @param geographicCoordinate
+	 *            the coordinates as latitude and longitude
+	 * @return the coordinates on the screen
+	 */
 	public ScreenCoordinate convertToScreenCoordinate(GeographicCoordinate geographicCoordinate) {
 		double lat = geographicCoordinate.getLatitude();
 		double lon = geographicCoordinate.getLongitude();
@@ -229,12 +246,19 @@ public class PlanView extends JPanel {
 		return new ScreenCoordinate(x, y);
 	}
 
+	/**
+	 * Conversion function
+	 * 
+	 * @param screenCoordinate
+	 *            the coordinates on the screen
+	 * @return the coordinates as latitude and longitude
+	 */
 	public GeographicCoordinate convertToGeographicCoordinate(ScreenCoordinate screenCoordinate) {
 		int x = screenCoordinate.getX();
 		int y = screenCoordinate.getY();
 		/* Normalization */
-		double latSpan = (maxLat - minLat) /( xConstant * getHeight());
-		double longSpan = (maxLong - minLong) /( yConstant * getWidth());
+		double latSpan = (maxLat - minLat) / (xConstant * getHeight());
+		double longSpan = (maxLong - minLong) / (yConstant * getWidth());
 
 		double lat = minLat + x * latSpan;
 		double lon = minLong + y * longSpan;
@@ -243,75 +267,23 @@ public class PlanView extends JPanel {
 	}
 
 	/**
-	 * Wrapper class representing a tuple latitude/longitude, in the geographic
-	 * coordinate system
+	 * Function use to highlight an intersection
+	 * 
+	 * @param intersection
+	 *            the intersection to highlight
 	 */
-	public static class GeographicCoordinate {
-		double latitude;
-		double longitude;
-
-		public GeographicCoordinate(double latitude, double longitude) {
-			this.latitude = latitude;
-			this.longitude = longitude;
-		}
-
-		public double getLatitude() {
-			return latitude;
-		}
-
-		public void setLatitude(double latitude) {
-			this.latitude = latitude;
-		}
-
-		public double getLongitude() {
-			return longitude;
-		}
-
-		public void setLongitude(double longitude) {
-			this.longitude = longitude;
-		}
-	}
-
-	/**
-	 * Wrapper class representing a tuple x/y, in the screen coordinate system
-	 * Screen coordinate are "normalized" (taking into account boundaries of map
-	 * view, etc.)
-	 */
-	/*
-	 * TODO : FlyWeight for this class ?
-	 */
-	public static class ScreenCoordinate {
-		int x;
-		int y;
-
-		public ScreenCoordinate(int x, int y) {
-			this.x = x;
-			this.y = y;
-		}
-
-		public int getX() {
-			return x;
-		}
-
-		public void setX(int x) {
-			this.x = x;
-		}
-
-		public int getY() {
-			return y;
-		}
-
-		public void setY(int y) {
-			this.y = y;
-		}
-	}
-
 	public void setHighlightedIntersection(Intersection intersection) {
 		this.highlightedIntersection = intersection;
 	}
 
-	public void setHighlightedSection(Section findClosestSection) {
-		this.highlightedSection = findClosestSection;
+	/**
+	 * Function use to highlight a section
+	 * 
+	 * @param sectionToHightligth
+	 *            the section
+	 */
+	public void setHighlightedSection(Section sectionToHightligth) {
+		this.highlightedSection = sectionToHightligth;
 		setToolTipText(highlightedSection.getStreetName());
 		ToolTipManager manager = ToolTipManager.sharedInstance();
 		manager.setInitialDelay(0);
@@ -321,7 +293,8 @@ public class PlanView extends JPanel {
 		Point mousePos = MouseInfo.getPointerInfo().getLocation();
 		int x = mousePos.x - getLocationOnScreen().x;
 		int y = mousePos.y - getLocationOnScreen().y;
-		MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0, false);
+		MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0,
+				false);
 
 		ToolTipManager.sharedInstance().mouseMoved(phantom);
 

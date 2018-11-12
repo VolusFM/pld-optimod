@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
 import main.controler.Controler;
 import main.model.Intersection;
@@ -61,6 +62,7 @@ public class Window extends JFrame {
 	 */
 
 	public Window(Controler controler) {
+		setBestLookAndFeelAvailable();
 		setLayout(new BorderLayout());
 		/* Initialize */
 		this.controler = controler;
@@ -294,4 +296,20 @@ public class Window extends JFrame {
 		
 		add(south, BorderLayout.SOUTH);
 	}
+	
+	/**
+	 *  Function call when the window is initialize to set a more esthetic look to the app
+	 */
+	public static void setBestLookAndFeelAvailable(){
+		   String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
+		   if(system_lf.contains("metal")){
+		       try {
+		           UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		       }catch (Exception e) {}
+		   }else{
+		       try {
+		           UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		       }catch (Exception e) {}
+		   }
+		 }
 }

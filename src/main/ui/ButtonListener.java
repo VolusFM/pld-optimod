@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import main.controler.Controler;
+import main.model.Intersection;
 
 public class ButtonListener implements ActionListener {
 
@@ -41,14 +42,38 @@ public class ButtonListener implements ActionListener {
 			controler.window.displayAddingDeliveryPanel();
 			// TODO : controleur.addDeleveryPoint() qui appelle l'IHM
 			break;
-		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY :
-			// TODO : controleur.validateAddingDeleveryPoint() qui crée la nouvelle
-			// livraison et maj l'affichage (et enleve la fenetre d'ajout)
+		case PlanningView.ACTION_SUPRESSING_DELIVERY_POINT :
+			// Intersection toSupress = controler.getSelectedIntersection();
+			// TODO Controleur: controloeur.suppressDelivery(toSupress)
 			break;
+		case PlanningView.ACTION_CANCELLING_MODIFICATIONS :			
+			// TODO Controleur : controleur.cancelModification()
+			break; 
+		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY :
+			// TODO UI : get (int livreur, double lat, double long, int duree, Delivery/ou int precedente)
+//			int deliveryMen = 
+			System.out.println(controler.window.planningPanel.addingPanel.getSelectedDeliveryMen());
+//			int duration = 
+			System.out.println(controler.window.planningPanel.addingPanel.getSelectedDuration());
+//			double lat = 
+			System.out.println(controler.window.planningPanel.addingPanel.getSelectedLat());
+//			double lon = 
+			System.out.println(controler.window.planningPanel.addingPanel.getSelectedLon());
+			// TODO : selected delivery  = previous
+//			if (   lat != -1 
+//				&& lon != -1 
+//				&& duration != -1 
+//				&& deliveryMen != -1 
+//					/* TODO :&& delivery previous is correct*/){
+//					// TODO Controleur : controleur.validateAddingDeleveryPoint(int livreur, double lat, double long, int duree, Delivery/ou int precedente)
+//					// qui crée la nouvelle livraison et maj l'affichage (et enleve la fenetre d'ajout)
+//			}else{
+				controler.window.displayAddingDeliveryPanel();
+//			}
 		case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY :
 			controler.window.hideAddingDeliveryPanel();
-			// TODO : controleur.cancelAddingDeliveryPoint() qui appelle l'IHM
-			break;
+			// TODO Controleur : controleur.cancelAddingDeliveryPoint()
+			break;			
 		default:
 			throw new RuntimeException("Unhandled action : " + e.getActionCommand());
 		}

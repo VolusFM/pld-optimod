@@ -29,7 +29,7 @@ public class TourCalculator {
 
 	private HashMap<Pair<Long, Long>, Step> steps;
 
-	
+	/* Nbre of Tour*/
 	private int deliveryMenCount;
 	
 	
@@ -37,6 +37,7 @@ public class TourCalculator {
 		tourFactory = TourFactory.getInstance();
 		deliveries = new ArrayList<>();
 		steps = new HashMap<>();
+		deliveryMenCount = 1;
 	}
 
 	public static TourCalculator getInstance() {
@@ -218,11 +219,17 @@ public class TourCalculator {
 		return list;
 	}
 	
-	public List<Delivery> getDeliveries() {
+	protected List<Delivery> getDeliveries() {
 		return deliveries;
 	}
 	
-	public Delivery getDepot() {
+	protected Delivery getDepot() {
 		return depot;
 	}
+
+	protected int getDeliveryMenCount() {
+		return deliveryMenCount;
+	}
+	
+	
 }

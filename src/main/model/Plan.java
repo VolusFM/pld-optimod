@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import javafx.util.Pair;
-import main.ui.PlanView.GeographicCoordinate;
+import main.ui.GeographicCoordinate;
 
 public class Plan {
 

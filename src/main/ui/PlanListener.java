@@ -8,8 +8,8 @@ import javax.swing.JTextField;
 import main.controler.Controler;
 import main.model.Intersection;
 import main.model.ModelInterface;
-import main.ui.PlanView.GeographicCoordinate;
-import main.ui.PlanView.ScreenCoordinate;
+import main.ui.GeographicCoordinate;
+import main.ui.ScreenCoordinate;
 
 public class PlanListener extends MouseAdapter {
 
@@ -27,7 +27,6 @@ public class PlanListener extends MouseAdapter {
 		System.out.println("Clicked at pos : (" + geographicCoordinate.latitude + "; " + geographicCoordinate.longitude + ")");
 		
 		Intersection closest = ModelInterface.findClosestIntersection(geographicCoordinate.latitude, geographicCoordinate.longitude);
-
 
 		controler.clickedNearIntersection(closest);		
 		
