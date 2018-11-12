@@ -67,7 +67,7 @@ public class PlanningTable extends JTable {
 	    Tour tour = findTourFromRowIndex(rowIndex);
 	    Delivery delivery = tour.getDeliveryPoints().get(rowIndex % tour.getDeliveryPoints().size());
 
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm-ss");
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 	    Calendar hour = delivery.getHour();
 	    dateFormat.setTimeZone(hour.getTimeZone());
 
@@ -106,6 +106,13 @@ public class PlanningTable extends JTable {
 		currentDisplayedSize += tours.get(currentTourIndex).getDeliveryPoints().size();
 		currentTourIndex++;
 	    }
+	    try {
+		Tour t = tours.get(currentTourIndex);
+	    } catch (Exception e) {
+		System.err.println(e.getMessage());
+		System.out.println(tours);
+	    }
+	    
 	    return tours.get(currentTourIndex);
 	}
 
