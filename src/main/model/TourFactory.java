@@ -10,8 +10,9 @@ import java.util.List;
  */
 public class TourFactory {
 
+
     private static List<Tour> tourPlanning;
-    /** Instance unique pré-initialisée */
+    /** Initialized Unique Instance */
     private static TourFactory instance = new TourFactory();
 
     private TourFactory() {

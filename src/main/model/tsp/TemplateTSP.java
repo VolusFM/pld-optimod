@@ -160,6 +160,7 @@ public abstract class TemplateTSP implements TSP {
 	    currentNode = nextNode;
 	    System.out.println();
 
+
 	}
 	System.out.println("Étape " + i + " (finale : retour au dépot) :");
 	System.out.println("Aller de " + currentNode + " à " + initialNode + " (pour un coût de "

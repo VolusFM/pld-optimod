@@ -148,7 +148,13 @@ public abstract class ModelInterface {
 
     public static void createGraph() {
 	// TODO Auto-generated method stub
-
     }
-
+    
+    /**
+     * Getter for the delivery men count.
+     * @return int, the count of delivery men
+     */
+    public static int getDeliveryMenCount(){
+	return tourCalculator.getDeliveryMenCount();
+    }
 }

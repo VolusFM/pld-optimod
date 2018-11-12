@@ -16,13 +16,11 @@ import main.model.tsp.TemplateTSP;
  */
 public class TourCalculator {
 
-    private TourFactory tourFactory = TourFactory.getInstance();
     private Plan map = ModelInterface.getPlan();
     private List<Delivery> deliveries;
-
     private List<List<Delivery>> deliveriesForEachTour;
-
     private Delivery depot;
+    private int calculationTimeLimitMs = 10000;
 
     /* Unique instance */
     private static TourCalculator instance = null;
@@ -33,11 +31,10 @@ public class TourCalculator {
     private int[] delay;
 
     /* TSP related fields for multiple tours */
+
     private List<double[][]> costsTSPForEachTour;
     private List<Integer> nodesCountForEachTour;
     private List<int[]> delayForEachTour;
-
-    private int calculationTimeLimitMs = 1000000;
 
     private static final int MAXKMEANS = 10;
     private static final double MAXDOUBLE = Double.MAX_VALUE;
@@ -53,7 +50,6 @@ public class TourCalculator {
      * Create the tour calculator.
      */
     private TourCalculator() {
-	tourFactory = TourFactory.getInstance();
 	deliveries = new ArrayList<>();
 	deliveriesForEachTour = new ArrayList<List<Delivery>>();
 	steps = new HashMap<>();
@@ -90,6 +86,7 @@ public class TourCalculator {
 	this.depot = depot;
     }
 
+
     /**
      * Setter for the map.
      * 
@@ -112,6 +109,14 @@ public class TourCalculator {
 	} else {
 	    this.deliveryMenCount = deliveryMenCount;
 	}
+    }
+    
+    /**
+     * Getter for the delivery men count.
+     * @return int, the count of delivery men
+     */
+    public int getDeliveryMenCount() {
+        return deliveryMenCount;
     }
 
     /**
@@ -336,9 +341,7 @@ public class TourCalculator {
     @Deprecated
     private void resolveTSP() {
 	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
-
 	List<Step> solutionSteps = findStepsFromResult(TSPimplementation.getBestSolution());
-
 	if (deliveryMenCount == 1) {
 	    // do not bother recalculating, hardcoding is fine
 	    // TourFactory.createTour(1, solutionSteps, depot, deliveries);
@@ -352,7 +355,6 @@ public class TourCalculator {
     private void resolveTSPSubGraph(int index) {
 	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCountForEachTour.get(index),
 		costsTSPForEachTour.get(index), delayForEachTour.get(index));
-
 	List<Step> solutionSteps = findStepsFromResultSubGraph(index, TSPimplementation.getBestSolution());
 	TourFactory.createTour(index, solutionSteps, depot, deliveriesForEachTour.get(index));
     }

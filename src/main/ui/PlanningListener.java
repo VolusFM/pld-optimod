@@ -18,22 +18,21 @@ public class PlanningListener implements ListSelectionListener {
 	this.window = window;
     }
 
-    @Override
-    public void valueChanged(ListSelectionEvent e) {
-	if (planning.getSelectedRow() == -1) {
-	    // no selected row, ignore
-	    return;
-	}
-
-	String address = (String) planning.getValueAt(planning.getSelectedRow(), 1);
-
-	String[] fragments = address.substring(1, address.length() - 1).split("; ");
-	double lat = Double.parseDouble(fragments[0]);
-	double lon = Double.parseDouble(fragments[1]);
-
-	Intersection closest = ModelInterface.findClosestIntersection(lat, lon);
-
-	window.highlightSelectedIntersection(closest);
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		if (planning.getSelectedRow() == -1) {
+		    // no selected row, ignore
+		    return;
+		}
+		String address = (String) planning.getValueAt(planning.getSelectedRow(), 1);
+	
+		String[] fragments = address.substring(1, address.length() - 1).split("; ");
+		double lat = Double.parseDouble(fragments[0]);
+		double lon = Double.parseDouble(fragments[1]);
+	
+		Intersection closest = ModelInterface.findClosestIntersection(lat, lon);
+	
+		window.highlightSelectedIntersection(closest);
     }
 
 }

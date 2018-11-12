@@ -19,7 +19,6 @@ public class LoadedDeliveriesState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
-
 	try {
 	    ModelInterface.setDeliveryMenCount(InputDialogSelector
 		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
@@ -35,9 +34,9 @@ public class LoadedDeliveriesState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
-	ModelInterface.getTourCalculator().calculateTours();
+	ModelInterface.getTourCalculator().getInstance().calculateTours();
 	window.displayTourPlanningPanel();
-	
+	window.toggleDeliveryMenCountButtonVisiblity();
 	controler.setCurrentState(controler.planningState);
     }
 

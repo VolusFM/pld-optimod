@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
 import main.controler.Controler;
 import main.model.Intersection;
@@ -32,8 +33,7 @@ public class Window extends JFrame {
     private WindowHeader header;
     private JPanel centerPanel;
     private JPanel rightPanel;
-    private JPanel southPanel = new JPanel();
-
+    private JPanel southPanel;
     protected static PlanView planPanel;
     protected static PlanningView planningPanel;
     protected static AddingDeliveryView addingPanel;
@@ -52,6 +52,7 @@ public class Window extends JFrame {
     private final String BUTTON_BROWSE = "Parcourir";
     private final String BUTTON_TOUR_CALCUL = "Planifier la tournée";
     private final String TEXT_PLANNING_BOARD = "Planning des tournées obtenu :";
+    private final String TEXT_DELIVERY_LENGTH_COUNT = "Nombre de Livreurs paramétré :";
 
     /* Button's action */
     protected static final String ACTION_SELECTION_PLAN = "LOAD_PLAN";
@@ -64,6 +65,7 @@ public class Window extends JFrame {
      */
 
     public Window(Controler controler) {
+	setBestLookAndFeelAvailable();
 	setLayout(new BorderLayout());
 	/* Initialize */
 	this.controler = controler;
@@ -71,6 +73,7 @@ public class Window extends JFrame {
 	keyListener = new KeyListener(controler);
 	rightPanel = new JPanel();
 	rightPanel.setPreferredSize(new Dimension(500, 900));
+	southPanel = new JPanel();
 	/* Header */
 	this.header = new WindowHeader(this, buttonListener);
 	this.header.setVisible(headerVisibility);
@@ -83,6 +86,48 @@ public class Window extends JFrame {
 	setVisible(true);
 	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
+
+    /**
+     * Create the panel with the planning of the tour as a board of delivery
+     * men, locations, hours and list of roads.
+     */
+    public void displayTourPlanningPanel() {
+	rightPanel.setVisible(false);
+	rightPanel = new JPanel();
+	rightPanel.setPreferredSize(new Dimension(500, 900));
+	rightPanel.setLayout(new BorderLayout());
+	/* Create Content */
+	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
+	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
+	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
+	planningPanel = new PlanningView(this);
+	/* Panels */
+	JPanel planning = new JPanel();
+	planning.add(planningText, BorderLayout.NORTH);
+	planning.add(planningPanel, BorderLayout.CENTER);
+	JPanel countPanel = new JPanel();
+	countPanel.add(deliveryMenCount, BorderLayout.NORTH);
+	countPanel.add(count, BorderLayout.CENTER);
+	/* Set content */
+	rightPanel.add(countPanel, BorderLayout.NORTH);
+	rightPanel.add(planning, BorderLayout.CENTER);
+	rightPanel.setVisible(true);
+	add(rightPanel, BorderLayout.EAST);
+	redraw();
+    }
+
+    /**
+     * Create the panel with the planning of the tour as a board of delivery
+     * men, locations, hours and list of roads.
+     */
+    public void displayAddingDeliveryPanel() {
+	planningPanel.displayAddingDeliveryPanel();
+    }
+
+    /**
+     * Create a window with a header (with a title and "parameters" button), a
+     * choice of file component and a validation button.
+     */
 
     /**
      * Defined the window and components size.
@@ -173,34 +218,6 @@ public class Window extends JFrame {
     }
 
     /**
-     * Create the panel with the planning of the tour as a board of delivery
-     * men, locations, hours and list of roads.
-     */
-    public void displayTourPlanningPanel() {
-	rightPanel.setVisible(false);
-	rightPanel = new JPanel();
-	rightPanel.setPreferredSize(new Dimension(500, 900));
-	/* Create Content */
-	rightPanel.setLayout(new BorderLayout());
-	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-	planningPanel = new PlanningView(this);
-	rightPanel.add(planningText, BorderLayout.NORTH);
-	rightPanel.add(planningPanel, BorderLayout.CENTER);
-	/* Set content */
-	rightPanel.setVisible(true);
-	add(rightPanel, BorderLayout.EAST);
-	redraw();
-    }
-
-    /**
-     * Create the panel with the planning of the tour as a board of delivery
-     * men, locations, hours and list of roads.
-     */
-    public void displayAddingDeliveryPanel() {
-	planningPanel.displayAddingDeliveryPanel();
-    }
-
-    /**
      * Remove the panel use for creating a new delivery point
      */
     public void hideAddingDeliveryPanel() {
@@ -252,9 +269,23 @@ public class Window extends JFrame {
 	redraw();
     }
 
+    /**
+     * Method call to highlight a right-clicked intersection on the plan view.
+     * 
+     * @param intersection the intersection to highlight
+     */
     public void highlightRightClickedIntersection(Intersection intersection) {
 	planPanel.setRightClickedIntersection(intersection);
 	redraw();
+    }
+
+    /**
+     * Method call to highlight a clicked section on the plan view.
+     * 
+     * @param intersection the intersection to highlight
+     */
+    public void highlightSelectedSection(Section findClosestSection) {
+	planPanel.setHighlightedSection(findClosestSection);
     }
 
     /**
@@ -271,38 +302,28 @@ public class Window extends JFrame {
 	header.toggleReturnButtonVisibility();
     }
 
-    public void highlightSelectedSection(Section findClosestSection) {
-	planPanel.setHighlightedSection(findClosestSection);
-    }
-
+    /**
+     * Method call to print the sections of a delivery step
+     * 
+     * @param step the step
+     */
     public void listSectionsOfStep(Step step) {
 	southPanel.removeAll();
-
 	southPanel.setVisible(false);
-
 	Set<String> streetNames = new LinkedHashSet<>();
-
 	for (Section section : step.getSections()) {
 	    streetNames.add(section.getStreetName());
 	}
-
 	String html = "<html>";
-
 	Iterator<String> it = streetNames.iterator();
-
 	html += it.next();
-
 	while (it.hasNext()) {
 	    html += " - " + it.next();
 	}
-
 	html += "</html>";
-
 	JLabel label = new JLabel(html);
-
 	southPanel.add(label);
 	southPanel.setVisible(true);
-
 	add(southPanel, BorderLayout.SOUTH);
 	redraw();
     }
@@ -313,5 +334,24 @@ public class Window extends JFrame {
 
     public void redrawTable() {
 	planningPanel.redrawTable();
+    }
+
+    /**
+     * Function call when the window is initialize to set a more esthetic look
+     * to the app
+     */
+    public static void setBestLookAndFeelAvailable() {
+	String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
+	if (system_lf.contains("metal")) {
+	    try {
+		UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+	    } catch (Exception e) {
+	    }
+	} else {
+	    try {
+		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+	    } catch (Exception e) {
+	    }
+	}
     }
 }
