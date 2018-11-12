@@ -26,7 +26,7 @@ import main.model.Step;
 public class Window extends JFrame {
 
     /* Attributes */
-    private Controler controler;
+    protected Controler controler;
     private int planScale = 1;
 
     /* Components */

@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 
 import main.model.Delivery;
 import main.model.ModelInterface;
+import main.model.Tour;
 
 public class AddingDeliveryView extends JPanel {
 
@@ -42,16 +43,19 @@ public class AddingDeliveryView extends JPanel {
     private final String latitudeText = "Latitude : ";
     private final String longitudeText = "Longitude : ";
     private final String deliveryMenText = "Livreur : ";
-    private final String previousDeliveryHoursText = "Sélection de la précédente livraison : ";
+    private final String previousDeliveryHoursText = "Précédente livraison : ";
     private final String instructionsText1 = "Saisissez les informations de cette nouvelle livraison";
     private final String instructionsText2 = "(cliquez sur le plan pour obtenir les coordonées GPS d'une adresse, et";
     private final String instructionsText3 = " cliquez dans le tableau pour obtenir les informations d'une livraison).";
+
+    /* Listeners */
+    private ComboboxListener comboxListener;
 
     /**
      * Create the view to defined a new delivery point.
      * 
      * @param w the the Window in which this will be used (to access to the
-     *            listeners)
+     *          listeners)
      */
     public AddingDeliveryView(Window w) {
 	super();
@@ -59,6 +63,7 @@ public class AddingDeliveryView extends JPanel {
 	window = w;
 	latitudeField = new JTextField();
 	longitudeField = new JTextField();
+	comboxListener = new ComboboxListener(window.controler);
 	/* Display */
 	createAddingDeliveryPanel();
     }
@@ -81,7 +86,7 @@ public class AddingDeliveryView extends JPanel {
 	longitudeField = new JTextField();
 	durationField = new JFormattedTextField(NumberFormat.getIntegerInstance());
 	deliveryMenBox = new JComboBox<Integer>(createDeliveryMenIdVector());
-	precedingDeliveryBox = new JComboBox<Delivery>();
+	precedingDeliveryBox = new JComboBox<Delivery>(new Vector<Delivery>(ModelInterface.getDeliveriesById(0)));
 	validationButton = new JButton(validationText);
 	validationButton.setBackground(Color.GREEN);
 	validationButton.setActionCommand(ACTION_VALIDATION_ADDING_DELIVERY);
@@ -94,7 +99,10 @@ public class AddingDeliveryView extends JPanel {
 	latitudeField.setPreferredSize(new Dimension(100, 20));
 	longitudeField.setPreferredSize(new Dimension(100, 20));
 	durationField.setPreferredSize(new Dimension(100, 20));
+	deliveryMenBox.setPreferredSize(new Dimension(100, 20));
 	precedingDeliveryBox.setPreferredSize(new Dimension(175, 20));
+	/* Listeners */
+	deliveryMenBox.addItemListener(comboxListener);
 	/* GridBagLayout Display */
 	JPanel totalPanel = new JPanel();
 	totalPanel.setLayout(new GridBagLayout());
@@ -135,10 +143,10 @@ public class AddingDeliveryView extends JPanel {
 	totalPanel.add(latitudeField, displayConstraint);
 	/* Delivery Men label and box */
 	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 3;
+	displayConstraint.gridy = 4;
 	totalPanel.add(deliveryMenLabel, displayConstraint);
 	displayConstraint.gridx = 1;
-	displayConstraint.gridy = 3;
+	displayConstraint.gridy = 4;
 	totalPanel.add(deliveryMenBox, displayConstraint);
 	/* Longitude label and field */
 	displayConstraint.gridx = 2;
@@ -150,16 +158,15 @@ public class AddingDeliveryView extends JPanel {
 	/* Previous delivery box */
 	displayConstraint.gridx = 0;
 	displayConstraint.gridy = 5;
-	displayConstraint.gridwidth = 2;
+	displayConstraint.gridwidth = 3;
 	totalPanel.add(previousDeliveryLabel, displayConstraint);
 	displayConstraint.gridx = 2;
 	displayConstraint.gridy = 5;
-	displayConstraint.anchor = GridBagConstraints.LINE_END;
+	displayConstraint.anchor = GridBagConstraints.LINE_START;
 	totalPanel.add(precedingDeliveryBox, displayConstraint);
 	/* Validation Button */
 	displayConstraint.gridx = 0;
 	displayConstraint.gridy = 6;
-	displayConstraint.anchor = GridBagConstraints.LINE_START;
 	totalPanel.add(validationButton, displayConstraint);
 	/* Cancelation Button */
 	displayConstraint.gridx = 3;
@@ -175,31 +182,36 @@ public class AddingDeliveryView extends JPanel {
      */
     private Vector<Integer> createDeliveryMenIdVector() {
 	Vector<Integer> deliveryMenId = new Vector<Integer>();
-	for (int i = 1; i <= ModelInterface.getDeliveryMenCount(); i++) {
-	    deliveryMenId.add(new Integer(i));
+	for (Tour deleveryMenTour : ModelInterface.getTourPlanning()) {
+	    if (!deliveryMenId.contains(deleveryMenTour.getDeliveryManId())) {
+		deliveryMenId.add(deleveryMenTour.getDeliveryManId());
+	    }
 	}
 	return deliveryMenId;
     }
-    
+
     /**
      * Function to fill the delivery combobox when selecting the delivery men
      */
-    protected void updatePreviousDeliveryCombobox(){
+    protected void updatePreviousDeliveryCombobox() {
 	List<Delivery> deliveryMenDeliveries = ModelInterface.getDeliveriesById(getSelectedDeliveryMen());
-//	precedingDeliveryBox TODO : vider toute la combobox pour ajouter les deleveries de la lsite
+	precedingDeliveryBox.removeAllItems();
+	for (Delivery delivery : deliveryMenDeliveries) {
+	    precedingDeliveryBox.addItem(delivery);
+	}
     }
 
     /**
      * Functions used to get the values selected by the user on the form
      */
     protected int getSelectedDeliveryMen() {
-   	try {
-   	    return (Integer) deliveryMenBox.getSelectedItem();
-   	} catch (NumberFormatException e) {
-   	    return -1;
-   	}
-       }
-    
+	try {
+	    return (Integer) deliveryMenBox.getSelectedItem();
+	} catch (NumberFormatException e) {
+	    return -1;
+	}
+    }
+
     protected int getSelectedDuration() {
 	try {
 	    return Integer.valueOf(durationField.getText());

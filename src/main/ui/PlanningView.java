@@ -107,7 +107,7 @@ public class PlanningView extends JPanel {
 		buttonRangePanel.add(cancelModifications, displayConstraint);
 		/* Table Panel */
 		JPanel tablePanel = new JPanel();
-		tablePanel.add(new JScrollPane(planning));
+		tablePanel.add(planning);//new JScrollPane(planning));
 		/* Total Panel */
 		totalViewPanel = new JPanel();
 		totalViewPanel.setLayout(new GridBagLayout());
