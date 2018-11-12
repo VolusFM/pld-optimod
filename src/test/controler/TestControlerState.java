@@ -142,8 +142,8 @@ public class TestControlerState {
 		System.out.println("test 19 FAILED controler state = " + controler.getCurrentState().stateToString());
 	    }
 	    /*
-	     * TODO : check if all tests are necessary //loadedDeliveriesState tests
-	     * controler.openDeliveries(); controler.calculatePlanning();
+	     * TODO : check if all tests are necessary //loadedDeliveriesState
+	     * tests controler.openDeliveries(); controler.calculatePlanning();
 	     * controler.cancelNewDelivery(); controler.confirmParameters();
 	     * controler.confirmNewDelivery(); controler.openPlan();
 	     * 

@@ -15,7 +15,7 @@ public class AddDeliveryState extends DefaultState {
      * Cancel the new delivery and go back to planningState.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void cancelNewDelivery(Controler controler, Window window) {
 	controler.setCurrentState(controler.planningState);
@@ -25,7 +25,7 @@ public class AddDeliveryState extends DefaultState {
      * Confirms the delivery's addition.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void confirmNewDelivery(Controler controler, Window window) {
 

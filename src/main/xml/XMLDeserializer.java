@@ -101,7 +101,8 @@ public class XMLDeserializer {
 	double length = Double.parseDouble(elt.getAttribute("longueur"));
 
 	if (length <= 0) {
-	    throw new XMLException("Erreur lors du chargement : la longueur d'un tron�on de rue doit �tre positive.");
+	    throw new XMLException(
+		    "Erreur lors du chargement : la longueur d'un tron�on de rue doit �tre positive.");
 	}
 
 	return new Section(departure, arrival, length, streetName);

@@ -19,7 +19,7 @@ public class Intersection {
     /**
      * Create an Intersection.
      * 
-     * @param id  is the unique id of the intersection.
+     * @param id is the unique id of the intersection.
      * @param lat is the latitude of the intersection.
      * @param lon is the longitude of the intersection.
      */
@@ -101,7 +101,8 @@ public class Intersection {
 
     @Override
     public String toString() {
-	return Long.toString(id);
+	String intersection = "section num " + id + ", lat = " + lat + ", long =" + lon;
+	return intersection;
     }
 
 }

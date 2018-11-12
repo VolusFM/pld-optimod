@@ -69,9 +69,9 @@ public class Plan {
      * reach.
      * 
      * @param sourceIntersection is the intersection from which we run the
-     *                           algorithm.
-     * @return a pair with as the first member distances, and as the second member
-     *         predecessors.
+     *            algorithm.
+     * @return a pair with as the first member distances, and as the second
+     *         member predecessors.
      */
     public Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
 	List<Long> settledId = new ArrayList<>();
@@ -119,7 +119,7 @@ public class Plan {
      * Find the intersection with the lowest distance in distances for ids in
      * unSettledIds.
      * 
-     * @param distances    is the distances to each intersection.
+     * @param distances is the distances to each intersection.
      * @param unSettledIds is the list of candidate intersections' ids.
      * @return Long, the id of the closest intersection.
      */
@@ -139,7 +139,7 @@ public class Plan {
     /**
      * Find the Intersection closest to where the user clicked.
      * 
-     * @param latitude  is the latitude of the point where the user clicked.
+     * @param latitude is the latitude of the point where the user clicked.
      * @param longitude is the longitude of the point where the user clicked.
      * @return Intersection, the closest Intersection.
      */
@@ -169,7 +169,7 @@ public class Plan {
     /**
      * Find the Section closest to where the user clicked.
      * 
-     * @param latitude  is the latitude of the point where the user clicked.
+     * @param latitude is the latitude of the point where the user clicked.
      * @param longitude is the longitude of the point where the user clicked.
      * @return Section, the closest Section.
      */
@@ -203,6 +203,7 @@ public class Plan {
 		minDistance = currentDistance;
 		closest = current;
 	    }
+
 	}
 	return closest;
     }
@@ -210,7 +211,7 @@ public class Plan {
     /**
      * Get the distance between two points on the plan.
      * 
-     * @param coordinate        contains the coordinates of the first point.
+     * @param coordinate contains the coordinates of the first point.
      * @param anotherCoordinate contains the coordinates of the second point.
      * @return double, the distance between the two points.
      */
@@ -224,8 +225,8 @@ public class Plan {
     /**
      * Get the distance between a point and a line.
      * 
-     * @param point            is the point to evaluate.
-     * @param oneExtremity     is the first extremity of the line.
+     * @param point is the point to evaluate.
+     * @param oneExtremity is the first extremity of the line.
      * @param anotherExtremity is the second extremity of the line.
      * @return Double, the distance between the line and the point.
      */

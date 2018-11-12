@@ -16,10 +16,9 @@ public class Delivery {
     /**
      * Create a new Delivery.
      * 
-     * @param duration
-     *            is the duration of the delivery.
-     * @param address
-     *            if the Intersection where the delivery is supposed to happen.
+     * @param duration is the duration of the delivery.
+     * @param address if the Intersection where the delivery is supposed to
+     *            happen.
      */
     public Delivery(int duration, Intersection address) {
 	this.duration = duration;
@@ -47,8 +46,7 @@ public class Delivery {
     /**
      * Setter for the hour of the delivery.
      * 
-     * @param hour
-     *            is the hour to set for the delivery.
+     * @param hour is the hour to set for the delivery.
      */
     public void setHour(Calendar hour) {
 	this.hour = hour;

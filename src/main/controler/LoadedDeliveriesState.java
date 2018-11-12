@@ -16,7 +16,7 @@ public class LoadedDeliveriesState extends DefaultState {
      * Open parameters modal.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
 
@@ -34,7 +34,7 @@ public class LoadedDeliveriesState extends DefaultState {
      * Calculate the planning for the given deliveries request and plan.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
