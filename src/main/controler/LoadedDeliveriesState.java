@@ -19,15 +19,12 @@ public class LoadedDeliveriesState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
-
 	try {
 	    ModelInterface.setDeliveryMenCount(InputDialogSelector
 		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
 	} catch (SelectionCancelledException e) {
 	    System.out.println("Selection was cancelled, ignoring...");
 	}
-
-	// controler.setCurrentState(controler.parametersState);
     }
 
     /**
@@ -39,7 +36,7 @@ public class LoadedDeliveriesState extends DefaultState {
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
-
+	window.toggleDeliveryMenCountButtonVisiblity();
 	controler.setCurrentState(controler.planningState);
     }
 

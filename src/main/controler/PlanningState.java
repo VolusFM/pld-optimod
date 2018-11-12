@@ -23,8 +23,8 @@ public class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
-	// TODO: add code to call tourCalculator
-	controler.setCurrentState(controler.planningState);
+	ModelInterface.getTourCalculator().calculateTours();
+	window.displayTourPlanningPanel();
     }
 
     /**
@@ -40,7 +40,6 @@ public class PlanningState extends DefaultState {
 	} catch (SelectionCancelledException e) {
 	    System.out.println("Selection was cancelled, ignoring...");
 	}
-	// controler.setCurrentState(controler.parametersState);
     }
 
     /**
@@ -61,8 +60,11 @@ public class PlanningState extends DefaultState {
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
-    public void deleteDelivery(Controler controler, Window window) {
-	// ModelInterface.deleteDelivery(window.getDeletedDelivery());
+    public void removeDelivery(Controler controler, Window window) {
+	Intersection i = controler.getSelectedIntersection();
+	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
+	ModelInterface.removeDelivery(toRemove);
+	window.redraw();
     }
 
     /**

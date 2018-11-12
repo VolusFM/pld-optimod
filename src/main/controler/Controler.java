@@ -1,6 +1,10 @@
 package main.controler;
 
+import com.sun.media.sound.ModelIdentifier;
+
+import main.model.Delivery;
 import main.model.Intersection;
+import main.model.ModelInterface;
 import main.model.Section;
 import main.ui.ExceptionModal;
 import main.ui.Window;
@@ -119,8 +123,8 @@ public class Controler {
     /**
      * Remove a delivery from a tour.
      */
-    public void deleteDelivery() {
-	currentState.deleteDelivery(this, window);
+    public void removeDelivery() {
+	currentState.removeDelivery(this, window);
     }
 
     /**

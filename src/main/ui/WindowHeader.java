@@ -10,10 +10,8 @@ import javax.swing.SwingConstants;
 
 public class WindowHeader extends JPanel {
 
-    /* Title label */
+    /* Labels */
     private static final String APPLICATION_TITLE = "Optimod";
-
-    /* Label of buttons */
     private static final String CHANGE_DELIVERY_MEN_COUNT = "Modifier le nombre de livreurs";
     private static final String RETURN = "Retour";
 
@@ -21,7 +19,7 @@ public class WindowHeader extends JPanel {
     private boolean deliveryMenCountButtonVisibility = false;
     private boolean returnButtonVisibility = false;
 
-    /* Button's action */
+    /* Button's actions */
     protected static final String ACTION_CHANGE_DELIVERY_MEN_COUNT = "PARAMETERS";
     protected static final String ACTION_RETURN = "RETURN";
 

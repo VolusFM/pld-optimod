@@ -93,6 +93,7 @@ public class PlanView extends JPanel {
 		printSection(graphics2d, itSection.next());
 	    }
 	}
+
 	/* Depot displaying */
 	graphics2d.setColor(Color.RED);
 	Delivery depot = ModelInterface.getDepot();
@@ -143,7 +144,6 @@ public class PlanView extends JPanel {
 	    graphics2d.setStroke(stroke);
 	    printIntersection(graphics2d, rightClickedIntersection);
 	}
-
     }
 
     /**
@@ -225,6 +225,7 @@ public class PlanView extends JPanel {
 		maxLong = current.getLon();
 	    }
 	}
+
     }
 
     @Override
@@ -258,93 +259,40 @@ public class PlanView extends JPanel {
 
 	return new GeographicCoordinate(lat, lon);
     }
-
-    /**
-     * Wrapper class representing a tuple latitude/longitude, in the geographic
-     * coordinate system
+    
+    /** Methods calls to highlight the intersection (left-clicked)
+     * 
+     * @param intersection the intersection to highlight
      */
-    public static class GeographicCoordinate {
-	double latitude;
-	double longitude;
-
-	public GeographicCoordinate(double latitude, double longitude) {
-	    this.latitude = latitude;
-	    this.longitude = longitude;
-	}
-
-	public double getLatitude() {
-	    return latitude;
-	}
-
-	public void setLatitude(double latitude) {
-	    this.latitude = latitude;
-	}
-
-	public double getLongitude() {
-	    return longitude;
-	}
-
-	public void setLongitude(double longitude) {
-	    this.longitude = longitude;
-	}
-    }
-
-    /**
-     * Wrapper class representing a tuple x/y, in the screen coordinate system
-     * Screen coordinate are "normalized" (taking into account boundaries of map
-     * view, etc.)
-     */
-    /*
-     * TODO : FlyWeight for this class ?
-     */
-    public static class ScreenCoordinate {
-	int x;
-	int y;
-
-	public ScreenCoordinate(int x, int y) {
-	    this.x = x;
-	    this.y = y;
-	}
-
-	public int getX() {
-	    return x;
-	}
-
-	public void setX(int x) {
-	    this.x = x;
-	}
-
-	public int getY() {
-	    return y;
-	}
-
-	public void setY(int y) {
-	    this.y = y;
-	}
-    }
-
     public void setHighlightedIntersection(Intersection intersection) {
 	this.highlightedIntersection = intersection;
     }
-
-    public void setHighlightedSection(Section findClosestSection) {
-	this.highlightedSection = findClosestSection;
-	setToolTipText(highlightedSection.getStreetName());
-	ToolTipManager manager = ToolTipManager.sharedInstance();
-	manager.setInitialDelay(0);
-	manager.setReshowDelay(0);
-	manager.setDismissDelay(1000);
-
-	Point mousePos = MouseInfo.getPointerInfo().getLocation();
-	int x = mousePos.x - getLocationOnScreen().x;
-	int y = mousePos.y - getLocationOnScreen().y;
-	MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0,
-		false);
-	ToolTipManager.sharedInstance().mouseMoved(phantom);
-    }
-
+   
+    /** Methods calls to highlight the intersection (right-clicked)
+     * 
+     * @param intersection the intersection to highlight
+     */
     public void setRightClickedIntersection(Intersection intersection) {
 	rightClickedIntersection = intersection;
+    }
+    
+    /** Methods calls to highlight the section
+     * 
+     * @param  findClosestSection the section to highlight
+     */
+    public void setHighlightedSection(Section findClosestSection) {
+ 	this.highlightedSection = findClosestSection;
+ 	setToolTipText(highlightedSection.getStreetName());
+ 	ToolTipManager manager = ToolTipManager.sharedInstance();
+ 	manager.setInitialDelay(0);
+ 	manager.setReshowDelay(0);
+ 	manager.setDismissDelay(1000);
 
+ 	Point mousePos = MouseInfo.getPointerInfo().getLocation();
+ 	int x = mousePos.x - getLocationOnScreen().x;
+ 	int y = mousePos.y - getLocationOnScreen().y;
+ 	MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0,
+ 		false);
+ 	ToolTipManager.sharedInstance().mouseMoved(phantom);
     }
 }

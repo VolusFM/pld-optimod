@@ -83,7 +83,7 @@ public interface State {
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
-    public void deleteDelivery(Controler controler, Window window);
+    public void removeDelivery(Controler controler, Window window);
 
     /**
      * Confirm the addition of a new delivery.

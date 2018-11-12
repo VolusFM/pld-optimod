@@ -100,13 +100,14 @@ public class PlanningTable extends JTable {
 
 	private Tour findTourFromRowIndex(int rowIndex) {
 	    List<Tour> tours = ModelInterface.getTourPlanning();
-
 	    int currentTourIndex = 0;
-	    while (tours.get(currentTourIndex).getDeliveryPoints().size() < rowIndex) {
+	    int currentDisplayedSize = tours.get(currentTourIndex).getDeliveryPoints().size();
+	    while (currentDisplayedSize < rowIndex) {
+		currentDisplayedSize += tours.get(currentTourIndex).getDeliveryPoints().size();
 		currentTourIndex++;
 	    }
-
 	    return tours.get(currentTourIndex);
 	}
+
     }
 }

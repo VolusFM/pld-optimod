@@ -4,17 +4,19 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import main.controler.Controler;
 import main.model.Intersection;
 import main.model.ModelInterface;
 
 public class PlanningListener implements ListSelectionListener {
 
     private JTable planning;
-    // private Controler controler;
+    private Controler controler;
     private Window window;
 
-    public PlanningListener(JTable t, Window window) {
+    public PlanningListener(JTable t, Controler c, Window window) {
 	this.planning = t;
+	this.controler = c;
 	this.window = window;
     }
 
@@ -24,7 +26,6 @@ public class PlanningListener implements ListSelectionListener {
 	    // no selected row, ignore
 	    return;
 	}
-
 	String address = (String) planning.getValueAt(planning.getSelectedRow(), 1);
 
 	String[] fragments = address.substring(1, address.length() - 1).split("; ");
@@ -33,6 +34,7 @@ public class PlanningListener implements ListSelectionListener {
 
 	Intersection closest = ModelInterface.findClosestIntersection(lat, lon);
 
+	controler.setSelectedIntersection(closest);
 	window.highlightSelectedIntersection(closest);
     }
 

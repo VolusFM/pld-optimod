@@ -12,17 +12,15 @@ import main.model.tsp.TSP1;
 import main.model.tsp.TemplateTSP;
 
 /**
- * TourCalculator is a singleton class which handles the calculation of tours
+ * TourCalculator is a singleton class which handles the calculation of tours.
  */
 public class TourCalculator {
 
-    private TourFactory tourFactory = TourFactory.getInstance();
     private Plan map = ModelInterface.getPlan();
     private List<Delivery> deliveries;
-
     private List<List<Delivery>> deliveriesForEachTour;
-
     private Delivery depot;
+    private int calculationTimeLimitMs = 10000;
 
     /* Unique instance */
     private static TourCalculator instance = null;
@@ -32,21 +30,19 @@ public class TourCalculator {
     private int nodesCount;
     private int[] delay;
 
-    /* Maximum iteration number of Kmeans */
-    private static int MAXKMEANS = 1000;
-    private static double MAXDOUBLE = Double.MAX_VALUE;
-
     /* TSP related fields for multiple tours */
-    private List<double[][]> costsTSPForEachTour = new ArrayList<>();
-    private List<Integer> nodesCountForEachTour = new ArrayList<>();
-    private List<int[]> delayForEachTour = new ArrayList<>();
 
-    private int calculationTimeLimitMs = 1000000;
+    private List<double[][]> costsTSPForEachTour;
+    private List<Integer> nodesCountForEachTour;
+    private List<int[]> delayForEachTour;
+
+    private static final int MAXKMEANS = 1000;
+    private static final double MAXDOUBLE = Double.MAX_VALUE;
 
     private HashMap<Pair<Long, Long>, Step> steps;
     // XXX : I REALLY hope we don't need a specific steps instance by tour
 
-    private int deliveryMenCount = 1;
+    private int deliveryMenCount = 2;
 
     private TemplateTSP TSPimplementation = new TSP1();
 
@@ -54,7 +50,6 @@ public class TourCalculator {
      * Create the tour calculator.
      */
     private TourCalculator() {
-	tourFactory = TourFactory.getInstance();
 	deliveries = new ArrayList<>();
 	deliveriesForEachTour = new ArrayList<List<Delivery>>();
 	steps = new HashMap<>();
@@ -91,6 +86,7 @@ public class TourCalculator {
 	this.depot = depot;
     }
 
+
     /**
      * Setter for the map.
      * 
@@ -113,6 +109,14 @@ public class TourCalculator {
 	} else {
 	    this.deliveryMenCount = deliveryMenCount;
 	}
+    }
+    
+    /**
+     * Getter for the delivery men count.
+     * @return int, the count of delivery men
+     */
+    public int getDeliveryMenCount() {
+        return deliveryMenCount;
     }
 
     /**
@@ -157,23 +161,38 @@ public class TourCalculator {
      * tours
      */
     public void calculateTours() {
+	initialize();
 	/* Creates the global sub-graph, with all deliveries */
 	createGraph();
 
 	// TODO : do the K-means fragmentation if needed
-	// K-means responsability : fill the deliveriesForEachTour
-	deliveriesForEachTour.add(deliveries);
+	// K-means responsibility : fill the deliveriesForEachTour
 
+	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0);
+	for (Cluster cluster : clusters) {
+	    deliveriesForEachTour.add(cluster.getDeliveries());
+	}
 	// XXX : else resolve the big TSP
 
 	/* Solves TSP within the sub-graph, and create the tours */
-	resolveTSP();
+	// resolveTSP();
 
 	for (int i = 0; i < deliveryMenCount; i++) {
 	    createSubGraph(i);
 	    resolveTSPSubGraph(i);
 	}
+    }
 
+    /**
+     * Initialize the calculator before a calcul. Remove possible traces from
+     * previous calculations.
+     */
+    private void initialize() {
+	TourFactory.getInstance().empty();
+	costsTSPForEachTour = new ArrayList<>();
+	nodesCountForEachTour = new ArrayList<>();
+	delayForEachTour = new ArrayList<>();
+	steps = new HashMap<>();
     }
 
     /**
@@ -217,8 +236,8 @@ public class TourCalculator {
      * 
      * @param index
      */
-    public void createSubGraph(int index) {
-	// Attempts to stays as close as possible to orginial implementation
+    private void createSubGraph(int index) {
+	// Attempts to stay as close as possible to original implementation
 	List<Delivery> deliveries = deliveriesForEachTour.get(index);
 
 	/* Initialization */
@@ -320,23 +339,24 @@ public class TourCalculator {
      * Execute the TSP algorithm, extract the needed information to create the
      * tours
      */
+    @Deprecated
     private void resolveTSP() {
 	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
-
 	List<Step> solutionSteps = findStepsFromResult(TSPimplementation.getBestSolution());
-
 	if (deliveryMenCount == 1) {
 	    // do not bother recalculating, hardcoding is fine
 	    // TourFactory.createTour(1, solutionSteps, depot, deliveries);
 	}
     }
 
+    /**
+     * 
+     * @param index
+     */
     private void resolveTSPSubGraph(int index) {
 	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCountForEachTour.get(index),
 		costsTSPForEachTour.get(index), delayForEachTour.get(index));
-
 	List<Step> solutionSteps = findStepsFromResultSubGraph(index, TSPimplementation.getBestSolution());
-
 	TourFactory.createTour(index, solutionSteps, depot, deliveriesForEachTour.get(index));
     }
 
@@ -535,7 +555,7 @@ public class TourCalculator {
 	}
 
 	/* We add the new Delivery to the list of deliveries */
-	// FIXME : we need to stop relying on this list for ordering
+	// TODO : add it to the right delivery list
 	deliveries.add(newDelivery);
 
 	/* We find the tour corresponding to the preceding Delivery */
@@ -923,4 +943,5 @@ public class TourCalculator {
 	return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()), 2)
 		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
     }
+
 }

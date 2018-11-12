@@ -50,8 +50,8 @@ public class Tour {
      * 
      * @param delivery is the delivery to remove.
      */
-    public void removeDelivery(Delivery delivery) {
-	deliveryPoints.remove(delivery);
+    public void removeDelivery(Delivery toSuppress) {
+	deliveryPoints.remove(toSuppress);
     }
 
     /**
@@ -137,4 +137,12 @@ public class Tour {
     public int getDeliveryManId() {
 	return deliveryManId;
     }
+
+    @Override
+    public String toString() {
+	return "Tour [depot=" + depot + ", steps=" + steps + ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
+		+ deliveryManId + "]";
+    }
+    
+    
 }
