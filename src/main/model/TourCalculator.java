@@ -33,9 +33,9 @@ public class TourCalculator {
     private int[] delay;
 
     /* TSP related fields for multiple tours */
-    private List<double[][]> costsTSPForEachTour = new ArrayList<>();
-    private List<Integer> nodesCountForEachTour = new ArrayList<>();
-    private List<int[]> delayForEachTour = new ArrayList<>();
+    private List<double[][]> costsTSPForEachTour;
+    private List<Integer> nodesCountForEachTour;
+    private List<int[]> delayForEachTour;
 
     private int calculationTimeLimitMs = 1000000;
 
@@ -156,14 +156,13 @@ public class TourCalculator {
      * tours
      */
     public void calculateTours() {
-	// TODO reinit the rest
-	TourFactory.getInstance().empty();
+	initialize();
 	/* Creates the global sub-graph, with all deliveries */
 	createGraph();
 
 	// TODO : do the K-means fragmentation if needed
 	// K-means responsability : fill the deliveriesForEachTour
-	System.out.println(deliveryMenCount);
+
 	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0.1);
 	for (Cluster cluster : clusters) {
 	    deliveriesForEachTour.add(cluster.getDeliveries());
@@ -177,8 +176,18 @@ public class TourCalculator {
 	    createSubGraph(i);
 	    resolveTSPSubGraph(i);
 	}
-	
-	List<Tour> planning = TourFactory.getInstance().getTourPlanning();
+    }
+
+    /**
+     * Initialize the calculator before a calcul. Remove possible traces from
+     * previous calculations.
+     */
+    private void initialize() {
+	TourFactory.getInstance().empty();
+	costsTSPForEachTour = new ArrayList<>();
+	nodesCountForEachTour = new ArrayList<>();
+	delayForEachTour = new ArrayList<>();
+	steps = new HashMap<>();
     }
 
     /**
