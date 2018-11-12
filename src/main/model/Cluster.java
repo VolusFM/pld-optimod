@@ -42,6 +42,16 @@ public class Cluster {
 	return this.deliveries.remove(index);
     }
 
+    public double calculateCoefficient(){
+	double coeff = 0;
+	for (Delivery delivery : deliveries) {
+	    Pair<Double, Double> deliveryData = new Pair<Double, Double>(delivery.getAddress().getLat(),
+		    delivery.getAddress().getLon());
+	    coeff += calculateDistanceToCentroid(deliveryData);
+	}
+	return coeff;
+    }
+    
     /**
      * empties deliveries
      */
