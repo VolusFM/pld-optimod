@@ -127,4 +127,8 @@ public class TourFactory {
 	}
 	return null;
     }
+
+    public void empty() {
+	tourPlanning = new ArrayList<>();
+    }
 }

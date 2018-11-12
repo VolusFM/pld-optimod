@@ -137,4 +137,12 @@ public class Tour {
     public int getDeliveryManId() {
 	return deliveryManId;
     }
+
+    @Override
+    public String toString() {
+	return "Tour [depot=" + depot + ", steps=" + steps + ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
+		+ deliveryManId + "]";
+    }
+    
+    
 }

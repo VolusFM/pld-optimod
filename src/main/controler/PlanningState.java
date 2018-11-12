@@ -23,8 +23,10 @@ public class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
-	// TODO: add code to call tourCalculator
-	controler.setCurrentState(controler.planningState);
+	ModelInterface.getTourCalculator().calculateTours();
+	//window.displayTourPlanningPanel();
+	window.redraw();
+
     }
 
     /**

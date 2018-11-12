@@ -45,7 +45,7 @@ public class TourCalculator {
     private HashMap<Pair<Long, Long>, Step> steps;
     // XXX : I REALLY hope we don't need a specific steps instance by tour
 
-    private int deliveryMenCount = 1;
+    private int deliveryMenCount = 2;
 
     private TemplateTSP TSPimplementation = new TSP1();
 
@@ -156,11 +156,14 @@ public class TourCalculator {
      * tours
      */
     public void calculateTours() {
+	// TODO reinit the rest
+	TourFactory.getInstance().empty();
 	/* Creates the global sub-graph, with all deliveries */
 	createGraph();
 
 	// TODO : do the K-means fragmentation if needed
 	// K-means responsability : fill the deliveriesForEachTour
+	System.out.println(deliveryMenCount);
 	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0.1);
 	for (Cluster cluster : clusters) {
 	    deliveriesForEachTour.add(cluster.getDeliveries());
@@ -174,7 +177,12 @@ public class TourCalculator {
 	    createSubGraph(i);
 	    resolveTSPSubGraph(i);
 	}
-
+	
+	List<Tour> planning = TourFactory.getInstance().getTourPlanning();
+	for (Tour t : planning) {
+	    System.out.println(t.toString());
+	}
+	System.out.println("slt");
     }
 
     /**
@@ -218,7 +226,7 @@ public class TourCalculator {
      * @param index
      */
     public void createSubGraph(int index) {
-	// Attempts to stays as close as possible to original implementation
+	// Attempts to stay as close as possible to original implementation
 	List<Delivery> deliveries = deliveriesForEachTour.get(index);
 
 	/* Initialization */

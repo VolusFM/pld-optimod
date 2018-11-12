@@ -39,6 +39,7 @@ public class LoadedDeliveriesState extends DefaultState {
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
+	//window.redraw();
 
 	controler.setCurrentState(controler.planningState);
     }
