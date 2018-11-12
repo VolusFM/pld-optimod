@@ -87,15 +87,6 @@ public class Intersection {
 	Intersection other = (Intersection) obj;
 	if (id != other.id)
 	    return false;
-	if (Double.doubleToLongBits(lat) != Double.doubleToLongBits(other.lat))
-	    return false;
-	if (Double.doubleToLongBits(lon) != Double.doubleToLongBits(other.lon))
-	    return false;
-	if (outcomingSections == null) {
-	    if (other.outcomingSections != null)
-		return false;
-	} else if (!outcomingSections.equals(other.outcomingSections))
-	    return false;
 	return true;
     }
 
