@@ -46,8 +46,8 @@ public class PlanView extends JPanel {
     private double yConstant = 0.7;
 
     /* Tour colors */
-    // XXX : find some more contrasting color
-    private final Color[] colors = { Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.MAGENTA };
+    // XXX : find some more contrasting colors
+    private final Color[] colors = { Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LIGHT_GRAY, Color.PINK };
 
     /**
      * Create the graphical view for drawing the charged plan with the scale s
@@ -122,7 +122,7 @@ public class PlanView extends JPanel {
 	}
 	/* Highlighted intersection */
 	if (highlightedIntersection != null) {
-	    graphics2d.setColor(Color.LIGHT_GRAY);
+	    graphics2d.setColor(Color.MAGENTA);
 	    Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 		    new float[] { 2.0f, 0.5f }, 0.0f);
 	    graphics2d.setStroke(stroke);
@@ -130,7 +130,7 @@ public class PlanView extends JPanel {
 	}
 	/* Highlighted section */
 	if (highlightedSection != null) {
-	    graphics2d.setColor(Color.MAGENTA);
+	    graphics2d.setColor(Color.ORANGE);
 	    Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 		    new float[] { 2.0f, 0.5f }, 0.0f);
 	    graphics2d.setStroke(stroke);
