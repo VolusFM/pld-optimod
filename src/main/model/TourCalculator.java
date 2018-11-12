@@ -33,7 +33,7 @@ public class TourCalculator {
     private int[] delay;
 
     /* Maximum iteration number of Kmeans */
-    private static int MAXKMEANS = 10;
+    private static int MAXKMEANS = 1000;
     private static double MAXDOUBLE = Double.MAX_VALUE;
 
     /* TSP related fields for multiple tours */
@@ -208,6 +208,7 @@ public class TourCalculator {
 	for (int i = 0; i < deliveries.size(); i++) {
 	    costTSP[i + 1] = dijkstraHelper(deliveries.get(i).getAddress());
 	}
+	
     }
 
     /**
@@ -751,16 +752,6 @@ public class TourCalculator {
 	     * sort the cluster from the one with the most delivery to the one
 	     * with the least delivery
 	     */
-	    Collections.sort(currentClusters, new Comparator<Cluster>() {
-		public int compare(Cluster a1, Cluster a2) {
-		    return a2.getDeliveries().size() - a1.getDeliveries().size(); // assumes
-										  // you
-										  // want
-										  // biggest
-										  // to
-										  // smallest
-		}
-	    });
 	    int evenDeliveryNumber = (int) (this.deliveries.size() / clusterNb);
 	    int remainingAdditionalDeliveries = this.deliveries.size() % clusterNb; // This
 										    // represent
@@ -781,9 +772,19 @@ public class TourCalculator {
 		indexCluster++;
 	    }
 	    if (!hasEmptyCluster) {
-		HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 		int maxIntersectionNumber;
 		for (int currentClusterIndex = 0; currentClusterIndex < currentClusters.size(); currentClusterIndex++) {
+		    Collections.sort(currentClusters, new Comparator<Cluster>() {
+			public int compare(Cluster a1, Cluster a2) {
+			    return a2.getDeliveries().size() - a1.getDeliveries().size(); // assumes
+											  // you
+											  // want
+											  // biggest
+											  // to
+											  // smallest
+			}
+		    });
+		    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 		    /* Check if there can be an additional delivery */
 		    if ((currentClusters.get(currentClusterIndex).getDeliveries().size() > evenDeliveryNumber)
 			    && (remainingAdditionalDeliveries > 0)) {
@@ -830,7 +831,7 @@ public class TourCalculator {
 			    }
 
 			    if ((distanceToToMove[indexCostTSP] < minDistance) && (isClusterNotFull)
-				    && !(currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).isBalenced())
+				    && !(currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).isBalanced())
 				    && (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
 				minDistance = distanceToToMove[indexCostTSP];
 				minIndex = indexDelivery;
@@ -839,7 +840,7 @@ public class TourCalculator {
 			if (minIndex == -1) {
 			    throw new AssertionError(
 				    "Error in clusterizeData in TourCalculator : no cluster was found to "
-					    + "put an exceeding delivery. This error SHOULD NOT happend");
+					    + "put an exceeding delivery. This error SHOULD NOT happen");
 			} else {
 			    /*
 			     * move exceeding delivery to nearest delivery's

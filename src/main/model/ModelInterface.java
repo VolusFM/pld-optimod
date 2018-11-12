@@ -147,7 +147,7 @@ public abstract class ModelInterface {
     }
 
     public static void createGraph() {
-	// TODO Auto-generated method stub
+	tourCalculator.createGraph();
 
     }
 
