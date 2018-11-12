@@ -1,5 +1,7 @@
 package test.model.clusterizeData;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -30,47 +32,37 @@ public class clusterTest {
     @Test
     public void solveBasicKmeans() {
 	List<Cluster> clusters = calculator.kMeans(clusterNb, calculator.getDeliveries(), 0.0001);
-	if (!(clusters.size() == clusterNb)) {
-	    /*
-	     * if this happened, then the algorithm as been compromised. That
-	     * will not happen
-	     */
-	    throw new AssertionError("Kmean didn't return correct number of clusters");
-	}
-	/*
-	 * Check if that the sum of deliveries in cluster is egal to number of
-	 * deliveries
-	 */
+	assertEquals("clusters size doesnt match cluster number", clusters.size(), clusterNb);
 	int deliveriesInClusters = 0;
 	for (Cluster cluster : clusters) {
 	    deliveriesInClusters += cluster.getDeliveries().size();
 	}
-	if (deliveriesInClusters != calculator.getDeliveries().size()) {
-	    throw new AssertionError("Incorrect number of deliveries in clusters");
-	}
-	for (Cluster cluster : clusters) {
-	    System.out.println(cluster.toString());
-	}
+	assertEquals("total number of deliveries in clusters doesnt match calculator 's deliveries size",
+		deliveriesInClusters, calculator.getDeliveries().size());
     }
+    
+    @Test(expected = AssertionError.class)
+	public void solveBasicKmeansError(){
+		calculator.kMeans(50, calculator.getDeliveries(), 0.0001);
+	    }
+    
 
     @Test
     public void clusterizeDataTest() {
-	System.out.println("Start");
-	// long startTime = System.currentTimeMillis();
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 10; i++) {
 	    List<Cluster> bestClusters = calculator.clusterizeData(clusterNb, 0.1);
-	    // long stopTime = System.currentTimeMillis();
-	    // long elapsedTime = stopTime - startTime;
-	    // System.out.println("execution time after initialisation :
-	    // "+elapsedTime);
-	    for (Cluster cluster : bestClusters) {
-		System.out.println(cluster.toString());
-		if (cluster.getDeliveries().size() != (int) (calculator.getDeliveries().size() / clusterNb)) {
-		    System.out.println("Something is very very wrong" + i);
+	    if (clusterNb > calculator.getDeliveries().size()) {
+		for (Cluster cluster : bestClusters) {
+		    assert (cluster.getDeliveries()
+			    .size() <= 1) : "Inbalanced clusters when more clusters then deliveries";
 		}
 	    }
+	    for (Cluster cluster : bestClusters) {
+		assert (cluster.getDeliveries()
+			.size() >= (int) (calculator.getDeliveries().size() / clusterNb)) : "Inbalanced clusters";
+	    }
+	    clusterNb ++;
 	}
-
     }
 
 }
