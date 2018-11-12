@@ -18,8 +18,7 @@ public class Step {
     /**
      * Create a Step.
      * 
-     * @param sections
-     *            is the list of sections leading from one delivery to the
+     * @param sections is the list of sections leading from one delivery to the
      *            other.
      */
     public Step(List<Section> sections) {

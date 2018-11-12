@@ -41,7 +41,7 @@ public class AddingDeliveryView extends JPanel {
      * Create the view to defined a new delivery point.
      * 
      * @param w the the Window in which this will be used (to access to the
-     *          listeners)
+     *            listeners)
      */
     public AddingDeliveryView(Window w) {
 	super();

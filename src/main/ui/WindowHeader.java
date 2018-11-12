@@ -78,12 +78,12 @@ public class WindowHeader extends JPanel {
     }
 
     /**
-     * Convenience method to create a new button with a given text and action, and
-     * to bind it to the action listener
+     * Convenience method to create a new button with a given text and action,
+     * and to bind it to the action listener
      * 
-     * @param text   is the text of the button.
-     * @param action is a string describing the action to perform when clicking on
-     *               the button.
+     * @param text is the text of the button.
+     * @param action is a string describing the action to perform when clicking
+     *            on the button.
      * 
      * @return JButton, the created button.
      */

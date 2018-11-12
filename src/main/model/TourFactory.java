@@ -22,9 +22,9 @@ public class TourFactory {
      * Create a tour.
      * 
      * @param deliveryMan is the delivery man who has to realize the tour.
-     * @param steps       are the steps between each delivery.
-     * @param depot       is the depot where the tour starts and ends.
-     * @param deliveries  is the list of delivery points.
+     * @param steps are the steps between each delivery.
+     * @param depot is the depot where the tour starts and ends.
+     * @param deliveries is the list of delivery points.
      * @return Tour, the created tour.
      */
     public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
@@ -102,7 +102,7 @@ public class TourFactory {
      * Find deliveries for a given delivery man id.
      * 
      * @param deliveryManId is the id of the delivery man on which to filter the
-     *                      results.
+     *            results.
      * @return the list of deliveries given to the delivery man
      */
     public List<Delivery> getDeliveriesById(int deliveryManId) {

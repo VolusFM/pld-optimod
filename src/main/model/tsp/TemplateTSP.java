@@ -36,8 +36,8 @@ public abstract class TemplateTSP implements TSP {
     }
 
     /**
-     * Get the nodes corresponding to the best solution for the execution of this
-     * TSP
+     * Get the nodes corresponding to the best solution for the execution of
+     * this TSP
      * 
      * @return an array of integers corresponding to the nodes to travel to, in
      *         order
@@ -55,24 +55,25 @@ public abstract class TemplateTSP implements TSP {
      * 
      * @param currentNode : the current node
      * @param unseenNodes : table of nodes we still have to visit.
-     * @param cost        : cost[i][j] = duration to go from i to j, with 0 <= i <
-     *                    numberOfNodes and 0 <= j < numberOfNodes.
-     * @param duration    : duration[i] = duration to visit i node with 0 <= i <
-     *                    numberOfNodes.
-     * @return a lower bound of the permutations' cost, starting from currentNode,
-     *         containing each unseen node exactly one time and finishing by 0 node.
+     * @param cost : cost[i][j] = duration to go from i to j, with 0 <= i <
+     *            numberOfNodes and 0 <= j < numberOfNodes.
+     * @param duration : duration[i] = duration to visit i node with 0 <= i <
+     *            numberOfNodes.
+     * @return a lower bound of the permutations' cost, starting from
+     *         currentNode, containing each unseen node exactly one time and
+     *         finishing by 0 node.
      */
     protected abstract int bound(Integer currentNode, ArrayList<Integer> unseenNodes, double[][] cost, int[] duration);
 
     /**
      * Must be redefined by subclasses.
      * 
-     * @param sommetCrt   : the current node.
+     * @param sommetCrt : the current node.
      * @param unseenNodes : table of nodes we still have to visit.
-     * @param cost        : cost[i][j] = duration to go from i to j, with 0 <= i <
-     *                    numberOfNodes and 0 <= j < numberOfNodes.
-     * @param duration    : duration[i] = duration to visit i node with 0 <= i <
-     *                    numberOfNodes.
+     * @param cost : cost[i][j] = duration to go from i to j, with 0 <= i <
+     *            numberOfNodes and 0 <= j < numberOfNodes.
+     * @param duration : duration[i] = duration to visit i node with 0 <= i <
+     *            numberOfNodes.
      * @return iterator to iterate on all unseen nodes.
      */
     protected abstract Iterator<Integer> iterator(Integer sommetCrt, ArrayList<Integer> unseenNodes, double[][] cost,
@@ -81,17 +82,17 @@ public abstract class TemplateTSP implements TSP {
     /**
      * Defines the template of a branch and bound resolution of the TSP.
      * 
-     * @param sommetCrt    the current node.
-     * @param unseenNodes  table of nodes we still have to visit.
-     * @param seenNodes    table of nodes we already have visited.
-     * @param seenCost     the sum of the arcs' cost of the path going through all
-     *                     seen nodes, plus the duration of the seen nodes.
-     * @param cost         : cost[i][j] = duration to go from i to j, with 0 <= i <
-     *                     numberOfNodes and 0 <= j < numberOfNodes.
-     * @param duration     : duration[i] = duration to visit i node with 0 <= i <
-     *                     numberOfNodes.
+     * @param sommetCrt the current node.
+     * @param unseenNodes table of nodes we still have to visit.
+     * @param seenNodes table of nodes we already have visited.
+     * @param seenCost the sum of the arcs' cost of the path going through all
+     *            seen nodes, plus the duration of the seen nodes.
+     * @param cost : cost[i][j] = duration to go from i to j, with 0 <= i <
+     *            numberOfNodes and 0 <= j < numberOfNodes.
+     * @param duration : duration[i] = duration to visit i node with 0 <= i <
+     *            numberOfNodes.
      * @param startingTime : moment when resolution started.
-     * @param timelimit    : timelimit for the resolution.
+     * @param timelimit : timelimit for the resolution.
      */
     void branchAndBound(int sommetCrt, ArrayList<Integer> unseenNodes, ArrayList<Integer> seenNodes, double seenCost,
 	    double[][] cost, int[] duration, long startingTime, int timelimit) {
@@ -125,13 +126,13 @@ public abstract class TemplateTSP implements TSP {
     /**
      * Helper method that takes everything needed and calculate the solution
      * 
-     * @param timeLimit  : limit (in milliseconds) on the executing time of this
-     *                   method
-     * @param nodeCount  : count of nodes in the graph
-     * @param costMatrix : costMatrix[i][j] = time to go from i to j, with 0 <= i <
-     *                   nodeCount and 0 <= j < nodeConnt
-     * @param duration   : duration[i] = time to visit the node i, with 0 <= i <
-     *                   nodeCount
+     * @param timeLimit : limit (in milliseconds) on the executing time of this
+     *            method
+     * @param nodeCount : count of nodes in the graph
+     * @param costMatrix : costMatrix[i][j] = time to go from i to j, with 0 <=
+     *            i < nodeCount and 0 <= j < nodeConnt
+     * @param duration : duration[i] = time to visit the node i, with 0 <= i <
+     *            nodeCount
      */
     public void searchAndDisplayBestSolution(int timeLimit, int nodeCount, double[][] costMatrix, int[] duration) {
 	searchSolution(timeLimit, nodeCount, costMatrix, duration);

@@ -22,7 +22,7 @@ public class InitState extends DefaultState {
      * Load a plan's XML file.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void openPlan(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException {
@@ -38,7 +38,7 @@ public class InitState extends DefaultState {
      * XXX
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
 

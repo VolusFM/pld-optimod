@@ -20,7 +20,7 @@ public class PlanningState extends DefaultState {
      * Calculate the planning for the given deliveries request and plan.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
 	// TODO: add code to call tourCalculator
@@ -31,7 +31,7 @@ public class PlanningState extends DefaultState {
      * Open parameters modal.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
 	try {
@@ -47,7 +47,7 @@ public class PlanningState extends DefaultState {
      * Move a delivery from one tour to another.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void moveDelivery(Controler controler, Window window) {
 	// int newTourId = window.getNewTourId();
@@ -59,7 +59,7 @@ public class PlanningState extends DefaultState {
      * Remove a delivery from a tour.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void deleteDelivery(Controler controler, Window window) {
 	// ModelInterface.deleteDelivery(window.getDeletedDelivery());
@@ -69,7 +69,7 @@ public class PlanningState extends DefaultState {
      * Add a delivery to a tour.
      * 
      * @param controler is the application's controler.
-     * @param window    is the application's graphical window.
+     * @param window is the application's graphical window.
      */
     public void addDelivery(Controler controler, Window window) {
 	// TODO : window.openNewDelivery()

@@ -46,8 +46,8 @@ public class Controler {
     }
 
     /**
-     * Load the xml formatted delivery request. Called when the plan screen's button
-     * "Valider" is pushed.
+     * Load the xml formatted delivery request. Called when the plan screen's
+     * button "Valider" is pushed.
      */
     public void openDeliveries() {
 	try {

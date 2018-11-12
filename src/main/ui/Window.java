@@ -211,10 +211,8 @@ public class Window extends JFrame {
      * Method used to set the lat and long fields of the adding form
      * 
      * 
-     * @param lat
-     *            the latitude value
-     * @param lon
-     *            the longitude value
+     * @param lat the latitude value
+     * @param lon the longitude value
      */
     public void setLatLonFieldsOfAddingPanel(double lat, double lon) {
 	this.addingPanel.latitudeField.setText(" " + lat);
@@ -246,8 +244,7 @@ public class Window extends JFrame {
     /**
      * Method call to highlight a clicked intersection on the plan view.
      * 
-     * @param intersection
-     *            the intersection to highlight
+     * @param intersection the intersection to highlight
      */
     public void highlightSelectedIntersection(Intersection intersection) {
 	planningPanel.selectRow(intersection);
