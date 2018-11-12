@@ -112,7 +112,7 @@ public class Tour {
     /**
      * Getter for the delivery points.
      * 
-     * @return List, a list of all deliveries in the tour.
+     * @return List, a list of all deliveries in the tour, including the depot.
      */
     public List<Delivery> getDeliveryPoints() {
 	List<Delivery> deliveriesAndDepot = new ArrayList<>(deliveryPoints);
