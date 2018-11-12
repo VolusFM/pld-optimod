@@ -34,7 +34,7 @@ public class LoadedDeliveriesState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window) {
-	ModelInterface.getTourCalculator().getInstance().calculateTours();
+	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
 	window.toggleDeliveryMenCountButtonVisiblity();
 	controler.setCurrentState(controler.planningState);

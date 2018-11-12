@@ -3,8 +3,12 @@ package main.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import com.sun.media.sound.ModelIdentifier;
+
 import main.controler.Controler;
+import main.model.Delivery;
 import main.model.Intersection;
+import main.model.ModelInterface;
 
 public class ButtonListener implements ActionListener {
 
@@ -43,8 +47,9 @@ public class ButtonListener implements ActionListener {
 			// TODO : controleur.addDeleveryPoint() qui appelle l'IHM
 			break;
 		case PlanningView.ACTION_SUPRESSING_DELIVERY_POINT :
-			// Intersection toSupress = controler.getSelectedIntersection();
-			// TODO Controleur: controleur.suppressDelivery(toSupress)
+			Intersection i = controler.getSelectedIntersection();
+			Delivery toSuppress = ModelInterface.findCorrespondingDelivery(i);
+			controler.removeDelivery();
 			break;
 		case PlanningView.ACTION_CANCELLING_MODIFICATIONS :			
 			// TODO Controleur : controleur.cancelModification()

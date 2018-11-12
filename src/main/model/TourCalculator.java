@@ -168,7 +168,7 @@ public class TourCalculator {
 	// TODO : do the K-means fragmentation if needed
 	// K-means responsibility : fill the deliveriesForEachTour
 
-	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0.1);
+	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0);
 	for (Cluster cluster : clusters) {
 	    deliveriesForEachTour.add(cluster.getDeliveries());
 	}

@@ -100,7 +100,7 @@ public class Window extends JFrame {
 	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
 	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
 	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
-	planningPanel = new PlanningView(this);
+	planningPanel = new PlanningView(controler, this);
 	/* Panels */
 	JPanel planning = new JPanel();
 	planning.add(planningText, BorderLayout.NORTH);

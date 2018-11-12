@@ -84,6 +84,12 @@ public abstract class ModelInterface {
 	setTourCalculator(TourCalculator.getInstance());
 	tourCalculator.addDelivery(toAdd);
     }
+    
+    public static void removeDelivery(Delivery toSuppress) {
+	Tour t = tourFactory.findTourContainingDelivery(toSuppress);
+	System.out.println(t);
+	tourCalculator.removeDeliveryFromTour(toSuppress, t);
+    }
 
     /**
      * Get the tour planning.
@@ -157,4 +163,5 @@ public abstract class ModelInterface {
     public static int getDeliveryMenCount(){
 	return tourCalculator.getDeliveryMenCount();
     }
+    
 }

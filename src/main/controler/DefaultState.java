@@ -50,7 +50,7 @@ public class DefaultState implements State {
 	return null;
     }
 
-    public void deleteDelivery(Controler controler, Window window) {
+    public void removeDelivery(Controler controler, Window window) {
     }
 
     @Override

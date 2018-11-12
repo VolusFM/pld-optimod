@@ -60,8 +60,11 @@ public class PlanningState extends DefaultState {
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
-    public void deleteDelivery(Controler controler, Window window) {
-	// ModelInterface.deleteDelivery(window.getDeletedDelivery());
+    public void removeDelivery(Controler controler, Window window) {
+	Intersection i = controler.getSelectedIntersection();
+	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
+	ModelInterface.removeDelivery(toRemove);
+	window.redraw();
     }
 
     /**
