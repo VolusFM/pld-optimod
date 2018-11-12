@@ -156,12 +156,14 @@ public class TourCalculator {
 
 	  // TODO : do the K-means fragmentation if needed
 	  // K-means responsability : fill the deliveriesForEachTour
-	  deliveriesForEachTour.add(deliveries);
-
+	  List<Cluster> clusters = TourCalculator.clusterizeData(deliveryMenCount);
+	  for (Cluster cluster : clusters){
+	      deliveriesForEachTour.add(cluster.getDeliveries());
+	  }
 	  // XXX : else resolve the big TSP
-
+	  
 	  /* Solves TSP within the sub-graph, and create the tours */
-	  resolveTSP();
+	  // resolveTSP();
 
 	  for (int i = 0; i < deliveryMenCount; i++) {
 	       createSubGraph(i);
@@ -211,7 +213,7 @@ public class TourCalculator {
       * @param index
       */
      public void createSubGraph(int index) {
-	  // Attempts to stays as close as possible to orginial implementation
+	  // Attempts to stays as close as possible to original implementation
 	  List<Delivery> deliveries = deliveriesForEachTour.get(index);
 
 	  /* Initialization */
@@ -323,16 +325,20 @@ public class TourCalculator {
 	       // TourFactory.createTour(1, solutionSteps, depot, deliveries);
 	  }
      }
-
+     
+     /**
+      * 
+      * @param index
+      */
      private void resolveTSPSubGraph(int index) {
 	  TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCountForEachTour.get(index),
 		    costsTSPForEachTour.get(index), delayForEachTour.get(index));
 
 	  List<Step> solutionSteps = findStepsFromResultSubGraph(index, TSPimplementation.getBestSolution());
-
 	  TourFactory.createTour(index, solutionSteps, depot, deliveriesForEachTour.get(index));
      }
-
+    
+     
      /**
       * Create the steps of the tours.
       * 
@@ -528,7 +534,7 @@ public class TourCalculator {
 	  }
 
 	  /* We add the new Delivery to the list of deliveries */
-	  // FIXME : we need to stop relying on this list for ordering
+	  // TODO : add it to the right delivery list
 	  deliveries.add(newDelivery);
 
 	  /* We find the tour corresponding to the preceding Delivery */
