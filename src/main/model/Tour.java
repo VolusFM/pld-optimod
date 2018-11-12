@@ -140,7 +140,7 @@ public class Tour {
 
     @Override
     public String toString() {
-	return "Tour [depot=" + depot + ", steps=" + steps + ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
+	return "Tour [depot=" + depot + /*", steps=" + steps +*/ ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
 		+ deliveryManId + "]";
     }
     

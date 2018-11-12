@@ -64,8 +64,15 @@ public class PlanningTable extends JTable {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 
+	    /*
+	     * Tour tour = findTourFromRowIndex(rowIndex); List<Delivery> deliveries =
+	     * tour.getDeliveryPoints(); int currentDisplayedSize = deliveries.size();
+	     * 
+	     * Delivery delivery = deliveries.get(rowIndex - );
+	     */
+
 	    Tour tour = findTourFromRowIndex(rowIndex);
-	    Delivery delivery = tour.getDeliveryPoints().get(rowIndex % tour.getDeliveryPoints().size());
+	    Delivery delivery = findDeliveryFromRowIndex(rowIndex);
 
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
 	    Calendar hour = delivery.getHour();
@@ -100,6 +107,7 @@ public class PlanningTable extends JTable {
 
 	private Tour findTourFromRowIndex(int rowIndex) {
 	    List<Tour> tours = ModelInterface.getTourPlanning();
+
 	    int currentTourIndex = 0;
 	    int currentDisplayedSize = tours.get(currentTourIndex).getDeliveryPoints().size();
 	    while (currentDisplayedSize < rowIndex) {
@@ -112,8 +120,41 @@ public class PlanningTable extends JTable {
 		System.err.println(e.getMessage());
 		System.out.println(tours);
 	    }
-	    
+
 	    return tours.get(currentTourIndex);
+	}
+
+	private Delivery findDeliveryFromRowIndex(int rowIndex) {
+	    List<Tour> tours = ModelInterface.getTourPlanning();
+
+	    int currentTourIndex = 0;
+	    int currentDisplayedSize = tours.get(currentTourIndex).getDeliveryPoints().size();
+	    while (currentDisplayedSize < rowIndex) {
+		currentDisplayedSize += tours.get(currentTourIndex).getDeliveryPoints().size();
+		currentTourIndex++;
+	    }
+	    try {
+		Tour t = tours.get(currentTourIndex);
+	    } catch (Exception e) {
+		System.err.println(e.getMessage());
+		System.out.println(tours);
+	    }
+
+	    int drift = 0;
+
+	    for (int i = 0; i < currentTourIndex; i++) {
+		drift += tours.get(i).getDeliveryPoints().size();
+	    }
+
+	    System.out.println("currentTourIndex : " + currentTourIndex);
+	    System.out.println("currentDisplayedSize : " + currentDisplayedSize);
+	    System.out.println("row index : " + rowIndex);
+	    System.out.println("drift : " + drift);
+
+	    // FIXME : we need to remove drift (tour already displayed in table) from row
+	    // index to get correct delivery
+
+	    return tours.get(currentTourIndex).getDeliveryPoints().get(rowIndex - drift);
 	}
 
     }
