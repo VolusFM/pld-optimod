@@ -12,7 +12,7 @@ import main.model.tsp.TSP1;
 import main.model.tsp.TemplateTSP;
 
 /**
- * TourCalculator is a singleton class which handles the calculation of tours
+ * TourCalculator is a singleton class which handles the calculation of tours.
  */
 public class TourCalculator {
 
@@ -161,7 +161,7 @@ public class TourCalculator {
 	createGraph();
 
 	// TODO : do the K-means fragmentation if needed
-	// K-means responsability : fill the deliveriesForEachTour
+	// K-means responsibility : fill the deliveriesForEachTour
 
 	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0.1);
 	for (Cluster cluster : clusters) {
@@ -230,7 +230,7 @@ public class TourCalculator {
      * 
      * @param index
      */
-    public void createSubGraph(int index) {
+    private void createSubGraph(int index) {
 	// Attempts to stay as close as possible to original implementation
 	List<Delivery> deliveries = deliveriesForEachTour.get(index);
 
@@ -333,6 +333,7 @@ public class TourCalculator {
      * Execute the TSP algorithm, extract the needed information to create the
      * tours
      */
+    @Deprecated
     private void resolveTSP() {
 	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
 
