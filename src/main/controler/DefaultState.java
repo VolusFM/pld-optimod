@@ -71,4 +71,8 @@ class DefaultState implements State {
     public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
     }
 
+    @Override
+    public void returnToState(Controler controler, Window window, State returnState) {	
+    }
+
 }

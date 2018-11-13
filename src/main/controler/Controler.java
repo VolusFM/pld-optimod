@@ -163,6 +163,17 @@ public class Controler {
 	    ExceptionModal.showErrorModal(e);
 	}
     }
+    
+    /**
+     * Return before any planning was calculate
+     */
+    public void returnToState() {
+	if(currentState.equals(planningState)){
+	    currentState.returnToState(this, window, loadedDeliveriesState);
+	} else if (currentState.equals(loadedDeliveriesState)){
+	    currentState.returnToState(this, window, loadedPlanState);
+	}
+    }
 
     /**
      * XXX : what's the use of this ?
@@ -250,4 +261,5 @@ public class Controler {
     public Window getWindow() {
 	return window;
     }
+
 }

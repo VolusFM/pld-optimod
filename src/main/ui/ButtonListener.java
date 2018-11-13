@@ -40,6 +40,9 @@ public class ButtonListener implements ActionListener {
 	case Window.ACTION_CALCULATE_TOUR:
 	    controler.calculateTour();
 	    break;
+	case WindowHeader.ACTION_RETURN:
+	    controler.returnToState();
+	    break;
 	case PlanningView.ACTION_ADDING_DELIVERY_POINT:
 	    controler.addDelivery();
 	    break;

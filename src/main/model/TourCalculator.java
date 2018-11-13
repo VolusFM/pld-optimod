@@ -177,8 +177,9 @@ public class TourCalculator {
      * Initialize the calculator before a calcul. Remove possible traces from
      * previous calculations.
      */
-    private void initialize() {
+    protected void initialize() {
 	TourFactory.getInstance().empty();
+	deliveriesForEachTour = new ArrayList<>();
 	costsTSPForEachTour = new ArrayList<>();
 	nodesCountForEachTour = new ArrayList<>();
 	delayForEachTour = new ArrayList<>();
@@ -904,8 +905,18 @@ public class TourCalculator {
 		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
     }
 
+
     public void addDelivery(Delivery createDelivery) {
 	deliveries.add(createDelivery);
+    }
+    
+    /**
+     * Function calls to empty the loaded deliveries
+     */
+    protected void emptyLoadedDeliveries(){
+	deliveries = new ArrayList<>();
+	depot = null;
+
     }
 
 }

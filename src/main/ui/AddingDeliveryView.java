@@ -96,11 +96,11 @@ public class AddingDeliveryView extends JPanel {
 	cancelationButton.setActionCommand(ACTION_CANCELATION_ADDING_DELIVERY);
 	cancelationButton.addActionListener(window.buttonListener);
 	/* Components dimensions */
-	latitudeField.setPreferredSize(new Dimension(100, 20));
-	longitudeField.setPreferredSize(new Dimension(100, 20));
-	durationField.setPreferredSize(new Dimension(100, 20));
-	deliveryMenBox.setPreferredSize(new Dimension(100, 20));
-	precedingDeliveryBox.setPreferredSize(new Dimension(175, 20));
+	latitudeField.setPreferredSize(new Dimension(125, 20));
+	longitudeField.setPreferredSize(new Dimension(125, 20));
+	durationField.setPreferredSize(new Dimension(125, 20));
+	deliveryMenBox.setPreferredSize(new Dimension(125, 20));
+	precedingDeliveryBox.setPreferredSize(new Dimension(200, 20));
 	/* Listeners */
 	deliveryMenBox.addItemListener(comboxListener);
 	/* GridBagLayout Display */

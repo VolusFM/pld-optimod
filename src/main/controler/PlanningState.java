@@ -107,6 +107,16 @@ class PlanningState extends DefaultState {
 
 	controler.setRightClickedIntersection(intersection);
     }
+    
+    @Override
+    public void returnToState(Controler controler, Window window, State returnState){
+	ModelInterface.emptyTourFactory();
+	ModelInterface.initializeTourCalculator();
+	window.displayPlanView();
+	window.displayCalculateTourButtonPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
+	controler.setCurrentState(returnState);
+    }
 
     public String stateToString() {
 	return "planningState";
