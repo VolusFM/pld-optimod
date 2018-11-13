@@ -55,12 +55,14 @@ public class ButtonListener implements ActionListener {
 			// TODO Controleur : controleur.cancelModification()
 			break; 
 		case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY :
-			// TODO UI : get (int livreur, double lat, double long, int duree, Delivery/ou int precedente)
 			int duration = controler.getWindow().planningPanel.addingPanel.getSelectedDuration();
 			double lat = controler.getWindow().planningPanel.addingPanel.getSelectedLat();
 			double lon = controler.getWindow().planningPanel.addingPanel.getSelectedLon();
-			// TODO : selected delivery  = previous
-			// TODO Controleur : controleur.validateAddingDeleveryPoint(int livreur, double lat, double long, int duree, Delivery/ou int precedente)
+			int deliveryMenId = controler.getWindow().planningPanel.addingPanel.getSelectedDeliveryMen();
+			System.out.println(deliveryMenId);
+			Delivery precedingDelivery = controler.getWindow().planningPanel.addingPanel.getSelectedPrecedingDelivery();
+			System.out.println(precedingDelivery);
+			// TODO Controleur : controleur.validateAddingDeleveryPoint(deliveryMenId, lat, lon, duration, precedingDelivery)
 			// qui crée la nouvelle livraison et maj l'affichage (et enleve la fenetre d'ajout)
 		case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY :
 			controler.getWindow().hideAddingDeliveryPanel();

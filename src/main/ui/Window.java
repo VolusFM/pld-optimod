@@ -26,7 +26,7 @@ import main.model.Step;
 public class Window extends JFrame {
 
     /* Attributes */
-    private Controler controler;
+    protected Controler controler;
     private int planScale = 1;
 
     /* Components */
@@ -34,6 +34,7 @@ public class Window extends JFrame {
     private JPanel centerPanel;
     private JPanel rightPanel;
     private JPanel southPanel;
+    private JPanel deliveryMenCountPanel;
     protected static PlanView planPanel;
     protected static PlanningView planningPanel;
     protected static AddingDeliveryView addingPanel;
@@ -63,7 +64,6 @@ public class Window extends JFrame {
      * Create a window with a header (with a title and "parameters" button), a
      * choice of file component and a validation button.
      */
-
     public Window(Controler controler) {
 	setBestLookAndFeelAvailable();
 	setLayout(new BorderLayout());
@@ -74,6 +74,7 @@ public class Window extends JFrame {
 	rightPanel = new JPanel();
 	rightPanel.setPreferredSize(new Dimension(500, 900));
 	southPanel = new JPanel();
+	deliveryMenCountPanel = new JPanel();
 	/* Header */
 	this.header = new WindowHeader(this, buttonListener);
 	this.header.setVisible(headerVisibility);
@@ -105,14 +106,24 @@ public class Window extends JFrame {
 	JPanel planning = new JPanel();
 	planning.add(planningText, BorderLayout.NORTH);
 	planning.add(planningPanel, BorderLayout.CENTER);
-	JPanel countPanel = new JPanel();
-	countPanel.add(deliveryMenCount, BorderLayout.NORTH);
-	countPanel.add(count, BorderLayout.CENTER);
 	/* Set content */
-	rightPanel.add(countPanel, BorderLayout.NORTH);
+	displayDeliveryMenCountPanel();
 	rightPanel.add(planning, BorderLayout.CENTER);
 	rightPanel.setVisible(true);
 	add(rightPanel, BorderLayout.EAST);
+	redraw();
+    }
+    
+    /**
+     * Create the panel witch print the count of delivery men
+     */
+    public void displayDeliveryMenCountPanel() {
+	deliveryMenCountPanel.removeAll();
+	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
+	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
+	deliveryMenCountPanel.add(deliveryMenCount, BorderLayout.NORTH);
+	deliveryMenCountPanel.add(count, BorderLayout.CENTER);
+	rightPanel.add(deliveryMenCountPanel, BorderLayout.NORTH);
 	redraw();
     }
 
@@ -122,12 +133,7 @@ public class Window extends JFrame {
      */
     public void displayAddingDeliveryPanel() {
 	planningPanel.displayAddingDeliveryPanel();
-    }
-
-    /**
-     * Create a window with a header (with a title and "parameters" button), a
-     * choice of file component and a validation button.
-     */
+    }    
 
     /**
      * Defined the window and components size.
@@ -210,10 +216,11 @@ public class Window extends JFrame {
 	rightPanel.setPreferredSize(new Dimension(500, 900));
 	/* Create Content */
 	JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
-	rightPanel.add(selectionButton);
-	/* Set content */
-	rightPanel.setVisible(true);
+	rightPanel.add(selectionButton, BorderLayout.EAST );
+	displayDeliveryMenCountPanel();
+	/* Set content */	
 	add(rightPanel, BorderLayout.EAST);
+	rightPanel.setVisible(true);
 	redraw();
     }
 

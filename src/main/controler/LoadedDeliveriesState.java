@@ -22,6 +22,7 @@ public class LoadedDeliveriesState extends DefaultState {
 	try {
 	    ModelInterface.setDeliveryMenCount(InputDialogSelector
 		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
+	    window.displayDeliveryMenCountPanel();
 	} catch (SelectionCancelledException e) {
 	    System.out.println("Selection was cancelled, ignoring...");
 	}

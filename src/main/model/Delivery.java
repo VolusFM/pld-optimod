@@ -1,5 +1,6 @@
 package main.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -17,8 +18,7 @@ public class Delivery {
      * Create a new Delivery.
      * 
      * @param duration is the duration of the delivery.
-     * @param address if the Intersection where the delivery is supposed to
-     *            happen.
+     * @param address  if the Intersection where the delivery is supposed to happen.
      */
     public Delivery(int duration, Intersection address) {
 	this.duration = duration;
@@ -63,7 +63,9 @@ public class Delivery {
 
     @Override
     public String toString() {
-	return "D at " + address;
+	SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm");
+	dateFormat.setTimeZone(hour.getTimeZone());
+	return "(" + address.getLat() + ";" + address.getLon() + ") - " + dateFormat.format(hour.getTime());
     }
 
     @Override
@@ -78,15 +80,9 @@ public class Delivery {
 	if (address == null) {
 	    if (other.address != null)
 		return false;
-	} else if (!address.equals(other.address))
+	} else if (!address.equals(other.address)) {
 	    return false;
-	// if (duration != other.duration)
-	// return false;
-	// if (hour == null) {
-	// if (other.hour != null)
-	// return false;
-	// } else if (!hour.equals(other.hour))
-	// return false;
+	}
 	return true;
     }
 
