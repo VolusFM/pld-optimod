@@ -72,7 +72,7 @@ public class DefaultState implements State {
     }
 
     @Override
-    public void returnToLoadedDeliveriesState(Controler controler, Window window) {	
+    public void returnToState(Controler controler, Window window, State returnState) {	
     }
 
 }

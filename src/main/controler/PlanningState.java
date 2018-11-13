@@ -111,14 +111,13 @@ public class PlanningState extends DefaultState {
     }
     
     @Override
-    public void returnToLoadedDeliveriesState(Controler controler, Window window){
+    public void returnToState(Controler controler, Window window, State returnState){
 	ModelInterface.emptyTourFactory();
 	ModelInterface.initializeTourCalculator();
 	window.displayPlanView();
 	window.displayCalculateTourButtonPanel();
-	window.getHeader().toggleReturnButtonVisibility();
-	window.getHeader().toggleDeliveryMenCountButtonVisibility();
-	controler.setCurrentState(controler.loadedDeliveriesState);
+	window.toggleDeliveryMenCountButtonVisiblity();
+	controler.setCurrentState(returnState);
     }
 
     public String stateToString() {

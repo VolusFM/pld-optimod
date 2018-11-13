@@ -162,7 +162,7 @@ public class Window extends JFrame {
      * Create the panel for selecting a delivery request.
      */
     public void displayDeliveryRequestSelectionPanel() {
-	this.rightPanel = new JPanel();
+	this.rightPanel.removeAll();
 	rightPanel.setPreferredSize(new Dimension(500, 900));
 	/* Create Content */
 	JLabel selectionText = new JLabel(TEXT_DELIVERY_SELECTION);
@@ -368,23 +368,6 @@ public class Window extends JFrame {
 	    }
 	}
     }
-
-    /**
-     * WindowHeader getter
-     * @return
-     */
-    public WindowHeader getHeader() {
-        return header;
-    }
-
-    /**
-     *  WindowHeader setter
-     * @param header
-     */
-    public void setHeader(WindowHeader header) {
-        this.header = header;
-    }
-    
     
 
 }

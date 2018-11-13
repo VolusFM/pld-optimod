@@ -191,4 +191,11 @@ public abstract class ModelInterface {
 	tourCalculator.initialize();
     }
     
+    /**
+     * Function calls to empty the loaded deliveries
+     */
+    public static void emptyLoadedDeliveries(){
+	tourCalculator.emptyLoadedDeliveries();
+    }
+    
 }

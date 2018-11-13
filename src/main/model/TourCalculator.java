@@ -951,4 +951,12 @@ public class TourCalculator {
 		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
     }
 
+    /**
+     * Function calls to empty the loaded deliveries
+     */
+    protected void emptyLoadedDeliveries(){
+	deliveries = new ArrayList<>();
+	depot = null;
+    }
+
 }

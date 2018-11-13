@@ -23,7 +23,7 @@ public class LoadedPlanState extends DefaultState {
 	XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
 	window.displayCalculateTourButtonPanel();
 	window.toggleDeliveryMenCountButtonVisiblity();
-
+	window.toggleReturnButtonVisibility();
 	controler.setCurrentState(controler.loadedDeliveriesState);
     }
 

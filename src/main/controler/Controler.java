@@ -158,8 +158,12 @@ public class Controler {
     /**
      * Return before any planning was calculate
      */
-    public void returnToLoadedDeliveriesState() {
-	currentState.returnToLoadedDeliveriesState(this, window);
+    public void returnToState() {
+	if(currentState.equals(planningState)){
+	    currentState.returnToState(this, window, loadedDeliveriesState);
+	} else if (currentState.equals(loadedDeliveriesState)){
+	    currentState.returnToState(this, window, loadedPlanState);
+	}
     }
 
     /**

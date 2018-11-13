@@ -38,12 +38,28 @@ public class LoadedDeliveriesState extends DefaultState {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
 	window.toggleDeliveryMenCountButtonVisiblity();
-	window.getHeader().toggleReturnButtonVisibility();
 	controler.setCurrentState(controler.planningState);
+    }
+    
+    /**
+     * Function calls to return to the specified state
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     * @param state is the state we have to return to.
+     */
+    @Override
+    public void returnToState(Controler controler, Window window, State returnState){
+	ModelInterface.emptyLoadedDeliveries();
+	window.displayPlanView();
+	window.displayDeliveryRequestSelectionPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
+	window.toggleReturnButtonVisibility();
+	controler.setCurrentState(returnState);
     }
 
     public String stateToString() {
 	return "loadedDeliveryState";
     }
 
+    
 }
