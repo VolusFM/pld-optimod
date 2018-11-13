@@ -1,0 +1,102 @@
+package test.model.cluster;
+
+import static org.junit.Assert.assertEquals;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import javafx.util.Pair;
+import main.model.Cluster;
+import main.model.Delivery;
+import main.model.Intersection;
+
+public class clusterTest {
+
+	private Cluster cluster;
+
+	@Before
+	public void setUp() {
+		Pair<Double, Double> centroid = new Pair<Double, Double>(0.0, 0.0);
+		cluster = new Cluster(centroid);
+	}
+
+	@Test
+	public void testAddDelivery() {
+		Intersection intersection = new Intersection(4, 2, 2);
+		Delivery toAdd = new Delivery(10, intersection);
+		cluster.addDelivery(toAdd);
+		assertEquals("Delivery wasnt correctly added", toAdd, cluster.getDeliveries().get(0));
+	}
+
+	@Test(expected = AssertionError.class)
+	public void testAddEmptyDelivery() {
+		cluster.addDelivery(null);
+	}
+
+	@Test
+	public void testPopDelivery() {
+		Intersection intersection = new Intersection(4, 2, 2);
+		Delivery toPop = new Delivery(10, intersection);
+		cluster.addDelivery(toPop);
+		assertEquals("Poped delivery isnt expected delivery", toPop, cluster.popDelivery(0));
+		assert (cluster.getDeliveries().size() == 0) : "cluster isnt empty after delivery pop ";
+	}
+
+	@Test(expected = AssertionError.class)
+	public void testPopDeliveryEmptyCluster() {
+		cluster.popDelivery(0);
+	}
+
+	@Test
+	public void testSortDeliveries() {
+		cluster.sortDeliveriesByEuclidianDistanceToCentroid();
+		Intersection intersection1 = new Intersection(4, 2, 2);
+		Intersection intersection2 = new Intersection(5, 2, 0);
+		Intersection intersection3 = new Intersection(6, 3, 3);
+		Delivery delivery1 = new Delivery(10, intersection1);
+		Delivery delivery2 = new Delivery(10, intersection2);
+		Delivery delivery3 = new Delivery(10, intersection3);
+		cluster.addDelivery(delivery1);
+		cluster.addDelivery(delivery2);
+		cluster.addDelivery(delivery3);
+		cluster.sortDeliveriesByEuclidianDistanceToCentroid();
+		List<Delivery> sortedDeliveries = new ArrayList<Delivery>();
+		sortedDeliveries.add(delivery3);
+		sortedDeliveries.add(delivery1);
+		sortedDeliveries.add(delivery2);
+		assertEquals("Sort algorithm failed", cluster.getDeliveries(), sortedDeliveries);
+	}
+	
+	@Test
+	public void testCalculateCoefficient() {
+		assert(cluster.calculateCoefficient() == 0) : "Empty cluster doesnt have coef = 0";
+		Intersection intersection1 = new Intersection(4, 2, 0);
+		Intersection intersection2 = new Intersection(5, 2, 0);
+		Intersection intersection3 = new Intersection(6, 0, 3);
+		Delivery delivery1 = new Delivery(10, intersection1);
+		Delivery delivery2 = new Delivery(10, intersection2);
+		Delivery delivery3 = new Delivery(10, intersection3);
+		cluster.addDelivery(delivery1);
+		cluster.addDelivery(delivery2);
+		cluster.addDelivery(delivery3);
+		assert(cluster.calculateCoefficient() == 7) : "cluster coefficient isnt egal to expected result";
+	}
+	
+	@Test
+	public void testReinitializeCLuster() {
+		Intersection intersection1 = new Intersection(4, 2, 0);
+		Intersection intersection2 = new Intersection(5, 2, 0);
+		Intersection intersection3 = new Intersection(6, 0, 3);
+		Delivery delivery1 = new Delivery(10, intersection1);
+		Delivery delivery2 = new Delivery(10, intersection2);
+		Delivery delivery3 = new Delivery(10, intersection3);
+		cluster.addDelivery(delivery1);
+		cluster.addDelivery(delivery2);
+		cluster.addDelivery(delivery3);
+		cluster.reinitializeClusters();
+		assert(cluster.getDeliveries().size() == 0): "Empty cluster isnt empty";
+	}
+}
