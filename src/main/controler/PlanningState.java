@@ -65,7 +65,8 @@ public class PlanningState extends DefaultState {
 	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
 	if (toRemove != null) {
 	    ModelInterface.removeDelivery(toRemove);
-	    window.redraw();
+		controler.getWindow().redraw();
+		controler.getWindow().redrawTable();
 	}
     }
 
