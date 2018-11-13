@@ -7,7 +7,9 @@ import main.controler.Controler;
 import main.model.Delivery;
 import main.model.ModelInterface;
 import main.model.TourCalculator;
+import main.model.TourFactory;
 
+// FIXME : use controler instead
 public class KeyListener extends KeyAdapter {
 
     private Controler controler;
@@ -21,8 +23,7 @@ public class KeyListener extends KeyAdapter {
 	if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
 	    if (delivery != null) {
-
-		TourCalculator.getInstance().removeDeliveryFromTour(delivery, ModelInterface.getTourPlanning().get(0));
+		controler.removeDelivery();
 		controler.getWindow().redraw();
 		controler.getWindow().redrawTable();
 	    }

@@ -92,7 +92,11 @@ public class PlanningState extends DefaultState {
 	Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
 	if (selectedDelivery != null) {
 	    Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
-	    window.listSectionsOfStep(step);
+	    if (!selectedDelivery.equals(ModelInterface.getDepot())) {
+		window.listSectionsOfStep(step);
+	    } else {
+		window.hideSectionsList();
+	    }
 	}
 
 	controler.setSelectedIntersection(closestIntersection);

@@ -483,6 +483,8 @@ public class TourCalculator {
 	// XXX : not futureproof yet, uses the steps hashmap
 	// XXX : remove tour argument and calculate it ?
 	/* Doesn't need any recalculation */
+	
+	System.out.println(tour.getDeliveryManId());
 
 	System.out.println("/********************/");
 	System.out.println("Steps before removal : " + tour.getSteps());
@@ -492,6 +494,7 @@ public class TourCalculator {
 	    return;
 	}
 
+	System.out.println("SIZE OF TOUR: " + tour.getSteps().size());
 	if (tour.getSteps().size() < 3) {
 	    System.out.println(("Cant remove last delivery !"));
 	    return;
