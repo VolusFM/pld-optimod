@@ -87,6 +87,7 @@ public class PlanningView extends JPanel {
 		cancelModifications  = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 		cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 		cancelModifications.addActionListener(buttonListener);
+		cancelModifications.setVisible(false);
 		/* Button Panel */ 
 		JPanel buttonRangePanel = new JPanel();
 		buttonRangePanel.setPreferredSize(new Dimension(600,30));
@@ -107,7 +108,7 @@ public class PlanningView extends JPanel {
 		buttonRangePanel.add(cancelModifications, displayConstraint);
 		/* Table Panel */
 		JPanel tablePanel = new JPanel();
-		tablePanel.add(planning);//new JScrollPane(planning));
+		tablePanel.add(new JScrollPane(planning));
 		/* Total Panel */
 		totalViewPanel = new JPanel();
 		totalViewPanel.setLayout(new GridBagLayout());

@@ -235,5 +235,13 @@ public class AddingDeliveryView extends JPanel {
 	    return -1;
 	}
     }
+    
+    protected Delivery getSelectedPrecedingDelivery() {
+	try {
+	    return (Delivery) precedingDeliveryBox.getSelectedItem();
+	} catch (Exception e) {
+	    return null;
+	}
+    }
 
 }
