@@ -100,8 +100,8 @@ public class Cluster {
      * 
      * @param centroid
      */
-    public void setIsBalenced(boolean isBalenced) {
-	this.isBalanced = isBalenced;
+    public void setIsBalanced(boolean isBalanced) {
+	this.isBalanced = isBalanced;
     }
 
     /**
