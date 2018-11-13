@@ -38,6 +38,7 @@ public class LoadedDeliveriesState extends DefaultState {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
 	window.toggleDeliveryMenCountButtonVisiblity();
+	window.getHeader().toggleReturnButtonVisibility();
 	controler.setCurrentState(controler.planningState);
     }
 

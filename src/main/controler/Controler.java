@@ -154,6 +154,14 @@ public class Controler {
 	    ExceptionModal.showErrorModal(e);
 	}
     }
+    
+    /**
+     * Return before any planning was calculate
+     */
+    public void returnToLoadedDeliveriesState() {
+	ModelInterface.emptyTourFactory();
+	currentState.returnToLoadedDeliveriesState(this, window);
+    }
 
     /**
      * XXX : what's the use of this ?
@@ -239,4 +247,5 @@ public class Controler {
     public Window getWindow() {
 	return window;
     }
+
 }

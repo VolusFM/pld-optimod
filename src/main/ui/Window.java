@@ -369,4 +369,22 @@ public class Window extends JFrame {
 	}
     }
 
+    /**
+     * WindowHeader getter
+     * @return
+     */
+    public WindowHeader getHeader() {
+        return header;
+    }
+
+    /**
+     *  WindowHeader setter
+     * @param header
+     */
+    public void setHeader(WindowHeader header) {
+        this.header = header;
+    }
+    
+    
+
 }

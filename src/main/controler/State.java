@@ -126,9 +126,16 @@ public interface State {
     public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
 
     /**
+     * Change currentState to loadedDeliveriesState
+     */
+    public void returnToLoadedDeliveriesState(Controler controler, Window window);
+    
+    /**
      * Get the name of the state for debug purposes.
      * 
      * @return String, the name of the state.
      */
     public String stateToString();
+
+    
 }

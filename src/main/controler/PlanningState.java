@@ -109,6 +109,15 @@ public class PlanningState extends DefaultState {
 
 	controler.setRightClickedIntersection(intersection);
     }
+    
+    @Override
+    public void returnToLoadedDeliveriesState(Controler controler, Window window){
+	window.displayPlanView();
+	window.displayCalculateTourButtonPanel();
+	window.getHeader().toggleReturnButtonVisibility();
+	window.getHeader().toggleDeliveryMenCountButtonVisibility();
+	controler.setCurrentState(controler.loadedDeliveriesState);
+    }
 
     public String stateToString() {
 	return "planningState";
