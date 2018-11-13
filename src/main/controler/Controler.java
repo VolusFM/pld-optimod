@@ -1,7 +1,11 @@
 package main.controler;
 
+
+import main.model.Delivery;
 import main.model.Intersection;
+import main.model.ModelInterface;
 import main.model.Section;
+import main.model.Tour;
 import main.ui.ExceptionModal;
 import main.ui.Window;
 
@@ -97,12 +101,21 @@ public class Controler {
 
     /**
      * Confirm new delivery addition.
+     * @param precedingDelivery 
+     * @param deliveryMenId 
+     * @param lon 
+     * @param lat 
+     * @param duration 
      */
-    public void confirmNewDelivery() {
+    public void confirmNewDelivery(int duration, double lat, double lon, int deliveryMenId, Delivery precedingDelivery) {
 	try {
-	    currentState.confirmNewDelivery(this, window);
+	    Intersection address = ModelInterface.findClosestIntersection(lat, lon);
+	    Delivery toAdd = new Delivery( duration, address);
+	    Tour deliveryManTour = ModelInterface.findTourContainingDelivery(precedingDelivery);
+	    currentState.confirmNewDelivery(this, window, toAdd, deliveryManTour, precedingDelivery);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
+	    throw e;
 	}
     }
 

@@ -6,8 +6,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.model.Delivery;
 import main.model.Intersection;
 import main.model.Section;
+import main.model.Tour;
 import main.ui.Window;
 import main.xml.XMLException;;
 
@@ -54,7 +56,7 @@ class DefaultState implements State {
     }
 
     @Override
-    public void confirmNewDelivery(Controler controler, Window window) {
+    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryMenTour, Delivery predeceding) {
     }
 
     @Override

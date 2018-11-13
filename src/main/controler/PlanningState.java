@@ -78,20 +78,26 @@ class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void addDelivery(Controler controler, Window window) {
-	// TODO : window.openNewDelivery()
-	// FIXME : get duration
-	// XXX do we need to change state ?
-	// XXX use with GUI
-	Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
-	Delivery precedingDelivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
-	if (precedingDelivery != null) {
-	    // FIXME : de-hardcode null and get corresonding tour
-	    TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, precedingDelivery, null);
-	    controler.getWindow().redraw();
-	    controler.getWindow().redrawTable();
-	}
-
-//	controler.setCurrentState(controler.addState);
+	//  XXX
+//<<<<<<< HEAD
+//	// TODO : window.openNewDelivery()
+//	// FIXME : get duration
+//	// XXX do we need to change state ?
+//	// XXX use with GUI
+//	Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
+//	Delivery precedingDelivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+//	if (precedingDelivery != null) {
+//	    // FIXME : de-hardcode null and get corresonding tour
+//	    TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, precedingDelivery, null);
+//	    controler.getWindow().redraw();
+//	    controler.getWindow().redrawTable();
+//	}
+//
+////	controler.setCurrentState(controler.addState);
+//=======
+	controler.getWindow().displayAddingDeliveryPanel();
+	controler.setCurrentState(controler.addState);
+//>>>>>>> ui
     }
 
     @Override

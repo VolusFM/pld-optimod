@@ -31,33 +31,6 @@ public abstract class ModelInterface {
     }
 
     /**
-     * Set a new plan in the interface.
-     * 
-     * @param p is the new plan to use.
-     */
-    public static void setPlan(Plan p) {
-	plan = p;
-    }
-
-    /**
-     * Set a new tour calculator in the interface.
-     * 
-     * @param tc is the new tour calculator to use.
-     */
-    public static void setTourCalculator(TourCalculator tc) {
-	tourCalculator = tc;
-    }
-
-    /**
-     * Set a new tour factory in the interface.
-     * 
-     * @param tf is the new tour factory to use.
-     */
-    public static void setTourFactory(TourFactory tf) {
-	tourFactory = tf;
-    }
-
-    /**
      * Set the delivery men count in the tour calculator.
      * 
      * @param count is the number of delivery men to use.
@@ -80,9 +53,8 @@ public abstract class ModelInterface {
      * 
      * @param toAdd is the delivery to add.
      */
-    public static void addDelivery(Delivery toAdd) {
-	setTourCalculator(TourCalculator.getInstance());
-	tourCalculator.addDelivery(toAdd);
+    public static void addDelivery(Delivery toAdd, Delivery precedingDelivery, Tour tour) {
+	tourCalculator.addDeliveryAfterDelivery(toAdd, precedingDelivery, tour);
     }
     
     public static void removeDelivery(Delivery toSuppress) {
@@ -98,6 +70,10 @@ public abstract class ModelInterface {
      */
     public static List<Tour> getTourPlanning() {
 	return tourFactory.getTourPlanning();
+    }
+    
+    public static Tour findTourContainingDelivery(Delivery delivery){
+	return tourFactory.findTourContainingDelivery(delivery);
     }
 
     /**

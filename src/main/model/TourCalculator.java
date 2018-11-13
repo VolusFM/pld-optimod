@@ -66,15 +66,6 @@ public class TourCalculator {
 	return instance;
     }
 
-    /**
-     * XXX see comment
-     * 
-     * @param d
-     */
-    public void addDelivery(Delivery d) {
-	// FIXME : see addDeliveryToTour
-	this.deliveries.add(d);
-    }
 
     /**
      * Setter for the depot for the tours.
@@ -950,6 +941,10 @@ public class TourCalculator {
     public double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
 	return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()), 2)
 		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
+    }
+
+    public void addDelivery(Delivery createDelivery) {
+	deliveries.add(createDelivery);
     }
 
 }

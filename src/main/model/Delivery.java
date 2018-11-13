@@ -66,8 +66,7 @@ public class Delivery {
 	if (hour == null) {
 	    return "(" + address.getLat() + ";" + address.getLon() + ")";
 	}
-		
-	
+
 	SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm");
 	dateFormat.setTimeZone(hour.getTimeZone());
 	return "(" + address.getLat() + ";" + address.getLon() + ") - " + dateFormat.format(hour.getTime());
