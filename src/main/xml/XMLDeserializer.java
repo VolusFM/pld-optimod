@@ -26,7 +26,7 @@ import main.model.TourCalculator;
  * @author lsterner
  *
  */
-public class XMLDeserializer {
+public abstract class XMLDeserializer {
 
     /**
      * Load a plan from an XML file.

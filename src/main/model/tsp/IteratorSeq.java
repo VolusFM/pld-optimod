@@ -18,7 +18,7 @@ public class IteratorSeq implements Iterator<Integer> {
      * @param currentNode
      */
     public IteratorSeq(Collection<Integer> unseenNodes, int currentNode) {
-	// FIXME why is sommetCrt here ?
+	// FIXME why is currentNode here ?
 	this.candidates = new Integer[unseenNodes.size()];
 	numberOfCandidates = 0;
 	for (Integer s : unseenNodes) {

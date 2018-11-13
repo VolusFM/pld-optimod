@@ -34,11 +34,12 @@ class AddDeliveryState extends DefaultState {
      */
     @Override
     public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryManTour, Delivery preceding) {
-//	TODO Léo : change addDelivery(toAdd, deliveryManTour, preceding)
 	ModelInterface.addDelivery(toAdd, preceding, deliveryManTour);
 
 	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
+	window.redraw();
+	window.redrawTable();
     }
 
     

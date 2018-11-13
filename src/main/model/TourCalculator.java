@@ -324,20 +324,6 @@ public class TourCalculator {
 	return costResult;
     }
 
-    /**
-     * Wrapper function around TSP resolution, delegate responsibility to TSP.
-     * Execute the TSP algorithm, extract the needed information to create the
-     * tours
-     */
-    @Deprecated
-    private void resolveTSP() {
-	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCount, costTSP, delay);
-	List<Step> solutionSteps = findStepsFromResult(TSPimplementation.getBestSolution());
-	if (deliveryMenCount == 1) {
-	    // do not bother recalculating, hardcoding is fine
-	    // TourFactory.createTour(1, solutionSteps, depot, deliveries);
-	}
-    }
 
     /**
      * 
@@ -409,36 +395,6 @@ public class TourCalculator {
 	    }
 	}
 	return null;
-    }
-
-    /**
-     * Creates the list of steps corresponding to the TSP solution
-     * 
-     * @param solution : the array of integers (which represents the
-     *            intersections in order, in the TSP solution)
-     * @return a List of Steps corresponding to the steps used by the TSP to
-     *         make a tour, including the step from the last delivery to the
-     *         depot
-     */
-    private List<Step> findStepsFromResult(Integer[] solution) {
-	List<Step> list = new ArrayList<Step>();
-	for (int i = 0; i < solution.length - 1; i++) {
-	    /* Convert ids used with TSP to ids used in Model */
-	    long idStart = solution[i] == 0 ? depot.getAddress().getId()
-		    : deliveries.get(solution[i] - 1).getAddress().getId();
-	    long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId()
-		    : deliveries.get(solution[i + 1] - 1).getAddress().getId();
-
-	    list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
-	}
-
-	/* Add latest step : last delivery -> depot */
-	long idStart = deliveries.get(solution[solution.length - 1] - 1).getAddress().getId();
-	long idEnd = depot.getAddress().getId();
-
-	list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
-
-	return list;
     }
 
     private List<Step> findStepsFromResultSubGraph(int index, Integer[] solution) {
@@ -938,7 +894,7 @@ public class TourCalculator {
 	return idDeliveryToIdCluster;
     }
 
-    public double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
+    private double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
 	return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()), 2)
 		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
     }

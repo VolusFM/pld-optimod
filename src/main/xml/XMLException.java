@@ -4,8 +4,8 @@
 package main.xml;
 
 /**
- * @author Pomeg
- *
+ * Class that represents an exception from the XML deserializer package
+ * 
  */
 public class XMLException extends Exception {
 
