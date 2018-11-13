@@ -30,7 +30,7 @@ public class Step {
 
     @Override
     public String toString() {
-	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId();
+	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
     }
 
     /**

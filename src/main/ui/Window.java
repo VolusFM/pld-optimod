@@ -327,6 +327,11 @@ public class Window extends JFrame {
 	add(southPanel, BorderLayout.SOUTH);
 	redraw();
     }
+    
+    public void hideSectionsList() {
+	southPanel.setVisible(false);
+    }
+
 
     public void forceFocusOnPlanView() {
 	planPanel.requestFocus();
@@ -335,6 +340,8 @@ public class Window extends JFrame {
     public void redrawTable() {
 	planningPanel.redrawTable();
     }
+    
+    
 
     /**
      * Function call when the window is initialize to set a more esthetic look
@@ -354,4 +361,5 @@ public class Window extends JFrame {
 	    }
 	}
     }
+
 }

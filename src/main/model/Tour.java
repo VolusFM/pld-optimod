@@ -112,7 +112,7 @@ public class Tour {
     /**
      * Getter for the delivery points.
      * 
-     * @return List, a list of all deliveries in the tour.
+     * @return List, a list of all deliveries in the tour, including the depot.
      */
     public List<Delivery> getDeliveryPoints() {
 	List<Delivery> deliveriesAndDepot = new ArrayList<>(deliveryPoints);
@@ -140,7 +140,7 @@ public class Tour {
 
     @Override
     public String toString() {
-	return "Tour [depot=" + depot + ", steps=" + steps + ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
+	return "Tour [depot=" + depot + /*", steps=" + steps +*/ ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
 		+ deliveryManId + "]";
     }
     

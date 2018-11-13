@@ -92,7 +92,7 @@ public class Intersection {
 
     @Override
     public String toString() {
-	String intersection = "section num " + id + ", lat = " + lat + ", long =" + lon;
+	String intersection = "intersection num " + id /*+ ", lat = " + lat + ", long =" + lon*/;
 	return intersection;
     }
 
