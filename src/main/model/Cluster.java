@@ -13,9 +13,9 @@ public class Cluster {
 	private boolean isBalanced;
 
 	/**
-	 * Create a cluster.
+	 * Create a unbalanced cluster.
 	 * 
-	 * @param deliveries
+	 * @param centroid : Latitude and Longitude of cluster's centroid
 	 */
 	public Cluster(Pair<Double, Double> centroid) {
 		this.centroid = centroid;
@@ -24,9 +24,9 @@ public class Cluster {
 	}
 
 	/**
-	 * add delivery
+	 * add a new delivery to cluster list
 	 * 
-	 * @param delivery
+	 * @param delivery : Delivery to add
 	 */
 	public void addDelivery(Delivery delivery) {
 		if (delivery == null) {
@@ -36,18 +36,21 @@ public class Cluster {
 	}
 
 	/**
-	 * removes the delivery at the specified index and returns it
-	 * 
-	 * @param index
-	 * @return
+	 * removes the delivery at the specified index and returns it. Throws an
+	 * assertion error if index is out of range
+	 * @param index : index of the delivery to pop
+	 * @return the delivery that has been popped.
 	 */
 	public Delivery popDelivery(int index) {
 		if ((index > deliveries.size()) || (deliveries.size() == 0)) {
 			throw new AssertionError("Delivery 's index to pop is out of range");
 		}
-			return this.deliveries.remove(index);
+		return this.deliveries.remove(index);
 	}
-
+/**
+ * Evaluate the quality of a clustering
+ * @return : a coefficient that reflect the quality of a clustering
+ */
 	public double calculateCoefficient() {
 		double coeff = 0;
 		for (Delivery delivery : deliveries) {
@@ -59,7 +62,7 @@ public class Cluster {
 	}
 
 	/**
-	 * empties deliveries
+	 * Reinitialize the delivery list
 	 */
 	public void reinitializeClusters() {
 		deliveries = new ArrayList<Delivery>();
@@ -68,7 +71,7 @@ public class Cluster {
 	/**
 	 * centroid getter
 	 * 
-	 * @return
+	 * @return cluster s centroid
 	 */
 	public Pair<Double, Double> getCentroid() {
 		return centroid;
@@ -77,7 +80,7 @@ public class Cluster {
 	/**
 	 * deliveries s getter
 	 * 
-	 * @return
+	 * @return cluster s delivery list
 	 */
 	public List<Delivery> getDeliveries() {
 		return deliveries;
@@ -86,7 +89,7 @@ public class Cluster {
 	/**
 	 * isBalanced s getter
 	 * 
-	 * @return
+	 * @return if the cluster is balanced
 	 */
 	public boolean isBalanced() {
 		return isBalanced;
@@ -95,7 +98,7 @@ public class Cluster {
 	/**
 	 * centroid s setter
 	 * 
-	 * @param centroid
+	 * @param centroid : new clusters centroid
 	 */
 	public void setCentroid(Pair<Double, Double> centroid) {
 		this.centroid = centroid;
@@ -104,14 +107,14 @@ public class Cluster {
 	/**
 	 * isBalanced s setter
 	 * 
-	 * @param centroid
+	 * @param isBalanced
 	 */
 	public void setIsBalanced(boolean isBalanced) {
 		this.isBalanced = isBalanced;
 	}
 
 	/**
-	 * sort deliveries in a decreasing order based on euclidian distance to centroid
+	 * sort deliveries in a decreasing order based on euclidean distance to centroid
 	 */
 	public void sortDeliveriesByEuclidianDistanceToCentroid() {
 		Collections.sort(deliveries, new Comparator<Delivery>() {
@@ -131,7 +134,11 @@ public class Cluster {
 		});
 
 	}
-
+/**
+ * Calculate the distance between a pair of coordinate and clusters centroid
+ * @param intersectionData : data's latitude and longitude
+ * @return : the distance between coordinate and centroid
+ */
 	private double calculateDistanceToCentroid(Pair<Double, Double> intersectionData) {
 		return Math.sqrt(Math.pow((intersectionData.getKey() - centroid.getKey()), 2)
 				+ Math.pow((intersectionData.getValue() - centroid.getValue()), 2));
@@ -139,7 +146,6 @@ public class Cluster {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		String cluster = "Centroid : x = " + centroid.getKey().toString() + " y =" + centroid.getValue().toString()
 				+ "\n\r";
 		for (Delivery delivery : deliveries) {
