@@ -44,20 +44,14 @@ public class ButtonListener implements ActionListener {
 	    controler.addDelivery();
 	    break;
 	case PlanningView.ACTION_SUPRESSING_DELIVERY_POINT:
-	    Intersection i = controler.getSelectedIntersection();
-	    Delivery toSuppress = ModelInterface.findCorrespondingDelivery(i);
 	    controler.removeDelivery();
 	    break;
 	case PlanningView.ACTION_CANCELLING_MODIFICATIONS:
 	    // TODO  : controleur.cancelModification() => Giving up functionality
 	    break;
 	case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY:
-	    int duration = controler.getWindow().planningPanel.addingPanel.getSelectedDuration();
-	    double lat = controler.getWindow().planningPanel.addingPanel.getSelectedLat();
-	    double lon = controler.getWindow().planningPanel.addingPanel.getSelectedLon();
-	    int deliveryMenId = controler.getWindow().planningPanel.addingPanel.getSelectedDeliveryMen();
-	    Delivery precedingDelivery = controler.getWindow().planningPanel.addingPanel.getSelectedPrecedingDelivery();
-	    controler.confirmNewDelivery(duration, lat, lon, deliveryMenId, precedingDelivery);
+
+	    controler.confirmNewDelivery();
 	case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY:
 	    controler.cancelNewDelivery();
 	    break;

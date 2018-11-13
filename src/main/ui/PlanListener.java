@@ -34,10 +34,10 @@ public class PlanListener extends MouseAdapter {
 	    /*
 	     * Write the coordinates information into the adding delivery form
 	     */
-	    if (controler.getWindow().planningPanel.addingPanel != null) {
-		controler.getWindow().planningPanel.addingPanel.latitudeField
+	    if (controler.getWindow().getPlanningPanel().getAddingPanel() != null) {
+		controler.getWindow().getPlanningPanel().getAddingPanel().latitudeField
 			.setText("" + closestIntersection.getLat());
-		controler.getWindow().planningPanel.addingPanel.longitudeField
+		controler.getWindow().getPlanningPanel().getAddingPanel().longitudeField
 			.setText("" + closestIntersection.getLon());
 	    }
 	}

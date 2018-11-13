@@ -205,7 +205,7 @@ public class AddingDeliveryView extends JPanel {
      * Functions used to get the values selected by the user on the form
      */
 
-    protected int getSelectedDeliveryMen() {
+    public int getSelectedDeliveryMen() {
 	try {
 	    return (Integer) deliveryMenBox.getSelectedItem();
 	} catch (NumberFormatException e) {
@@ -213,7 +213,7 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
-    protected int getSelectedDuration() {
+    public int getSelectedDuration() {
 	try {
 	    return Integer.valueOf(durationField.getText());
 	} catch (NumberFormatException e) {
@@ -221,7 +221,7 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
-    protected double getSelectedLat() {
+    public double getSelectedLat() {
 	try {
 	    return Double.valueOf(latitudeField.getText());
 	} catch (NumberFormatException e) {
@@ -229,7 +229,7 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
-    protected double getSelectedLon() {
+    public double getSelectedLon() {
 	try {
 	    return Double.valueOf(longitudeField.getText());
 	} catch (NumberFormatException e) {
@@ -237,7 +237,7 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
     
-    protected Delivery getSelectedPrecedingDelivery() {
+    public Delivery getSelectedPrecedingDelivery() {
 	try {
 	    return (Delivery) precedingDeliveryBox.getSelectedItem();
 	} catch (Exception e) {

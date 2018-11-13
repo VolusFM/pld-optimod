@@ -546,6 +546,11 @@ public class TourCalculator {
 	    predecessors = result.getValue();
 	    createSteps(predecessors, delivery.getAddress());
 	}
+	
+	result = map.Dijkstra(depot.getAddress());
+	predecessors = result.getValue();
+	createSteps(predecessors, depot.getAddress());
+
 
 	/*
 	 * We remove the step between the preceding Delivery and the delivery

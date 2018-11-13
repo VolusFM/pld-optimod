@@ -36,7 +36,7 @@ public class Window extends JFrame {
     private JPanel southPanel;
     private JPanel deliveryMenCountPanel;
     protected static PlanView planPanel;
-    protected static PlanningView planningPanel;
+    private static PlanningView planningPanel;
     protected static AddingDeliveryView addingPanel;
 
     /* Listeners */
@@ -101,11 +101,11 @@ public class Window extends JFrame {
 	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
 	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
 	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
-	planningPanel = new PlanningView(controler, this);
+	setPlanningPanel(new PlanningView(controler, this));
 	/* Panels */
 	JPanel planning = new JPanel();
 	planning.add(planningText, BorderLayout.NORTH);
-	planning.add(planningPanel, BorderLayout.CENTER);
+	planning.add(getPlanningPanel(), BorderLayout.CENTER);
 	/* Set content */
 	displayDeliveryMenCountPanel();
 	rightPanel.add(planning, BorderLayout.CENTER);
@@ -132,7 +132,7 @@ public class Window extends JFrame {
      * men, locations, hours and list of roads.
      */
     public void displayAddingDeliveryPanel() {
-	planningPanel.displayAddingDeliveryPanel();
+	getPlanningPanel().displayAddingDeliveryPanel();
     }    
 
     /**
@@ -228,7 +228,7 @@ public class Window extends JFrame {
      * Remove the panel use for creating a new delivery point
      */
     public void hideAddingDeliveryPanel() {
-	planningPanel.hideAddingDeliveryPanel();
+	getPlanningPanel().hideAddingDeliveryPanel();
     }
 
     /**
@@ -271,7 +271,7 @@ public class Window extends JFrame {
      * @param intersection the intersection to highlight
      */
     public void highlightSelectedIntersection(Intersection intersection) {
-	planningPanel.selectRow(intersection);
+	getPlanningPanel().selectRow(intersection);
 	planPanel.setHighlightedIntersection(intersection);
 	redraw();
     }
@@ -345,7 +345,7 @@ public class Window extends JFrame {
     }
 
     public void redrawTable() {
-	planningPanel.redrawTable();
+	getPlanningPanel().redrawTable();
     }
     
     
@@ -369,4 +369,15 @@ public class Window extends JFrame {
 	}
     }
 
+    public static PlanningView getPlanningPanel() {
+	return planningPanel;
+    }
+
+    public static void setPlanningPanel(PlanningView planningPanel) {
+	Window.planningPanel = planningPanel;
+    }
+    
+    
+    
+    
 }

@@ -15,7 +15,7 @@ public class ComboboxListener implements ItemListener {
     
     @Override
     public void itemStateChanged(ItemEvent e) {
-	controler.getWindow().planningPanel.addingPanel.updatePreviousDeliveryCombobox();
+	controler.getWindow().getPlanningPanel().getAddingPanel().updatePreviousDeliveryCombobox();
     }
 
 }

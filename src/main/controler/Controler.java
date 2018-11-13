@@ -1,11 +1,11 @@
 package main.controler;
 
-
 import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Tour;
+import main.model.TourFactory;
 import main.ui.ExceptionModal;
 import main.ui.Window;
 
@@ -101,17 +101,25 @@ public class Controler {
 
     /**
      * Confirm new delivery addition.
-     * @param precedingDelivery 
-     * @param deliveryMenId 
-     * @param lon 
-     * @param lat 
-     * @param duration 
+     * 
+     * @param precedingDelivery
+     * @param deliveryMenId
+     * @param lon
+     * @param lat
+     * @param duration
      */
-    public void confirmNewDelivery(int duration, double lat, double lon, int deliveryMenId, Delivery precedingDelivery) {
+    public void confirmNewDelivery() {
+	int duration = window.getPlanningPanel().getAddingPanel().getSelectedDuration();
+	double lat = window.getPlanningPanel().getAddingPanel().getSelectedLat();
+	double lon = window.getPlanningPanel().getAddingPanel().getSelectedLon();
+	int deliveryMenId = window.getPlanningPanel().getAddingPanel().getSelectedDeliveryMen();
+	System.out.println("DELIVERY MEN ID IS : " + deliveryMenId);
+	Delivery precedingDelivery = window.getPlanningPanel().getAddingPanel().getSelectedPrecedingDelivery();
+
 	try {
 	    Intersection address = ModelInterface.findClosestIntersection(lat, lon);
-	    Delivery toAdd = new Delivery( duration, address);
-	    Tour deliveryManTour = ModelInterface.findTourContainingDelivery(precedingDelivery);
+	    Delivery toAdd = new Delivery(duration, address);
+	    Tour deliveryManTour = TourFactory.getInstance().findTourFromDeliveryManId(deliveryMenId);
 	    currentState.confirmNewDelivery(this, window, toAdd, deliveryManTour, precedingDelivery);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
@@ -213,7 +221,7 @@ public class Controler {
      */
     public void setSelectedIntersection(Intersection selectedIntersection) {
 	this.selectedIntersection = selectedIntersection;
-	 window.highlightSelectedIntersection(selectedIntersection);
+	window.highlightSelectedIntersection(selectedIntersection);
 
     }
 
