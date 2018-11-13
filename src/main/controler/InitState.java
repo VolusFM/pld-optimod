@@ -16,7 +16,7 @@ import main.xml.XMLException;;
  * started.
  *
  */
-public class InitState extends DefaultState {
+class InitState extends DefaultState {
 
     /**
      * Load a plan's XML file.

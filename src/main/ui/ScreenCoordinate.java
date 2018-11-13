@@ -1,14 +1,5 @@
 package main.ui;
 
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-
-import javax.swing.ToolTipManager;
-
-import main.model.Intersection;
-import main.model.Section;
-
 /**
 	 * Wrapper class representing a tuple x/y, in the screen coordinate system
 	 * Screen coordinate are "normalized" (taking into account boundaries of map

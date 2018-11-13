@@ -1,10 +1,6 @@
 package main.controler;
 
-import com.sun.media.sound.ModelIdentifier;
-
-import main.model.Delivery;
 import main.model.Intersection;
-import main.model.ModelInterface;
 import main.model.Section;
 import main.ui.ExceptionModal;
 import main.ui.Window;
@@ -83,7 +79,7 @@ public class Controler {
 	    currentState.addDelivery(this, window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
-	    System.out.println(e + "controler adddelivery");
+	    throw e;
 	}
     }
 
@@ -204,6 +200,8 @@ public class Controler {
      */
     public void setSelectedIntersection(Intersection selectedIntersection) {
 	this.selectedIntersection = selectedIntersection;
+	 window.highlightSelectedIntersection(selectedIntersection);
+
     }
 
     /**

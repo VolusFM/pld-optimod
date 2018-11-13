@@ -15,7 +15,7 @@ import main.xml.XMLException;;
  * Default state is the most basic state and parent class of all other states.
  *
  */
-public class DefaultState implements State {
+class DefaultState implements State {
 
     @Override
     public void openPlan(Controler controler, Window window)

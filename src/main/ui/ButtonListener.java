@@ -3,8 +3,6 @@ package main.ui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import com.sun.media.sound.ModelIdentifier;
-
 import main.controler.Controler;
 import main.model.Delivery;
 import main.model.Intersection;

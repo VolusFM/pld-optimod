@@ -41,6 +41,7 @@ public class PlanningTable extends JTable {
     }
 
     private static class PlanningTableModel implements TableModel {
+	// FIXME debug : remove last field of
 	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "ID intersection" };
 
 	@Override
@@ -130,7 +131,6 @@ public class PlanningTable extends JTable {
 	private Delivery findDeliveryFromRowIndex(int rowIndex) {
 	    List<Tour> tours = ModelInterface.getTourPlanning();
 
-	    // XXX Let's make it dirty'n'easy
 	    int i = 0;
 	    for (Tour t : tours) {
 		for (Delivery d : t.getDeliveryPoints()) {

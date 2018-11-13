@@ -5,6 +5,7 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Step;
+import main.model.TourCalculator;
 import main.ui.InputDialogSelector;
 import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
@@ -13,7 +14,7 @@ import main.ui.Window;
  * PlanningState is the state in which a tour planning has been calculated.
  *
  */
-public class PlanningState extends DefaultState {
+class PlanningState extends DefaultState {
 
     // TODO : check if planning can be recalculated
     /**
@@ -65,8 +66,8 @@ public class PlanningState extends DefaultState {
 	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
 	if (toRemove != null) {
 	    ModelInterface.removeDelivery(toRemove);
-		controler.getWindow().redraw();
-		controler.getWindow().redrawTable();
+	    window.redraw();
+	    window.redrawTable();
 	}
     }
 
@@ -78,7 +79,19 @@ public class PlanningState extends DefaultState {
      */
     public void addDelivery(Controler controler, Window window) {
 	// TODO : window.openNewDelivery()
-	controler.setCurrentState(controler.addState);
+	// FIXME : get duration
+	// XXX do we need to change state ?
+	// XXX use with GUI
+	Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
+	Delivery precedingDelivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+	if (precedingDelivery != null) {
+	    // FIXME : de-hardcode null and get corresonding tour
+	    TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, precedingDelivery, null);
+	    controler.getWindow().redraw();
+	    controler.getWindow().redrawTable();
+	}
+
+//	controler.setCurrentState(controler.addState);
     }
 
     @Override
@@ -88,8 +101,6 @@ public class PlanningState extends DefaultState {
 
     @Override
     public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
-	window.highlightSelectedIntersection(closestIntersection);
-
 	Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
 	if (selectedDelivery != null) {
 	    Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
@@ -99,7 +110,6 @@ public class PlanningState extends DefaultState {
 		window.hideSectionsList();
 	    }
 	}
-
 	controler.setSelectedIntersection(closestIntersection);
     }
 

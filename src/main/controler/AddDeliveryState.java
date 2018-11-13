@@ -9,7 +9,7 @@ import main.ui.Window;
  * delivery to the planning.
  *
  */
-public class AddDeliveryState extends DefaultState {
+class AddDeliveryState extends DefaultState {
 
     /**
      * Cancel the new delivery and go back to planningState.

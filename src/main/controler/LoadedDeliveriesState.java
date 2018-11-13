@@ -10,7 +10,7 @@ import main.ui.Window;
  * have been loaded.
  *
  */
-public class LoadedDeliveriesState extends DefaultState {
+class LoadedDeliveriesState extends DefaultState {
 
     /**
      * Open parameters modal.

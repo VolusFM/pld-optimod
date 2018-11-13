@@ -15,7 +15,7 @@ import main.xml.XMLException;
  * State provides an interface for all classes representing a possible state of
  * the controler.
  */
-public interface State {
+interface State {
 
     /**
      * Open the plan.

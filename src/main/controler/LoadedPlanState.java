@@ -15,7 +15,7 @@ import main.xml.XMLException;
  * LoadedPlanState is the state in which only the plan has been loaded
  *
  */
-public class LoadedPlanState extends DefaultState {
+class LoadedPlanState extends DefaultState {
 
     public void openDeliveries(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException {

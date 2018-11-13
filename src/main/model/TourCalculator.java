@@ -2,7 +2,6 @@ package main.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -86,7 +85,6 @@ public class TourCalculator {
 	this.depot = depot;
     }
 
-
     /**
      * Setter for the map.
      * 
@@ -110,13 +108,14 @@ public class TourCalculator {
 	    this.deliveryMenCount = deliveryMenCount;
 	}
     }
-    
+
     /**
      * Getter for the delivery men count.
+     * 
      * @return int, the count of delivery men
      */
     public int getDeliveryMenCount() {
-        return deliveryMenCount;
+	return deliveryMenCount;
     }
 
     /**
@@ -480,10 +479,9 @@ public class TourCalculator {
      * @param tour
      */
     public void removeDeliveryFromTour(Delivery delivery, Tour tour) {
-	// XXX : not futureproof yet, uses the steps hashmap
 	// XXX : remove tour argument and calculate it ?
 	/* Doesn't need any recalculation */
-	
+
 	System.out.println(tour.getDeliveryManId());
 
 	System.out.println("/********************/");
@@ -544,7 +542,7 @@ public class TourCalculator {
      * @param newDelivery the new Delivery to add to the tour
      * @param precedingDelivery the Delivery which will precede the new one
      */
-    public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery) {
+    public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery, Tour tour) {
 	// XXX : not future proof either
 	/*
 	 * Some calculations required (Dijkstra for new steps), but no
@@ -562,7 +560,7 @@ public class TourCalculator {
 	deliveries.add(newDelivery);
 
 	/* We find the tour corresponding to the preceding Delivery */
-	Tour tour = TourFactory.getInstance().findTourContainingDelivery(precedingDelivery);
+//	Tour tour = TourFactory.getInstance().findTourContainingDelivery(precedingDelivery);
 
 	/* We add the newDelivery to the tour */
 	tour.addDeliveryAtIndex(newDelivery, tour.getDeliveryPoints().indexOf(precedingDelivery));
@@ -580,19 +578,21 @@ public class TourCalculator {
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result;
 	HashMap<Long, Long> predecessors;
 
-	// result = map.Dijkstra(precedingDelivery.getAddress());
-	// predecessors = result.getValue();
-	// createSteps(predecessors, precedingDelivery.getAddress());
-	//
-	// System.out.println("CREATED STEPS FOR : " +
-	// precedingDelivery.getAddress().getId());
-	//
-	// result = map.Dijkstra(newDelivery.getAddress());
-	// predecessors = result.getValue();
-	// createSteps(predecessors, newDelivery.getAddress());
-	//
-	// System.out.println("CREATED STEPS FOR : " +
-	// newDelivery.getAddress().getId());
+	/*
+	 * result = map.Dijkstra(precedingDelivery.getAddress()); predecessors =
+	 * result.getValue(); createSteps(predecessors,
+	 * precedingDelivery.getAddress());
+	 * 
+	 * System.out.println("CREATED STEPS FOR : " +
+	 * precedingDelivery.getAddress().getId());
+	 * 
+	 * result = map.Dijkstra(newDelivery.getAddress()); predecessors =
+	 * result.getValue(); createSteps(predecessors,
+	 * newDelivery.getAddress());
+	 * 
+	 * System.out.println("CREATED STEPS FOR : " +
+	 * newDelivery.getAddress().getId());
+	 */
 
 	for (Delivery delivery : deliveries) {
 	    result = map.Dijkstra(delivery.getAddress());
@@ -631,6 +631,7 @@ public class TourCalculator {
 		.get(new Pair<>(precedingDelivery.getAddress().getId(), newDelivery.getAddress().getId()));
 	Step stepFromNewDeliveryToItsNextDelivery = steps
 		.get(new Pair<>(newDelivery.getAddress().getId(), deliveryAfterNewDelivery.getAddress().getId()));
+	
 	tour.getSteps().add(indexOfStepAfterPrecedingDelivery, stepFromPrecedingDeliveryToNewDelivery);
 	tour.getSteps().add(indexOfStepAfterPrecedingDelivery + 1, stepFromNewDeliveryToItsNextDelivery);
 	// XXX : add a proper method in tour
@@ -789,7 +790,7 @@ public class TourCalculator {
      * @return
      */
     private int nearestDeliveryInClusters(Delivery toMove, List<Cluster> currentClusters, int currentClusterIndex,
-	    int remainingAdditionalDeliveries,HashMap<Integer, Integer> idDeliveryToIdCluster ) {
+	    int remainingAdditionalDeliveries, HashMap<Integer, Integer> idDeliveryToIdCluster) {
 	int minIndex = -1;
 	int evenDeliveryNumber = (int) (this.deliveries.size() / currentClusters.size());
 	double[] distanceToToMove = costTSP[deliveries.indexOf(toMove)];
@@ -846,8 +847,8 @@ public class TourCalculator {
 	    boolean hasEmptyCluster = hasEmptyCluster(currentClusters);
 	    if (!hasEmptyCluster) {
 		/* Re-balances clusterList */
-	    int currentClusterIndex = getBiggestUnbalanced(currentClusters);
-	    HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
+		int currentClusterIndex = getBiggestUnbalanced(currentClusters);
+		HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 		while (currentClusterIndex != -1) {
 		    int maxIntersectionNumber;
 		    /* Check if there can be an additional delivery */
@@ -865,7 +866,7 @@ public class TourCalculator {
 		     * move exceeding Deliveries to the cluster containing the
 		     * nearest intersection
 		     */
-    		    while ((nbExceedingDeliveries > 0)) {
+		    while ((nbExceedingDeliveries > 0)) {
 			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			int indexToMove = deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
@@ -911,16 +912,17 @@ public class TourCalculator {
     }
 
     private int getBiggestUnbalanced(List<Cluster> clusters) {
-    	int indexCluster = -1;
-    	int maxSize = 0;
-    	for (int index = 0; index < clusters.size();index++) {
-    		if(clusters.get(index).getDeliveries().size() > maxSize && !(clusters.get(index).isBalanced())) {
-    			maxSize = clusters.get(index).getDeliveries().size();
-    			indexCluster = index;
-    		}
-    	}
-    	return indexCluster;
+	int indexCluster = -1;
+	int maxSize = 0;
+	for (int index = 0; index < clusters.size(); index++) {
+	    if (clusters.get(index).getDeliveries().size() > maxSize && !(clusters.get(index).isBalanced())) {
+		maxSize = clusters.get(index).getDeliveries().size();
+		indexCluster = index;
+	    }
+	}
+	return indexCluster;
     }
+
     /**
      * construct a HashMap with delivery index as key and cluster index as
      * value.

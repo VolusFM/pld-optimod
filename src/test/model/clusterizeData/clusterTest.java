@@ -1,6 +1,6 @@
 package test.model.clusterizeData;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -8,11 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.model.Cluster;
-import main.model.Delivery;
-import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Plan;
-import main.model.Section;
 import main.model.TourCalculator;
 import main.xml.XMLDeserializer;
 
