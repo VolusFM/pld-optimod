@@ -77,7 +77,7 @@ public class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void addDelivery(Controler controler, Window window) {
-	// TODO : window.openNewDelivery()
+	controler.getWindow().displayAddingDeliveryPanel();
 	controler.setCurrentState(controler.addState);
     }
 

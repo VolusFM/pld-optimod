@@ -63,13 +63,13 @@ public class TestControlerState {
 	    } else {
 		System.out.println("test 7 FAILED controler state = " + controler.getCurrentState().stateToString());
 	    }
-	    // controler go back upon confirmation
-	    controler.confirmNewDelivery();
-	    if (planningStateTest(controler)) {
-		System.out.println("Test 8 PASSED");
-	    } else {
-		System.out.println("test 8 FAILED controler state = " + controler.getCurrentState().stateToString());
-	    }
+//	    // controler go back upon confirmation
+//	    controler.confirmNewDelivery();
+//	    if (planningStateTest(controler)) {
+//		System.out.println("Test 8 PASSED");
+//	    } else {
+//		System.out.println("test 8 FAILED controler state = " + controler.getCurrentState().stateToString());
+//	    }
 	    // Tests to check that unacessible state arent accessed
 	    // TODO : check if syntax is correct
 	    controler = new Controler();
@@ -92,12 +92,12 @@ public class TestControlerState {
 	    } else {
 		System.out.println("test 11 FAILED controler state = " + controler.getCurrentState().stateToString());
 	    }
-	    controler.confirmNewDelivery();
-	    if (initStateTest(controler)) {
-		System.out.println("Test 12 PASSED");
-	    } else {
-		System.out.println("test 12 FAILED controler state = " + controler.getCurrentState().stateToString());
-	    }
+//	    controler.confirmNewDelivery();
+//	    if (initStateTest(controler)) {
+//		System.out.println("Test 12 PASSED");
+//	    } else {
+//		System.out.println("test 12 FAILED controler state = " + controler.getCurrentState().stateToString());
+//	    }
 	    if (initStateTest(controler)) {
 		System.out.println("Test 13 PASSED");
 	    } else {
@@ -124,12 +124,12 @@ public class TestControlerState {
 	    } else {
 		System.out.println("test 16 FAILED controler state = " + controler.getCurrentState().stateToString());
 	    }
-	    controler.confirmNewDelivery();
-	    if (loadedPlanStateTest(controler)) {
-		System.out.println("Test 17 PASSED");
-	    } else {
-		System.out.println("test 17 FAILED controler state = " + controler.getCurrentState().stateToString());
-	    }
+//	    controler.confirmNewDelivery();
+//	    if (loadedPlanStateTest(controler)) {
+//		System.out.println("Test 17 PASSED");
+//	    } else {
+//		System.out.println("test 17 FAILED controler state = " + controler.getCurrentState().stateToString());
+//	    }
 	    if (loadedPlanStateTest(controler)) {
 		System.out.println("Test 18 PASSED");
 	    } else {

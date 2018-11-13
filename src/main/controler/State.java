@@ -6,8 +6,10 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import main.model.Delivery;
 import main.model.Intersection;
 import main.model.Section;
+import main.model.Tour;
 import main.ui.Window;
 import main.xml.XMLException;
 
@@ -90,8 +92,11 @@ public interface State {
      * 
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
+     * @param precedingDelivery 
+     * @param deliveryMenId 
+     * @param toAdd 
      */
-    public void confirmNewDelivery(Controler controler, Window window);
+    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryMenTour, Delivery precedingDelivery);
 
     /**
      * Handle a click near an Intersection.

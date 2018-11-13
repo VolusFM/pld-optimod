@@ -87,6 +87,7 @@ public class PlanningView extends JPanel {
 	  cancelModifications = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 	  cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 	  cancelModifications.addActionListener(buttonListener);
+	  cancelModifications.setVisible(false);
 	  /* Button Panel */
 	  JPanel buttonRangePanel = new JPanel();
 	  buttonRangePanel.setPreferredSize(new Dimension(600, 30));

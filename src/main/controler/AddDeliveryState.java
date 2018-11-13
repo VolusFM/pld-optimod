@@ -2,6 +2,7 @@ package main.controler;
 
 import main.model.Delivery;
 import main.model.ModelInterface;
+import main.model.Tour;
 import main.ui.Window;
 
 /**
@@ -17,7 +18,9 @@ public class AddDeliveryState extends DefaultState {
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
+    @Override
     public void cancelNewDelivery(Controler controler, Window window) {
+	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
     }
 
@@ -27,11 +30,11 @@ public class AddDeliveryState extends DefaultState {
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
-    public void confirmNewDelivery(Controler controler, Window window) {
-
-	Delivery toAdd = new Delivery(0, null);
-	// TODO: get actual info from window
-	ModelInterface.addDelivery(toAdd);
+    @Override
+    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryManTour, Delivery preceding) {
+//	TODO Léo : change addDelivery(toAdd, deliveryManTour, preceding)
+//	ModelInterface.addDelivery(toAdd);
+	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
     }
 

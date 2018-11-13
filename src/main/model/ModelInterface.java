@@ -99,6 +99,10 @@ public abstract class ModelInterface {
     public static List<Tour> getTourPlanning() {
 	return tourFactory.getTourPlanning();
     }
+    
+    public static Tour findTourContainingDelivery(Delivery delivery){
+	return tourFactory.findTourContainingDelivery(delivery);
+    }
 
     /**
      * Get the depot loaded in the model.
