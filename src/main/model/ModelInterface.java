@@ -184,4 +184,11 @@ public abstract class ModelInterface {
 	tourFactory.empty();
     }
     
+    /**
+     * Function calls to initialize
+     */
+    public static void initializeTourCalculator(){
+	tourCalculator.initialize();
+    }
+    
 }

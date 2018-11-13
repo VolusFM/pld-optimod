@@ -112,6 +112,8 @@ public class PlanningState extends DefaultState {
     
     @Override
     public void returnToLoadedDeliveriesState(Controler controler, Window window){
+	ModelInterface.emptyTourFactory();
+	ModelInterface.initializeTourCalculator();
 	window.displayPlanView();
 	window.displayCalculateTourButtonPanel();
 	window.getHeader().toggleReturnButtonVisibility();

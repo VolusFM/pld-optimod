@@ -187,8 +187,9 @@ public class TourCalculator {
      * Initialize the calculator before a calcul. Remove possible traces from
      * previous calculations.
      */
-    private void initialize() {
+    protected void initialize() {
 	TourFactory.getInstance().empty();
+	deliveriesForEachTour = new ArrayList<>();
 	costsTSPForEachTour = new ArrayList<>();
 	nodesCountForEachTour = new ArrayList<>();
 	delayForEachTour = new ArrayList<>();

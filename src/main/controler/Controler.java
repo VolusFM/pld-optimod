@@ -159,7 +159,6 @@ public class Controler {
      * Return before any planning was calculate
      */
     public void returnToLoadedDeliveriesState() {
-	ModelInterface.emptyTourFactory();
 	currentState.returnToLoadedDeliveriesState(this, window);
     }
 
