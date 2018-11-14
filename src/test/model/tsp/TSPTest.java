@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import main.model.Delivery;
 import main.model.Intersection;
+import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 import main.model.TourCalculator;
@@ -34,7 +35,7 @@ public class TSPTest {
 
     @Test
     public void solveAnotherTSP() {
-	Plan plan = new Plan();
+	Plan plan = ModelInterface.getPlan();
 	/* Creation intersections */
 	Intersection i1 = new Intersection(1, 5, 5);
 	Intersection i2 = new Intersection(2, 8, 8);
@@ -54,9 +55,9 @@ public class TSPTest {
 	i3.addOutcomingSection(s8);
 	i3.addOutcomingSection(s9);
 	/* Initialisation plan avec intersection */
-	plan.addIntersection(i1);
-	plan.addIntersection(i2);
-	plan.addIntersection(i3);
+	ModelInterface.addIntersection(i1);
+	ModelInterface.addIntersection(i2);
+	ModelInterface.addIntersection(i3);
 	/* create delivery */
 	Delivery d1 = new Delivery(5, i3);
 	Delivery d3 = new Delivery(15, i2);

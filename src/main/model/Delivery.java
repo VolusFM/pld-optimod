@@ -18,7 +18,8 @@ public class Delivery {
      * Create a new Delivery.
      * 
      * @param duration is the duration of the delivery.
-     * @param address  if the Intersection where the delivery is supposed to happen.
+     * @param address if the Intersection where the delivery is supposed to
+     *            happen.
      */
     public Delivery(int duration, Intersection address) {
 	if (duration < 0) {
@@ -47,21 +48,21 @@ public class Delivery {
     }
 
     /**
-     * Setter for the hour of the delivery.
-     * 
-     * @param hour is the hour to set for the delivery.
-     */
-    public void setHour(Calendar hour) {
-	this.hour = hour;
-    }
-
-    /**
      * Getter for the address of the delivery.
      * 
      * @return Intersection, the address of the delivery.
      */
     public Intersection getAddress() {
 	return address;
+    }
+
+    /**
+     * Setter for the hour of the delivery.
+     * 
+     * @param hour is the hour to set for the delivery.
+     */
+    public void setHour(Calendar hour) {
+	this.hour = hour;
     }
 
     @Override

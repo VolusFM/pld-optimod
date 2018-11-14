@@ -31,18 +31,13 @@ public class Step {
 		.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
     }
 
-    @Override
-    public String toString() {
-	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
-    }
-
     /**
      * Calculate the total length of a step.
      * 
      * @return Double, the total length (in meters) of all the sections in the
      *         step.
      */
-    public double calculateLength() {
+    protected double calculateLength() {
 	double sum = 0;
 	for (Section section : sections) {
 	    sum += section.getLength();
@@ -77,4 +72,8 @@ public class Step {
 	return endDelivery;
     }
 
+    @Override
+    public String toString() {
+	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
+    }
 }

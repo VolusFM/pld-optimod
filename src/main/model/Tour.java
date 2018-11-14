@@ -59,16 +59,13 @@ public class Tour {
      */
     public void calculateDeliveryHours() {
 	Calendar departureTime = (Calendar) depot.getHour().clone();
-
 	for (Step s : steps) {
 	    List<Section> sections = s.getSections();
 	    long lastIntersectionId = sections.get(sections.size() - 1).getEnd().getId();
 	    boolean foundDelivery = false;
-
 	    Iterator<Delivery> it = deliveryPoints.iterator();
 	    Delivery delivery = depot;
 	    // If we don't find the delivery, it's the depot
-
 	    while (!foundDelivery && it.hasNext()) {
 		Delivery d = it.next();
 
@@ -77,36 +74,16 @@ public class Tour {
 		    foundDelivery = true;
 		}
 	    }
-
 	    if (delivery.equals(depot)) {
-		// XXX : we don't update the depot, it messes stuff up if we
-		// recalculate durations
-		// means the depot will show its departure duration in the
-		// planning, which seems fine
 		continue;
 	    }
-
 	    long travelTimeInSeconds = Math.round(s.calculateLength() * 3600 / 15000);
-
 	    departureTime.add(Calendar.SECOND, (int) travelTimeInSeconds);
 	    Calendar deliveryTime = (Calendar) departureTime.clone();
 	    delivery.setHour(deliveryTime);
-
 	    departureTime.add(Calendar.SECOND, delivery.getDuration());
 	}
-
 	// FIXME : doesn't work well when tour ends the next day
-    }
-
-    /**
-     * TODO what is this ?
-     */
-    public void testCoherency() {
-	for (int i = 0; i < steps.size() - 2; i++) {
-	    if (!steps.get(i).getEndDelivery().equals(steps.get(i + 1).getStartDelivery())) {
-		throw new RuntimeException("Step is not coherent");
-	    }
-	}
     }
 
     /**
