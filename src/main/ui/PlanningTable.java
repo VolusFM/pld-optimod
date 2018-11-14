@@ -42,7 +42,7 @@ public class PlanningTable extends JTable {
 
     private static class PlanningTableModel implements TableModel {
 	// FIXME debug : remove last field of
-	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "ID intersection" };
+	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage"/*, "ID intersection"*/ };
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
