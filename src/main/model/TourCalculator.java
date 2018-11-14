@@ -41,8 +41,8 @@ public class TourCalculator {
     private List<int[]> delayForEachTour;
 
     /* Constants */
-    private static final int MAXKMEANS = 1000;
-    private static final double MAXDOUBLE = Double.MAX_VALUE;
+    private static final int K_MEANS_MAX = 1000;
+    private static final double MAX_VALUE = Double.MAX_VALUE;
 
     /**
      * Create the tour calculator.
@@ -603,7 +603,7 @@ public class TourCalculator {
 	int minIndex = -1;
 	int evenDeliveryNumber = this.deliveries.size() / currentClusters.size();
 	double[] distanceToToMove = this.costTSP[this.deliveries.indexOf(toMove)];
-	double minDistance = MAXDOUBLE;
+	double minDistance = MAX_VALUE;
 	for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
 	    int indexDelivery = indexCostTSP - 1;
 	    /*
@@ -646,9 +646,9 @@ public class TourCalculator {
 	}
 	// General case
 	List<Cluster> bestClusters = new ArrayList<Cluster>();
-	double minCoeff = MAXDOUBLE;
+	double minCoeff = MAX_VALUE;
 	// Selection of best cluster set on MAXKMEANS iterations
-	for (int i = 0; i < MAXKMEANS; i++) {
+	for (int i = 0; i < K_MEANS_MAX; i++) {
 	    List<Cluster> currentClusters = this.kMeans(clustersCount, this.deliveries, epsilon);
 	    int evenDeliveryNumber = this.deliveries.size() / clustersCount;
 	    // This represent how many clusters have one more delivery
@@ -817,7 +817,7 @@ public class TourCalculator {
     protected void setDepot(Delivery depot) {
 	this.depot = depot;
     }
-    
+
     /**
      * Setter for the map.
      * 

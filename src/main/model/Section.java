@@ -15,9 +15,9 @@ public class Section {
     /**
      * Create a Section.
      * 
-     * @param start is the start of the Section.
-     * @param end is the end of the Section.
-     * @param length is the length of the section.
+     * @param start      is the start of the Section.
+     * @param end        is the end of the Section.
+     * @param length     is the length of the section.
      * @param streetName is the name of the street the section corresponds to.
      */
     public Section(Intersection start, Intersection end, double length, String streetName) {

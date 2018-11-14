@@ -22,10 +22,10 @@ public class Tour {
     /**
      * Build a tour.
      * 
-     * @param depot is the depot from where to leave.
-     * @param steps are the steps between each delivery.
+     * @param depot          is the depot from where to leave.
+     * @param steps          are the steps between each delivery.
      * @param deliveryPoints are the addresses of all deliveries.
-     * @param deliveryManId is the id of the delivery man.
+     * @param deliveryManId  is the id of the delivery man.
      */
     public Tour(Delivery depot, List<Step> steps, List<Delivery> deliveryPoints, int deliveryManId) {
 	this.depot = depot;
@@ -39,7 +39,7 @@ public class Tour {
      * Add a delivery at a given index of the list.
      * 
      * @param delivery is the delivery to add.
-     * @param index is the index where to add the delivery in the list.
+     * @param index    is the index where to add the delivery in the list.
      */
     public void addDeliveryAtIndex(Delivery delivery, int index) {
 	this.deliveryPoints.add(index, delivery);
@@ -116,7 +116,7 @@ public class Tour {
 
     @Override
     public String toString() {
-	return "Tour [depot=" + this.depot + /*", steps=" + steps +*/ ", deliveryPoints=" + this.deliveryPoints + ", deliveryManId="
-		+ this.deliveryManId + "]";
+	return "Tour [depot=" + this.depot + /* ", steps=" + steps + */ ", deliveryPoints=" + this.deliveryPoints
+		+ ", deliveryManId=" + this.deliveryManId + "]";
     }
 }

@@ -19,7 +19,7 @@ public class Step {
      * Create a Step.
      * 
      * @param sections is the list of sections leading from one delivery to the
-     *            other.
+     *                     other.
      */
     public Step(List<Section> sections) {
 	if (sections.isEmpty()) {
@@ -34,8 +34,7 @@ public class Step {
     /**
      * Calculate the total length of a step.
      * 
-     * @return Double, the total length (in meters) of all the sections in the
-     *         step.
+     * @return Double, the total length (in meters) of all the sections in the step.
      */
     protected double calculateLength() {
 	double sum = 0;

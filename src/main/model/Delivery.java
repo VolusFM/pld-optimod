@@ -72,7 +72,8 @@ public class Delivery {
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm");
 	dateFormat.setTimeZone(this.hour.getTimeZone());
-	return "(" + this.address.getLat() + ";" + this.address.getLon() + ") - " + dateFormat.format(this.hour.getTime());
+	return "(" + this.address.getLat() + ";" + this.address.getLon() + ") - "
+		+ dateFormat.format(this.hour.getTime());
     }
 
     @Override
