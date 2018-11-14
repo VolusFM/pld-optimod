@@ -134,9 +134,14 @@ public abstract class ModelInterface {
 	long idIntersection = toAdd.getStart().getId();
 	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
     }
+    
+    public static void addDeliveryToTourCalculator(Delivery createDelivery){
+	tourCalculator.addDelivery(createDelivery);
+    }
 
     /**
      * calculate Dijkstra 's algorithm
+     * 
      * @param sourceIntersection, where Dijkstra start
      * @return
      */
@@ -146,6 +151,7 @@ public abstract class ModelInterface {
 
     /**
      * calculate kMeans
+     * 
      * @param clusterNb, number of cluster needed
      * @param deliveries, list of deliveries to clusterize
      * @param d, epsilon for kmMeans.
@@ -228,6 +234,24 @@ public abstract class ModelInterface {
      */
     public static void setDeliveryMenCount(int count) {
 	tourCalculator.setDeliveryMenCount(count);
+    }
+
+    /**
+     * Setter for the depot for the tours.
+     * 
+     * @param depot is the Delivery corresponding to the depot.
+     */
+    public static void setDepot(Delivery depot) {
+	tourCalculator.setDepot(depot);;
+    }
+
+    /**
+     * Setter for the map.
+     * 
+     * @param map is the plan for the deliveries.
+     */
+    public static void setMap(Plan map) {
+	tourCalculator.setMap(map);
     }
 
 }
