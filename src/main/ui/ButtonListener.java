@@ -44,7 +44,7 @@ public class ButtonListener implements ActionListener {
 	    controler.openParameters();
 	    break;
 	case Window.ACTION_CALCULATE_TOUR:
-	    controler.calculateTour();
+	    controler.calculatePlanning();
 	    break;
 	case WindowHeader.ACTION_RETURN:
 	    controler.returnToState();

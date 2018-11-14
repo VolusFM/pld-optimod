@@ -6,10 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.model.Delivery;
 import main.model.Intersection;
 import main.model.Section;
-import main.model.Tour;
 import main.ui.Window;
 import main.xml.XMLException;;
 
@@ -30,10 +28,6 @@ class DefaultState implements State {
     }
 
     @Override
-    public void openParameters(Controler controler, Window window) {
-    }
-
-    @Override
     public void calculatePlanning(Controler controler, Window window) {
     }
 
@@ -42,25 +36,26 @@ class DefaultState implements State {
     }
 
     @Override
-    public void cancelNewDelivery(Controler controler, Window window) {
+    public void confirmNewDelivery(Controler controler, Window window) {
     }
 
     @Override
-    public String stateToString() {
-	// TODO : remove after tests
-	System.out.println("Stuck in default state");
-	return null;
+    public void cancelNewDelivery(Controler controler, Window window) {
     }
 
     public void removeDelivery(Controler controler, Window window) {
     }
 
     @Override
-    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryMenTour, Delivery predeceding) {
+    public void openParameters(Controler controler, Window window) {
     }
 
     @Override
-    public void clickedNearIntersection(Controler controler, Window window, Intersection intersection) {
+    public void returnToState(Controler controler, Window window, State returnState) {
+    }
+
+    @Override
+    public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
     }
 
     @Override
@@ -68,11 +63,8 @@ class DefaultState implements State {
     }
 
     @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
-    }
-
-    @Override
-    public void returnToState(Controler controler, Window window, State returnState) {	
+    public String stateToString() {
+	return "defaultState";
     }
 
 }

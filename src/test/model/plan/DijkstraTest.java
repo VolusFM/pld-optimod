@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import javafx.util.Pair;
 import main.model.Intersection;
+import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 
@@ -16,7 +17,7 @@ public class DijkstraTest {
     
     @Before
     public void setUp() {
-	p = new Plan();
+	p = ModelInterface.getPlan();
     }
     
     @Test
@@ -26,11 +27,11 @@ public class DijkstraTest {
 	Intersection c = new Intersection(6, 10, 8);
 	Intersection d = new Intersection(7, 11, 8);
 	Intersection e = new Intersection(8, 12, 8);
-	p.addIntersection(a);
-	p.addIntersection(b);
-	p.addIntersection(c);
-	p.addIntersection(d);
-	p.addIntersection(e);
+	ModelInterface.addIntersection(a);
+	ModelInterface.addIntersection(b);
+	ModelInterface.addIntersection(c);
+	ModelInterface.addIntersection(d);
+	ModelInterface.addIntersection(e);
 	Section ab = new Section(a, b, 4, "canard");
 	Section ac = new Section(a, c, 3, "canard");
 	Section cd = new Section(c, d, 2, "canard");
@@ -38,14 +39,14 @@ public class DijkstraTest {
 	Section db = new Section(d, b, 1, "canard");
 	Section be = new Section(b, e, 8, "canard");
 	Section ca = new Section(c, a, 6, "canard");
-	p.addSection(ab);
-	p.addSection(ac);
-	p.addSection(cd);
-	p.addSection(dc);
-	p.addSection(db);
-	p.addSection(be);
-	p.addSection(ca);
-	Pair<HashMap<Long, Double>, HashMap<Long, Long>> results = p.Dijkstra(a);
+	ModelInterface.addSection(ab);
+	ModelInterface.addSection(ac);
+	ModelInterface.addSection(cd);
+	ModelInterface.addSection(dc);
+	ModelInterface.addSection(db);
+	ModelInterface.addSection(be);
+	ModelInterface.addSection(ca);
+	Pair<HashMap<Long, Double>, HashMap<Long, Long>> results = ModelInterface.Dijkstra(a);
 
 	HashMap<Long, Double> distances = results.getKey();
 	HashMap<Long, Long> predecessors = results.getValue();
