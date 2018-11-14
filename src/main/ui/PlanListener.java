@@ -7,13 +7,22 @@ import main.controler.Controler;
 import main.model.Intersection;
 import main.model.ModelInterface;
 
+/**
+ * Listener catching the events that appends on the PlanView.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class PlanListener extends MouseAdapter {
 
     private static int LEFT_CLICK = MouseEvent.BUTTON1;
-    private static int RIGHT_CLICK = MouseEvent.BUTTON3;
 
     Controler controler;
 
+    /**
+     * Create a plan listener for the specified controller.
+     * 
+     * @param controler the specified controller.
+     */
     public PlanListener(Controler controler) {
 	this.controler = controler;
     }
@@ -23,10 +32,8 @@ public class PlanListener extends MouseAdapter {
 	ScreenCoordinate screenCoordinate = new ScreenCoordinate((int) e.getPoint().getX(), (int) e.getPoint().getY());
 	GeographicCoordinate geographicCoordinate = ((PlanView) e.getSource())
 		.convertToGeographicCoordinate(screenCoordinate);
-
 	Intersection closestIntersection = ModelInterface.findClosestIntersection(geographicCoordinate.latitude,
 		geographicCoordinate.longitude);
-
 	if (e.getButton() == LEFT_CLICK) {
 	    controler.clickedNearIntersection(closestIntersection);
 	    controler.clickedNearSection(
@@ -34,19 +41,11 @@ public class PlanListener extends MouseAdapter {
 	    /*
 	     * Write the coordinates information into the adding delivery form
 	     */
-	    if (controler.getWindow().getPlanningPanel().getAddingPanel() != null) {
-		controler.getWindow().getPlanningPanel().getAddingPanel().latitudeField
-			.setText("" + closestIntersection.getLat());
-		controler.getWindow().getPlanningPanel().getAddingPanel().longitudeField
-			.setText("" + closestIntersection.getLon());
+	    if (Window.getPlanningPanel().getAddingPanel() != null) {
+		Window.getPlanningPanel().getAddingPanel().latitudeField.setText("" + closestIntersection.getLat());
+		Window.getPlanningPanel().getAddingPanel().longitudeField.setText("" + closestIntersection.getLon());
 	    }
 	}
-
-	if (e.getButton() == RIGHT_CLICK) {
-	    controler.rightClickedNearIntersection(closestIntersection);
-	}
-
-	// XXX
 	controler.getWindow().forceFocusOnPlanView();
     }
 }
