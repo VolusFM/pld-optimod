@@ -22,15 +22,13 @@ public class Step {
      *            other.
      */
     public Step(List<Section> sections) {
+	if (sections.isEmpty()) {
+	    throw new IllegalArgumentException("Aucun chemin ne mène à cet endroit.");
+	}
 	this.sections = new ArrayList<>(sections);
 	startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
 	endDelivery = TourCalculator.getInstance()
 		.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
-    }
-
-    @Override
-    public String toString() {
-	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
     }
 
     /**
@@ -39,7 +37,7 @@ public class Step {
      * @return Double, the total length (in meters) of all the sections in the
      *         step.
      */
-    public double calculateLength() {
+    protected double calculateLength() {
 	double sum = 0;
 	for (Section section : sections) {
 	    sum += section.getLength();
@@ -74,4 +72,8 @@ public class Step {
 	return endDelivery;
     }
 
+    @Override
+    public String toString() {
+	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
+    }
 }

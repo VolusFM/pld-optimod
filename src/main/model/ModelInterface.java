@@ -1,6 +1,9 @@
 package main.model;
 
+import java.util.HashMap;
 import java.util.List;
+
+import javafx.util.Pair;
 
 /**
  * ModelInterface provides all methods other packages need to access the model
@@ -13,100 +16,32 @@ public abstract class ModelInterface {
     private static TourFactory tourFactory = TourFactory.getInstance();
 
     /**
-     * Getter for the plan.
-     * 
-     * @return Plan, the plan.
-     */
-    public static Plan getPlan() {
-	return plan;
-    }
-
-    /**
-     * Getter for the tour calculator.
-     * 
-     * @return TourCalculator, the tour calculator.
-     */
-    public static TourCalculator getTourCalculator() {
-	return tourCalculator;
-    }
-
-    /**
-     * Set a new plan in the interface.
-     * 
-     * @param p is the new plan to use.
-     */
-    public static void setPlan(Plan p) {
-	plan = p;
-    }
-
-    /**
-     * Set a new tour calculator in the interface.
-     * 
-     * @param tc is the new tour calculator to use.
-     */
-    public static void setTourCalculator(TourCalculator tc) {
-	tourCalculator = tc;
-    }
-
-    /**
-     * Set a new tour factory in the interface.
-     * 
-     * @param tf is the new tour factory to use.
-     */
-    public static void setTourFactory(TourFactory tf) {
-	tourFactory = tf;
-    }
-
-    /**
-     * Set the delivery men count in the tour calculator.
-     * 
-     * @param count is the number of delivery men to use.
-     */
-    public static void setDeliveryMenCount(int count) {
-	tourCalculator.setDeliveryMenCount(count);
-    }
-
-    /**
-     * Get all the deliveries loaded in the model.
-     * 
-     * @return List, a list of deliveries.
-     */
-    public static List<Delivery> getDeliveries() {
-	return tourCalculator.getDeliveries();
-    }
-
-    /**
      * Add a delivery to the tour calculator.
      * 
      * @param toAdd is the delivery to add.
      */
-    public static void addDelivery(Delivery toAdd) {
-	setTourCalculator(TourCalculator.getInstance());
-	tourCalculator.addDelivery(toAdd);
+    public static void addDelivery(Delivery toAdd, Delivery precedingDelivery, Tour tour) {
+	tourCalculator.addDeliveryAfterDelivery(toAdd, precedingDelivery, tour);
     }
-    
+
+    /**
+     * Remove a delivery from tour calculator.
+     * 
+     * @param toSuppress is the delivery to suppress.
+     */
     public static void removeDelivery(Delivery toSuppress) {
 	Tour t = tourFactory.findTourContainingDelivery(toSuppress);
-	System.out.println(t);
 	tourCalculator.removeDeliveryFromTour(toSuppress, t);
     }
 
     /**
-     * Get the tour planning.
+     * Find the tour containing the delivery.
      * 
-     * @return List, a list of all the tours calculated by the calculator.
+     * @param delivery is the delivery for which we search.
+     * @return Tour, the Tour containing delivery.
      */
-    public static List<Tour> getTourPlanning() {
-	return tourFactory.getTourPlanning();
-    }
-
-    /**
-     * Get the depot loaded in the model.
-     * 
-     * @return Delivery, the depot loaded in the model.
-     */
-    public static Delivery getDepot() {
-	return tourCalculator.getDepot();
+    public static Tour findTourContainingDelivery(Delivery delivery) {
+	return tourFactory.findTourContainingDelivery(delivery);
     }
 
     /**
@@ -152,16 +87,147 @@ public abstract class ModelInterface {
 	return tourCalculator.findCorrespondingDelivery(intersection);
     }
 
+    /**
+     * Creates the graph of tourCalculator to be used with TSP algorithm. It
+     * uses the plan and all the deliveries, as well as the depot.
+     */
     public static void createGraph() {
 	tourCalculator.createGraph();
     }
-    
+
+    /**
+     * Function calls to initialize.
+     */
+    public static void initializeTourCalculator() {
+	tourCalculator.initialize();
+    }
+
+    /**
+     * Function calls to empty the loaded deliveries.
+     */
+    public static void emptyLoadedDeliveries() {
+	tourCalculator.emptyLoadedDeliveries();
+    }
+
+    /**
+     * Function calls to empty the tour factory.
+     */
+    public static void emptyTourFactory() {
+	tourFactory.empty();
+    }
+
+    /**
+     * Add an intersection to the plan.
+     * 
+     * @param toAdd is the intersection to add.
+     */
+    public static void addIntersection(Intersection toAdd) {
+	plan.getGraph().put(toAdd.getId(), toAdd);
+    }
+
+    /**
+     * Add a section to the plan.
+     * 
+     * @param toAdd is the section to add.
+     */
+    public static void addSection(Section toAdd) {
+	long idIntersection = toAdd.getStart().getId();
+	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
+    }
+
+    /**
+     * calculate Dijkstra 's algorithm
+     * @param sourceIntersection, where Dijkstra start
+     * @return
+     */
+    public static Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
+	return plan.Dijkstra(sourceIntersection);
+    }
+
+    /**
+     * calculate kMeans
+     * @param clusterNb, number of cluster needed
+     * @param deliveries, list of deliveries to clusterize
+     * @param d, epsilon for kmMeans.
+     * @return
+     */
+    public static List<Cluster> kMeans(int clusterNb, List<Delivery> deliveries, double d) {
+	// TODO Auto-generated method stub
+	return tourCalculator.kMeans(clusterNb, deliveries, d);
+    }
+
+    /**
+     * Getter for the plan.
+     * 
+     * @return Plan, the plan.
+     */
+    public static Plan getPlan() {
+	return plan;
+    }
+
+    /**
+     * Getter for the tour calculator.
+     * 
+     * @return TourCalculator, the tour calculator.
+     */
+    public static TourCalculator getTourCalculator() {
+	return tourCalculator;
+    }
+
+    /**
+     * Get all the deliveries loaded in the model.
+     * 
+     * @return List, a list of deliveries.
+     */
+    public static List<Delivery> getDeliveries() {
+	return tourCalculator.getDeliveries();
+    }
+
+    /**
+     * Get the tour planning.
+     * 
+     * @return List, a list of all the tours calculated by the calculator.
+     */
+    public static List<Tour> getTourPlanning() {
+	return tourFactory.getTourPlanning();
+    }
+
+    /**
+     * Get the depot loaded in the model.
+     * 
+     * @return Delivery, the depot loaded in the model.
+     */
+    public static Delivery getDepot() {
+	return tourCalculator.getDepot();
+    }
+
     /**
      * Getter for the delivery men count.
+     * 
      * @return int, the count of delivery men
      */
-    public static int getDeliveryMenCount(){
+    public static int getDeliveryMenCount() {
 	return tourCalculator.getDeliveryMenCount();
     }
-    
+
+    /**
+     * Find the deliveries for a specified delivery man id
+     * 
+     * @param deliveryManId the specified delivery man id
+     * @return List<Delivery>, the deliveries's List of a delivery man with an
+     *         id == deliveryManId.
+     */
+    public static List<Delivery> getDeliveriesById(int deliveryManId) {
+	return tourFactory.getDeliveriesById(deliveryManId);
+    }
+
+    /**
+     * Set the delivery men count in the tour calculator.
+     * 
+     * @param count is the number of delivery men to use.
+     */
+    public static void setDeliveryMenCount(int count) {
+	tourCalculator.setDeliveryMenCount(count);
+    }
+
 }

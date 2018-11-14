@@ -1,7 +1,11 @@
 package main.controler;
 
 import main.model.Delivery;
+import main.model.Intersection;
 import main.model.ModelInterface;
+import main.model.Step;
+import main.model.Tour;
+import main.model.TourFactory;
 import main.ui.Window;
 
 /**
@@ -9,32 +13,52 @@ import main.ui.Window;
  * delivery to the planning.
  *
  */
-public class AddDeliveryState extends DefaultState {
+class AddDeliveryState extends DefaultState {
 
-    /**
-     * Cancel the new delivery and go back to planningState.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void cancelNewDelivery(Controler controler, Window window) {
+	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
     }
 
-    /**
-     * Confirms the delivery's addition.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void confirmNewDelivery(Controler controler, Window window) {
 
-	Delivery toAdd = new Delivery(0, null);
-	// TODO: get actual info from window
-	ModelInterface.addDelivery(toAdd);
+	int duration = Window.getPlanningPanel().getAddingPanel().getSelectedDuration();
+	double lat = Window.getPlanningPanel().getAddingPanel().getSelectedLat();
+	double lon = Window.getPlanningPanel().getAddingPanel().getSelectedLon();
+	int deliveryMenId = Window.getPlanningPanel().getAddingPanel().getSelectedDeliveryMen();
+	Delivery preceding = Window.getPlanningPanel().getAddingPanel().getSelectedPrecedingDelivery();
+	Intersection address = ModelInterface.findClosestIntersection(lat, lon);
+	Delivery toAdd = new Delivery(duration, address);
+	Tour deliveryManTour = TourFactory.getInstance().findTourFromDeliveryManId(deliveryMenId);
+	ModelInterface.addDelivery(toAdd, preceding, deliveryManTour);
+
+	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
+	window.redraw();
+	window.redrawTable();
     }
 
+    @Override
+    public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
+	Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
+	if (selectedDelivery != null) {
+	    Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
+	    if (!selectedDelivery.equals(ModelInterface.getDepot())) {
+		window.listSectionsOfStep(step);
+	    } else {
+		window.hideSectionsList();
+	    }
+	}
+	controler.setSelectedIntersection(closestIntersection);
+    }
+
+    /**
+     * Get the name of the state for debug purposes.
+     * 
+     * @return String, the name of the state.
+     */
     public String stateToString() {
 	return "addDeliveryState";
     }

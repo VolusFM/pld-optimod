@@ -15,7 +15,7 @@ import main.xml.XMLException;;
  * Default state is the most basic state and parent class of all other states.
  *
  */
-public class DefaultState implements State {
+class DefaultState implements State {
 
     @Override
     public void openPlan(Controler controler, Window window)
@@ -28,10 +28,6 @@ public class DefaultState implements State {
     }
 
     @Override
-    public void openParameters(Controler controler, Window window) {
-    }
-
-    @Override
     public void calculatePlanning(Controler controler, Window window) {
     }
 
@@ -40,25 +36,26 @@ public class DefaultState implements State {
     }
 
     @Override
-    public void cancelNewDelivery(Controler controler, Window window) {
+    public void confirmNewDelivery(Controler controler, Window window) {
     }
 
     @Override
-    public String stateToString() {
-	// TODO : remove after tests
-	System.out.println("Stuck in default state");
-	return null;
+    public void cancelNewDelivery(Controler controler, Window window) {
     }
 
     public void removeDelivery(Controler controler, Window window) {
     }
 
     @Override
-    public void confirmNewDelivery(Controler controler, Window window) {
+    public void openParameters(Controler controler, Window window) {
     }
 
     @Override
-    public void clickedNearIntersection(Controler controler, Window window, Intersection intersection) {
+    public void returnToState(Controler controler, Window window, State returnState) {	
+    }
+
+    @Override
+    public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
     }
 
     @Override
@@ -66,7 +63,8 @@ public class DefaultState implements State {
     }
 
     @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
+    public String stateToString() {
+	return "defaultState";
     }
 
 }

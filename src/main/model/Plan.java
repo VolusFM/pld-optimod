@@ -30,7 +30,7 @@ public class Plan {
      * 
      * @param toAdd is the intersection to add.
      */
-    public void addIntersection(Intersection toAdd) {
+    protected void addIntersection(Intersection toAdd) {
 	graph.put(toAdd.getId(), toAdd);
     }
 
@@ -39,28 +39,9 @@ public class Plan {
      * 
      * @param toAdd is the section to add.
      */
-    public void addSection(Section toAdd) {
+    protected void addSection(Section toAdd) {
 	long idIntersection = toAdd.getStart().getId();
 	graph.get(idIntersection).addOutcomingSection(toAdd);
-    }
-
-    /**
-     * Retrieve an Intersection using its id.
-     * 
-     * @param id is the id of the Intersection we are looking for.
-     * @return Intersection, the Intersection mapped by id in graph.
-     */
-    public Intersection getIntersectionById(long id) {
-	return graph.get(id);
-    }
-
-    /**
-     * Getter for the graph.
-     * 
-     * @return HashMap<Long, Intersection>, the graph of the plan.
-     */
-    public HashMap<Long, Intersection> getGraph() {
-	return graph;
     }
 
     /**
@@ -73,7 +54,7 @@ public class Plan {
      * @return a pair with as the first member distances, and as the second
      *         member predecessors.
      */
-    public Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
+    protected Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
 	List<Long> settledId = new ArrayList<>();
 	List<Long> unSettledId = new ArrayList<>();
 
@@ -87,10 +68,8 @@ public class Plan {
 	    distances.put(id, HIGH);
 	    predecessors.put(id, sourceIntersection.getId());
 	}
-
 	unSettledId.add(sourceIntersection.getId());
 	distances.put(sourceIntersection.getId(), 0.);
-
 	while (!unSettledId.isEmpty()) {
 	    long idEvaluationIntersectionId = findIntersectionWithLowestDistance(distances, unSettledId);
 	    unSettledId.remove(unSettledId.indexOf(idEvaluationIntersectionId));
@@ -109,9 +88,7 @@ public class Plan {
 		}
 	    }
 	}
-
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = new Pair<>(distances, predecessors);
-
 	return result;
     }
 
@@ -179,13 +156,10 @@ public class Plan {
 	double currentDistance;
 	Section closest;
 	Section current;
-
 	Iterator<Section> sectionsIterator = listAllSections().iterator();
 	closest = sectionsIterator.next();
-
 	Intersection start;
 	Intersection end;
-
 	start = getIntersectionById(closest.getStart().getId());
 	end = getIntersectionById(closest.getEnd().getId());
 	minDistance = distanceBetweenLine(reference, new GeographicCoordinate(start.getLat(), start.getLon()),
@@ -195,15 +169,12 @@ public class Plan {
 	    current = sectionsIterator.next();
 	    start = getIntersectionById(current.getStart().getId());
 	    end = getIntersectionById(current.getEnd().getId());
-
 	    currentDistance = distanceBetweenLine(reference, new GeographicCoordinate(start.getLat(), start.getLon()),
 		    new GeographicCoordinate(end.getLat(), end.getLon()));
-
 	    if (currentDistance < minDistance) {
 		minDistance = currentDistance;
 		closest = current;
 	    }
-
 	}
 	return closest;
     }
@@ -247,5 +218,24 @@ public class Plan {
 	    sections.addAll(intersection.getOutcomingSections());
 	}
 	return sections;
+    }
+
+    /**
+     * Retrieve an Intersection using its id.
+     * 
+     * @param id is the id of the Intersection we are looking for.
+     * @return Intersection, the Intersection mapped by id in graph.
+     */
+    public Intersection getIntersectionById(long id) {
+	return graph.get(id);
+    }
+
+    /**
+     * Getter for the graph.
+     * 
+     * @return HashMap<Long, Intersection>, the graph of the plan.
+     */
+    public HashMap<Long, Intersection> getGraph() {
+	return graph;
     }
 }

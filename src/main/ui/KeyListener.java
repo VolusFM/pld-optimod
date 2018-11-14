@@ -6,8 +6,6 @@ import java.awt.event.KeyEvent;
 import main.controler.Controler;
 import main.model.Delivery;
 import main.model.ModelInterface;
-import main.model.TourCalculator;
-import main.model.TourFactory;
 
 // FIXME : use controler instead
 public class KeyListener extends KeyAdapter {
@@ -24,19 +22,13 @@ public class KeyListener extends KeyAdapter {
 	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
 	    if (delivery != null) {
 		controler.removeDelivery();
-		controler.getWindow().redraw();
-		controler.getWindow().redrawTable();
 	    }
 	}
 
 	if (e.getKeyCode() == KeyEvent.VK_INSERT) {
 	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
 	    if (delivery != null) {
-
-		Delivery newDelivery = new Delivery(0, controler.getRightClickedIntersection());
-		TourCalculator.getInstance().addDeliveryAfterDelivery(newDelivery, delivery);
-		controler.getWindow().redraw();
-		controler.getWindow().redrawTable();
+		controler.addDelivery();
 	    }
 	}
     }

@@ -6,14 +6,13 @@ import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Step;
 import main.ui.InputDialogSelector;
-import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
 
 /**
  * PlanningState is the state in which a tour planning has been calculated.
  *
  */
-public class PlanningState extends DefaultState {
+class PlanningState extends DefaultState {
 
     // TODO : check if planning can be recalculated
     /**
@@ -34,12 +33,8 @@ public class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
-	try {
-	    ModelInterface.setDeliveryMenCount(InputDialogSelector
-		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
-	} catch (SelectionCancelledException e) {
-	    System.out.println("Selection was cancelled, ignoring...");
-	}
+	ModelInterface.setDeliveryMenCount(InputDialogSelector
+		.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
     }
 
     /**
@@ -66,6 +61,7 @@ public class PlanningState extends DefaultState {
 	if (toRemove != null) {
 	    ModelInterface.removeDelivery(toRemove);
 	    window.redraw();
+	    window.redrawTable();
 	}
     }
 
@@ -76,7 +72,7 @@ public class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void addDelivery(Controler controler, Window window) {
-	// TODO : window.openNewDelivery()
+	window.displayAddingDeliveryPanel();
 	controler.setCurrentState(controler.addState);
     }
 
@@ -87,8 +83,6 @@ public class PlanningState extends DefaultState {
 
     @Override
     public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
-	window.highlightSelectedIntersection(closestIntersection);
-
 	Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
 	if (selectedDelivery != null) {
 	    Step step = ModelInterface.findStepBeforeDelivery(selectedDelivery);
@@ -98,15 +92,17 @@ public class PlanningState extends DefaultState {
 		window.hideSectionsList();
 	    }
 	}
-
 	controler.setSelectedIntersection(closestIntersection);
     }
 
     @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
-	window.highlightRightClickedIntersection(intersection);
-
-	controler.setRightClickedIntersection(intersection);
+    public void returnToState(Controler controler, Window window, State returnState) {
+	ModelInterface.emptyTourFactory();
+	ModelInterface.initializeTourCalculator();
+	window.displayPlanView();
+	window.displayCalculateTourButtonPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
+	controler.setCurrentState(returnState);
     }
 
     public String stateToString() {

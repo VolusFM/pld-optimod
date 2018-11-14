@@ -1,10 +1,6 @@
 package main.controler;
 
-import com.sun.media.sound.ModelIdentifier;
-
-import main.model.Delivery;
 import main.model.Intersection;
-import main.model.ModelInterface;
 import main.model.Section;
 import main.ui.ExceptionModal;
 import main.ui.Window;
@@ -26,7 +22,6 @@ public class Controler {
 
     /* Selected elements in model */
     private Intersection selectedIntersection;
-    private Intersection rightClickedIntersection;
 
     /**
      * Create the application's controler and window.
@@ -83,7 +78,17 @@ public class Controler {
 	    currentState.addDelivery(this, window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
-	    System.out.println(e + "controler adddelivery");
+	}
+    }
+
+    /**
+     * Confirm new delivery's addition.
+     */
+    public void confirmNewDelivery() {
+	try {
+	    currentState.confirmNewDelivery(this, window);
+	} catch (Exception e) {
+	    ExceptionModal.showErrorModal(e);
 	}
     }
 
@@ -95,29 +100,7 @@ public class Controler {
 	    currentState.cancelNewDelivery(this, window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
-	    System.out.println(e + "controler cancelnewdelivery");
 	}
-    }
-
-    /**
-     * Confirm new delivery addition.
-     */
-    public void confirmNewDelivery() {
-	try {
-	    currentState.confirmNewDelivery(this, window);
-	} catch (Exception e) {
-	    ExceptionModal.showErrorModal(e);
-	}
-    }
-
-    /**
-     * State setter.
-     * 
-     * @param newState is the new state to give to the controller.
-     */
-    public void setCurrentState(State newState) {
-	System.out.println("Changed from " + this.currentState.stateToString() + " to " + newState.stateToString());
-	this.currentState = newState;
     }
 
     /**
@@ -125,15 +108,6 @@ public class Controler {
      */
     public void removeDelivery() {
 	currentState.removeDelivery(this, window);
-    }
-
-    /**
-     * Get the controler's current state.
-     * 
-     * @return State, the current state of the controler.
-     */
-    public State getCurrentState() {
-	return currentState;
     }
 
     /**
@@ -148,37 +122,50 @@ public class Controler {
     }
 
     /**
-     * XXX : what's the use of this ?
+     * Return to a given state.
      */
-    public void calculateTour() {
-	currentState.calculatePlanning(this, window);
+    public void returnToState() {
+	if (currentState.equals(planningState)) {
+	    currentState.returnToState(this, window, loadedDeliveriesState);
+	} else if (currentState.equals(loadedDeliveriesState)) {
+	    currentState.returnToState(this, window, loadedPlanState);
+	}
     }
 
     /**
-     * TODO doc
+     * Handle a click near an intersection.
      * 
-     * @param closestIntersection
+     * @param closestIntersection is the Intersection closest to the click.
      */
     public void clickedNearIntersection(Intersection closestIntersection) {
 	currentState.clickedNearIntersection(this, window, closestIntersection);
     }
 
     /**
-     * TODO doc
+     * Handle a click near a section.
      * 
-     * @param closestSection
+     * @param closestSection is the Section closest to the click.
      */
     public void clickedNearSection(Section closestSection) {
 	currentState.clickedNearSection(this, window, closestSection);
     }
 
     /**
-     * TODO doc
+     * Get the controler's current state.
      * 
-     * @param intersection
+     * @return State, the current state of the controler.
      */
-    public void rightClickedNearIntersection(Intersection intersection) {
-	currentState.rightClickedNearIntersection(this, window, intersection);
+    public State getCurrentState() {
+	return currentState;
+    }
+
+    /**
+     * State setter.
+     * 
+     * @param newState is the new state to give to the controller.
+     */
+    public void setCurrentState(State newState) {
+	this.currentState = newState;
     }
 
     /**
@@ -204,31 +191,17 @@ public class Controler {
      */
     public void setSelectedIntersection(Intersection selectedIntersection) {
 	this.selectedIntersection = selectedIntersection;
+	window.highlightSelectedIntersection(selectedIntersection);
+
     }
 
     /**
-     * Get the last Intersection that was right clicked on.
-     * 
-     * @return Intersection, the last intersection the user right clicked on.
-     */
-    public Intersection getRightClickedIntersection() {
-	return rightClickedIntersection;
-    }
-
-    /**
-     * @param rightClickedIntersection
-     */
-    public void setRightClickedIntersection(Intersection rightClickedIntersection) {
-	this.rightClickedIntersection = rightClickedIntersection;
-    }
-
-    // XXX
-    /**
-     * Window getter.
+     * Get the window..
      * 
      * @return Window, the current window of the application.
      */
     public Window getWindow() {
 	return window;
     }
+
 }

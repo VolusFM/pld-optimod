@@ -27,7 +27,7 @@ public class PlanningView extends JPanel {
      private JButton supressDelivery;
      private JButton cancelModifications;
      private JPanel totalViewPanel;
-     protected AddingDeliveryView addingPanel;
+     private AddingDeliveryView addingPanel;
 
      /* Listener */
      private ButtonListener buttonListener;
@@ -87,6 +87,7 @@ public class PlanningView extends JPanel {
 	  cancelModifications = new JButton(CANCEL_MODIFICATIONS_BUTTON);
 	  cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
 	  cancelModifications.addActionListener(buttonListener);
+	  cancelModifications.setVisible(false);
 	  /* Button Panel */
 	  JPanel buttonRangePanel = new JPanel();
 	  buttonRangePanel.setPreferredSize(new Dimension(600, 30));
@@ -140,7 +141,7 @@ public class PlanningView extends JPanel {
       */
      protected void displayAddingDeliveryPanel() {
 	  totalViewPanel.setVisible(false);
-	  addingPanel = new AddingDeliveryView(window);
+	  setAddingPanel(new AddingDeliveryView(window));
 	  /* GridBagLayout Displaying */
 	  displayConstraint.gridx = 0;
 	  displayConstraint.gridy = 2;
@@ -152,7 +153,7 @@ public class PlanningView extends JPanel {
 	  displayConstraint.anchor = GridBagConstraints.LINE_START;
 	  displayConstraint.insets = new Insets(5, 0, 5, 0);
 	  /* Displaying */
-	  totalViewPanel.add(addingPanel, displayConstraint);
+	  totalViewPanel.add(getAddingPanel(), displayConstraint);
 	  totalViewPanel.setVisible(true);
      }
 
@@ -161,8 +162,8 @@ public class PlanningView extends JPanel {
       */
      protected void hideAddingDeliveryPanel() {
 	  totalViewPanel.setVisible(false);
-	  addingPanel.setVisible(false);
-	  addingPanel.removeAll();
+	  getAddingPanel().setVisible(false);
+	  getAddingPanel().removeAll();
 	  totalViewPanel.setVisible(true);
      }
 
@@ -199,5 +200,13 @@ public class PlanningView extends JPanel {
      public void redrawTable() {
 	  planning.redrawTable();
      }
+
+    public AddingDeliveryView getAddingPanel() {
+	return addingPanel;
+    }
+
+    public void setAddingPanel(AddingDeliveryView addingPanel) {
+	this.addingPanel = addingPanel;
+    }
 
 }

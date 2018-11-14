@@ -16,7 +16,7 @@ import main.xml.XMLException;;
  * started.
  *
  */
-public class InitState extends DefaultState {
+class InitState extends DefaultState {
 
     /**
      * Load a plan's XML file.
@@ -35,18 +35,10 @@ public class InitState extends DefaultState {
     }
 
     /**
-     * XXX
+     * Get the name of the state for debug purposes.
      * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @return String, the name of the state.
      */
-    public void openParameters(Controler controler, Window window) {
-
-	// TODO : add code to open parameter window
-	// controler.setCurrentState(controler.parametersState);
-
-    }
-
     public String stateToString() {
 	return "initState";
     }

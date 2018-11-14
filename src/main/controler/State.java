@@ -15,7 +15,7 @@ import main.xml.XMLException;
  * State provides an interface for all classes representing a possible state of
  * the controler.
  */
-public interface State {
+interface State {
 
     /**
      * Open the plan.
@@ -100,7 +100,7 @@ public interface State {
      * @param window is the application's graphical window.
      * @param intersection the intersection closest to the click.
      */
-    public void clickedNearIntersection(Controler controler, Window window, Intersection intersection);
+    public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection);
 
     /**
      * Handle a click near a Section.
@@ -112,18 +112,16 @@ public interface State {
     public void clickedNearSection(Controler controler, Window window, Section section);
 
     /**
-     * XXX ?
-     * 
-     * @param controler
-     * @param window
-     * @param intersection
+     * Change currentState to loadedDeliveriesState
      */
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
-
+    public void returnToState(Controler controler, Window window, State returnState);
+    
     /**
      * Get the name of the state for debug purposes.
      * 
      * @return String, the name of the state.
      */
     public String stateToString();
+
+    
 }

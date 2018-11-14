@@ -22,8 +22,6 @@ public class PlanningListener implements ListSelectionListener {
 
      @Override
      public void valueChanged(ListSelectionEvent e) {
-	  System.out.println(e.getSource());
-
 	  if (planning.getSelectedRow() == -1) {
 	       // no selected row, ignore
 	       return;
@@ -37,7 +35,6 @@ public class PlanningListener implements ListSelectionListener {
 	  Intersection closest = ModelInterface.findClosestIntersection(lat, lon);
 
 	  controler.setSelectedIntersection(closest);
-	  window.highlightSelectedIntersection(closest);
      }
 
 }

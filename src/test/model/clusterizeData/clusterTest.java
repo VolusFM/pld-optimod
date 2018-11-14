@@ -1,6 +1,6 @@
 package test.model.clusterizeData;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
@@ -8,11 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import main.model.Cluster;
-import main.model.Delivery;
-import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Plan;
-import main.model.Section;
 import main.model.TourCalculator;
 import main.xml.XMLDeserializer;
 
@@ -31,7 +27,7 @@ public class clusterTest {
 
     @Test
     public void solveBasicKmeans() {
-	List<Cluster> clusters = calculator.kMeans(clusterNb, calculator.getDeliveries(), 0.0001);
+	List<Cluster> clusters = ModelInterface.kMeans(clusterNb, calculator.getDeliveries(), 0.0001);
 	assertEquals("clusters size doesnt match cluster number", clusters.size(), clusterNb);
 	int deliveriesInClusters = 0;
 	for (Cluster cluster : clusters) {
@@ -40,12 +36,11 @@ public class clusterTest {
 	assertEquals("total number of deliveries in clusters doesnt match calculator 's deliveries size",
 		deliveriesInClusters, calculator.getDeliveries().size());
     }
-    
+
     @Test(expected = AssertionError.class)
-	public void solveBasicKmeansError(){
-		calculator.kMeans(50, calculator.getDeliveries(), 0.0001);
-	    }
-    
+    public void solveBasicKmeansError() {
+	ModelInterface.kMeans(50, calculator.getDeliveries(), 0.0001);
+    }
 
     @Test
     public void clusterizeDataTest() {
@@ -61,7 +56,7 @@ public class clusterTest {
 		assert (cluster.getDeliveries()
 			.size() >= (int) (calculator.getDeliveries().size() / clusterNb)) : "Inbalanced clusters";
 	    }
-	    clusterNb ++;
+	    clusterNb++;
 	}
     }
 
