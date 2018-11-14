@@ -3,38 +3,22 @@ package main.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.NoPermissionException;
-
 /**
  * 
- * TourFactory handles the creation and stockage of Tour objects.
+ * TourFactory handles the creation and stock of Tour objects.
  *
  */
 public class TourFactory {
 
-
-    private static List<Tour> tourPlanning;
-    /** Initialized Unique Instance */
+    private List<Tour> tourPlanning;
+    /* Initialized unique instance */
     private static TourFactory instance = new TourFactory();
 
-    private TourFactory() {
-	tourPlanning = new ArrayList<>();
-    }
-
     /**
-     * Create a tour.
-     * 
-     * @param deliveryMan is the delivery man who has to realize the tour.
-     * @param steps are the steps between each delivery.
-     * @param depot is the depot where the tour starts and ends.
-     * @param deliveries is the list of delivery points.
-     * @return Tour, the created tour.
+     * Build a tour factory.
      */
-    public static Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
-	Tour currentTour = new Tour(depot, steps, deliveries, deliveryMan);
-	currentTour.calculateDeliveryHours();
-	tourPlanning.add(currentTour);
-	return currentTour;
+    private TourFactory() {
+	this.tourPlanning = new ArrayList<>();
     }
 
     /**
@@ -47,12 +31,44 @@ public class TourFactory {
     }
 
     /**
-     * Getter for the planning of tour.
+     * Create a tour.
      * 
-     * @return List, a list of all the calculated Tour objects.
+     * @param deliveryMan is the delivery man who has to realize the tour.
+     * @param steps       are the steps between each delivery.
+     * @param depot       is the depot where the tour starts and ends.
+     * @param deliveries  is the list of delivery points.
+     * @return Tour, the created tour.
      */
-    protected List<Tour> getTourPlanning() {
-	return tourPlanning;
+    public Tour createTour(int deliveryMan, List<Step> steps, Delivery depot, List<Delivery> deliveries) {
+	Tour currentTour = new Tour(depot, steps, deliveries, deliveryMan);
+	currentTour.calculateDeliveryHours();
+	this.tourPlanning.add(currentTour);
+	return currentTour;
+    }
+
+    /**
+     * Empty the planning of tours.
+     */
+    public void empty() {
+	this.tourPlanning = new ArrayList<>();
+    }
+
+    /**
+     * Find deliveries for a given delivery man id.
+     * 
+     * @param deliveryManId is the id of the delivery man on which to filter the
+     *                          results.
+     * @return the list of deliveries given to the delivery man
+     */
+    public List<Delivery> getDeliveriesById(int deliveryManId) {
+	int i = 0;
+	while ((this.tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < this.tourPlanning.size())) {
+	    i = i + 1;
+	}
+	if (i == this.tourPlanning.size()) {
+	    return null;
+	}
+	return this.tourPlanning.get(i).getDeliveryPoints();
     }
 
     /**
@@ -62,7 +78,7 @@ public class TourFactory {
      * @return Step, the Step leading to the delivery.
      */
     protected Step findStepBeforeDelivery(Delivery delivery) {
-	for (Tour tour : tourPlanning) {
+	for (Tour tour : this.tourPlanning) {
 	    if (tour.getDeliveryPoints().contains(delivery)) {
 		for (Step step : tour.getSteps()) {
 		    if (step.getEndDelivery().equals(delivery)) {
@@ -83,7 +99,7 @@ public class TourFactory {
      */
     public List<Tour> findToursContainingSection(Section section) {
 	ArrayList<Tour> tours = new ArrayList<>();
-	for (Tour tour : tourPlanning) {
+	for (Tour tour : this.tourPlanning) {
 	    for (Step st : tour.getSteps()) {
 		for (Section s : st.getSections()) {
 		    if (section.equals(s)) {
@@ -95,28 +111,9 @@ public class TourFactory {
 
 	if (tours.size() == 0) {
 	    throw new NullPointerException();
-//	    tours.add(tourPlanning.get(0));
 	}
 
 	return tours;
-    }
-
-    /**
-     * Find deliveries for a given delivery man id.
-     * 
-     * @param deliveryManId is the id of the delivery man on which to filter the
-     *            results.
-     * @return the list of deliveries given to the delivery man
-     */
-    public List<Delivery> getDeliveriesById(int deliveryManId) {
-	int i = 0;
-	while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
-	    i = i + 1;
-	}
-	if (i == tourPlanning.size()) {
-	    return null;
-	}
-	return tourPlanning.get(i).getDeliveryPoints();
     }
 
     /**
@@ -126,7 +123,7 @@ public class TourFactory {
      * @return Tour, the tour containing the delivery.
      */
     public Tour findTourContainingDelivery(Delivery delivery) {
-	for (Tour tour : tourPlanning) {
+	for (Tour tour : this.tourPlanning) {
 	    if (tour.getDeliveryPoints().contains(delivery)) {
 		return tour;
 	    }
@@ -134,18 +131,30 @@ public class TourFactory {
 	return null;
     }
 
-    public void empty() {
-	tourPlanning = new ArrayList<>();
-    }
-
+    /**
+     * Find a tour, given the id of the delivery man assigned to it.
+     * 
+     * @param deliveryManId is the id of the delivery man supposed to realize the
+     *                          tour.
+     * @return Tour, the tour assigned to the given delivery man.
+     */
     public Tour findTourFromDeliveryManId(int deliveryManId) {
 	int i = 0;
-	while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
+	while ((this.tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < this.tourPlanning.size())) {
 	    i = i + 1;
 	}
-	if (i == tourPlanning.size()) {
+	if (i == this.tourPlanning.size()) {
 	    return null;
 	}
-	return tourPlanning.get(i);
+	return this.tourPlanning.get(i);
+    }
+
+    /**
+     * Getter for the planning of tour.
+     * 
+     * @return List, a list of all the calculated Tour objects.
+     */
+    protected List<Tour> getTourPlanning() {
+	return this.tourPlanning;
     }
 }

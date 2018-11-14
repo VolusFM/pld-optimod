@@ -54,22 +54,45 @@ public class TourCalculator {
     }
 
     /**
-     * Find the delivery taking place at the intersection, if it exists.
+     * Get the unique instance of the singleton.
      * 
-     * @param intersection is the intersection where a Delivery is supposed to
-     *                         happen.
-     * @return the corresponding Delivery if it exists, or null if it doesn't.
+     * @return TourCalculator, the unique instance of the class.
      */
-    public Delivery findCorrespondingDelivery(Intersection intersection) {
-	for (Delivery delivery : this.deliveries) {
-	    if (delivery.getAddress().equals(intersection)) {
-		return delivery;
-	    }
+    public static TourCalculator getInstance() {
+	if (instance == null) {
+	    instance = new TourCalculator();
 	}
-	if (this.depot.getAddress().equals(intersection)) {
-	    return this.depot;
-	}
-	return null;
+	return instance;
+    }
+
+    /**
+     * Initialize the calculator before a calculation. Remove possible traces from
+     * previous calculations.
+     */
+    protected void initialize() {
+	TourFactory.getInstance().empty();
+	this.deliveriesForEachTour = new ArrayList<>();
+	this.costsTSPForEachTour = new ArrayList<>();
+	this.nodesCountForEachTour = new ArrayList<>();
+	this.delayForEachTour = new ArrayList<>();
+	this.steps = new HashMap<>();
+    }
+
+    /**
+     * Add a delivery to the list of deliveries.
+     * 
+     * @param delivery is the delivery to add.
+     */
+    protected void addDelivery(Delivery delivery) {
+	this.deliveries.add(delivery);
+    }
+
+    /**
+     * Empty the loaded deliveries.
+     */
+    protected void emptyLoadedDeliveries() {
+	this.deliveries = new ArrayList<>();
+	this.depot = null;
     }
 
     /**
@@ -93,30 +116,17 @@ public class TourCalculator {
     }
 
     /**
-     * Initialize the calculator before a calcul. Remove possible traces from
-     * previous calculations.
-     */
-    protected void initialize() {
-	TourFactory.getInstance().empty();
-	this.deliveriesForEachTour = new ArrayList<>();
-	this.costsTSPForEachTour = new ArrayList<>();
-	this.nodesCountForEachTour = new ArrayList<>();
-	this.delayForEachTour = new ArrayList<>();
-	this.steps = new HashMap<>();
-    }
-
-    /**
-     * Creates the graph to be used with TSP algorithm
+     * Create the graph to use with TSP algorithm.
      * 
-     * It uses the plan and all the deliveries, as well as the depot
+     * It uses the plan and all the deliveries, as well as the depot.
      * 
      * It creates a sub-graph, containing only the useful nodes (deliveries and
-     * depot), and the arrows correspond to the shortest path found between the 2
-     * nodes in the main graph
+     * depot), and the arcs correspond to the shortest path found between the 2
+     * nodes in the main graph.
      * 
      * It assumes the ordering of deliveries remain the same (i.e. the list
-     * deliveries will not be modified) And it expects that the depot will always be
-     * the first in both list (<b>this is actually a pre-condition in the TSP
+     * deliveries will not be modified) and it expects that the depot will always be
+     * the first in both lists (<b>this is actually a pre-condition in the TSP
      * algorithm</b>)
      */
     protected void createGraph() {
@@ -211,26 +221,25 @@ public class TourCalculator {
      */
     private double[] dijkstraHelperSubGraph(int index, Intersection source) {
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = this.map.dijkstra(source);
-	// XXX : this is what we need to be careful about ^^^^^
 
 	HashMap<Long, Double> cost = result.getKey();
 	HashMap<Long, Long> predecessors = result.getValue();
 
-	int nodesCount = this.nodesCountForEachTour.get(index);
-	List<Delivery> deliveries = this.deliveriesForEachTour.get(index);
+	int tourNodesCount = this.nodesCountForEachTour.get(index);
+	List<Delivery> tourDeliveries = this.deliveriesForEachTour.get(index);
 
 	// idsList is the "header" of the list : the ids of the nodes to use in the
 	// correct order
 
-	long[] idsList = new long[nodesCount];
+	long[] idsList = new long[tourNodesCount];
 	idsList[0] = this.depot.getAddress().getId();
-	for (int i = 0; i < deliveries.size(); i++) {
-	    idsList[i + 1] = deliveries.get(i).getAddress().getId();
+	for (int i = 0; i < tourDeliveries.size(); i++) {
+	    idsList[i + 1] = tourDeliveries.get(i).getAddress().getId();
 	}
 
 	// We use the "header" to construct the cost line
-	double[] costResult = new double[nodesCount];
-	for (int i = 0; i < nodesCount; i++) {
+	double[] costResult = new double[tourNodesCount];
+	for (int i = 0; i < tourNodesCount; i++) {
 	    costResult[i] = cost.get(idsList[i]);
 	}
 
@@ -248,7 +257,7 @@ public class TourCalculator {
 	this.TSPimplementation.searchSolution(this.calculationTimeLimit, this.nodesCountForEachTour.get(index),
 		this.costsTSPForEachTour.get(index), this.delayForEachTour.get(index));
 	List<Step> solutionSteps = findStepsFromResultSubGraph(index, this.TSPimplementation.getBestSolution());
-	TourFactory.createTour(index, solutionSteps, this.depot, this.deliveriesForEachTour.get(index));
+	TourFactory.getInstance().createTour(index, solutionSteps, this.depot, this.deliveriesForEachTour.get(index));
     }
 
     /**
@@ -293,6 +302,25 @@ public class TourCalculator {
     }
 
     /**
+     * Find the delivery taking place at the intersection, if it exists.
+     * 
+     * @param intersection is the intersection where a Delivery is supposed to
+     *                         happen.
+     * @return the corresponding Delivery if it exists, or null if it doesn't.
+     */
+    public Delivery findCorrespondingDelivery(Intersection intersection) {
+	for (Delivery delivery : this.deliveries) {
+	    if (delivery.getAddress().equals(intersection)) {
+		return delivery;
+	    }
+	}
+	if (this.depot.getAddress().equals(intersection)) {
+	    return this.depot;
+	}
+	return null;
+    }
+
+    /**
      * Find the section, if it exists, between two intersections.
      * 
      * @param idStart the id of the departure intersection.
@@ -319,7 +347,7 @@ public class TourCalculator {
     private List<Step> findStepsFromResultSubGraph(int index, Integer[] solution) {
 	List<Step> list = new ArrayList<Step>();
 	for (int i = 0; i < solution.length - 1; i++) {
-	    /* Convert ids used with TSP to ids used in Model */
+	    // Convert ids used with TSP to ids used in Model
 	    long idStart = solution[i] == 0 ? this.depot.getAddress().getId()
 		    : this.deliveriesForEachTour.get(index).get(solution[i] - 1).getAddress().getId();
 	    long idEnd = solution[i + 1] == 0 ? this.depot.getAddress().getId()
@@ -333,6 +361,7 @@ public class TourCalculator {
 		.getId();
 	long idEnd = this.depot.getAddress().getId();
 	list.add(this.steps.get(new Pair<Long, Long>(idStart, idEnd)));
+
 	return list;
     }
 
@@ -441,20 +470,21 @@ public class TourCalculator {
      * clusterNb is badly set, or is superior to intersections s size. It can also
      * happen depending on the random initialization.
      * 
-     * @param clusterNb, number of cluster in the returned list MUST BE strictly
-     *            under dataPoints s size, or kmeans will throw an assertionError.
-     * @param dataPoints, data to be partitioned.
-     * @param epsilon, convergence coefficient.
-     * @return a list of clusterNb clusters.
+     * @param clustersCount is the number of clusters in the returned list. Must be
+     *                          strictly inferior to dataPoints's size, or kMeans
+     *                          will throw an AssertionError.
+     * @param dataPoints    is the data to partition.
+     * @param epsilon       is the convergence coefficient.
+     * @return a list of clustersCount clusters.
      */
-    protected List<Cluster> kMeans(int clusterNb, List<Delivery> dataPoints, double epsilon) {
-	if (!(clusterNb <= dataPoints.size()) || (clusterNb == 0)) {
+    protected List<Cluster> kMeans(int clustersCount, List<Delivery> dataPoints, double epsilon) {
+	if (!(clustersCount <= dataPoints.size()) || (clustersCount == 0)) {
 	    throw new AssertionError("Kmean was called with incorrect clusterNb.");
 	}
 	/* Cluster initialization */
 	List<Cluster> clusters = new ArrayList<Cluster>();
 	List<Delivery> dataPointsCopy = new ArrayList<Delivery>(dataPoints);
-	for (int i = 0; i < clusterNb; i++) {
+	for (int i = 0; i < clustersCount; i++) {
 	    int rdInt = ThreadLocalRandom.current().nextInt(0, dataPointsCopy.size());
 	    Pair<Double, Double> randomCentroid = new Pair<Double, Double>(
 		    dataPointsCopy.get(rdInt).getAddress().getLat(), dataPointsCopy.get(rdInt).getAddress().getLon());
@@ -469,7 +499,7 @@ public class TourCalculator {
 	    for (Cluster cluster : clusters) {
 		cluster.reinitializeClusters();
 	    }
-	    /* Centroid repartition based on euclidian distance */
+	    // Centroid repartition based on euclidian distance
 	    for (Delivery delivery : dataPoints) {
 		Intersection intersection = delivery.getAddress();
 		Pair<Double, Double> intersectionData = new Pair<Double, Double>(intersection.getLat(),
@@ -491,9 +521,7 @@ public class TourCalculator {
 		double barycentersLatitude = 0;
 		double barycentersLongitude = 0;
 
-		/*
-		 * Take care of empty cluster so that they still have a centroid
-		 */
+		// Take care of empty cluster so that they still have a centroid
 		if (cluster.getDeliveries().size() > 0) {
 		    for (Delivery delivery : cluster.getDeliveries()) {
 			barycentersLatitude += delivery.getAddress().getLat();
@@ -520,10 +548,10 @@ public class TourCalculator {
      * Private method used to create a cluster list when cluster number is > to
      * deliveries size.
      * 
-     * @param clusterNb, number of cluster needed.
-     * @return List<Cluster>, list of cluster created.
+     * @param clustersCount is number of cluster needed.
+     * @return List, the list of created clusters.
      */
-    private List<Cluster> createTrivialClusters(int clusterNb) {
+    private List<Cluster> createTrivialClusters(int clustersCount) {
 	List<Cluster> bestClusters = new ArrayList<Cluster>();
 	for (Delivery delivery : this.deliveries) {
 	    Pair<Double, Double> centroid = new Pair<Double, Double>(delivery.getAddress().getLat(),
@@ -538,14 +566,14 @@ public class TourCalculator {
     /**
      * Private method used to check is a cluster list contains empty clusters.
      * 
-     * @param clusterList, list to check
-     * @return true if there is an empty cluster, else false.
+     * @param clustersLists is the list to check.
+     * @return boolean, whether there is an empty cluster.
      */
-    private boolean hasEmptyCluster(List<Cluster> clusterList) {
+    private static boolean hasEmptyCluster(List<Cluster> clustersList) {
 	boolean hasEmptyCluster = false;
 	int indexCluster = 0;
-	while (!hasEmptyCluster && indexCluster < clusterList.size()) {
-	    if (clusterList.get(indexCluster).getDeliveries().isEmpty()) {
+	while (!hasEmptyCluster && indexCluster < clustersList.size()) {
+	    if (clustersList.get(indexCluster).getDeliveries().isEmpty()) {
 		hasEmptyCluster = true;
 	    }
 	    indexCluster++;
@@ -554,24 +582,26 @@ public class TourCalculator {
     }
 
     /**
-     * return id of the nearest delivery from toMove, which belong to a not full,
-     * not balanced cluster from currentClusters and which is from a different
-     * cluster than currentClusterIndex.
+     * Return id of the nearest delivery to toMove, which belongs to a not full, not
+     * balanced cluster from currentClusters and which is from a different cluster
+     * than currentClusterIndex.
      * 
-     * @param toMove, delivery for which we search the nearest.
-     * @param currentClusters, list of cluster.
-     * @param currentClusterIndex, the id of the cluster which contain toMove
-     * @param remainingAdditionalDeliveries, represent the number of cluster not
-     *            balanced with one more delivery.
-     * @param idDeliveryToIdCluster, an Hashmap of <Id Delivery, Id Cluster> to find
-     *            for a delivery ID the cluster Id of the cluster which contain the
-     *            delivery.
-     * @return a delivery id.
+     * @param toMove                        is the delivery of which we search the
+     *                                          nearest.
+     * @param currentClusters               is the list of clusters.
+     * @param currentClusterIndex           is the id of the cluster which contains
+     *                                          toMove.
+     * @param remainingAdditionalDeliveries is the number of clusters not balanced
+     *                                          with one more delivery.
+     * @param deliveryIdToClusterId         is a HashMap of mapping a delivery ID to
+     *                                          the id of the cluster which contains
+     *                                          the delivery.
+     * @return Integer, the id of the nearest delivery.
      */
     private int nearestDeliveryInClusters(Delivery toMove, List<Cluster> currentClusters, int currentClusterIndex,
-	    int remainingAdditionalDeliveries, HashMap<Integer, Integer> idDeliveryToIdCluster) {
+	    int remainingAdditionalDeliveries, HashMap<Integer, Integer> deliveryIdToClusterId) {
 	int minIndex = -1;
-	int evenDeliveryNumber = (int) (this.deliveries.size() / currentClusters.size());
+	int evenDeliveryNumber = this.deliveries.size() / currentClusters.size();
 	double[] distanceToToMove = this.costTSP[this.deliveries.indexOf(toMove)];
 	double minDistance = MAXDOUBLE;
 	for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
@@ -581,16 +611,16 @@ public class TourCalculator {
 	     */
 	    boolean isClusterNotFull;
 	    if (remainingAdditionalDeliveries > 0) {
-		isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).getDeliveries()
+		isClusterNotFull = ((currentClusters.get(deliveryIdToClusterId.get(indexDelivery)).getDeliveries()
 			.size()) < evenDeliveryNumber + 1);
 	    } else {
-		isClusterNotFull = ((currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).getDeliveries()
+		isClusterNotFull = ((currentClusters.get(deliveryIdToClusterId.get(indexDelivery)).getDeliveries()
 			.size()) < evenDeliveryNumber);
 	    }
 
 	    if ((distanceToToMove[indexCostTSP] < minDistance) && (isClusterNotFull)
-		    && !(currentClusters.get(idDeliveryToIdCluster.get(indexDelivery)).isBalanced())
-		    && (currentClusterIndex != idDeliveryToIdCluster.get(indexDelivery))) {
+		    && !(currentClusters.get(deliveryIdToClusterId.get(indexDelivery)).isBalanced())
+		    && (currentClusterIndex != deliveryIdToClusterId.get(indexDelivery))) {
 		minDistance = distanceToToMove[indexCostTSP];
 		minIndex = indexDelivery;
 	    }
@@ -599,38 +629,39 @@ public class TourCalculator {
     }
 
     /**
-     * calculate best set of clusters in a array of MAXKMEANS set of clusters. Will
-     * not take into account empty cluster. The graph must be created before this
-     * method is called. Need at least two deliveries.
+     * Calculate best set of clusters in a array of MAXKMEANS set of clusters. Will
+     * not take into account empty clusters. The graph must be created before this
+     * method is called. Needs at least two deliveries.
      * 
-     * @param clusterNb, if clusterNb>deliveries s size, only deliveries s size
-     *            cluster will be return.
-     * @param epsilon, convergence coefficient.
-     * @return a list of balanced cluster.
+     * @param clustersCount is the number of clusters ; if it is superior to the
+     *                          number of deliveries, only so many clusters will be
+     *                          returned.
+     * @param epsilon       is the convergence coefficient.
+     * @return List, a list of balanced clusters.
      */
-    public List<Cluster> clusterizeData(int clusterNb, double epsilon) {
-	/* particular case where each cluster only has one delivery */
-	if (clusterNb >= this.deliveries.size()) {
-	    return createTrivialClusters(clusterNb);
+    public List<Cluster> clusterizeData(int clustersCount, double epsilon) {
+	// Particular case where each cluster only has one delivery
+	if (clustersCount >= this.deliveries.size()) {
+	    return createTrivialClusters(clustersCount);
 	}
-	/* General case */
+	// General case
 	List<Cluster> bestClusters = new ArrayList<Cluster>();
 	double minCoeff = MAXDOUBLE;
-	/* Selection of best cluster set on MAXKMEANS iterations */
+	// Selection of best cluster set on MAXKMEANS iterations
 	for (int i = 0; i < MAXKMEANS; i++) {
-	    List<Cluster> currentClusters = this.kMeans(clusterNb, this.deliveries, epsilon);
-	    int evenDeliveryNumber = (int) (this.deliveries.size() / clusterNb);
-	    /* This represent how many clusters have one more delivery */
-	    int remainingAdditionalDeliveries = this.deliveries.size() % clusterNb;
-	    /* Ignore sets with empty clusters */
+	    List<Cluster> currentClusters = this.kMeans(clustersCount, this.deliveries, epsilon);
+	    int evenDeliveryNumber = this.deliveries.size() / clustersCount;
+	    // This represent how many clusters have one more delivery
+	    int remainingAdditionalDeliveries = this.deliveries.size() % clustersCount;
+	    // Ignore sets with empty clusters
 	    boolean hasEmptyCluster = hasEmptyCluster(currentClusters);
 	    if (!hasEmptyCluster) {
-		/* Re-balances clusterList */
-		int currentClusterIndex = getBiggestUnbalanced(currentClusters);
+		// Re-balance clusterList
+		int currentClusterIndex = getBiggestUnbalancedCluster(currentClusters);
 		HashMap<Integer, Integer> idDeliveryToIdCluster = clusterListToHashMap(currentClusters);
 		while (currentClusterIndex != -1) {
 		    int maxIntersectionNumber;
-		    /* Check if there can be an additional delivery */
+		    // Check if there can be an additional delivery
 		    if ((currentClusters.get(currentClusterIndex).getDeliveries().size() > evenDeliveryNumber)
 			    && (remainingAdditionalDeliveries > 0)) {
 			maxIntersectionNumber = evenDeliveryNumber + 1;
@@ -641,41 +672,36 @@ public class TourCalculator {
 		    int nbExceedingDeliveries = currentClusters.get(currentClusterIndex).getDeliveries().size()
 			    - maxIntersectionNumber;
 		    currentClusters.get(currentClusterIndex).sortDeliveriesByEuclidianDistanceToCentroid();
-		    /*
-		     * move exceeding Deliveries to the cluster containing the nearest intersection
-		     */
+
+		    // Move exceeding Deliveries to the cluster containing the nearest intersection
 		    while ((nbExceedingDeliveries > 0)) {
 			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			int indexToMove = this.deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
 			    throw new AssertionError("Delivery present in cluster does not exist.");
 			}
-			/*
-			 * find the nearest delivery contained in a not full cluster (which is not the
-			 * current cluster)
-			 */
+
+			// Find the nearest delivery contained in a not full cluster (which is not the
+			// current cluster)
 			int minIndex = nearestDeliveryInClusters(toMove, currentClusters, currentClusterIndex,
 				remainingAdditionalDeliveries, idDeliveryToIdCluster);
 			if (minIndex == -1) {
 			    throw new AssertionError(
 				    "Error in clusterizeData in TourCalculator : no cluster was found to "
 					    + "put an exceeding delivery. This error SHOULD NOT happen");
-			} else {
-			    /*
-			     * move exceeding delivery to nearest delivery's cluster
-			     */
-			    Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
-			    currentClusters.get(idNearestCluster).addDelivery(toMove);
-			    idDeliveryToIdCluster.put(minIndex, idNearestCluster);
-			    nbExceedingDeliveries = currentClusters.get(currentClusterIndex).getDeliveries().size()
-				    - maxIntersectionNumber;
 			}
+			// Move exceeding delivery to nearest delivery's cluster
+			Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
+			currentClusters.get(idNearestCluster).addDelivery(toMove);
+			idDeliveryToIdCluster.put(minIndex, idNearestCluster);
+			nbExceedingDeliveries = currentClusters.get(currentClusterIndex).getDeliveries().size()
+				- maxIntersectionNumber;
 		    }
 		    currentClusters.get(currentClusterIndex).setIsBalanced(true);
-		    currentClusterIndex = getBiggestUnbalanced(currentClusters);
+		    currentClusterIndex = getBiggestUnbalancedCluster(currentClusters);
 		}
 	    }
-	    /* evaluate cluster by adding distance to centroid */
+	    // Evaluate cluster by adding distance to centroid
 	    double coeff = 0;
 	    for (Cluster cluster : currentClusters) {
 		coeff += cluster.evaluateClusteringQuality();
@@ -689,28 +715,28 @@ public class TourCalculator {
     }
 
     /**
-     * find the id of the unbalanced cluster with most delivery.
+     * Find the id of the unbalanced cluster with the most deliveries.
      * 
-     * @param clusters, the list of Cluster in which we search.
-     * @return id of the cluster.
+     * @param clusters is the list of clusters in which we search.
+     * @return Integer, the id of the unbalanced cluster with the most deliveries.
      */
-    private int getBiggestUnbalanced(List<Cluster> clusters) {
-	int indexCluster = -1;
+    private static int getBiggestUnbalancedCluster(List<Cluster> clusters) {
+	int clusterId = -1;
 	int maxSize = 0;
 	for (int index = 0; index < clusters.size(); index++) {
 	    if (clusters.get(index).getDeliveries().size() > maxSize && !(clusters.get(index).isBalanced())) {
 		maxSize = clusters.get(index).getDeliveries().size();
-		indexCluster = index;
+		clusterId = index;
 	    }
 	}
-	return indexCluster;
+	return clusterId;
     }
 
     /**
-     * construct a HashMap with delivery index as key and cluster index as value.
+     * Build a HashMap with delivery index as key and cluster index as value.
      * 
-     * @param clusters, the list of Cluster
-     * @return a HashMap with delivery index as key and cluster index as value.
+     * @param clusters is the list of clusters.
+     * @return Map, a HashMap with delivery index as key and cluster index as value.
      */
     private HashMap<Integer, Integer> clusterListToHashMap(List<Cluster> clusters) {
 	HashMap<Integer, Integer> idDeliveryToIdCluster = new HashMap<Integer, Integer>();
@@ -730,62 +756,25 @@ public class TourCalculator {
     }
 
     /**
-     * Calculate euclidien distance between the two pair.
+     * Calculate euclidean distance between the two points.
      * 
-     * @param intersectionData, a pair of double.
-     * @param centroidData, a pair of double.
-     * @return double, the euclidien distance.
+     * @param firstPointCoordinates  is the coordinates of the first point.
+     * @param secondPointCoordinates is the coordinates of the second point.
+     * @return Double, the euclidean distance between the two points.
      */
-    private double calculateDistance(Pair<Double, Double> intersectionData, Pair<Double, Double> centroidData) {
-	return Math.sqrt(Math.pow((intersectionData.getKey() - centroidData.getKey()), 2)
-		+ Math.pow((intersectionData.getValue() - centroidData.getValue()), 2));
+    private static double calculateDistance(Pair<Double, Double> firstPointCoordinates,
+	    Pair<Double, Double> secondPointCoordinates) {
+	return Math.sqrt(Math.pow((firstPointCoordinates.getKey() - secondPointCoordinates.getKey()), 2)
+		+ Math.pow((firstPointCoordinates.getValue() - secondPointCoordinates.getValue()), 2));
     }
 
     /**
-     * add a delivery to deliveries.
+     * Getter for the delivery men count.
      * 
-     * @param createDelivery, delivery to add.
+     * @return Integer, the count of delivery men
      */
-    protected void addDelivery(Delivery createDelivery) {
-	this.deliveries.add(createDelivery);
-    }
-
-    /**
-     * Function calls to empty the loaded deliveries.
-     */
-    protected void emptyLoadedDeliveries() {
-	this.deliveries = new ArrayList<>();
-	this.depot = null;
-    }
-
-    /**
-     * Get the unique instance of the singleton.
-     * 
-     * @return TourCalculator, the unique instance of the class.
-     */
-    public static TourCalculator getInstance() {
-	if (instance == null) {
-	    instance = new TourCalculator();
-	}
-	return instance;
-    }
-
-    /**
-     * Setter for the depot for the tours.
-     * 
-     * @param depot is the Delivery corresponding to the depot.
-     */
-    protected void setDepot(Delivery depot) {
-	this.depot = depot;
-    }
-
-    /**
-     * Setter for the map.
-     * 
-     * @param map is the plan for the deliveries.
-     */
-    protected void setMap(Plan map) {
-	this.map = map;
+    public int getDeliveryMenCount() {
+	return this.deliveryMenCount;
     }
 
     /**
@@ -798,18 +787,8 @@ public class TourCalculator {
     public void setDeliveryMenCount(int deliveryMenCount) {
 	if (deliveryMenCount <= 0) {
 	    throw new IllegalArgumentException("Le nombre de livreurs doit être strictement positif.");
-	} else {
-	    this.deliveryMenCount = deliveryMenCount;
 	}
-    }
-
-    /**
-     * Getter for the delivery men count.
-     * 
-     * @return int, the count of delivery men
-     */
-    public int getDeliveryMenCount() {
-	return this.deliveryMenCount;
+	this.deliveryMenCount = deliveryMenCount;
     }
 
     /**
@@ -829,4 +808,23 @@ public class TourCalculator {
     public Delivery getDepot() {
 	return this.depot;
     }
+
+    /**
+     * Setter for the depot for the tours.
+     * 
+     * @param depot is the Delivery corresponding to the depot.
+     */
+    protected void setDepot(Delivery depot) {
+	this.depot = depot;
+    }
+    
+    /**
+     * Setter for the map.
+     * 
+     * @param map is the plan for the deliveries.
+     */
+    protected void setMap(Plan map) {
+	this.map = map;
+    }
+
 }
