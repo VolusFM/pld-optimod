@@ -185,7 +185,7 @@ public class TourCalculator {
      * the result of the algorithm, and create the steps related to Dijkstra result.
      * 
      * @param source is the source from which Dijkstra will start.
-     * @return Double[], the row for the TSP cost matrix.
+     * @return Array, the row for the TSP cost matrix.
      */
     private double[] dijkstraHelper(Intersection source) {
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = this.map.dijkstra(source);
@@ -217,7 +217,7 @@ public class TourCalculator {
      * @param index  is the index in deliveriesForEachTour where List of delivery
      *                   needed for TSP is.
      * @param source is the source from which Dijkstra will start.
-     * @return Double[], the row for the TSP cost matrix.
+     * @return Array, the row for the TSP cost matrix.
      */
     private double[] dijkstraHelperSubGraph(int index, Intersection source) {
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = this.map.dijkstra(source);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * TSP1 is a TSP implementation with no heuristics
+ * TSP1 is a simple TSP implementation with no heuristics.
  */
 public class TSP1 extends TemplateTSP {
 

@@ -28,12 +28,6 @@ public class TSPTest {
     private int nbSommets = 5;
 
     @Test
-    public void solveBasicTSP() {
-	TemplateTSP tsp = new TSP1();
-	tsp.searchAndDisplayBestSolution(10000, nbSommets, graph, duree);
-    }
-
-    @Test
     public void solveAnotherTSP() {
 	Plan plan = ModelInterface.getPlan();
 	/* Creation intersections */
