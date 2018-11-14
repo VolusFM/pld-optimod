@@ -183,6 +183,7 @@ public class TourCalculator {
 	/*
 	 * idsList is the "header" of the list : the ids of the nodes to use in
 	 * the correct order
+>>>>>>> efdf32dba13b727dfc4fadfc14b96624e74997d9
 	 */
 	long[] idsList = new long[nodesCount];
 	idsList[0] = depot.getAddress().getId();
