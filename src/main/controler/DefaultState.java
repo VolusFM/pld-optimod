@@ -51,7 +51,7 @@ class DefaultState implements State {
     }
 
     @Override
-    public void returnToState(Controler controler, Window window, State returnState) {	
+    public void returnToState(Controler controler, Window window, State returnState) {
     }
 
     @Override

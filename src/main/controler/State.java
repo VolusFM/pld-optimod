@@ -46,28 +46,12 @@ interface State {
 	    throws XMLException, ParserConfigurationException, SAXException, IOException;
 
     /**
-     * Open parameters window.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
-    public void openParameters(Controler controler, Window window);
-
-    /**
      * Calculate a tour planning with a given number of delivery men.
      * 
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window);
-
-    /**
-     * Cancel the creation of a new delivery and go back to previous screen.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
-    public void cancelNewDelivery(Controler controler, Window window);
 
     /**
      * Open the Add Delivery Window.
@@ -78,6 +62,22 @@ interface State {
     public void addDelivery(Controler controler, Window window);
 
     /**
+     * Confirm the addition of a new delivery.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void confirmNewDelivery(Controler controler, Window window);
+
+    /**
+     * Cancel the creation of a new delivery and go back to previous screen.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void cancelNewDelivery(Controler controler, Window window);
+
+    /**
      * Delete a delivery.
      * 
      * @param controler is the application's controler.
@@ -86,12 +86,12 @@ interface State {
     public void removeDelivery(Controler controler, Window window);
 
     /**
-     * Confirm the addition of a new delivery.
+     * Open parameters window.
      * 
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
      */
-    public void confirmNewDelivery(Controler controler, Window window);
+    public void openParameters(Controler controler, Window window);
 
     /**
      * Handle a click near an Intersection.
@@ -115,7 +115,7 @@ interface State {
      * Change currentState to loadedDeliveriesState
      */
     public void returnToState(Controler controler, Window window, State returnState);
-    
+
     /**
      * Get the name of the state for debug purposes.
      * 
@@ -123,5 +123,4 @@ interface State {
      */
     public String stateToString();
 
-    
 }

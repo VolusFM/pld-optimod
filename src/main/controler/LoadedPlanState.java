@@ -27,6 +27,11 @@ class LoadedPlanState extends DefaultState {
 	controler.setCurrentState(controler.loadedDeliveriesState);
     }
 
+    /**
+     * Get the name of the state for debug purposes.
+     * 
+     * @return String, the name of the state.
+     */
     public String stateToString() {
 	return "loadedPlanState";
     }

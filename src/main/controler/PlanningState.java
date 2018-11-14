@@ -7,6 +7,7 @@ import main.model.Section;
 import main.model.Step;
 import main.ui.InputDialogSelector;
 import main.ui.Window;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * PlanningState is the state in which a tour planning has been calculated.
@@ -14,7 +15,6 @@ import main.ui.Window;
  */
 class PlanningState extends DefaultState {
 
-    // TODO : check if planning can be recalculated
     /**
      * Calculate the planning for the given deliveries request and plan.
      * 
@@ -44,9 +44,18 @@ class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void moveDelivery(Controler controler, Window window) {
-	// int newTourId = window.getNewTourId();
-	// Delivery movedDelivery = window.getMovedDelivery();
-	// ModelInterface.moveDelivery(newTourId, movedDelivery);
+	throw new NotImplementedException();
+    }
+
+    /**
+     * Add a delivery to a tour.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void addDelivery(Controler controler, Window window) {
+	window.displayAddingDeliveryPanel();
+	controler.setCurrentState(controler.addState);
     }
 
     /**
@@ -65,15 +74,14 @@ class PlanningState extends DefaultState {
 	}
     }
 
-    /**
-     * Add a delivery to a tour.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
-    public void addDelivery(Controler controler, Window window) {
-	window.displayAddingDeliveryPanel();
-	controler.setCurrentState(controler.addState);
+    @Override
+    public void returnToState(Controler controler, Window window, State returnState) {
+	ModelInterface.emptyTourFactory();
+	ModelInterface.initializeTourCalculator();
+	window.displayPlanView();
+	window.displayCalculateTourButtonPanel();
+	window.toggleDeliveryMenCountButtonVisiblity();
+	controler.setCurrentState(returnState);
     }
 
     @Override
@@ -95,16 +103,11 @@ class PlanningState extends DefaultState {
 	controler.setSelectedIntersection(closestIntersection);
     }
 
-    @Override
-    public void returnToState(Controler controler, Window window, State returnState) {
-	ModelInterface.emptyTourFactory();
-	ModelInterface.initializeTourCalculator();
-	window.displayPlanView();
-	window.displayCalculateTourButtonPanel();
-	window.toggleDeliveryMenCountButtonVisiblity();
-	controler.setCurrentState(returnState);
-    }
-
+    /**
+     * Get the name of the state for debug purposes.
+     * 
+     * @return String, the name of the state.
+     */
     public String stateToString() {
 	return "planningState";
     }
