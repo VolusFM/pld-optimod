@@ -21,6 +21,9 @@ public class Delivery {
      * @param address  if the Intersection where the delivery is supposed to happen.
      */
     public Delivery(int duration, Intersection address) {
+	if (duration < 0) {
+	    throw new IllegalArgumentException("La durée d'une livraison doit être positive !");
+	}
 	this.duration = duration;
 	this.address = address;
     }
