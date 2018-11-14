@@ -42,7 +42,7 @@ public class PlanningTable extends JTable {
 
     private static class PlanningTableModel implements TableModel {
 	// FIXME debug : remove last field of
-	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage"/*, "ID intersection"*/ };
+	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Durée"/*, "ID intersection"*/ };
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
@@ -90,7 +90,8 @@ public class PlanningTable extends JTable {
 	    case 2:
 		return dateFormat.format(hour.getTime());
 	    case 3:
-		return delivery.getAddress().getId();
+		return delivery.getDuration() + " seconde(s)";
+//		return delivery.getAddress().getId();
 
 	    default:
 		throw new RuntimeException();

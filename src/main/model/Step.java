@@ -22,6 +22,9 @@ public class Step {
      *            other.
      */
     public Step(List<Section> sections) {
+	if (sections.isEmpty()) {
+	    throw new IllegalArgumentException("Aucun chemin ne mène à cet endroit.");
+	}
 	this.sections = new ArrayList<>(sections);
 	startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
 	endDelivery = TourCalculator.getInstance()

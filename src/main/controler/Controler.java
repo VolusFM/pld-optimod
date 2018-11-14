@@ -83,7 +83,6 @@ public class Controler {
 	    currentState.addDelivery(this, window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
-	    throw e;
 	}
     }
 
@@ -123,7 +122,6 @@ public class Controler {
 	    currentState.confirmNewDelivery(this, window, toAdd, deliveryManTour, precedingDelivery);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
-	    throw e;
 	}
     }
 
