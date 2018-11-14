@@ -39,7 +39,7 @@ public class XMLFileOpener extends FileFilter {
      */
     public File open() throws XMLException {
 	JFileChooser jFileChooserXML = new JFileChooser();
-	
+
 	// If there's a resources folder, use it as default location
 	File resources = new File(RESOURCES_FOLDER);
 	if (resources.exists() && resources.isDirectory()) {
