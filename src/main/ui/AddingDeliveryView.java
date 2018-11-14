@@ -22,9 +22,10 @@ import main.model.Tour;
 
 /**
  * Form panel for the adding delivery purpose. Form with validate and cancel
- * buttons, and dats fields.
+ * buttons, and data fields.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class AddingDeliveryView extends JPanel {
 
@@ -68,49 +69,49 @@ public class AddingDeliveryView extends JPanel {
     public AddingDeliveryView(Window w) {
 	super();
 	/* Initialize */
-	window = w;
-	latitudeField = new JTextField();
-	longitudeField = new JTextField();
-	comboxListener = new ComboboxListener();
+	this.window = w;
+	this.latitudeField = new JTextField();
+	this.longitudeField = new JTextField();
+	this.comboxListener = new ComboboxListener();
 	/* Display */
 	createAddingDeliveryPanel();
     }
 
     /**
-     * Function called to create the adding form.
+     * Create the adding form.
      */
     private void createAddingDeliveryPanel() {
 	/* Labels */
-	JLabel durationLabel = new JLabel(durationText);
-	JLabel latitudeLabel = new JLabel(latitudeText);
-	JLabel longitudeLabel = new JLabel(longitudeText);
-	JLabel deliveryMenLabel = new JLabel(deliveryMenText);
-	JLabel previousDeliveryLabel = new JLabel(previousDeliveryHoursText);
-	JLabel instructionsLabel1 = new JLabel(instructionsText1);
-	JLabel instructionsLabel2 = new JLabel(instructionsText2);
-	JLabel instructionsLabel3 = new JLabel(instructionsText3);
+	JLabel durationLabel = new JLabel(this.durationText);
+	JLabel latitudeLabel = new JLabel(this.latitudeText);
+	JLabel longitudeLabel = new JLabel(this.longitudeText);
+	JLabel deliveryMenLabel = new JLabel(this.deliveryMenText);
+	JLabel previousDeliveryLabel = new JLabel(this.previousDeliveryHoursText);
+	JLabel instructionsLabel1 = new JLabel(this.instructionsText1);
+	JLabel instructionsLabel2 = new JLabel(this.instructionsText2);
+	JLabel instructionsLabel3 = new JLabel(this.instructionsText3);
 	/* Components */
-	latitudeField = new JTextField();
-	longitudeField = new JTextField();
-	durationField = new JFormattedTextField(NumberFormat.getIntegerInstance());
-	deliveryMenBox = new JComboBox<Integer>(createDeliveryMenIdVector());
-	precedingDeliveryBox = new JComboBox<Delivery>(new Vector<Delivery>(ModelInterface.getDeliveriesById(0)));
-	validationButton = new JButton(validationText);
-	validationButton.setBackground(Color.GREEN);
-	validationButton.setActionCommand(ACTION_VALIDATION_ADDING_DELIVERY);
-	validationButton.addActionListener(window.buttonListener);
-	cancelationButton = new JButton(cancelationText);
-	cancelationButton.setBackground(Color.RED);
-	cancelationButton.setActionCommand(ACTION_CANCELATION_ADDING_DELIVERY);
-	cancelationButton.addActionListener(window.buttonListener);
+	this.latitudeField = new JTextField();
+	this.longitudeField = new JTextField();
+	this.durationField = new JFormattedTextField(NumberFormat.getIntegerInstance());
+	this.deliveryMenBox = new JComboBox<Integer>(createDeliveryMenIdVector());
+	this.precedingDeliveryBox = new JComboBox<Delivery>(new Vector<Delivery>(ModelInterface.getDeliveriesById(0)));
+	this.validationButton = new JButton(this.validationText);
+	this.validationButton.setBackground(Color.GREEN);
+	this.validationButton.setActionCommand(ACTION_VALIDATION_ADDING_DELIVERY);
+	this.validationButton.addActionListener(this.window.buttonListener);
+	this.cancelationButton = new JButton(this.cancelationText);
+	this.cancelationButton.setBackground(Color.RED);
+	this.cancelationButton.setActionCommand(ACTION_CANCELATION_ADDING_DELIVERY);
+	this.cancelationButton.addActionListener(this.window.buttonListener);
 	/* Components dimensions */
-	latitudeField.setPreferredSize(new Dimension(125, 20));
-	longitudeField.setPreferredSize(new Dimension(125, 20));
-	durationField.setPreferredSize(new Dimension(125, 20));
-	deliveryMenBox.setPreferredSize(new Dimension(125, 20));
-	precedingDeliveryBox.setPreferredSize(new Dimension(200, 20));
+	this.latitudeField.setPreferredSize(new Dimension(125, 20));
+	this.longitudeField.setPreferredSize(new Dimension(125, 20));
+	this.durationField.setPreferredSize(new Dimension(125, 20));
+	this.deliveryMenBox.setPreferredSize(new Dimension(125, 20));
+	this.precedingDeliveryBox.setPreferredSize(new Dimension(200, 20));
 	/* Listeners */
-	deliveryMenBox.addItemListener(comboxListener);
+	this.deliveryMenBox.addItemListener(this.comboxListener);
 	/* GridBagLayout Display */
 	JPanel totalPanel = new JPanel();
 	totalPanel.setLayout(new GridBagLayout());
@@ -141,28 +142,28 @@ public class AddingDeliveryView extends JPanel {
 	totalPanel.add(durationLabel, displayConstraint);
 	displayConstraint.gridx = 1;
 	displayConstraint.gridy = 3;
-	totalPanel.add(durationField, displayConstraint);
+	totalPanel.add(this.durationField, displayConstraint);
 	/* Latitude label and field */
 	displayConstraint.gridx = 2;
 	displayConstraint.gridy = 3;
 	totalPanel.add(latitudeLabel, displayConstraint);
 	displayConstraint.gridx = 3;
 	displayConstraint.gridy = 3;
-	totalPanel.add(latitudeField, displayConstraint);
+	totalPanel.add(this.latitudeField, displayConstraint);
 	/* Delivery Men label and box */
 	displayConstraint.gridx = 0;
 	displayConstraint.gridy = 4;
 	totalPanel.add(deliveryMenLabel, displayConstraint);
 	displayConstraint.gridx = 1;
 	displayConstraint.gridy = 4;
-	totalPanel.add(deliveryMenBox, displayConstraint);
+	totalPanel.add(this.deliveryMenBox, displayConstraint);
 	/* Longitude label and field */
 	displayConstraint.gridx = 2;
 	displayConstraint.gridy = 4;
 	totalPanel.add(longitudeLabel, displayConstraint);
 	displayConstraint.gridx = 3;
 	displayConstraint.gridy = 4;
-	totalPanel.add(longitudeField, displayConstraint);
+	totalPanel.add(this.longitudeField, displayConstraint);
 	/* Previous delivery box */
 	displayConstraint.gridx = 0;
 	displayConstraint.gridy = 5;
@@ -171,24 +172,24 @@ public class AddingDeliveryView extends JPanel {
 	displayConstraint.gridx = 2;
 	displayConstraint.gridy = 5;
 	displayConstraint.anchor = GridBagConstraints.LINE_START;
-	totalPanel.add(precedingDeliveryBox, displayConstraint);
+	totalPanel.add(this.precedingDeliveryBox, displayConstraint);
 	/* Validation Button */
 	displayConstraint.gridx = 0;
 	displayConstraint.gridy = 6;
-	totalPanel.add(validationButton, displayConstraint);
-	/* Cancelation Button */
+	totalPanel.add(this.validationButton, displayConstraint);
+	/* Cancellation Button */
 	displayConstraint.gridx = 3;
 	displayConstraint.gridy = 6;
 	displayConstraint.anchor = GridBagConstraints.LINE_END;
 	displayConstraint.insets = new Insets(5, 5, 5, 12);
-	totalPanel.add(cancelationButton, displayConstraint);
+	totalPanel.add(this.cancelationButton, displayConstraint);
 	this.add(totalPanel);
     }
 
     /**
      * Function used to initialize our combobox with delivery men id.
      */
-    private Vector<Integer> createDeliveryMenIdVector() {
+    private static Vector<Integer> createDeliveryMenIdVector() {
 	Vector<Integer> deliveryMenId = new Vector<Integer>();
 	for (Tour deleveryMenTour : ModelInterface.getTourPlanning()) {
 	    if (!deliveryMenId.contains(deleveryMenTour.getDeliveryManId())) {
@@ -199,72 +200,76 @@ public class AddingDeliveryView extends JPanel {
     }
 
     /**
-     * Function to fill the delivery combobox when selecting the delivery men.
+     * Fill the delivery combobox when selecting the delivery men.
      */
     protected void updatePreviousDeliveryCombobox() {
 	List<Delivery> deliveryMenDeliveries = ModelInterface.getDeliveriesById(getSelectedDeliveryMen());
-	precedingDeliveryBox.removeAllItems();
+	this.precedingDeliveryBox.removeAllItems();
 	for (Delivery delivery : deliveryMenDeliveries) {
-	    precedingDeliveryBox.addItem(delivery);
+	    this.precedingDeliveryBox.addItem(delivery);
 	}
     }
 
     /**
-     * Function used to get the selected value of the delivery men id combobox.
-     * @return int , the selected delivery men id.
+     * Get the selected value of the delivery men id combobox.
+     * 
+     * @return Integer, the selected delivery men id.
      */
     public int getSelectedDeliveryMen() {
 	try {
-	    return (Integer) deliveryMenBox.getSelectedItem();
+	    return (Integer) this.deliveryMenBox.getSelectedItem();
 	} catch (NumberFormatException e) {
 	    return -1;
 	}
     }
 
     /**
-     * Function used to get the written value of the duration field.
-     * @return int , the selected duration.
+     * Get the written value of the duration field.
+     * 
+     * @return Integer, the selected duration.
      */
     public int getSelectedDuration() {
 	try {
-	    return Integer.valueOf(durationField.getText());
+	    return Integer.valueOf(this.durationField.getText());
 	} catch (NumberFormatException e) {
 	    return -1;
 	}
     }
 
     /**
-     * Function used to get the written value of the latitude field.
-     * @return int , the selected latitude.
+     * Get the written value of the latitude field.
+     * 
+     * @return Integer, the selected latitude.
      */
     public double getSelectedLat() {
 	try {
-	    return Double.valueOf(latitudeField.getText());
+	    return Double.valueOf(this.latitudeField.getText());
 	} catch (NumberFormatException e) {
 	    return -1;
 	}
     }
 
     /**
-     * Function used to get the written value of the longitude field.
-     * @return int , the selected longitude.
+     * Get the written value of the longitude field.
+     * 
+     * @return Integer, the selected longitude.
      */
     public double getSelectedLon() {
 	try {
-	    return Double.valueOf(longitudeField.getText());
+	    return Double.valueOf(this.longitudeField.getText());
 	} catch (NumberFormatException e) {
 	    return -1;
 	}
     }
 
     /**
-     * Function used to get the selected value of the preceding delivery
-     * combobox.
-     * @return Delivery , the selected delivery.
+     * Function used to get the selected value of the preceding delivery combobox.
+     * 
+     * @return Delivery, the selected delivery.
      */
     public Delivery getSelectedPrecedingDelivery() {
 	try {
-	    return (Delivery) precedingDeliveryBox.getSelectedItem();
+	    return (Delivery) this.precedingDeliveryBox.getSelectedItem();
 	} catch (Exception e) {
 	    return null;
 	}

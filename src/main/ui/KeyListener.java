@@ -10,16 +10,17 @@ import main.model.ModelInterface;
 /**
  * Listener catching the keyboard events of the application.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class KeyListener extends KeyAdapter {
 
     private Controler controler;
 
     /**
-     * Create a keyboard listener for the specified controller.
+     * Create a keyboard listener.
      * 
-     * @param controler the specified controller.
+     * @param controler is the application's controller.
      */
     public KeyListener(Controler controler) {
 	this.controler = controler;
@@ -28,16 +29,16 @@ public class KeyListener extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
 	if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+	    Delivery delivery = ModelInterface.findCorrespondingDelivery(this.controler.getSelectedIntersection());
 	    if (delivery != null) {
-		controler.removeDelivery();
+		this.controler.removeDelivery();
 	    }
 	}
 
 	if (e.getKeyCode() == KeyEvent.VK_INSERT) {
-	    Delivery delivery = ModelInterface.findCorrespondingDelivery(controler.getSelectedIntersection());
+	    Delivery delivery = ModelInterface.findCorrespondingDelivery(this.controler.getSelectedIntersection());
 	    if (delivery != null) {
-		controler.addDelivery();
+		this.controler.addDelivery();
 	    }
 	}
     }

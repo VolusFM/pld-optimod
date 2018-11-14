@@ -27,7 +27,8 @@ import main.model.Tour;
  * Panel of the graphical view of the application, with the drawn plan,
  * deliveries and tours.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class PlanView extends JPanel {
 
@@ -45,7 +46,6 @@ public class PlanView extends JPanel {
 
     /* Highlighted elements */
     private Intersection highlightedIntersection;
-    private Intersection rightClickedIntersection;
     private Section highlightedSection;
 
     /* Graphic attributes */
@@ -60,8 +60,8 @@ public class PlanView extends JPanel {
      * Create the graphical view for drawing the charged plan p in the specified
      * window w.
      * 
-     * @param w the window
-     * @param p the plan to print
+     * @param w is the application's graphical window.
+     * @param p is the plan to print.
      */
     public PlanView(Window w, Plan p) {
 	super();
@@ -76,9 +76,9 @@ public class PlanView extends JPanel {
     }
 
     /**
-     * Function called any time the view must be redraw.
+     * Redraw a component.
      * 
-     * @param g the graphics component
+     * @param g is the graphical component to redraw.
      */
     @Override
     public void paintComponent(Graphics g) {
@@ -87,13 +87,13 @@ public class PlanView extends JPanel {
 	/* Draw the sections */
 	graphics2d.setColor(Color.DARK_GRAY);
 	// this.graphics = g;
-	Collection<Intersection> intersections = plan.getGraph().values();
+	Collection<Intersection> intersections = this.plan.getGraph().values();
 	Iterator<Intersection> itIntersection = intersections.iterator();
 	while (itIntersection.hasNext()) {
 	    List<Section> sections = itIntersection.next().getOutcomingSections();
 	    Iterator<Section> itSection = sections.iterator();
 	    while (itSection.hasNext()) {
-		printSection(graphics2d, itSection.next());
+		paintSection(graphics2d, itSection.next());
 	    }
 	}
 
@@ -101,14 +101,14 @@ public class PlanView extends JPanel {
 	graphics2d.setColor(Color.RED);
 	Delivery depot = ModelInterface.getDepot();
 	if (depot != null) {
-	    printDelivery(graphics2d, depot);
+	    paintDelivery(graphics2d, depot);
 	}
 	/* Deliveries Displaying */
 	graphics2d.setColor(Color.BLUE);
 	Collection<Delivery> deliveries = ModelInterface.getDeliveries();
 	Iterator<Delivery> itDeliveries = deliveries.iterator();
 	while (itDeliveries.hasNext()) {
-	    printDelivery(graphics2d, itDeliveries.next());
+	    paintDelivery(graphics2d, itDeliveries.next());
 	}
 	/* Tour displaying */
 	graphics2d.setColor(Color.GREEN);
@@ -116,47 +116,39 @@ public class PlanView extends JPanel {
 	Collection<Tour> tours = ModelInterface.getTourPlanning();
 	int i = 0;
 	for (Tour tour : tours) {
-	    graphics2d.setColor(colors[i++ % colors.length]);
+	    graphics2d.setColor(this.colors[i++ % this.colors.length]);
 	    for (Step step : tour.getSteps()) {
 		for (Section section : step.getSections()) {
-		    printSection(graphics2d, section);
+		    paintSection(graphics2d, section);
 		}
 	    }
 	}
 	/* Highlighted intersection */
-	if (highlightedIntersection != null) {
+	if (this.highlightedIntersection != null) {
 	    graphics2d.setColor(Color.MAGENTA);
 	    Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 		    new float[] { 2.0f, 0.5f }, 0.0f);
 	    graphics2d.setStroke(stroke);
-	    printIntersection(graphics2d, highlightedIntersection);
+	    paintIntersection(graphics2d, this.highlightedIntersection);
 	}
 	/* Highlighted section */
-	if (highlightedSection != null) {
+	if (this.highlightedSection != null) {
 	    graphics2d.setColor(Color.ORANGE);
 	    Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
 		    new float[] { 2.0f, 0.5f }, 0.0f);
 	    graphics2d.setStroke(stroke);
-	    printSection(graphics2d, highlightedSection);
-	}
-	/* Rightclicked intersection */
-	if (rightClickedIntersection != null) {
-	    graphics2d.setColor(Color.CYAN);
-	    Stroke stroke = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f,
-		    new float[] { 2.0f, 0.5f }, 0.0f);
-	    graphics2d.setStroke(stroke);
-	    printIntersection(graphics2d, rightClickedIntersection);
+	    paintSection(graphics2d, this.highlightedSection);
 	}
     }
 
     /**
-     * Method called any time we need to draw a plan section. Draw a line
-     * between the two intersections of the section.
+     * Draw a plan section, i.e. a line between the two intersections of the
+     * section.
      * 
-     * @param g the graphics component.
+     * @param g       is the graphics component onto which to paint.
      * @param section the section to print.
      */
-    public void printSection(Graphics g, Section section) {
+    public void paintSection(Graphics g, Section section) {
 	/* Values from the plan */
 	GeographicCoordinate startGeographicCoordinate = new GeographicCoordinate(section.getStart().getLat(),
 		section.getStart().getLon());
@@ -171,13 +163,12 @@ public class PlanView extends JPanel {
     }
 
     /**
-     * Method called any time we need to draw a delivery point. Draw a circle at
-     * the specified point.
+     * Draw a circle at the specified point of a delivery.
      * 
-     * @param g the graphics component.
-     * @param delivery the delivery to print.
+     * @param g        is the graphics component onto which to paint.
+     * @param delivery is the delivery to print.
      */
-    public void printDelivery(Graphics g, Delivery delivery) {
+    public void paintDelivery(Graphics g, Delivery delivery) {
 	/* Values from delivery */
 	GeographicCoordinate geographicCoordinate = new GeographicCoordinate(delivery.getAddress().getLat(),
 		delivery.getAddress().getLon());
@@ -188,12 +179,12 @@ public class PlanView extends JPanel {
     }
 
     /**
-     * Function calls to draw an intersection on the plan view.
+     * Draw an intersection on the plan view.
      * 
-     * @param g the graphics component.
-     * @param intersection the intersection to print.
+     * @param g            is the graphics component onto which to paint.
+     * @param intersection is the intersection to print.
      */
-    public void printIntersection(Graphics g, Intersection intersection) {
+    public void paintIntersection(Graphics g, Intersection intersection) {
 	/* Values from delivery */
 	GeographicCoordinate geographicCoordinate = new GeographicCoordinate(intersection.getLat(),
 		intersection.getLon());
@@ -204,103 +195,93 @@ public class PlanView extends JPanel {
     }
 
     /**
-     * Method used to extract max and min of latitudes and longitudes in the
-     * current plan. (Used to normalize the values in order to print the.
-     * sections).
+     * Extract max and min of latitudes and longitudes in the current plan. (Used to
+     * normalize the values in order to print the. sections).
      */
     private void findExtremes() {
 	/* Initialization */
-	Collection<Intersection> intersections = plan.getGraph().values();
+	Collection<Intersection> intersections = this.plan.getGraph().values();
 	Iterator<Intersection> it = intersections.iterator();
 	Intersection first = it.next();
-	minLat = first.getLat();
-	maxLat = first.getLat();
-	minLong = first.getLon();
-	maxLong = first.getLon();
+	this.minLat = first.getLat();
+	this.maxLat = first.getLat();
+	this.minLong = first.getLon();
+	this.maxLong = first.getLon();
 	Intersection current;
 	/* Calculate */
 	while (it.hasNext()) {
 	    current = it.next();
-	    if (current.getLat() < minLat) {
-		minLat = current.getLat();
+	    if (current.getLat() < this.minLat) {
+		this.minLat = current.getLat();
 	    }
-	    if (current.getLat() > maxLat) {
-		maxLat = current.getLat();
+	    if (current.getLat() > this.maxLat) {
+		this.maxLat = current.getLat();
 	    }
-	    if (current.getLon() < minLong) {
-		minLong = current.getLon();
+	    if (current.getLon() < this.minLong) {
+		this.minLong = current.getLon();
 	    }
-	    if (current.getLon() > maxLong) {
-		maxLong = current.getLon();
+	    if (current.getLon() > this.maxLong) {
+		this.maxLong = current.getLon();
 	    }
 	}
 
     }
 
     /**
-     * Function calls to convert geographical coordinates into screen ones.
+     * Convert geographical coordinates into screen ones.
      * 
-     * @param geographicCoordinate the geographical coordinates to convert.
+     * @param geographicCoordinate are the geographical coordinates to convert.
      * @return ScreenCoordinate, the coordinates as screen ones.
      */
     public ScreenCoordinate convertToScreenCoordinate(GeographicCoordinate geographicCoordinate) {
 	double lat = geographicCoordinate.getLatitude();
 	double lon = geographicCoordinate.getLongitude();
 	/* Normalization */
-	lat = (lat - minLat) / (maxLat - minLat);
-	lon = (lon - minLong) / (maxLong - minLong);
+	lat = (lat - this.minLat) / (this.maxLat - this.minLat);
+	lon = (lon - this.minLong) / (this.maxLong - this.minLong);
 	/* Scaling */
-	int x = (int) Math.round(xConstant * lat * getHeight());
-	int y = (int) Math.round(yConstant * lon * getWidth());
+	int x = (int) Math.round(this.xConstant * lat * getHeight());
+	int y = (int) Math.round(this.yConstant * lon * getWidth());
 
 	return new ScreenCoordinate(x, y);
     }
 
     /**
-     * Function calls to convert screen coordinates into geographical ones.
+     * Convert screen coordinates into geographical ones.
      * 
-     * @param screenCoordinate the screen coordinates to convert.
+     * @param screenCoordinate are the screen coordinates to convert.
      * @return GeographicCoordinate, the coordinates as geographical ones.
      */
     public GeographicCoordinate convertToGeographicCoordinate(ScreenCoordinate screenCoordinate) {
 	int x = screenCoordinate.getX();
 	int y = screenCoordinate.getY();
 	/* Normalization */
-	double latSpan = (maxLat - minLat) / (xConstant * getHeight());
-	double longSpan = (maxLong - minLong) / (yConstant * getWidth());
+	double latSpan = (this.maxLat - this.minLat) / (this.xConstant * getHeight());
+	double longSpan = (this.maxLong - this.minLong) / (this.yConstant * getWidth());
 
-	double lat = minLat + x * latSpan;
-	double lon = minLong + y * longSpan;
+	double lat = this.minLat + x * latSpan;
+	double lon = this.minLong + y * longSpan;
 
 	return new GeographicCoordinate(lat, lon);
     }
 
     /**
-     * Methods calls to highlight the intersection (left-clicked).
+     * Highlight the intersection (left-clicked).
      * 
-     * @param intersection the intersection to highlight.
+     * @param intersection is the intersection to highlight.
      */
     public void setHighlightedIntersection(Intersection intersection) {
 	this.highlightedIntersection = intersection;
     }
 
     /**
-     * Methods calls to highlight the intersection (right-clicked).
+     * Highlight a section.
      * 
-     * @param intersection the intersection to highlight.
+     * @param section is the section to highlight.
      */
-    public void setRightClickedIntersection(Intersection intersection) {
-	rightClickedIntersection = intersection;
-    }
-
-    /**
-     * Methods calls to highlight a section.
-     * 
-     * @param findClosestSection the section to highlight.
-     */
-    public void setHighlightedSection(Section findClosestSection) {
-	this.highlightedSection = findClosestSection;
-	setToolTipText(highlightedSection.getStreetName());
+    public void setHighlightedSection(Section section) {
+	this.highlightedSection = section;
+	setToolTipText(this.highlightedSection.getStreetName());
 	ToolTipManager manager = ToolTipManager.sharedInstance();
 	manager.setInitialDelay(0);
 	manager.setReshowDelay(0);

@@ -5,7 +5,8 @@ package main.ui;
  * Screen coordinate are "normalized" (taking into account boundaries of map
  * view, etc.)
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class ScreenCoordinate {
 
@@ -26,16 +27,16 @@ public class ScreenCoordinate {
     /**
      * Getter of the x attribute.
      * 
-     * @return int
+     * @return Integer, the x coordinate.
      */
     public int getX() {
-	return x;
+	return this.x;
     }
 
     /**
      * Setter of the x attribute.
      * 
-     * @param x the new x coordinate to set.
+     * @param x is the new x coordinate to set.
      */
     public void setX(int x) {
 	this.x = x;
@@ -44,16 +45,16 @@ public class ScreenCoordinate {
     /**
      * Getter of the y attribute.
      * 
-     * @return int
+     * @return Integer, the y coordinate.
      */
     public int getY() {
-	return y;
+	return this.y;
     }
 
     /**
      * Setter of the y attribute.
      * 
-     * @param y the new y coordinate to set.
+     * @param y is the new y coordinate to set.
      */
     public void setY(int y) {
 	this.y = y;

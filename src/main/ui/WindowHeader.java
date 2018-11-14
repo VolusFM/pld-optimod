@@ -12,7 +12,8 @@ import javax.swing.SwingConstants;
  * Panel using as header in the application, wit the application title and
  * principal buttons, such as Return and Parameters buttons.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class WindowHeader extends JPanel {
 
@@ -43,8 +44,8 @@ public class WindowHeader extends JPanel {
     /**
      * Create a header with title and buttons for the specified windows.
      * 
-     * @param w the window.
-     * @param buttonListener the button listener to be used in the panel.
+     * @param w              is the application's graphical window.
+     * @param buttonListener is the button listener to be used in the panel.
      */
     public WindowHeader(Window w, ButtonListener buttonListener) {
 	super();
@@ -52,7 +53,7 @@ public class WindowHeader extends JPanel {
 	setBackground(Color.white);
 
 	this.windowTitle = new JLabel(APPLICATION_TITLE, SwingConstants.CENTER);
-	add(windowTitle, BorderLayout.CENTER);
+	add(this.windowTitle, BorderLayout.CENTER);
 
 	this.listener = buttonListener;
 
@@ -60,45 +61,45 @@ public class WindowHeader extends JPanel {
 	this.deliveryMenCountButton.setFocusable(false);
 	this.deliveryMenCountButton.setFocusPainted(false);
 	this.deliveryMenCountButton.setVisible(this.deliveryMenCountButtonVisibility);
-	add(deliveryMenCountButton, BorderLayout.EAST);
+	add(this.deliveryMenCountButton, BorderLayout.EAST);
 
-	returnButton = createButton(RETURN, ACTION_RETURN);
+	this.returnButton = createButton(RETURN, ACTION_RETURN);
 	this.returnButton.setFocusable(false);
 	this.returnButton.setFocusPainted(false);
 	this.returnButton.setVisible(this.returnButtonVisibility);
-	add(returnButton, BorderLayout.WEST);
+	add(this.returnButton, BorderLayout.WEST);
     }
 
     /**
      * Toggle delivery men count button's visibility.
      */
     public void toggleDeliveryMenCountButtonVisibility() {
-	deliveryMenCountButtonVisibility = !deliveryMenCountButtonVisibility;
-	deliveryMenCountButton.setVisible(deliveryMenCountButtonVisibility);
+	this.deliveryMenCountButtonVisibility = !this.deliveryMenCountButtonVisibility;
+	this.deliveryMenCountButton.setVisible(this.deliveryMenCountButtonVisibility);
     }
 
     /**
      * Toggle return button's visibility.
      */
     public void toggleReturnButtonVisibility() {
-	returnButtonVisibility = !returnButtonVisibility;
-	returnButton.setVisible(returnButtonVisibility);
+	this.returnButtonVisibility = !this.returnButtonVisibility;
+	this.returnButton.setVisible(this.returnButtonVisibility);
     }
 
     /**
-     * Convenience method to create a new button with a given text and action,
-     * and to bind it to the action listener
+     * Convenience method to create a new button with a given text and action, and
+     * to bind it to the action listener
      * 
-     * @param text is the text of the button.
-     * @param action is a string describing the action to perform when clicking
-     *            on the button.
+     * @param text   is the text of the button.
+     * @param action is a string describing the action to perform when clicking on
+     *                   the button.
      * 
      * @return JButton, the created button.
      */
     private JButton createButton(String text, String action) {
 	JButton button = new JButton(text);
 	button.setActionCommand(action);
-	button.addActionListener(listener);
+	button.addActionListener(this.listener);
 	return button;
     }
 

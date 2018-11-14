@@ -2,6 +2,7 @@ package main.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -14,7 +15,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 import main.controler.Controler;
 import main.model.Intersection;
@@ -27,7 +30,8 @@ import main.model.Step;
  * Window of the application, receiving order from the controller in order to
  * adapt its displaying and transmitting the users actions to the controller.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Window extends JFrame {
 
@@ -79,46 +83,46 @@ public class Window extends JFrame {
 	setLayout(new BorderLayout());
 	/* Initialize */
 	this.controler = controler;
-	buttonListener = new ButtonListener(controler);
-	keyListener = new KeyListener(controler);
-	rightPanel = new JPanel();
-	rightPanel.setPreferredSize(new Dimension(500, 900));
-	southPanel = new JPanel();
-	deliveryMenCountPanel = new JPanel();
+	this.buttonListener = new ButtonListener(controler);
+	this.keyListener = new KeyListener(controler);
+	this.rightPanel = new JPanel();
+	this.rightPanel.setPreferredSize(new Dimension(500, 900));
+	this.southPanel = new JPanel();
+	this.deliveryMenCountPanel = new JPanel();
 	/* Header */
-	this.header = new WindowHeader(this, buttonListener);
-	this.header.setVisible(headerVisibility);
-	getContentPane().add(header, BorderLayout.NORTH);
+	this.header = new WindowHeader(this, this.buttonListener);
+	this.header.setVisible(this.headerVisibility);
+	getContentPane().add(this.header, BorderLayout.NORTH);
 	/* Plan Selection Panel */
 	displayPlanSelectionPanel();
 	/* Display */
-	this.setTitle(WINDOW_TITLE);
+	this.setTitle(this.WINDOW_TITLE);
 	setWindowDimensions();
 	setVisible(true);
-	setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     }
 
     /**
-     * Create the panel with the planning of the tour as a board of delivery
-     * men, locations, hours and list of roads.
+     * Create the panel with the planning of the tour as a board of delivery men,
+     * locations, hours and list of roads.
      */
     public void displayTourPlanningPanel() {
-	rightPanel.setVisible(false);
-	rightPanel = new JPanel();
-	rightPanel.setPreferredSize(new Dimension(500, 900));
-	rightPanel.setLayout(new BorderLayout());
+	this.rightPanel.setVisible(false);
+	this.rightPanel = new JPanel();
+	this.rightPanel.setPreferredSize(new Dimension(500, 900));
+	this.rightPanel.setLayout(new BorderLayout());
 	/* Create Content */
-	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-	setPlanningPanel(new PlanningView(controler, this));
+	JLabel planningText = new JLabel(this.TEXT_PLANNING_BOARD);
+	setPlanningPanel(new PlanningView(this.controler, this));
 	/* Panels */
 	JPanel planning = new JPanel();
 	planning.add(planningText, BorderLayout.NORTH);
 	planning.add(getPlanningPanel(), BorderLayout.CENTER);
 	/* Set content */
 	displayDeliveryMenCountPanel();
-	rightPanel.add(planning, BorderLayout.CENTER);
-	rightPanel.setVisible(true);
-	add(rightPanel, BorderLayout.EAST);
+	this.rightPanel.add(planning, BorderLayout.CENTER);
+	this.rightPanel.setVisible(true);
+	add(this.rightPanel, BorderLayout.EAST);
 	redraw();
     }
 
@@ -126,18 +130,18 @@ public class Window extends JFrame {
      * Create the panel witch print the count of delivery men
      */
     public void displayDeliveryMenCountPanel() {
-	deliveryMenCountPanel.removeAll();
-	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
+	this.deliveryMenCountPanel.removeAll();
+	JLabel deliveryMenCount = new JLabel(this.TEXT_DELIVERY_LENGTH_COUNT);
 	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
-	deliveryMenCountPanel.add(deliveryMenCount, BorderLayout.NORTH);
-	deliveryMenCountPanel.add(count, BorderLayout.CENTER);
-	rightPanel.add(deliveryMenCountPanel, BorderLayout.NORTH);
+	this.deliveryMenCountPanel.add(deliveryMenCount, BorderLayout.NORTH);
+	this.deliveryMenCountPanel.add(count, BorderLayout.CENTER);
+	this.rightPanel.add(this.deliveryMenCountPanel, BorderLayout.NORTH);
 	redraw();
     }
 
     /**
-     * Create the panel with the planning of the tour as a board of delivery
-     * men, locations, hours and list of roads.
+     * Create the panel with the planning of the tour as a board of delivery men,
+     * locations, hours and list of roads.
      */
     public void displayAddingDeliveryPanel() {
 	getPlanningPanel().displayAddingDeliveryPanel();
@@ -147,9 +151,9 @@ public class Window extends JFrame {
      * Defined the window and components size.
      */
     private void setWindowDimensions() {
-	setExtendedState(JFrame.MAXIMIZED_BOTH);
+	setExtendedState(Frame.MAXIMIZED_BOTH);
 	pack();
-	header.setLocation(0, 0);
+	this.header.setLocation(0, 0);
     }
 
     /**
@@ -158,12 +162,12 @@ public class Window extends JFrame {
     private void displayPlanSelectionPanel() {
 	this.centerPanel = new JPanel();
 	/* Create Content */
-	JLabel selectionText = new JLabel(TEXT_PLAN_SELECTION);
-	JButton selectionButton = createButton(BUTTON_BROWSE, ACTION_SELECTION_PLAN);
-	centerPanel.add(selectionText);
-	centerPanel.add(selectionButton);
+	JLabel selectionText = new JLabel(this.TEXT_PLAN_SELECTION);
+	JButton selectionButton = createButton(this.BUTTON_BROWSE, ACTION_SELECTION_PLAN);
+	this.centerPanel.add(selectionText);
+	this.centerPanel.add(selectionButton);
 	/* Set content */
-	add(centerPanel, BorderLayout.CENTER);
+	add(this.centerPanel, BorderLayout.CENTER);
     }
 
     /**
@@ -171,14 +175,14 @@ public class Window extends JFrame {
      */
     public void displayDeliveryRequestSelectionPanel() {
 	this.rightPanel.removeAll();
-	rightPanel.setPreferredSize(new Dimension(500, 900));
+	this.rightPanel.setPreferredSize(new Dimension(500, 900));
 	/* Create Content */
-	JLabel selectionText = new JLabel(TEXT_DELIVERY_SELECTION);
-	JButton selectionButton = createButton(BUTTON_BROWSE, ACTION_SELECTION_DELIVERY);
-	rightPanel.add(selectionText);
-	rightPanel.add(selectionButton);
+	JLabel selectionText = new JLabel(this.TEXT_DELIVERY_SELECTION);
+	JButton selectionButton = createButton(this.BUTTON_BROWSE, ACTION_SELECTION_DELIVERY);
+	this.rightPanel.add(selectionText);
+	this.rightPanel.add(selectionButton);
 	/* Set content */
-	add(rightPanel, BorderLayout.EAST);
+	add(this.rightPanel, BorderLayout.EAST);
 	redraw();
     }
 
@@ -186,15 +190,15 @@ public class Window extends JFrame {
      * Create the panel with the city plan.
      */
     public void displayPlanView() {
-	remove(centerPanel);
+	remove(this.centerPanel);
 	this.centerPanel = new JPanel();
-	centerPanel.setLayout(new GridBagLayout());
+	this.centerPanel.setLayout(new GridBagLayout());
 	/* Create Content */
 	Plan plan = ModelInterface.getPlan();
 	planPanel = new PlanView(this, plan);
-	PlanListener planListener = new PlanListener(controler);
+	PlanListener planListener = new PlanListener(this.controler);
 	planPanel.addMouseListener(planListener);
-	planPanel.addKeyListener(keyListener);
+	planPanel.addKeyListener(this.keyListener);
 
 	/* GridbagLayoutDisplaying */
 	GridBagConstraints displayConstraint = new GridBagConstraints();
@@ -208,10 +212,10 @@ public class Window extends JFrame {
 	displayConstraint.anchor = GridBagConstraints.FIRST_LINE_START;
 	displayConstraint.insets = new Insets(5, 5, 5, 5);
 	JScrollPane scroll = new JScrollPane(planPanel);
-	scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-	centerPanel.add(scroll, displayConstraint);
+	scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	this.centerPanel.add(scroll, displayConstraint);
 	/* Set content */
-	add(centerPanel, BorderLayout.CENTER);
+	add(this.centerPanel, BorderLayout.CENTER);
 	redraw();
     }
 
@@ -219,16 +223,16 @@ public class Window extends JFrame {
      * Create the panel with the button to calculate the planning.
      */
     public void displayCalculateTourButtonPanel() {
-	rightPanel.setVisible(false);
-	rightPanel = new JPanel();
-	rightPanel.setPreferredSize(new Dimension(500, 900));
+	this.rightPanel.setVisible(false);
+	this.rightPanel = new JPanel();
+	this.rightPanel.setPreferredSize(new Dimension(500, 900));
 	/* Create Content */
-	JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
-	rightPanel.add(selectionButton, BorderLayout.EAST);
+	JButton selectionButton = createButton(this.BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
+	this.rightPanel.add(selectionButton, BorderLayout.EAST);
 	displayDeliveryMenCountPanel();
 	/* Set content */
-	add(rightPanel, BorderLayout.EAST);
-	rightPanel.setVisible(true);
+	add(this.rightPanel, BorderLayout.EAST);
+	this.rightPanel.setVisible(true);
 	redraw();
     }
 
@@ -252,20 +256,18 @@ public class Window extends JFrame {
     }
 
     /**
-     * Convenience method to create a new button with a given text and action,
-     * and to bind it to the action listener
+     * Convenience method to create a new button with a given text and action, and
+     * to bind it to the action listener
      */
     private JButton createButton(String text, String action) {
 	JButton button = new JButton(text);
 	button.setActionCommand(action);
-	button.addActionListener(buttonListener);
+	button.addActionListener(this.buttonListener);
 	return button;
     }
 
     /**
-     * Update the graphics on the window, used when we don't add/remove
-     * components Update the graphics on the window, used when we don't
-     * add/remove components
+     * Update the graphics on the window, used when we don't add/remove components
      */
     public void redraw() {
 	repaint();
@@ -273,7 +275,7 @@ public class Window extends JFrame {
     }
 
     /**
-     * Method call to highlight a clicked intersection on the plan view.
+     * Highlight a clicked intersection on the plan view.
      * 
      * @param intersection the intersection to highlight
      */
@@ -284,17 +286,7 @@ public class Window extends JFrame {
     }
 
     /**
-     * Method call to highlight a right-clicked intersection on the plan view.
-     * 
-     * @param intersection the intersection to highlight
-     */
-    public void highlightRightClickedIntersection(Intersection intersection) {
-	planPanel.setRightClickedIntersection(intersection);
-	redraw();
-    }
-
-    /**
-     * Method call to highlight a clicked section on the plan view.
+     * Highlight a clicked section on the plan view.
      * 
      * @param section the section to highlight
      */
@@ -303,27 +295,27 @@ public class Window extends JFrame {
     }
 
     /**
-     * Method to hide/show the parameters button from the header
+     * Toggle the parameters button's visibility in the header
      */
     public void toggleDeliveryMenCountButtonVisiblity() {
-	header.toggleDeliveryMenCountButtonVisibility();
+	this.header.toggleDeliveryMenCountButtonVisibility();
     }
 
     /**
-     * Method to hide/show the return button from the header
+     * Toggle the return button's visibility in the header
      */
     public void toggleReturnButtonVisibility() {
-	header.toggleReturnButtonVisibility();
+	this.header.toggleReturnButtonVisibility();
     }
 
     /**
-     * Method call to print the sections of a delivery step
+     * Display the sections of a delivery step
      * 
-     * @param step the step
+     * @param step is the step of which we want to display the section.
      */
     public void listSectionsOfStep(Step step) {
-	southPanel.removeAll();
-	southPanel.setVisible(false);
+	this.southPanel.removeAll();
+	this.southPanel.setVisible(false);
 	Set<String> streetNames = new LinkedHashSet<>();
 	for (Section section : step.getSections()) {
 	    streetNames.add(section.getStreetName());
@@ -336,37 +328,35 @@ public class Window extends JFrame {
 	}
 	html += "</html>";
 	JLabel label = new JLabel(html);
-	southPanel.add(label);
-	southPanel.setVisible(true);
-	add(southPanel, BorderLayout.SOUTH);
+	this.southPanel.add(label);
+	this.southPanel.setVisible(true);
+	add(this.southPanel, BorderLayout.SOUTH);
 	redraw();
     }
 
     /**
-     * Function calls to hide the panel which print the section as the list of
-     * roads names.
+     * Hide the panel which print the section as the list of roads names.
      */
     public void hideSectionsList() {
-	southPanel.setVisible(false);
+	this.southPanel.setVisible(false);
     }
 
     /**
-     * Function calls to force the event focus on the plan view.
+     * Force the event focus on the plan view.
      */
     public void forceFocusOnPlanView() {
 	planPanel.requestFocus();
     }
 
     /**
-     * Function calls to force the planning table to be redrawn.
+     * Force the planning table to be redrawn.
      */
     public void redrawTable() {
 	getPlanningPanel().redrawTable();
     }
 
     /**
-     * Function call when the window is initialize to set a more esthetic look
-     * to the app
+     * Give a more esthetic look to the app when the window is initialized.
      */
     public static void setBestLookAndFeelAvailable() {
 	String system_lf = UIManager.getSystemLookAndFeelClassName().toLowerCase();
@@ -384,18 +374,18 @@ public class Window extends JFrame {
     }
 
     /**
-     * Getter of the attribute planningPanel.
+     * Getter of the planningPanel attribute.
      * 
-     * @return PlanningView.
+     * @return PlanningView, the planning panel.
      */
     public static PlanningView getPlanningPanel() {
 	return planningPanel;
     }
 
     /**
-     * Setter of the attribute planningPanel.
+     * Setter of the planningPanel attribute.
      * 
-     * @param planningPanel , the planning view to set.
+     * @param planningPanel is the planning view to set.
      */
     public static void setPlanningPanel(PlanningView planningPanel) {
 	Window.planningPanel = planningPanel;

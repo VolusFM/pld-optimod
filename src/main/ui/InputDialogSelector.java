@@ -11,11 +11,11 @@ import javax.swing.JOptionPane;
 public abstract class InputDialogSelector {
 
     /**
-     * Function what create a modal to set a integer value.
+     * Create a modal to set a integer value.
      * 
-     * @param message
-     * @param title
-     * @return int, the value selected by the user
+     * @param message is the message to display.
+     * @param title   is the title of the modal.
+     * @return Integer, the value selected by the user.
      */
     public static int getIntegerFromInput(String message, String title) {
 	return Integer.parseInt(JOptionPane.showInputDialog(null, message, title, JOptionPane.PLAIN_MESSAGE));

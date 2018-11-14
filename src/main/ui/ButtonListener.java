@@ -8,7 +8,8 @@ import main.controler.Controler;
 /**
  * Listener catching the button events of the application.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class ButtonListener implements ActionListener {
 
@@ -17,7 +18,7 @@ public class ButtonListener implements ActionListener {
     /**
      * Create a button listener for the specified application controller.
      * 
-     * @param c the application controller
+     * @param c is the application's controller.
      */
     public ButtonListener(Controler c) {
 	this.controler = c;
@@ -29,40 +30,40 @@ public class ButtonListener implements ActionListener {
      * 
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      * 
-     * @param e the event.
+     * @param e is the event that occurred.
      */
     @Override
     public void actionPerformed(ActionEvent e) {
 	switch (e.getActionCommand()) {
 	case Window.ACTION_SELECTION_PLAN:
-	    controler.openPlan();
+	    this.controler.openPlan();
 	    break;
 	case Window.ACTION_SELECTION_DELIVERY:
-	    controler.openDeliveries();
+	    this.controler.openDeliveries();
 	    break;
 	case WindowHeader.ACTION_CHANGE_DELIVERY_MEN_COUNT:
-	    controler.openParameters();
+	    this.controler.openParameters();
 	    break;
 	case Window.ACTION_CALCULATE_TOUR:
-	    controler.calculatePlanning();
+	    this.controler.calculatePlanning();
 	    break;
 	case WindowHeader.ACTION_RETURN:
-	    controler.returnToState();
+	    this.controler.returnToState();
 	    break;
 	case PlanningView.ACTION_ADDING_DELIVERY_POINT:
-	    controler.addDelivery();
+	    this.controler.addDelivery();
 	    break;
 	case PlanningView.ACTION_SUPRESSING_DELIVERY_POINT:
-	    controler.removeDelivery();
+	    this.controler.removeDelivery();
 	    break;
 	case PlanningView.ACTION_CANCELLING_MODIFICATIONS:
-	    // TODO : controleur.cancelModification() => Giving up functionality
+	    // TODO : controleur.cancelModification() => Gave up implementation
 	    break;
 	case AddingDeliveryView.ACTION_VALIDATION_ADDING_DELIVERY:
-	    controler.confirmNewDelivery();
+	    this.controler.confirmNewDelivery();
 	    break;
 	case AddingDeliveryView.ACTION_CANCELATION_ADDING_DELIVERY:
-	    controler.cancelNewDelivery();
+	    this.controler.cancelNewDelivery();
 	    break;
 	default:
 	    throw new RuntimeException("Unhandled action : " + e.getActionCommand());

@@ -6,7 +6,8 @@ import javax.swing.JOptionPane;
  * Abstract Class what create a modal used to inform the UI user of exception
  * that occurred.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public abstract class ExceptionModal {
 

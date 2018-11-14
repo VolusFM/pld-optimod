@@ -21,7 +21,8 @@ import main.model.Tour;
 /**
  * Panel including the planning table and buttons.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class PlanningView extends JPanel {
 
@@ -41,9 +42,9 @@ public class PlanningView extends JPanel {
     private ButtonListener buttonListener;
 
     /* Components texts */
-    private final String ADD_DELIVERY_POINT_BUTTON = "Ajouter une livraison";
-    private final String SUPRESS_DELIVERY_POINT_BUTTON = "Supprimer la livraison sélectionnée";
-    private final String CANCEL_MODIFICATIONS_BUTTON = "Annuler";
+    private final static String ADD_DELIVERY_POINT_BUTTON = "Ajouter une livraison";
+    private final static String SUPRESS_DELIVERY_POINT_BUTTON = "Supprimer la livraison sélectionnée";
+    private final static String CANCEL_MODIFICATIONS_BUTTON = "Annuler";
 
     /* Actions */
     protected final static String ACTION_ADDING_DELIVERY_POINT = "ADD_DELIVERY_POINT";
@@ -55,11 +56,11 @@ public class PlanningView extends JPanel {
     private GridBagConstraints displayConstraint;
 
     /**
-     * Create the textual view for printing the panning as a table in the
-     * specified window of the specified controller.
+     * Create the textual view for printing the panning as a table in the specified
+     * window of the specified controller.
      * 
-     * @param c the controller.
-     * @param w the window.
+     * @param c is the application's controller.
+     * @param w is the application's graphical window.
      */
     public PlanningView(Controler c, Window w) {
 	super();
@@ -71,110 +72,110 @@ public class PlanningView extends JPanel {
     }
 
     /**
-     * Function called to create the planning panel.
+     * Create the planning panel.
      */
     public void createBoardPanel() {
 	/* Building board */
-	planning = new PlanningTable();
-	PlanningListener planningListener = new PlanningListener(planning, controler);
-	planning.getSelectionModel().addListSelectionListener(planningListener);
+	this.planning = new PlanningTable();
+	PlanningListener planningListener = new PlanningListener(this.planning, this.controler);
+	this.planning.getSelectionModel().addListSelectionListener(planningListener);
 	/* Buttons */
-	addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
-	addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
-	addDeliveryPoint.addActionListener(buttonListener);
-	supressDelivery = new JButton(SUPRESS_DELIVERY_POINT_BUTTON);
-	supressDelivery.setActionCommand(ACTION_SUPRESSING_DELIVERY_POINT);
-	supressDelivery.addActionListener(buttonListener);
-	cancelModifications = new JButton(CANCEL_MODIFICATIONS_BUTTON);
-	cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
-	cancelModifications.addActionListener(buttonListener);
-	cancelModifications.setVisible(false);
+	this.addDeliveryPoint = new JButton(ADD_DELIVERY_POINT_BUTTON);
+	this.addDeliveryPoint.setActionCommand(ACTION_ADDING_DELIVERY_POINT);
+	this.addDeliveryPoint.addActionListener(this.buttonListener);
+	this.supressDelivery = new JButton(SUPRESS_DELIVERY_POINT_BUTTON);
+	this.supressDelivery.setActionCommand(ACTION_SUPRESSING_DELIVERY_POINT);
+	this.supressDelivery.addActionListener(this.buttonListener);
+	this.cancelModifications = new JButton(CANCEL_MODIFICATIONS_BUTTON);
+	this.cancelModifications.setActionCommand(ACTION_CANCELLING_MODIFICATIONS);
+	this.cancelModifications.addActionListener(this.buttonListener);
+	this.cancelModifications.setVisible(false);
 	/* Button Panel */
 	JPanel buttonRangePanel = new JPanel();
 	buttonRangePanel.setPreferredSize(new Dimension(600, 30));
-	displayConstraint = new GridBagConstraints();
+	this.displayConstraint = new GridBagConstraints();
 	// 3 buttons aligned and filling the line
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 0;
-	displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-	displayConstraint.gridheight = 1;
-	displayConstraint.anchor = GridBagConstraints.LINE_START;
-	displayConstraint.insets = new Insets(5, 0, 5, 0);
-	buttonRangePanel.add(addDeliveryPoint, displayConstraint);
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 1;
-	buttonRangePanel.add(supressDelivery, displayConstraint);
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 2;
-	buttonRangePanel.add(cancelModifications, displayConstraint);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 0;
+	this.displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+	this.displayConstraint.gridheight = 1;
+	this.displayConstraint.anchor = GridBagConstraints.LINE_START;
+	this.displayConstraint.insets = new Insets(5, 0, 5, 0);
+	buttonRangePanel.add(this.addDeliveryPoint, this.displayConstraint);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 1;
+	buttonRangePanel.add(this.supressDelivery, this.displayConstraint);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 2;
+	buttonRangePanel.add(this.cancelModifications, this.displayConstraint);
 	/* Table Panel */
 	JPanel tablePanel = new JPanel();
-	tablePanel.add(new JScrollPane(planning));
+	tablePanel.add(new JScrollPane(this.planning));
 	/* Total Panel */
-	totalViewPanel = new JPanel();
-	totalViewPanel.setLayout(new GridBagLayout());
-	displayConstraint = new GridBagConstraints();
+	this.totalViewPanel = new JPanel();
+	this.totalViewPanel.setLayout(new GridBagLayout());
+	this.displayConstraint = new GridBagConstraints();
 	// Buttons Panels upper and larger
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 0;
-	displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-	displayConstraint.gridheight = 1;
-	displayConstraint.fill = GridBagConstraints.BOTH;
-	displayConstraint.anchor = GridBagConstraints.LINE_START;
-	displayConstraint.insets = new Insets(5, 0, 5, 0);
-	totalViewPanel.add(buttonRangePanel, displayConstraint);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 0;
+	this.displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+	this.displayConstraint.gridheight = 1;
+	this.displayConstraint.fill = GridBagConstraints.BOTH;
+	this.displayConstraint.anchor = GridBagConstraints.LINE_START;
+	this.displayConstraint.insets = new Insets(5, 0, 5, 0);
+	this.totalViewPanel.add(buttonRangePanel, this.displayConstraint);
 	// Table just behind and fill the place
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 1;
-	displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-	displayConstraint.gridheight = 1;
-	displayConstraint.weightx = 1.;
-	displayConstraint.weighty = 1.;
-	displayConstraint.fill = GridBagConstraints.BOTH;
-	displayConstraint.anchor = GridBagConstraints.LINE_START;
-	displayConstraint.insets = new Insets(5, 0, 5, 0);
-	totalViewPanel.add(tablePanel, displayConstraint);
-	this.add(totalViewPanel);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 1;
+	this.displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+	this.displayConstraint.gridheight = 1;
+	this.displayConstraint.weightx = 1.;
+	this.displayConstraint.weighty = 1.;
+	this.displayConstraint.fill = GridBagConstraints.BOTH;
+	this.displayConstraint.anchor = GridBagConstraints.LINE_START;
+	this.displayConstraint.insets = new Insets(5, 0, 5, 0);
+	this.totalViewPanel.add(tablePanel, this.displayConstraint);
+	this.add(this.totalViewPanel);
     }
 
     /**
-     * Method displaying the elements to add a new delivery point
+     * Display the elements to add a new delivery point
      */
     protected void displayAddingDeliveryPanel() {
-	totalViewPanel.setVisible(false);
-	setAddingPanel(new AddingDeliveryView(window));
+	this.totalViewPanel.setVisible(false);
+	setAddingPanel(new AddingDeliveryView(this.window));
 	/* GridBagLayout Displaying */
-	displayConstraint.gridx = 0;
-	displayConstraint.gridy = 2;
-	displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
-	displayConstraint.gridheight = 1;
-	displayConstraint.weightx = 1.;
-	displayConstraint.weighty = 1.;
-	displayConstraint.fill = GridBagConstraints.BOTH;
-	displayConstraint.anchor = GridBagConstraints.LINE_START;
-	displayConstraint.insets = new Insets(5, 0, 5, 0);
+	this.displayConstraint.gridx = 0;
+	this.displayConstraint.gridy = 2;
+	this.displayConstraint.gridwidth = GridBagConstraints.REMAINDER;
+	this.displayConstraint.gridheight = 1;
+	this.displayConstraint.weightx = 1.;
+	this.displayConstraint.weighty = 1.;
+	this.displayConstraint.fill = GridBagConstraints.BOTH;
+	this.displayConstraint.anchor = GridBagConstraints.LINE_START;
+	this.displayConstraint.insets = new Insets(5, 0, 5, 0);
 	/* Displaying */
-	totalViewPanel.add(getAddingPanel(), displayConstraint);
-	totalViewPanel.setVisible(true);
+	this.totalViewPanel.add(getAddingPanel(), this.displayConstraint);
+	this.totalViewPanel.setVisible(true);
     }
 
     /**
-     * Method hiding the elements to add a new delivery point
+     * Hide the elements to add a new delivery point
      */
     protected void hideAddingDeliveryPanel() {
-	totalViewPanel.setVisible(false);
+	this.totalViewPanel.setVisible(false);
 	getAddingPanel().setVisible(false);
 	getAddingPanel().removeAll();
-	totalViewPanel.setVisible(true);
+	this.totalViewPanel.setVisible(true);
     }
 
     /**
-     * Method used to synchronize the textual view with the plan A click in the
-     * plan select the corresponding rox of the planning if existing
+     * Synchronize the textual view with the plan : a click in the plan selects the
+     * corresponding row of the planning if it exists.
      * 
-     * @param closestIntersection
+     * @param selectedIntersection is the intersection selected in the plan.
      */
-    public void selectRow(Intersection closestIntersection) {
+    public void selectRow(Intersection selectedIntersection) {
 	List<Tour> tours = ModelInterface.getTourPlanning();
 	List<Delivery> deliveries = new ArrayList<>();
 	for (Tour tour : tours) {
@@ -186,34 +187,34 @@ public class PlanningView extends JPanel {
 	List<Integer> indexes = new ArrayList<>();
 	int i = 0;
 	while (it.hasNext()) {
-	    if (it.next().getAddress().getId() == closestIntersection.getId()) {
+	    if (it.next().getAddress().getId() == selectedIntersection.getId()) {
 		indexes.add(i);
 	    }
 	    i++;
 	}
-	planning.selectRow(indexes);
+	this.planning.selectRow(indexes);
     }
 
     /**
-     * Function call to force the planning table to be redraw.
+     * Force the planning table to be redrawn.
      */
     public void redrawTable() {
-	planning.redrawTable();
+	this.planning.redrawTable();
     }
 
     /**
      * Getter for the attribute addingPanel.
      * 
-     * @return addingPanel, the adding delivery form panel.
+     * @return AddingDeliveryView, the adding delivery form panel.
      */
     public AddingDeliveryView getAddingPanel() {
-	return addingPanel;
+	return this.addingPanel;
     }
 
     /**
      * Setter for the attribute addingPanel.
      * 
-     * @param addingPanel the adding delivery form panel to set.
+     * @param addingPanel is the adding delivery form panel to set.
      */
     public void setAddingPanel(AddingDeliveryView addingPanel) {
 	this.addingPanel = addingPanel;

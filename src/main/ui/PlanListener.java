@@ -10,7 +10,8 @@ import main.model.ModelInterface;
 /**
  * Listener catching the events that appends on the PlanView.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class PlanListener extends MouseAdapter {
 
@@ -19,9 +20,9 @@ public class PlanListener extends MouseAdapter {
     Controler controler;
 
     /**
-     * Create a plan listener for the specified controller.
+     * Create a plan listener.
      * 
-     * @param controler the specified controller.
+     * @param controler is the application's controller.
      */
     public PlanListener(Controler controler) {
 	this.controler = controler;
@@ -35,8 +36,8 @@ public class PlanListener extends MouseAdapter {
 	Intersection closestIntersection = ModelInterface.findClosestIntersection(geographicCoordinate.latitude,
 		geographicCoordinate.longitude);
 	if (e.getButton() == LEFT_CLICK) {
-	    controler.clickedNearIntersection(closestIntersection);
-	    controler.clickedNearSection(
+	    this.controler.clickedNearIntersection(closestIntersection);
+	    this.controler.clickedNearSection(
 		    ModelInterface.findClosestSection(geographicCoordinate.latitude, geographicCoordinate.longitude));
 	    /*
 	     * Write the coordinates information into the adding delivery form
@@ -46,6 +47,6 @@ public class PlanListener extends MouseAdapter {
 		Window.getPlanningPanel().getAddingPanel().longitudeField.setText("" + closestIntersection.getLon());
 	    }
 	}
-	controler.getWindow().forceFocusOnPlanView();
+	this.controler.getWindow().forceFocusOnPlanView();
     }
 }

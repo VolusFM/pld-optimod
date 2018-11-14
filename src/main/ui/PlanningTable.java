@@ -18,7 +18,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * Class extending JTable as a planning.
  * 
- * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class PlanningTable extends JTable {
 
@@ -35,9 +36,9 @@ public class PlanningTable extends JTable {
     }
 
     /**
-     * Function that set the selection of row on the table.
+     * Set the selection of row on the table.
      * 
-     * @param indexes the index of row lines to select.
+     * @param indexes is the list of index of row lines to select.
      */
     public void selectRow(List<Integer> indexes) {
 	((PlanningSelectionModel) getSelectionModel()).shouldFireEvents = false;
@@ -52,7 +53,7 @@ public class PlanningTable extends JTable {
     }
 
     /**
-     * Function that force the table for being redraw.
+     * Force the table to redraw.
      */
     public void redrawTable() {
 	repaint();
@@ -62,12 +63,16 @@ public class PlanningTable extends JTable {
     /**
      * Private model of table for the planning usage.
      * 
-     * @author Léo STERNER et François MONTIGNY
+     * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+     *         Léo, THOLOT Cassandre
      */
     private static class PlanningTableModel implements TableModel {
 
 	/* Board columns titles */
 	private final String[] boardTitle = { "Livreur", "Adresse", "Heure de passage", "Durée" };
+
+	public PlanningTableModel() {
+	}
 
 	@Override
 	public void addTableModelListener(TableModelListener l) {
@@ -80,12 +85,12 @@ public class PlanningTable extends JTable {
 
 	@Override
 	public int getColumnCount() {
-	    return boardTitle.length;
+	    return this.boardTitle.length;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
-	    return boardTitle[columnIndex];
+	    return this.boardTitle[columnIndex];
 	}
 
 	@Override
@@ -136,13 +141,12 @@ public class PlanningTable extends JTable {
 	}
 
 	/**
-	 * Function use to get the Tour and Delivery from a planning row line
-	 * index;
+	 * Get the Tour and Delivery from a planning row line index;
 	 * 
-	 * @param rowIndex the planning row line index.
-	 * @return Pair<Tour, Delivery>, the couple of Tour and Delivery.
+	 * @param rowIndex is the planning's row line index.
+	 * @return Pair, the couple of Tour and Delivery.
 	 */
-	private Pair<Tour, Delivery> findTourAndDeliveryFromRowIndex(int rowIndex) {
+	private static Pair<Tour, Delivery> findTourAndDeliveryFromRowIndex(int rowIndex) {
 	    List<Tour> tours = ModelInterface.getTourPlanning();
 	    int i = 0;
 	    for (Tour t : tours) {
@@ -161,32 +165,37 @@ public class PlanningTable extends JTable {
     /**
      * Private class of selecting list for the planning use.
      * 
-     * @author Léo STERNER and François MONTIGNY
+     * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+     *         Léo, THOLOT Cassandre
      */
     private static class PlanningSelectionModel extends DefaultListSelectionModel {
 	/* Id */
 	private static final long serialVersionUID = 1L;
 
 	/* Authorize event */
-	private boolean shouldFireEvents = true;
+	protected boolean shouldFireEvents = true;
+
+	public PlanningSelectionModel() {
+	    super();
+	}
 
 	@Override
 	protected void fireValueChanged(int firstIndex, int lastIndex, boolean isAdjusting) {
-	    if (shouldFireEvents) {
+	    if (this.shouldFireEvents) {
 		super.fireValueChanged(firstIndex, lastIndex, isAdjusting);
 	    }
 	}
 
 	@Override
 	protected void fireValueChanged(boolean isAdjusting) {
-	    if (shouldFireEvents) {
+	    if (this.shouldFireEvents) {
 		super.fireValueChanged(isAdjusting);
 	    }
 	}
 
 	@Override
 	protected void fireValueChanged(int firstIndex, int lastIndex) {
-	    if (shouldFireEvents) {
+	    if (this.shouldFireEvents) {
 		super.fireValueChanged(firstIndex, lastIndex);
 	    }
 	}
