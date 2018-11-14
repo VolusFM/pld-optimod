@@ -122,7 +122,7 @@ public abstract class ModelInterface {
      * @param toAdd is the intersection to add.
      */
     public static void addIntersection(Intersection toAdd) {
-	plan.getGraph().put(toAdd.getId(), toAdd);
+	plan.addIntersection(toAdd);
     }
 
     /**
@@ -131,8 +131,7 @@ public abstract class ModelInterface {
      * @param toAdd is the section to add.
      */
     public static void addSection(Section toAdd) {
-	long idIntersection = toAdd.getStart().getId();
-	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
+	plan.addSection(toAdd);
     }
     
     public static void addDeliveryToTourCalculator(Delivery createDelivery){

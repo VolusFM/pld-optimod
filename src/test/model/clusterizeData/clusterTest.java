@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,6 +24,12 @@ public class clusterTest {
 	calculator = TourCalculator.getInstance();
 	XMLDeserializer.load(ModelInterface.getPlan(), calculator);
 	ModelInterface.createGraph();
+    }
+    
+    @After
+    public void reinitialize() {
+    	ModelInterface.emptyLoadedDeliveries();;
+    	ModelInterface.emptyTourFactory();
     }
 
     @Test
