@@ -21,12 +21,13 @@ interface State {
      * Open the plan.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     * @throws XMLException if the file's contents are invalid.
-     * @throws ParserConfigurationException if there's a problem when
-     *             configuring the parser.
-     * @throws SAXException if there's a problem when parsing.
-     * @throws IOException if there's a problem during a reading operation.
+     * @param window    is the application's graphical window.
+     * @throws XMLException                 if the file's contents are invalid.
+     * @throws ParserConfigurationException if there's a problem when configuring
+     *                                          the parser.
+     * @throws SAXException                 if there's a problem when parsing.
+     * @throws IOException                  if there's a problem during a reading
+     *                                          operation.
      */
     public void openPlan(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException;
@@ -35,12 +36,13 @@ interface State {
      * Open the deliveries request.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     * @throws XMLException if the file's contents are invalid.
-     * @throws ParserConfigurationException if there's a problem when
-     *             configuring the parser.
-     * @throws SAXException if there's a problem when parsing.
-     * @throws IOException if there's a problem during a reading operation.
+     * @param window    is the application's graphical window.
+     * @throws XMLException                 if the file's contents are invalid.
+     * @throws ParserConfigurationException if there's a problem when configuring
+     *                                          the parser.
+     * @throws SAXException                 if there's a problem when parsing.
+     * @throws IOException                  if there's a problem during a reading
+     *                                          operation.
      */
     public void openDeliveries(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException;
@@ -49,7 +51,7 @@ interface State {
      * Calculate a tour planning with a given number of delivery men.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void calculatePlanning(Controler controler, Window window);
 
@@ -57,7 +59,7 @@ interface State {
      * Open the Add Delivery Window.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void addDelivery(Controler controler, Window window);
 
@@ -65,7 +67,7 @@ interface State {
      * Confirm the addition of a new delivery.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void confirmNewDelivery(Controler controler, Window window);
 
@@ -73,7 +75,7 @@ interface State {
      * Cancel the creation of a new delivery and go back to previous screen.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void cancelNewDelivery(Controler controler, Window window);
 
@@ -81,7 +83,7 @@ interface State {
      * Delete a delivery.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void removeDelivery(Controler controler, Window window);
 
@@ -89,7 +91,7 @@ interface State {
      * Move a delivery from a tour to another.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void moveDelivery(Controler controler, Window window);
 
@@ -97,15 +99,15 @@ interface State {
      * Open parameters window.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param window    is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window);
 
     /**
      * Handle a click near an Intersection.
      * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param controler           is the application's controler.
+     * @param window              is the application's graphical window.
      * @param closestIntersection the intersection closest to the click.
      */
     public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection);
@@ -114,16 +116,16 @@ interface State {
      * Handle a click near a Section.
      * 
      * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     * @param section the section closest to the click.
+     * @param window    is the application's graphical window.
+     * @param section   the section closest to the click.
      */
     public void clickedNearSection(Controler controler, Window window, Section section);
 
     /**
      * Return to a given state.
      * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
+     * @param controler   is the application's controler.
+     * @param window      is the application's graphical window.
      * @param returnState is the state to which we want to return.
      */
     public void returnToState(Controler controler, Window window, State returnState);

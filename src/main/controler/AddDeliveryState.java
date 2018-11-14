@@ -53,7 +53,7 @@ class AddDeliveryState extends DefaultState {
 	}
 	controler.setSelectedIntersection(closestIntersection);
     }
-    
+
     @Override
     public String stateToString() {
 	return "addDeliveryState";

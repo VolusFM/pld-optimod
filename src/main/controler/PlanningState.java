@@ -20,13 +20,13 @@ class PlanningState extends DefaultState {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
     }
-    
+
     @Override
     public void openParameters(Controler controler, Window window) {
 	ModelInterface.setDeliveryMenCount(InputDialogSelector
 		.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
     }
-    
+
     @Override
     public void addDelivery(Controler controler, Window window) {
 	window.displayAddingDeliveryPanel();
