@@ -5,9 +5,7 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Step;
-import main.model.TourCalculator;
 import main.ui.InputDialogSelector;
-import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
 
 /**
@@ -35,12 +33,8 @@ class PlanningState extends DefaultState {
      * @param window is the application's graphical window.
      */
     public void openParameters(Controler controler, Window window) {
-	try {
-	    ModelInterface.setDeliveryMenCount(InputDialogSelector
-		    .getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
-	} catch (SelectionCancelledException e) {
-	    System.out.println("Selection was cancelled, ignoring...");
-	}
+	ModelInterface.setDeliveryMenCount(InputDialogSelector
+		.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
     }
 
     /**
@@ -102,14 +96,7 @@ class PlanningState extends DefaultState {
     }
 
     @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
-	window.highlightRightClickedIntersection(intersection);
-
-	controler.setRightClickedIntersection(intersection);
-    }
-    
-    @Override
-    public void returnToState(Controler controler, Window window, State returnState){
+    public void returnToState(Controler controler, Window window, State returnState) {
 	ModelInterface.emptyTourFactory();
 	ModelInterface.initializeTourCalculator();
 	window.displayPlanView();

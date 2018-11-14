@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <demandeDeLivraisons>
-<entrepot adresse="55463770" heureDepart="8:0:0"/>
 <livraison adresse="60685057" duree="60"/>
 <livraison adresse="54803119" duree="180"/>
 <livraison adresse="25303836" duree="60"/>
@@ -13,4 +12,5 @@
 <livraison adresse="1475230723" duree="120"/>
 <livraison adresse="252644528" duree="60"/>
 <livraison adresse="25468215" duree="300"/>
+<entrepot adresse="55463770" heureDepart="8:0:0"/>
 </demandeDeLivraisons>

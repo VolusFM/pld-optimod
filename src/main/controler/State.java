@@ -6,10 +6,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import main.model.Delivery;
 import main.model.Intersection;
 import main.model.Section;
-import main.model.Tour;
 import main.ui.Window;
 import main.xml.XMLException;
 
@@ -92,11 +90,8 @@ interface State {
      * 
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
-     * @param precedingDelivery 
-     * @param deliveryMenId 
-     * @param toAdd 
      */
-    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryMenTour, Delivery precedingDelivery);
+    public void confirmNewDelivery(Controler controler, Window window);
 
     /**
      * Handle a click near an Intersection.
@@ -105,7 +100,7 @@ interface State {
      * @param window is the application's graphical window.
      * @param intersection the intersection closest to the click.
      */
-    public void clickedNearIntersection(Controler controler, Window window, Intersection intersection);
+    public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection);
 
     /**
      * Handle a click near a Section.
@@ -115,15 +110,6 @@ interface State {
      * @param section the section closest to the click.
      */
     public void clickedNearSection(Controler controler, Window window, Section section);
-
-    /**
-     * XXX ?
-     * 
-     * @param controler
-     * @param window
-     * @param intersection
-     */
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection);
 
     /**
      * Change currentState to loadedDeliveriesState

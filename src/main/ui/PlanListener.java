@@ -42,10 +42,6 @@ public class PlanListener extends MouseAdapter {
 	    }
 	}
 
-	if (e.getButton() == RIGHT_CLICK) {
-	    controler.rightClickedNearIntersection(closestIntersection);
-	}
-
 	// XXX
 	controler.getWindow().forceFocusOnPlanView();
     }

@@ -388,7 +388,7 @@ public class TourCalculator {
 	 * re-execution of TSP or K-means
 	 */
 	/* We test if the delivery already exists */
-	if (deliveries.contains(newDelivery)) {
+	if (deliveries.contains(newDelivery) || newDelivery.getAddress().equals(depot.getAddress()))  {
 	    throw new RuntimeException("Delivery already exists !");
 	}
 	/* We add the new Delivery to the list of deliveries */
