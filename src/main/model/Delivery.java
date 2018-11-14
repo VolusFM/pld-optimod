@@ -1,5 +1,6 @@
 package main.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
@@ -21,6 +22,9 @@ public class Delivery {
      *            happen.
      */
     public Delivery(int duration, Intersection address) {
+	if (duration < 0) {
+	    throw new IllegalArgumentException("La durée d'une livraison doit être positive !");
+	}
 	this.duration = duration;
 	this.address = address;
     }
@@ -44,15 +48,6 @@ public class Delivery {
     }
 
     /**
-     * Setter for the hour of the delivery.
-     * 
-     * @param hour is the hour to set for the delivery.
-     */
-    public void setHour(Calendar hour) {
-	this.hour = hour;
-    }
-
-    /**
      * Getter for the address of the delivery.
      * 
      * @return Intersection, the address of the delivery.
@@ -61,9 +56,24 @@ public class Delivery {
 	return address;
     }
 
+    /**
+     * Setter for the hour of the delivery.
+     * 
+     * @param hour is the hour to set for the delivery.
+     */
+    public void setHour(Calendar hour) {
+	this.hour = hour;
+    }
+
     @Override
     public String toString() {
-	return "D at " + address;
+	if (hour == null) {
+	    return "(" + address.getLat() + ";" + address.getLon() + ")";
+	}
+
+	SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm");
+	dateFormat.setTimeZone(hour.getTimeZone());
+	return "(" + address.getLat() + ";" + address.getLon() + ") - " + dateFormat.format(hour.getTime());
     }
 
     @Override
@@ -78,15 +88,9 @@ public class Delivery {
 	if (address == null) {
 	    if (other.address != null)
 		return false;
-	} else if (!address.equals(other.address))
+	} else if (!address.equals(other.address)) {
 	    return false;
-	// if (duration != other.duration)
-	// return false;
-	// if (hour == null) {
-	// if (other.hour != null)
-	// return false;
-	// } else if (!hour.equals(other.hour))
-	// return false;
+	}
 	return true;
     }
 

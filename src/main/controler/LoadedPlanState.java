@@ -15,7 +15,7 @@ import main.xml.XMLException;
  * LoadedPlanState is the state in which only the plan has been loaded
  *
  */
-public class LoadedPlanState extends DefaultState {
+class LoadedPlanState extends DefaultState {
 
     public void openDeliveries(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException {
@@ -23,7 +23,7 @@ public class LoadedPlanState extends DefaultState {
 	XMLDeserializer.load(ModelInterface.getPlan(), ModelInterface.getTourCalculator());
 	window.displayCalculateTourButtonPanel();
 	window.toggleDeliveryMenCountButtonVisiblity();
-
+	window.toggleReturnButtonVisibility();
 	controler.setCurrentState(controler.loadedDeliveriesState);
     }
 

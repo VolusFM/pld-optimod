@@ -46,7 +46,7 @@ public class XMLFileOpener extends FileFilter {
 	jFileChooserXML.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
 	if (jFileChooserXML.showOpenDialog(null) != JFileChooser.APPROVE_OPTION)
-	    throw new XMLException("Problem when opening file");
+	    throw new XMLException("Problem when opening file, maybe you did not select a file ?");
 
 	return new File(jFileChooserXML.getSelectedFile().getAbsolutePath());
     }

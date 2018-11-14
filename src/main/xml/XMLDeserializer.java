@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 
 import main.model.Delivery;
 import main.model.Intersection;
+import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 import main.model.TourCalculator;
@@ -26,7 +27,7 @@ import main.model.TourCalculator;
  * @author lsterner
  *
  */
-public class XMLDeserializer {
+public abstract class XMLDeserializer {
 
     /**
      * Load a plan from an XML file.
@@ -59,11 +60,11 @@ public class XMLDeserializer {
     private static void buildFromDOMXML(Element rootNode, Plan plan) throws XMLException, NumberFormatException {
 	NodeList intersections = rootNode.getElementsByTagName("noeud");
 	for (int i = 0; i < intersections.getLength(); i++) {
-	    plan.addIntersection(createIntersection((Element) intersections.item(i)));
+	    ModelInterface.addIntersection(createIntersection((Element) intersections.item(i)));
 	}
 	NodeList sections = rootNode.getElementsByTagName("troncon");
 	for (int i = 0; i < sections.getLength(); i++) {
-	    plan.addSection(createSection((Element) sections.item(i), plan));
+	    ModelInterface.addSection(createSection((Element) sections.item(i), plan));
 	}
     }
 

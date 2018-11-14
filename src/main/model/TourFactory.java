@@ -3,6 +3,8 @@ package main.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NoPermissionException;
+
 /**
  * 
  * TourFactory handles the creation and stockage of Tour objects.
@@ -92,8 +94,8 @@ public class TourFactory {
 	}
 
 	if (tours.size() == 0) {
-	    System.out.println("NO TOUR FOUND");
-	    tours.add(tourPlanning.get(0));
+	    throw new NullPointerException();
+//	    tours.add(tourPlanning.get(0));
 	}
 
 	return tours;
@@ -110,6 +112,9 @@ public class TourFactory {
 	int i = 0;
 	while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
 	    i = i + 1;
+	}
+	if (i == tourPlanning.size()) {
+	    return null;
 	}
 	return tourPlanning.get(i).getDeliveryPoints();
     }
@@ -131,5 +136,16 @@ public class TourFactory {
 
     public void empty() {
 	tourPlanning = new ArrayList<>();
+    }
+
+    public Tour findTourFromDeliveryManId(int deliveryManId) {
+	int i = 0;
+	while ((tourPlanning.get(i).getDeliveryManId() != deliveryManId) && (i < tourPlanning.size())) {
+	    i = i + 1;
+	}
+	if (i == tourPlanning.size()) {
+	    return null;
+	}
+	return tourPlanning.get(i);
     }
 }
