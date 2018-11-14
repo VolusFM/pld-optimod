@@ -20,15 +20,24 @@ import main.model.Delivery;
 import main.model.ModelInterface;
 import main.model.Tour;
 
+/**
+ * Form panel for the adding delivery purpose. Form with validate and cancel
+ * buttons, and dats fields.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class AddingDeliveryView extends JPanel {
+
+    /* Id */
+    private static final long serialVersionUID = 1L;
 
     private Window window;
     /* Components */
     protected JTextField latitudeField;
     protected JTextField longitudeField;
-    protected JFormattedTextField durationField;
-    protected JComboBox<Integer> deliveryMenBox;
-    protected JComboBox<Delivery> precedingDeliveryBox;
+    private JFormattedTextField durationField;
+    private JComboBox<Integer> deliveryMenBox;
+    private JComboBox<Delivery> precedingDeliveryBox;
     private JButton validationButton;
     private JButton cancelationButton;
 
@@ -54,8 +63,7 @@ public class AddingDeliveryView extends JPanel {
     /**
      * Create the view to defined a new delivery point.
      * 
-     * @param w the the Window in which this will be used (to access to the
-     *          listeners)
+     * @param w the Window in which this will be used.
      */
     public AddingDeliveryView(Window w) {
 	super();
@@ -63,7 +71,7 @@ public class AddingDeliveryView extends JPanel {
 	window = w;
 	latitudeField = new JTextField();
 	longitudeField = new JTextField();
-	comboxListener = new ComboboxListener(window.controler);
+	comboxListener = new ComboboxListener();
 	/* Display */
 	createAddingDeliveryPanel();
     }
@@ -71,7 +79,7 @@ public class AddingDeliveryView extends JPanel {
     /**
      * Function called to create the adding form.
      */
-    public void createAddingDeliveryPanel() {
+    private void createAddingDeliveryPanel() {
 	/* Labels */
 	JLabel durationLabel = new JLabel(durationText);
 	JLabel latitudeLabel = new JLabel(latitudeText);
@@ -178,7 +186,7 @@ public class AddingDeliveryView extends JPanel {
     }
 
     /**
-     * Function used to initialize our combobox with delivery men id
+     * Function used to initialize our combobox with delivery men id.
      */
     private Vector<Integer> createDeliveryMenIdVector() {
 	Vector<Integer> deliveryMenId = new Vector<Integer>();
@@ -191,7 +199,7 @@ public class AddingDeliveryView extends JPanel {
     }
 
     /**
-     * Function to fill the delivery combobox when selecting the delivery men
+     * Function to fill the delivery combobox when selecting the delivery men.
      */
     protected void updatePreviousDeliveryCombobox() {
 	List<Delivery> deliveryMenDeliveries = ModelInterface.getDeliveriesById(getSelectedDeliveryMen());
@@ -202,9 +210,8 @@ public class AddingDeliveryView extends JPanel {
     }
 
     /**
-     * Functions used to get the values selected by the user on the form
+     * Function used to get the selected value of the delivery men id combobox.
      */
-
     public int getSelectedDeliveryMen() {
 	try {
 	    return (Integer) deliveryMenBox.getSelectedItem();
@@ -213,6 +220,9 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
+    /**
+     * Function used to get the written value of the duration field.
+     */
     public int getSelectedDuration() {
 	try {
 	    return Integer.valueOf(durationField.getText());
@@ -221,6 +231,9 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
+    /**
+     * Function used to get the written value of the latitude field.
+     */
     public double getSelectedLat() {
 	try {
 	    return Double.valueOf(latitudeField.getText());
@@ -229,6 +242,9 @@ public class AddingDeliveryView extends JPanel {
 	}
     }
 
+    /**
+     * Function used to get the written value of the longitude field.
+     */
     public double getSelectedLon() {
 	try {
 	    return Double.valueOf(longitudeField.getText());
@@ -236,7 +252,11 @@ public class AddingDeliveryView extends JPanel {
 	    return -1;
 	}
     }
-    
+
+    /**
+     * Function used to get the selected value of the preceding delivery
+     * combobox.
+     */
     public Delivery getSelectedPrecedingDelivery() {
 	try {
 	    return (Delivery) precedingDeliveryBox.getSelectedItem();

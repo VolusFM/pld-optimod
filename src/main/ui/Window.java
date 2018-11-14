@@ -23,11 +23,19 @@ import main.model.Plan;
 import main.model.Section;
 import main.model.Step;
 
+/**
+ * Window of the application, receiving order from the controller in order to
+ * adapt its displaying and transmitting the users actions to the controller.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class Window extends JFrame {
+
+    /* Id */
+    private static final long serialVersionUID = 1L;
 
     /* Attributes */
     protected Controler controler;
-    private int planScale = 1;
 
     /* Components */
     private WindowHeader header;
@@ -63,6 +71,8 @@ public class Window extends JFrame {
     /**
      * Create a window with a header (with a title and "parameters" button), a
      * choice of file component and a validation button.
+     * 
+     * @param controler the specified controller to work for.
      */
     public Window(Controler controler) {
 	setBestLookAndFeelAvailable();
@@ -98,9 +108,7 @@ public class Window extends JFrame {
 	rightPanel.setPreferredSize(new Dimension(500, 900));
 	rightPanel.setLayout(new BorderLayout());
 	/* Create Content */
-	JLabel deliveryMenCount = new JLabel(TEXT_DELIVERY_LENGTH_COUNT);
 	JLabel planningText = new JLabel(TEXT_PLANNING_BOARD);
-	JLabel count = new JLabel("" + ModelInterface.getDeliveryMenCount());
 	setPlanningPanel(new PlanningView(controler, this));
 	/* Panels */
 	JPanel planning = new JPanel();
@@ -113,7 +121,7 @@ public class Window extends JFrame {
 	add(rightPanel, BorderLayout.EAST);
 	redraw();
     }
-    
+
     /**
      * Create the panel witch print the count of delivery men
      */
@@ -133,7 +141,7 @@ public class Window extends JFrame {
      */
     public void displayAddingDeliveryPanel() {
 	getPlanningPanel().displayAddingDeliveryPanel();
-    }    
+    }
 
     /**
      * Defined the window and components size.
@@ -183,7 +191,7 @@ public class Window extends JFrame {
 	centerPanel.setLayout(new GridBagLayout());
 	/* Create Content */
 	Plan plan = ModelInterface.getPlan();
-	planPanel = new PlanView(planScale, this, plan);
+	planPanel = new PlanView(this, plan);
 	PlanListener planListener = new PlanListener(controler);
 	planPanel.addMouseListener(planListener);
 	planPanel.addKeyListener(keyListener);
@@ -216,9 +224,9 @@ public class Window extends JFrame {
 	rightPanel.setPreferredSize(new Dimension(500, 900));
 	/* Create Content */
 	JButton selectionButton = createButton(BUTTON_TOUR_CALCUL, ACTION_CALCULATE_TOUR);
-	rightPanel.add(selectionButton, BorderLayout.EAST );
+	rightPanel.add(selectionButton, BorderLayout.EAST);
 	displayDeliveryMenCountPanel();
-	/* Set content */	
+	/* Set content */
 	add(rightPanel, BorderLayout.EAST);
 	rightPanel.setVisible(true);
 	redraw();
@@ -239,8 +247,8 @@ public class Window extends JFrame {
      * @param lon the longitude value
      */
     public void setLatLonFieldsOfAddingPanel(double lat, double lon) {
-	this.addingPanel.latitudeField.setText(" " + lat);
-	this.addingPanel.longitudeField.setText(" " + lon);
+	addingPanel.latitudeField.setText(" " + lat);
+	addingPanel.longitudeField.setText(" " + lon);
     }
 
     /**
@@ -259,7 +267,6 @@ public class Window extends JFrame {
      * components Update the graphics on the window, used when we don't
      * add/remove components
      */
-    // FIXME visibility -> private
     public void redraw() {
 	repaint();
 	revalidate();
@@ -289,10 +296,10 @@ public class Window extends JFrame {
     /**
      * Method call to highlight a clicked section on the plan view.
      * 
-     * @param intersection the intersection to highlight
+     * @param section the section to highlight
      */
-    public void highlightSelectedSection(Section findClosestSection) {
-	planPanel.setHighlightedSection(findClosestSection);
+    public void highlightSelectedSection(Section section) {
+	planPanel.setHighlightedSection(section);
     }
 
     /**
@@ -334,21 +341,28 @@ public class Window extends JFrame {
 	add(southPanel, BorderLayout.SOUTH);
 	redraw();
     }
-    
+
+    /**
+     * Function calls to hide the panel which print the section as the list of
+     * roads names.
+     */
     public void hideSectionsList() {
 	southPanel.setVisible(false);
     }
 
-
+    /**
+     * Function calls to force the event focus on the plan view.
+     */
     public void forceFocusOnPlanView() {
 	planPanel.requestFocus();
     }
 
+    /**
+     * Function calls to force the planning table to be redrawn.
+     */
     public void redrawTable() {
 	getPlanningPanel().redrawTable();
     }
-    
-    
 
     /**
      * Function call when the window is initialize to set a more esthetic look
@@ -368,17 +382,23 @@ public class Window extends JFrame {
 	    }
 	}
     }
-    
 
+    /**
+     * Getter of the attribute planningPanel.
+     * 
+     * @return PlanningView.
+     */
     public static PlanningView getPlanningPanel() {
 	return planningPanel;
     }
 
+    /**
+     * Setter of the attribute planningPanel.
+     * 
+     * @param planningPanel , the planning view to set.
+     */
     public static void setPlanningPanel(PlanningView planningPanel) {
 	Window.planningPanel = planningPanel;
     }
-    
-    
-    
-    
+
 }

@@ -3,19 +3,22 @@ package main.ui;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import main.controler.Controler;
-
+/**
+ * Listener catching the combobox events of the application.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class ComboboxListener implements ItemListener {
 
-    private Controler controler;
-    
-    public ComboboxListener(Controler controler) {
-	this.controler = controler;
+    /**
+     * Create a combobox listener.
+     */
+    public ComboboxListener() {
     }
-    
+
     @Override
     public void itemStateChanged(ItemEvent e) {
-	controler.getWindow().getPlanningPanel().getAddingPanel().updatePreviousDeliveryCombobox();
+	Window.getPlanningPanel().getAddingPanel().updatePreviousDeliveryCombobox();
     }
 
 }

@@ -8,7 +8,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Panel using as header in the application, wit the application title and
+ * principal buttons, such as Return and Parameters buttons.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class WindowHeader extends JPanel {
+
+    /* Id */
+    private static final long serialVersionUID = 1L;
 
     /* Labels */
     private static final String APPLICATION_TITLE = "Optimod";
@@ -34,7 +43,8 @@ public class WindowHeader extends JPanel {
     /**
      * Create a header with title and buttons for the specified windows.
      * 
-     * @param w the window
+     * @param w the window.
+     * @param buttonListener the button listener to be used in the panel.
      */
     public WindowHeader(Window w, ButtonListener buttonListener) {
 	super();

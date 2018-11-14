@@ -2,7 +2,6 @@ package main.ui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
@@ -24,13 +23,21 @@ import main.model.Section;
 import main.model.Step;
 import main.model.Tour;
 
+/**
+ * Panel of the graphical view of the application, with the drawn plan,
+ * deliveries and tours.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER Léo, THOLOT Cassandre
+ */
 public class PlanView extends JPanel {
+
+    /* Id */
+    private static final long serialVersionUID = 1L;
 
     /* Attributes */
     private Plan plan;
 
     /* Scale and normalization parameters */
-    private int scale;
     private double minLat;
     private double maxLat;
     private double minLong;
@@ -46,22 +53,19 @@ public class PlanView extends JPanel {
     private double yConstant = 0.7;
 
     /* Tour colors */
-    // XXX : find some more contrasting colors
-    private final Color[] colors = { Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LIGHT_GRAY, Color.PINK };
+    private final Color[] colors = { Color.GREEN, Color.RED, Color.BLUE, Color.YELLOW, Color.CYAN, Color.LIGHT_GRAY,
+	    Color.PINK };
 
     /**
-     * Create the graphical view for drawing the charged plan with the scale s
-     * in the specified window w.
+     * Create the graphical view for drawing the charged plan p in the specified
+     * window w.
      * 
-     * @param s the scale
      * @param w the window
      * @param p the plan to print
      */
-    // FIXME : constructor signature may change
-    public PlanView(int s, Window w, Plan p) {
+    public PlanView(Window w, Plan p) {
 	super();
 	/* Initialize */
-	this.scale = s;
 	this.plan = p;
 	this.findExtremes();
 	/* Display */
@@ -70,7 +74,6 @@ public class PlanView extends JPanel {
 	/* Allow the panel to emit key events */
 	setFocusable(true);
     }
-    // TODO : mettre l'observer sur le plan.
 
     /**
      * Function called any time the view must be redraw.
@@ -150,8 +153,8 @@ public class PlanView extends JPanel {
      * Method called any time we need to draw a plan section. Draw a line
      * between the two intersections of the section.
      * 
-     * @param g the graphics component
-     * @param section the section to print
+     * @param g the graphics component.
+     * @param section the section to print.
      */
     public void printSection(Graphics g, Section section) {
 	/* Values from the plan */
@@ -171,8 +174,8 @@ public class PlanView extends JPanel {
      * Method called any time we need to draw a delivery point. Draw a circle at
      * the specified point.
      * 
-     * @param g the graphics component
-     * @param delivery the delivery to print
+     * @param g the graphics component.
+     * @param delivery the delivery to print.
      */
     public void printDelivery(Graphics g, Delivery delivery) {
 	/* Values from delivery */
@@ -184,6 +187,12 @@ public class PlanView extends JPanel {
 	g.fillOval(screenCoordinate.getX() - 5, screenCoordinate.getY() - 5, 10, 10);
     }
 
+    /**
+     * Function calls to draw an intersection on the plan view.
+     * 
+     * @param g the graphics component.
+     * @param intersection the intersection to print.
+     */
     public void printIntersection(Graphics g, Intersection intersection) {
 	/* Values from delivery */
 	GeographicCoordinate geographicCoordinate = new GeographicCoordinate(intersection.getLat(),
@@ -196,7 +205,7 @@ public class PlanView extends JPanel {
 
     /**
      * Method used to extract max and min of latitudes and longitudes in the
-     * current plan. (Used to normalize the values in order to print the
+     * current plan. (Used to normalize the values in order to print the.
      * sections).
      */
     private void findExtremes() {
@@ -228,12 +237,12 @@ public class PlanView extends JPanel {
 
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-	// XXX : not so clean... figure out a better (dynamic) way
-	return new Dimension(800, 800);
-    }
-
+    /**
+     * Function calls to convert geographical coordinates into screen ones.
+     * 
+     * @param geographicCoordinate the geographical coordinates to convert.
+     * @return ScreenCoordinate, the coordinates as screen ones.
+     */
     public ScreenCoordinate convertToScreenCoordinate(GeographicCoordinate geographicCoordinate) {
 	double lat = geographicCoordinate.getLatitude();
 	double lon = geographicCoordinate.getLongitude();
@@ -247,6 +256,12 @@ public class PlanView extends JPanel {
 	return new ScreenCoordinate(x, y);
     }
 
+    /**
+     * Function calls to convert screen coordinates into geographical ones.
+     * 
+     * @param screenCoordinate the screen coordinates to convert.
+     * @return GeographicCoordinate, the coordinates as geographical ones.
+     */
     public GeographicCoordinate convertToGeographicCoordinate(ScreenCoordinate screenCoordinate) {
 	int x = screenCoordinate.getX();
 	int y = screenCoordinate.getY();
@@ -259,40 +274,43 @@ public class PlanView extends JPanel {
 
 	return new GeographicCoordinate(lat, lon);
     }
-    
-    /** Methods calls to highlight the intersection (left-clicked)
+
+    /**
+     * Methods calls to highlight the intersection (left-clicked).
      * 
-     * @param intersection the intersection to highlight
+     * @param intersection the intersection to highlight.
      */
     public void setHighlightedIntersection(Intersection intersection) {
 	this.highlightedIntersection = intersection;
     }
-   
-    /** Methods calls to highlight the intersection (right-clicked)
+
+    /**
+     * Methods calls to highlight the intersection (right-clicked).
      * 
-     * @param intersection the intersection to highlight
+     * @param intersection the intersection to highlight.
      */
     public void setRightClickedIntersection(Intersection intersection) {
 	rightClickedIntersection = intersection;
     }
-    
-    /** Methods calls to highlight the section
+
+    /**
+     * Methods calls to highlight a section.
      * 
-     * @param  findClosestSection the section to highlight
+     * @param findClosestSection the section to highlight.
      */
     public void setHighlightedSection(Section findClosestSection) {
- 	this.highlightedSection = findClosestSection;
- 	setToolTipText(highlightedSection.getStreetName());
- 	ToolTipManager manager = ToolTipManager.sharedInstance();
- 	manager.setInitialDelay(0);
- 	manager.setReshowDelay(0);
- 	manager.setDismissDelay(1000);
+	this.highlightedSection = findClosestSection;
+	setToolTipText(highlightedSection.getStreetName());
+	ToolTipManager manager = ToolTipManager.sharedInstance();
+	manager.setInitialDelay(0);
+	manager.setReshowDelay(0);
+	manager.setDismissDelay(1000);
 
- 	Point mousePos = MouseInfo.getPointerInfo().getLocation();
- 	int x = mousePos.x - getLocationOnScreen().x;
- 	int y = mousePos.y - getLocationOnScreen().y;
- 	MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0,
- 		false);
- 	ToolTipManager.sharedInstance().mouseMoved(phantom);
+	Point mousePos = MouseInfo.getPointerInfo().getLocation();
+	int x = mousePos.x - getLocationOnScreen().x;
+	int y = mousePos.y - getLocationOnScreen().y;
+	MouseEvent phantom = new MouseEvent(this, MouseEvent.MOUSE_MOVED, System.currentTimeMillis(), 0, x, y, 0,
+		false);
+	ToolTipManager.sharedInstance().mouseMoved(phantom);
     }
 }
