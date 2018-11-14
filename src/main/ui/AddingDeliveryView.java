@@ -211,6 +211,7 @@ public class AddingDeliveryView extends JPanel {
 
     /**
      * Function used to get the selected value of the delivery men id combobox.
+     * @return int , the selected delivery men id.
      */
     public int getSelectedDeliveryMen() {
 	try {
@@ -222,6 +223,7 @@ public class AddingDeliveryView extends JPanel {
 
     /**
      * Function used to get the written value of the duration field.
+     * @return int , the selected duration.
      */
     public int getSelectedDuration() {
 	try {
@@ -233,6 +235,7 @@ public class AddingDeliveryView extends JPanel {
 
     /**
      * Function used to get the written value of the latitude field.
+     * @return int , the selected latitude.
      */
     public double getSelectedLat() {
 	try {
@@ -244,6 +247,7 @@ public class AddingDeliveryView extends JPanel {
 
     /**
      * Function used to get the written value of the longitude field.
+     * @return int , the selected longitude.
      */
     public double getSelectedLon() {
 	try {
@@ -256,6 +260,7 @@ public class AddingDeliveryView extends JPanel {
     /**
      * Function used to get the selected value of the preceding delivery
      * combobox.
+     * @return Delivery , the selected delivery.
      */
     public Delivery getSelectedPrecedingDelivery() {
 	try {
