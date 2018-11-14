@@ -86,6 +86,14 @@ interface State {
     public void removeDelivery(Controler controler, Window window);
 
     /**
+     * Move a delivery from a tour to another.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     */
+    public void moveDelivery(Controler controler, Window window);
+
+    /**
      * Open parameters window.
      * 
      * @param controler is the application's controler.
@@ -98,7 +106,7 @@ interface State {
      * 
      * @param controler is the application's controler.
      * @param window is the application's graphical window.
-     * @param intersection the intersection closest to the click.
+     * @param closestIntersection the intersection closest to the click.
      */
     public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection);
 
@@ -112,7 +120,11 @@ interface State {
     public void clickedNearSection(Controler controler, Window window, Section section);
 
     /**
-     * Change currentState to loadedDeliveriesState
+     * Return to a given state.
+     * 
+     * @param controler is the application's controler.
+     * @param window is the application's graphical window.
+     * @param returnState is the state to which we want to return.
      */
     public void returnToState(Controler controler, Window window, State returnState);
 

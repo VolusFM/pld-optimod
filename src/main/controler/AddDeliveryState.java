@@ -53,12 +53,8 @@ class AddDeliveryState extends DefaultState {
 	}
 	controler.setSelectedIntersection(closestIntersection);
     }
-
-    /**
-     * Get the name of the state for debug purposes.
-     * 
-     * @return String, the name of the state.
-     */
+    
+    @Override
     public String stateToString() {
 	return "addDeliveryState";
     }

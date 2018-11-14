@@ -9,7 +9,7 @@ import org.xml.sax.SAXException;
 import main.model.Intersection;
 import main.model.Section;
 import main.ui.Window;
-import main.xml.XMLException;;
+import main.xml.XMLException;
 
 /**
  * Default state is the most basic state and parent class of all other states.
@@ -43,7 +43,12 @@ class DefaultState implements State {
     public void cancelNewDelivery(Controler controler, Window window) {
     }
 
+    @Override
     public void removeDelivery(Controler controler, Window window) {
+    }
+
+    @Override
+    public void moveDelivery(Controler controler, Window window) {
     }
 
     @Override

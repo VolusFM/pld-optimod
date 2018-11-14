@@ -11,24 +11,14 @@ import main.ui.Window;
  */
 class LoadedDeliveriesState extends DefaultState {
 
-    /**
-     * Open parameters modal.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void openParameters(Controler controler, Window window) {
 	ModelInterface.setDeliveryMenCount(InputDialogSelector
 		.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
 	window.displayDeliveryMenCountPanel();
     }
 
-    /**
-     * Calculate the planning for the given deliveries request and plan.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
@@ -36,13 +26,6 @@ class LoadedDeliveriesState extends DefaultState {
 	controler.setCurrentState(controler.planningState);
     }
 
-    /**
-     * Return to a given state.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     * @param state is the state we have to return to.
-     */
     @Override
     public void returnToState(Controler controler, Window window, State returnState) {
 	ModelInterface.emptyLoadedDeliveries();
@@ -53,11 +36,7 @@ class LoadedDeliveriesState extends DefaultState {
 	controler.setCurrentState(returnState);
     }
 
-    /**
-     * Get the name of the state for debug purposes.
-     * 
-     * @return String, the name of the state.
-     */
+    @Override
     public String stateToString() {
 	return "loadedDeliveryState";
     }

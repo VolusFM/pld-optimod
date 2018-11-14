@@ -27,7 +27,7 @@ public class Controler {
      * Create the application's controler and window.
      */
     public Controler() {
-	this.currentState = initState;
+	this.currentState = this.initState;
 	this.window = new Window(this);
     }
 
@@ -37,8 +37,8 @@ public class Controler {
      */
     public void openPlan() {
 	try {
-	    previousState = currentState;
-	    currentState.openPlan(this, window);
+	    this.previousState = this.currentState;
+	    this.currentState.openPlan(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -50,8 +50,8 @@ public class Controler {
      */
     public void openDeliveries() {
 	try {
-	    previousState = currentState;
-	    currentState.openDeliveries(this, window);
+	    this.previousState = this.currentState;
+	    this.currentState.openDeliveries(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -62,8 +62,8 @@ public class Controler {
      */
     public void calculatePlanning() {
 	try {
-	    previousState = currentState;
-	    currentState.calculatePlanning(this, window);
+	    this.previousState = this.currentState;
+	    this.currentState.calculatePlanning(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -74,8 +74,8 @@ public class Controler {
      */
     public void addDelivery() {
 	try {
-	    previousState = currentState;
-	    currentState.addDelivery(this, window);
+	    this.previousState = this.currentState;
+	    this.currentState.addDelivery(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -86,7 +86,7 @@ public class Controler {
      */
     public void confirmNewDelivery() {
 	try {
-	    currentState.confirmNewDelivery(this, window);
+	    this.currentState.confirmNewDelivery(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -97,7 +97,7 @@ public class Controler {
      */
     public void cancelNewDelivery() {
 	try {
-	    currentState.cancelNewDelivery(this, window);
+	    this.currentState.cancelNewDelivery(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -107,7 +107,7 @@ public class Controler {
      * Remove a delivery from a tour.
      */
     public void removeDelivery() {
-	currentState.removeDelivery(this, window);
+	this.currentState.removeDelivery(this, this.window);
     }
 
     /**
@@ -115,7 +115,7 @@ public class Controler {
      */
     public void openParameters() {
 	try {
-	    currentState.openParameters(this, window);
+	    this.currentState.openParameters(this, this.window);
 	} catch (Exception e) {
 	    ExceptionModal.showErrorModal(e);
 	}
@@ -125,10 +125,10 @@ public class Controler {
      * Return to a given state.
      */
     public void returnToState() {
-	if (currentState.equals(planningState)) {
-	    currentState.returnToState(this, window, loadedDeliveriesState);
-	} else if (currentState.equals(loadedDeliveriesState)) {
-	    currentState.returnToState(this, window, loadedPlanState);
+	if (this.currentState.equals(this.planningState)) {
+	    this.currentState.returnToState(this, this.window, this.loadedDeliveriesState);
+	} else if (this.currentState.equals(this.loadedDeliveriesState)) {
+	    this.currentState.returnToState(this, this.window, this.loadedPlanState);
 	}
     }
 
@@ -138,7 +138,7 @@ public class Controler {
      * @param closestIntersection is the Intersection closest to the click.
      */
     public void clickedNearIntersection(Intersection closestIntersection) {
-	currentState.clickedNearIntersection(this, window, closestIntersection);
+	this.currentState.clickedNearIntersection(this, this.window, closestIntersection);
     }
 
     /**
@@ -147,7 +147,7 @@ public class Controler {
      * @param closestSection is the Section closest to the click.
      */
     public void clickedNearSection(Section closestSection) {
-	currentState.clickedNearSection(this, window, closestSection);
+	this.currentState.clickedNearSection(this, this.window, closestSection);
     }
 
     /**
@@ -156,7 +156,7 @@ public class Controler {
      * @return State, the current state of the controler.
      */
     public State getCurrentState() {
-	return currentState;
+	return this.currentState;
     }
 
     /**
@@ -174,7 +174,7 @@ public class Controler {
      * @return State, the previous state.
      */
     public State getPreviousState() {
-	return previousState;
+	return this.previousState;
     }
 
     /**
@@ -183,15 +183,15 @@ public class Controler {
      * @return the selected Intersection, or null if none was selected.
      */
     public Intersection getSelectedIntersection() {
-	return selectedIntersection;
+	return this.selectedIntersection;
     }
 
     /**
-     * @param selectedIntersection
+     * @param selectedIntersection is the Intersection selected in the view.
      */
     public void setSelectedIntersection(Intersection selectedIntersection) {
 	this.selectedIntersection = selectedIntersection;
-	window.highlightSelectedIntersection(selectedIntersection);
+	this.window.highlightSelectedIntersection(selectedIntersection);
 
     }
 
@@ -201,7 +201,7 @@ public class Controler {
      * @return Window, the current window of the application.
      */
     public Window getWindow() {
-	return window;
+	return this.window;
     }
 
 }

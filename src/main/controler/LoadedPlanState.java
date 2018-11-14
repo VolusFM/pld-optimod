@@ -17,6 +17,7 @@ import main.xml.XMLException;
  */
 class LoadedPlanState extends DefaultState {
 
+    @Override
     public void openDeliveries(Controler controler, Window window)
 	    throws XMLException, ParserConfigurationException, SAXException, IOException {
 
@@ -27,11 +28,7 @@ class LoadedPlanState extends DefaultState {
 	controler.setCurrentState(controler.loadedDeliveriesState);
     }
 
-    /**
-     * Get the name of the state for debug purposes.
-     * 
-     * @return String, the name of the state.
-     */
+    @Override
     public String stateToString() {
 	return "loadedPlanState";
     }

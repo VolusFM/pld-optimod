@@ -15,55 +15,25 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 class PlanningState extends DefaultState {
 
-    /**
-     * Calculate the planning for the given deliveries request and plan.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void calculatePlanning(Controler controler, Window window) {
 	ModelInterface.getTourCalculator().calculateTours();
 	window.displayTourPlanningPanel();
     }
-
-    /**
-     * Open parameters modal.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    
+    @Override
     public void openParameters(Controler controler, Window window) {
 	ModelInterface.setDeliveryMenCount(InputDialogSelector
 		.getIntegerFromInput("Veuillez choisir le nombre de livreurs", "Nombre de livreurs"));
     }
-
-    /**
-     * Move a delivery from one tour to another.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
-    public void moveDelivery(Controler controler, Window window) {
-	throw new NotImplementedException();
-    }
-
-    /**
-     * Add a delivery to a tour.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    
+    @Override
     public void addDelivery(Controler controler, Window window) {
 	window.displayAddingDeliveryPanel();
 	controler.setCurrentState(controler.addState);
     }
 
-    /**
-     * Remove a delivery from a tour.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
+    @Override
     public void removeDelivery(Controler controler, Window window) {
 	Intersection i = controler.getSelectedIntersection();
 	Delivery toRemove = ModelInterface.findCorrespondingDelivery(i);
@@ -72,6 +42,11 @@ class PlanningState extends DefaultState {
 	    window.redraw();
 	    window.redrawTable();
 	}
+    }
+
+    @Override
+    public void moveDelivery(Controler controler, Window window) {
+	throw new NotImplementedException();
     }
 
     @Override
@@ -103,11 +78,7 @@ class PlanningState extends DefaultState {
 	controler.setSelectedIntersection(closestIntersection);
     }
 
-    /**
-     * Get the name of the state for debug purposes.
-     * 
-     * @return String, the name of the state.
-     */
+    @Override
     public String stateToString() {
 	return "planningState";
     }
