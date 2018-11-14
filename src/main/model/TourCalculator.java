@@ -167,7 +167,8 @@ public class TourCalculator {
 	/* Solves TSP within the sub-graph, and create the tours */
 	// resolveTSP();
 
-	for (int i = 0; i < deliveryMenCount; i++) {
+	for (int i = 0; i < Math.min(deliveries.size(), deliveryMenCount); i++) {
+	    // We don't want to create too many tours
 	    createSubGraph(i);
 	    resolveTSPSubGraph(i);
 	}
