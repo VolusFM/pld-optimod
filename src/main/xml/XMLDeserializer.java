@@ -3,7 +3,6 @@ package main.xml;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -24,7 +23,7 @@ import main.model.TourCalculator;
 
 /**
  * 
- * @author lsterner
+ * XMLDeserializer handles the conversion from XML to Model objets.
  *
  */
 public abstract class XMLDeserializer {
@@ -32,11 +31,12 @@ public abstract class XMLDeserializer {
     /**
      * Load a plan from an XML file.
      * 
-     * @param plan
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
-     * @throws XMLException
+     * @param plan is the plan into which we are going to load the sections and
+     *            intersections.
+     * @throws ParserConfigurationException if the configuration is invalid.
+     * @throws SAXException if deserialization fails.
+     * @throws IOException if reading is interrupted.
+     * @throws XMLException if the file's contents are invalid.
      */
     public static void load(Plan plan) throws ParserConfigurationException, SAXException, IOException, XMLException {
 	File xml = XMLFileOpener.getInstance().open();
@@ -52,12 +52,12 @@ public abstract class XMLDeserializer {
 
     /**
      * 
-     * @param rootNode
-     * @param plan
-     * @throws XMLException
-     * @throws NumberFormatException
+     * @param rootNode is the root node of the XML tree.
+     * @param plan is the plan into which we are going to load the sections and
+     *            intersections.
+     * @throws XMLException if the file's contents are invalid.
      */
-    private static void buildFromDOMXML(Element rootNode, Plan plan) throws XMLException, NumberFormatException {
+    private static void buildFromDOMXML(Element rootNode, Plan plan) throws XMLException {
 	NodeList intersections = rootNode.getElementsByTagName("noeud");
 	for (int i = 0; i < intersections.getLength(); i++) {
 	    ModelInterface.addIntersection(createIntersection((Element) intersections.item(i)));
@@ -70,11 +70,11 @@ public abstract class XMLDeserializer {
 
     /**
      * 
-     * @param element
-     * @return
-     * @throws XMLException
+     * @param element is the element from which we are going to create the
+     *            Intersection.
+     * @return Intersection, the created intersection.
      */
-    private static Intersection createIntersection(Element element) throws XMLException {
+    private static Intersection createIntersection(Element element) {
 	long id = Long.parseLong(element.getAttribute("id"));
 	double latitude = Double.parseDouble(element.getAttribute("latitude"));
 	double longitude = Double.parseDouble(element.getAttribute("longitude"));
@@ -102,14 +102,12 @@ public abstract class XMLDeserializer {
 	double length = Double.parseDouble(elt.getAttribute("longueur"));
 
 	if (length <= 0) {
-	    throw new XMLException(
-		    "Erreur lors du chargement : la longueur d'un tronçon de rue doit être positive.");
+	    throw new XMLException("Erreur lors du chargement : la longueur d'un tronçon de rue doit être positive.");
 	}
 
 	return new Section(departure, arrival, length, streetName);
     }
 
-    // XXX : this assumes the plan to be loaded, right ?
     public static void load(Plan plan, TourCalculator calculator)
 	    throws ParserConfigurationException, SAXException, IOException, XMLException {
 	File xml = XMLFileOpener.getInstance().open();
@@ -146,19 +144,18 @@ public abstract class XMLDeserializer {
 	    int duration = Integer.parseInt(elt.getAttribute("duree"));
 
 	    return new Delivery(duration, address);
-	} else { // Not a delivery but a depot
-	    Calendar departureTime = GregorianCalendar.getInstance();
-	    // Parse date
-	    String date[] = elt.getAttribute("heureDepart").split(":");
-	    int hour = Integer.parseInt(date[0]);
-	    int minutes = Integer.parseInt(date[1]);
-	    int seconds = Integer.parseInt(date[2]);
-	    departureTime.set(Calendar.HOUR_OF_DAY, hour);
-	    departureTime.set(Calendar.MINUTE, minutes);
-	    departureTime.set(Calendar.SECOND, seconds);
-	    Delivery d = new Delivery(0, address);
-	    d.setHour(departureTime);
-	    return d;
 	}
+	Calendar departureTime = Calendar.getInstance();
+	// Parse date
+	String date[] = elt.getAttribute("heureDepart").split(":");
+	int hour = Integer.parseInt(date[0]);
+	int minutes = Integer.parseInt(date[1]);
+	int seconds = Integer.parseInt(date[2]);
+	departureTime.set(Calendar.HOUR_OF_DAY, hour);
+	departureTime.set(Calendar.MINUTE, minutes);
+	departureTime.set(Calendar.SECOND, seconds);
+	Delivery d = new Delivery(0, address);
+	d.setHour(departureTime);
+	return d;
     }
 }
