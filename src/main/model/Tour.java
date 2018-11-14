@@ -120,6 +120,4 @@ public class Tour {
 	return "Tour [depot=" + depot + /*", steps=" + steps +*/ ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
 		+ deliveryManId + "]";
     }
-    
-    
 }

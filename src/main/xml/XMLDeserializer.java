@@ -164,9 +164,9 @@ public abstract class XMLDeserializer {
 	Node depot = rootNode.getElementsByTagName(DEPOT).item(0);
 	NodeList deliveriesNodes = rootNode.getElementsByTagName(DELIVERY);
 
-	calculator.setDepot(createDelivery((Element) depot, plan));
+	ModelInterface.setDepot(createDelivery((Element) depot, plan));
 	for (int i = 0; i < deliveriesNodes.getLength(); i++) {
-	    calculator.addDelivery(createDelivery((Element) deliveriesNodes.item(i), plan));
+	    ModelInterface.addDeliveryToTourCalculator(createDelivery((Element) deliveriesNodes.item(i), plan));
 	}
     }
 
