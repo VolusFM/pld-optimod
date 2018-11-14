@@ -55,7 +55,9 @@ class AddDeliveryState extends DefaultState {
     }
 
     /**
-     * Get string description of this state.
+     * Get the name of the state for debug purposes.
+     * 
+     * @return String, the name of the state.
      */
     public String stateToString() {
 	return "addDeliveryState";
