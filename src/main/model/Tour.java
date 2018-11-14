@@ -42,29 +42,29 @@ public class Tour {
      * @param index is the index where to add the delivery in the list.
      */
     public void addDeliveryAtIndex(Delivery delivery, int index) {
-	deliveryPoints.add(index, delivery);
+	this.deliveryPoints.add(index, delivery);
     }
 
     /**
      * Remove a delivery from the tour.
      * 
-     * @param delivery is the delivery to remove.
+     * @param toRemove is the delivery to remove.
      */
-    public void removeDelivery(Delivery toSuppress) {
-	deliveryPoints.remove(toSuppress);
+    public void removeDelivery(Delivery toRemove) {
+	this.deliveryPoints.remove(toRemove);
     }
 
     /**
      * Calculate and set all delivery hours.
      */
     public void calculateDeliveryHours() {
-	Calendar departureTime = (Calendar) depot.getHour().clone();
-	for (Step s : steps) {
+	Calendar departureTime = (Calendar) this.depot.getHour().clone();
+	for (Step s : this.steps) {
 	    List<Section> sections = s.getSections();
 	    long lastIntersectionId = sections.get(sections.size() - 1).getEnd().getId();
 	    boolean foundDelivery = false;
-	    Iterator<Delivery> it = deliveryPoints.iterator();
-	    Delivery delivery = depot;
+	    Iterator<Delivery> it = this.deliveryPoints.iterator();
+	    Delivery delivery = this.depot;
 	    // If we don't find the delivery, it's the depot
 	    while (!foundDelivery && it.hasNext()) {
 		Delivery d = it.next();
@@ -74,7 +74,7 @@ public class Tour {
 		    foundDelivery = true;
 		}
 	    }
-	    if (delivery.equals(depot)) {
+	    if (delivery.equals(this.depot)) {
 		continue;
 	    }
 	    long travelTimeInSeconds = Math.round(s.calculateLength() * 3600 / 15000);
@@ -83,7 +83,6 @@ public class Tour {
 	    delivery.setHour(deliveryTime);
 	    departureTime.add(Calendar.SECOND, delivery.getDuration());
 	}
-	// FIXME : doesn't work well when tour ends the next day
     }
 
     /**
@@ -92,8 +91,8 @@ public class Tour {
      * @return List, a list of all deliveries in the tour, including the depot.
      */
     public List<Delivery> getDeliveryPoints() {
-	List<Delivery> deliveriesAndDepot = new ArrayList<>(deliveryPoints);
-	deliveriesAndDepot.add(depot);
+	List<Delivery> deliveriesAndDepot = new ArrayList<>(this.deliveryPoints);
+	deliveriesAndDepot.add(this.depot);
 	return deliveriesAndDepot;
     }
 
@@ -103,7 +102,7 @@ public class Tour {
      * @return List, a list of all the steps constituting the tour.
      */
     public List<Step> getSteps() {
-	return steps;
+	return this.steps;
     }
 
     /**
@@ -112,12 +111,12 @@ public class Tour {
      * @return Integer, the delivery man's id.
      */
     public int getDeliveryManId() {
-	return deliveryManId;
+	return this.deliveryManId;
     }
 
     @Override
     public String toString() {
-	return "Tour [depot=" + depot + /*", steps=" + steps +*/ ", deliveryPoints=" + deliveryPoints + ", deliveryManId="
-		+ deliveryManId + "]";
+	return "Tour [depot=" + this.depot + /*", steps=" + steps +*/ ", deliveryPoints=" + this.deliveryPoints + ", deliveryManId="
+		+ this.deliveryManId + "]";
     }
 }

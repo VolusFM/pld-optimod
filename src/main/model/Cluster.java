@@ -7,6 +7,11 @@ import java.util.List;
 
 import javafx.util.Pair;
 
+/**
+ * Cluster represents a set of deliveries and is used to ease the resolution of
+ * the TSP.
+ *
+ */
 public class Cluster {
     private List<Delivery> deliveries;
     private Pair<Double, Double> centroid;
@@ -15,18 +20,19 @@ public class Cluster {
     /**
      * Create an unbalanced cluster.
      * 
-     * @param centroid : Latitude and Longitude of cluster's centroid.
+     * @param centroid is the coordinates (longitude and latitude) of cluster's
+     *                     centroid.
      */
     public Cluster(Pair<Double, Double> centroid) {
 	this.centroid = centroid;
-	deliveries = new ArrayList<Delivery>();
-	isBalanced = false;
+	this.deliveries = new ArrayList<Delivery>();
+	this.isBalanced = false;
     }
 
     /**
-     * Add a new delivery to cluster list.
+     * Add a new delivery to this cluster.
      * 
-     * @param delivery : Delivery to add.
+     * @param delivery is the Delivery to add.
      */
     public void addDelivery(Delivery delivery) {
 	if (delivery == null) {
@@ -39,24 +45,24 @@ public class Cluster {
      * Removes the delivery at the specified index and returns it. Throws an
      * assertion error if index is out of range.
      * 
-     * @param index : index of the delivery to pop.
-     * @return the delivery that has been popped.
+     * @param index is the index of the delivery to pop.
+     * @return Delivery, the delivery that has been popped.
      */
     public Delivery popDelivery(int index) {
-	if ((index > deliveries.size()) || (deliveries.size() == 0)) {
+	if ((index > this.deliveries.size()) || (this.deliveries.size() == 0)) {
 	    throw new AssertionError("Delivery 's index to pop is out of range");
 	}
 	return this.deliveries.remove(index);
     }
 
     /**
-     * Evaluate the quality of a clustering.
+     * Evaluate the quality of the clustering.
      * 
-     * @return : a coefficient that reflect the quality of a clustering.
+     * @return Double, a coefficient that reflect the quality of a clustering.
      */
-    public double calculateCoefficient() {
+    public double evaluateClusteringQuality() {
 	double coeff = 0;
-	for (Delivery delivery : deliveries) {
+	for (Delivery delivery : this.deliveries) {
 	    Pair<Double, Double> deliveryData = new Pair<Double, Double>(delivery.getAddress().getLat(),
 		    delivery.getAddress().getLon());
 	    coeff += calculateDistanceToCentroid(deliveryData);
@@ -65,18 +71,19 @@ public class Cluster {
     }
 
     /**
-     * Reinitialize the delivery list.
+     * Reinitialize the deliveries list.
      */
     public void reinitializeClusters() {
-	deliveries = new ArrayList<Delivery>();
+	this.deliveries = new ArrayList<Delivery>();
     }
 
     /**
-     * sort deliveries in a decreasing order based on euclidean distance to
+     * Sort deliveries in a decreasing order based on euclidean distance to
      * centroid.
      */
     public void sortDeliveriesByEuclidianDistanceToCentroid() {
-	Collections.sort(deliveries, new Comparator<Delivery>() {
+	Collections.sort(this.deliveries, new Comparator<Delivery>() {
+	    @Override
 	    public int compare(Delivery firstDelivery, Delivery secondDelivery) {
 		double firstDistance = calculateDistanceToCentroid(new Pair<Double, Double>(
 			firstDelivery.getAddress().getLat(), firstDelivery.getAddress().getLon()));
@@ -94,56 +101,56 @@ public class Cluster {
     }
 
     /**
-     * Calculate the distance between a pair of coordinate and clusters centroid.
+     * Calculate the distance between an intersection and clusters centroid.
      * 
-     * @param intersectionData : data's latitude and longitude.
-     * @return : the distance between coordinate and centroid.
+     * @param coordinates is the intersection's latitude and longitude.
+     * @return Double, the distance between coordinates and centroid.
      */
-    private double calculateDistanceToCentroid(Pair<Double, Double> intersectionData) {
-	return Math.sqrt(Math.pow((intersectionData.getKey() - centroid.getKey()), 2)
-		+ Math.pow((intersectionData.getValue() - centroid.getValue()), 2));
+    protected double calculateDistanceToCentroid(Pair<Double, Double> coordinates) {
+	return Math.sqrt(Math.pow((coordinates.getKey() - this.centroid.getKey()), 2)
+		+ Math.pow((coordinates.getValue() - this.centroid.getValue()), 2));
     }
 
     /**
-     * centroid s getter.
+     * Getter for centroid.
      * 
-     * @return cluster s centroid.
+     * @return Pair, the cluster's centroid.
      */
     public Pair<Double, Double> getCentroid() {
-	return centroid;
+	return this.centroid;
     }
 
     /**
-     * deliveries s getter.
+     * Getter for deliveries.
      * 
-     * @return cluster s delivery list.
+     * @return List, the cluster's deliveries.
      */
     public List<Delivery> getDeliveries() {
-	return deliveries;
+	return this.deliveries;
     }
 
     /**
-     * isBalanced s getter.
+     * Getter for balancing evaluation.
      * 
-     * @return if the cluster is balanced.
+     * @return boolean, whether the cluster is balanced.
      */
     public boolean isBalanced() {
-	return isBalanced;
+	return this.isBalanced;
     }
 
     /**
-     * centroid s setter.
+     * Setter for centroid.
      * 
-     * @param centroid : new clusters centroid.
+     * @param centroid is cluster's new centroid.
      */
     protected void setCentroid(Pair<Double, Double> centroid) {
 	this.centroid = centroid;
     }
 
     /**
-     * isBalanced s setter.
+     * Setter for balancing evaluation.
      * 
-     * @param isBalanced.
+     * @param isBalanced is the cluster's new balancing evaluation.
      */
     protected void setIsBalanced(boolean isBalanced) {
 	this.isBalanced = isBalanced;
@@ -151,9 +158,9 @@ public class Cluster {
 
     @Override
     public String toString() {
-	String cluster = "Centroid : x = " + centroid.getKey().toString() + " y =" + centroid.getValue().toString()
-		+ "\n\r";
-	for (Delivery delivery : deliveries) {
+	String cluster = "Centroid : x = " + this.centroid.getKey().toString() + " y ="
+		+ this.centroid.getValue().toString() + "\n\r";
+	for (Delivery delivery : this.deliveries) {
 	    cluster += delivery.getAddress().toString() + "\n\r";
 	}
 	return cluster;

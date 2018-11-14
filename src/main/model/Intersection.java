@@ -27,7 +27,7 @@ public class Intersection {
 	this.lat = lat;
 	this.lon = lon;
 	this.id = id;
-	outcomingSections = new ArrayList<>();
+	this.outcomingSections = new ArrayList<>();
     }
 
     /**
@@ -39,8 +39,8 @@ public class Intersection {
 	if (outcomingSection == null) {
 	    throw new AssertionError("Added null outcoming section");
 	}
-	if (outcomingSections.indexOf(outcomingSection) == -1) {
-	    outcomingSections.add(outcomingSection);
+	if (this.outcomingSections.indexOf(outcomingSection) == -1) {
+	    this.outcomingSections.add(outcomingSection);
 	}
     }
 
@@ -50,7 +50,7 @@ public class Intersection {
      * @return Long, the id of the intersection.
      */
     public long getId() {
-	return id;
+	return this.id;
     }
 
     /**
@@ -59,7 +59,7 @@ public class Intersection {
      * @return Double, the latitude of the intersection.
      */
     public double getLat() {
-	return lat;
+	return this.lat;
     }
 
     /**
@@ -68,7 +68,7 @@ public class Intersection {
      * @return Double, the longitude of the intersection.
      */
     public double getLon() {
-	return lon;
+	return this.lon;
     }
 
     /**
@@ -77,13 +77,13 @@ public class Intersection {
      * @return List of Section, the List of outcoming sections.
      */
     public List<Section> getOutcomingSections() {
-	return outcomingSections;
+	return this.outcomingSections;
     }
 
     @Override
     public String toString() {
 	String intersection = "intersection num "
-		+ id /* + ", lat = " + lat + ", long =" + lon */;
+		+ this.id + ", lat = " + this.lat + ", long =" + this.lon;
 	return intersection;
     }
 
@@ -96,7 +96,7 @@ public class Intersection {
 	if (getClass() != obj.getClass())
 	    return false;
 	Intersection other = (Intersection) obj;
-	if (id != other.id)
+	if (this.id != other.id)
 	    return false;
 	return true;
     }

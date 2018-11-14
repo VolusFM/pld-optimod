@@ -18,8 +18,7 @@ public class Delivery {
      * Create a new Delivery.
      * 
      * @param duration is the duration of the delivery.
-     * @param address if the Intersection where the delivery is supposed to
-     *            happen.
+     * @param address  if the Intersection where the delivery is supposed to happen.
      */
     public Delivery(int duration, Intersection address) {
 	if (duration < 0) {
@@ -35,7 +34,7 @@ public class Delivery {
      * @return Integer, the duration of the delivery.
      */
     public int getDuration() {
-	return duration;
+	return this.duration;
     }
 
     /**
@@ -44,7 +43,7 @@ public class Delivery {
      * @return Calendar, a calendar representing the hour of the delivery.
      */
     public Calendar getHour() {
-	return hour;
+	return this.hour;
     }
 
     /**
@@ -53,7 +52,7 @@ public class Delivery {
      * @return Intersection, the address of the delivery.
      */
     public Intersection getAddress() {
-	return address;
+	return this.address;
     }
 
     /**
@@ -67,13 +66,13 @@ public class Delivery {
 
     @Override
     public String toString() {
-	if (hour == null) {
-	    return "(" + address.getLat() + ";" + address.getLon() + ")";
+	if (this.hour == null) {
+	    return "(" + this.address.getLat() + ";" + this.address.getLon() + ")";
 	}
 
 	SimpleDateFormat dateFormat = new SimpleDateFormat("HH-mm");
-	dateFormat.setTimeZone(hour.getTimeZone());
-	return "(" + address.getLat() + ";" + address.getLon() + ") - " + dateFormat.format(hour.getTime());
+	dateFormat.setTimeZone(this.hour.getTimeZone());
+	return "(" + this.address.getLat() + ";" + this.address.getLon() + ") - " + dateFormat.format(this.hour.getTime());
     }
 
     @Override
@@ -85,10 +84,10 @@ public class Delivery {
 	if (getClass() != obj.getClass())
 	    return false;
 	Delivery other = (Delivery) obj;
-	if (address == null) {
+	if (this.address == null) {
 	    if (other.address != null)
 		return false;
-	} else if (!address.equals(other.address)) {
+	} else if (!this.address.equals(other.address)) {
 	    return false;
 	}
 	return true;

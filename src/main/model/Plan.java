@@ -22,7 +22,7 @@ public class Plan {
      * Initialize plan.
      */
     public Plan() {
-	graph = new HashMap<>();
+	this.graph = new HashMap<>();
     }
 
     /**
@@ -31,7 +31,7 @@ public class Plan {
      * @param toAdd is the intersection to add.
      */
     protected void addIntersection(Intersection toAdd) {
-	graph.put(toAdd.getId(), toAdd);
+	this.graph.put(toAdd.getId(), toAdd);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Plan {
      */
     protected void addSection(Section toAdd) {
 	long idIntersection = toAdd.getStart().getId();
-	graph.get(idIntersection).addOutcomingSection(toAdd);
+	this.graph.get(idIntersection).addOutcomingSection(toAdd);
     }
 
     /**
@@ -54,7 +54,7 @@ public class Plan {
      * @return a pair with as the first member distances, and as the second
      *         member predecessors.
      */
-    protected Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
+    protected Pair<HashMap<Long, Double>, HashMap<Long, Long>> dijkstra(Intersection sourceIntersection) {
 	List<Long> settledId = new ArrayList<>();
 	List<Long> unSettledId = new ArrayList<>();
 
@@ -64,8 +64,8 @@ public class Plan {
 	HashMap<Long, Long> predecessors = new HashMap<>();
 
 	// Initialization
-	for (Long id : graph.keySet()) {
-	    distances.put(id, HIGH);
+	for (Long id : this.graph.keySet()) {
+	    distances.put(id, this.HIGH);
 	    predecessors.put(id, sourceIntersection.getId());
 	}
 	unSettledId.add(sourceIntersection.getId());
@@ -74,7 +74,7 @@ public class Plan {
 	    long idEvaluationIntersectionId = findIntersectionWithLowestDistance(distances, unSettledId);
 	    unSettledId.remove(unSettledId.indexOf(idEvaluationIntersectionId));
 	    settledId.add(idEvaluationIntersectionId);
-	    Intersection evaluationIntersection = graph.get(idEvaluationIntersectionId);
+	    Intersection evaluationIntersection = this.graph.get(idEvaluationIntersectionId);
 	    List<Section> neighbours = evaluationIntersection.getOutcomingSections();
 	    for (Section neighbour : neighbours) {
 		long destinationId = neighbour.getEnd().getId();
@@ -101,7 +101,7 @@ public class Plan {
      * @return Long, the id of the closest intersection.
      */
     private long findIntersectionWithLowestDistance(HashMap<Long, Double> distances, List<Long> unSettledIds) {
-	double lowestDistance = HIGH;
+	double lowestDistance = this.HIGH;
 	long idIntersectionWithLowestDistance = unSettledIds.get(0);
 
 	for (long id : unSettledIds) {
@@ -127,7 +127,7 @@ public class Plan {
 	Intersection closest;
 	Intersection current;
 
-	Iterator<Intersection> intersectionIterator = graph.values().iterator();
+	Iterator<Intersection> intersectionIterator = this.graph.values().iterator();
 	closest = intersectionIterator.next();
 	minDistance = distanceBetween(reference, new GeographicCoordinate(closest.getLat(), closest.getLon()));
 
@@ -186,7 +186,7 @@ public class Plan {
      * @param anotherCoordinate contains the coordinates of the second point.
      * @return double, the distance between the two points.
      */
-    private double distanceBetween(GeographicCoordinate coordinate, GeographicCoordinate anotherCoordinate) {
+    private static double distanceBetween(GeographicCoordinate coordinate, GeographicCoordinate anotherCoordinate) {
 	return Math.sqrt((coordinate.getLatitude() - anotherCoordinate.getLatitude())
 		* (coordinate.getLatitude() - anotherCoordinate.getLatitude())
 		+ (coordinate.getLongitude() - anotherCoordinate.getLongitude())
@@ -201,7 +201,7 @@ public class Plan {
      * @param anotherExtremity is the second extremity of the line.
      * @return Double, the distance between the line and the point.
      */
-    private double distanceBetweenLine(GeographicCoordinate point, GeographicCoordinate oneExtremity,
+    private static double distanceBetweenLine(GeographicCoordinate point, GeographicCoordinate oneExtremity,
 	    GeographicCoordinate anotherExtremity) {
 	return Math.abs(distanceBetween(point, oneExtremity) + distanceBetween(point, anotherExtremity)
 		- distanceBetween(oneExtremity, anotherExtremity));
@@ -214,7 +214,7 @@ public class Plan {
      */
     private List<Section> listAllSections() {
 	List<Section> sections = new ArrayList<Section>();
-	for (Intersection intersection : graph.values()) {
+	for (Intersection intersection : this.graph.values()) {
 	    sections.addAll(intersection.getOutcomingSections());
 	}
 	return sections;
@@ -227,7 +227,7 @@ public class Plan {
      * @return Intersection, the Intersection mapped by id in graph.
      */
     public Intersection getIntersectionById(long id) {
-	return graph.get(id);
+	return this.graph.get(id);
     }
 
     /**
@@ -236,6 +236,6 @@ public class Plan {
      * @return HashMap<Long, Intersection>, the graph of the plan.
      */
     public HashMap<Long, Intersection> getGraph() {
-	return graph;
+	return this.graph;
     }
 }

@@ -26,8 +26,8 @@ public class Step {
 	    throw new IllegalArgumentException("Aucun chemin ne mène à cet endroit.");
 	}
 	this.sections = new ArrayList<>(sections);
-	startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
-	endDelivery = TourCalculator.getInstance()
+	this.startDelivery = TourCalculator.getInstance().findCorrespondingDelivery(sections.get(0).getStart());
+	this.endDelivery = TourCalculator.getInstance()
 		.findCorrespondingDelivery(sections.get(sections.size() - 1).getEnd());
     }
 
@@ -39,7 +39,7 @@ public class Step {
      */
     protected double calculateLength() {
 	double sum = 0;
-	for (Section section : sections) {
+	for (Section section : this.sections) {
 	    sum += section.getLength();
 	}
 	return sum;
@@ -51,7 +51,7 @@ public class Step {
      * @return List, the list of Sections in the step.
      */
     public List<Section> getSections() {
-	return sections;
+	return this.sections;
     }
 
     /**
@@ -60,7 +60,7 @@ public class Step {
      * @return Delivery, the start of the step.
      */
     public Delivery getStartDelivery() {
-	return startDelivery;
+	return this.startDelivery;
     }
 
     /**
@@ -69,11 +69,11 @@ public class Step {
      * @return Delivery, the end of the step.
      */
     public Delivery getEndDelivery() {
-	return endDelivery;
+	return this.endDelivery;
     }
 
     @Override
     public String toString() {
-	return "S " + startDelivery.getAddress().getId() + " -> " + endDelivery.getAddress().getId() + "\n";
+	return "S " + this.startDelivery.getAddress().getId() + " -> " + this.endDelivery.getAddress().getId() + "\n";
     }
 }

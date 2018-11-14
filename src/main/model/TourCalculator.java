@@ -20,7 +20,9 @@ public class TourCalculator {
     private List<Delivery> deliveries;
     private List<List<Delivery>> deliveriesForEachTour;
     private Delivery depot;
-    private int calculationTimeLimitMs = 10000;
+
+    // Calculation time limit in milliseconds
+    private int calculationTimeLimit = 10000;
     private int deliveryMenCount = 2;
 
     /* Unique instance */
@@ -46,26 +48,26 @@ public class TourCalculator {
      * Create the tour calculator.
      */
     private TourCalculator() {
-	deliveries = new ArrayList<>();
-	deliveriesForEachTour = new ArrayList<List<Delivery>>();
-	steps = new HashMap<>();
+	this.deliveries = new ArrayList<>();
+	this.deliveriesForEachTour = new ArrayList<List<Delivery>>();
+	this.steps = new HashMap<>();
     }
 
     /**
      * Find the delivery taking place at the intersection, if it exists.
      * 
      * @param intersection is the intersection where a Delivery is supposed to
-     *            happen.
+     *                         happen.
      * @return the corresponding Delivery if it exists, or null if it doesn't.
      */
     public Delivery findCorrespondingDelivery(Intersection intersection) {
-	for (Delivery delivery : deliveries) {
+	for (Delivery delivery : this.deliveries) {
 	    if (delivery.getAddress().equals(intersection)) {
 		return delivery;
 	    }
 	}
-	if (depot.getAddress().equals(intersection)) {
-	    return depot;
+	if (this.depot.getAddress().equals(intersection)) {
+	    return this.depot;
 	}
 	return null;
     }
@@ -78,12 +80,12 @@ public class TourCalculator {
 	initialize();
 	/* Creates the global sub-graph, with all deliveries */
 	createGraph();
-	List<Cluster> clusters = clusterizeData(deliveryMenCount, 0);
+	List<Cluster> clusters = clusterizeData(this.deliveryMenCount, 0);
 	for (Cluster cluster : clusters) {
-	    deliveriesForEachTour.add(cluster.getDeliveries());
+	    this.deliveriesForEachTour.add(cluster.getDeliveries());
 	}
 	/* Solves TSP within the sub-graph, and create the tours */
-	for (int i = 0; i < Math.min(deliveries.size(), deliveryMenCount); i++) {
+	for (int i = 0; i < Math.min(this.deliveries.size(), this.deliveryMenCount); i++) {
 	    // We don't want to create too many tours
 	    createSubGraph(i);
 	    resolveTSPSubGraph(i);
@@ -96,11 +98,11 @@ public class TourCalculator {
      */
     protected void initialize() {
 	TourFactory.getInstance().empty();
-	deliveriesForEachTour = new ArrayList<>();
-	costsTSPForEachTour = new ArrayList<>();
-	nodesCountForEachTour = new ArrayList<>();
-	delayForEachTour = new ArrayList<>();
-	steps = new HashMap<>();
+	this.deliveriesForEachTour = new ArrayList<>();
+	this.costsTSPForEachTour = new ArrayList<>();
+	this.nodesCountForEachTour = new ArrayList<>();
+	this.delayForEachTour = new ArrayList<>();
+	this.steps = new HashMap<>();
     }
 
     /**
@@ -109,30 +111,30 @@ public class TourCalculator {
      * It uses the plan and all the deliveries, as well as the depot
      * 
      * It creates a sub-graph, containing only the useful nodes (deliveries and
-     * depot), and the arrows correspond to the shortest path found between the
-     * 2 nodes in the main graph
+     * depot), and the arrows correspond to the shortest path found between the 2
+     * nodes in the main graph
      * 
      * It assumes the ordering of deliveries remain the same (i.e. the list
-     * deliveries will not be modified) And it expects that the depot will
-     * always be the first in both list (<b>this is actually a pre-condition in
-     * the TSP algorithm</b>)
+     * deliveries will not be modified) And it expects that the depot will always be
+     * the first in both list (<b>this is actually a pre-condition in the TSP
+     * algorithm</b>)
      */
     protected void createGraph() {
 	/* Initialization */
-	nodesCount = 1 + deliveries.size(); // depot as first + deliveries
+	this.nodesCount = 1 + this.deliveries.size(); // depot as first + deliveries
 
-	delay = new int[nodesCount];
-	delay[0] = 0; // no delay in the depot
-	for (int i = 0; i < deliveries.size(); i++) {
-	    delay[i + 1] = deliveries.get(i).getDuration();
+	this.delay = new int[this.nodesCount];
+	this.delay[0] = 0; // no delay in the depot
+	for (int i = 0; i < this.deliveries.size(); i++) {
+	    this.delay[i + 1] = this.deliveries.get(i).getDuration();
 	}
-	costTSP = new double[nodesCount][nodesCount];
+	this.costTSP = new double[this.nodesCount][this.nodesCount];
 
 	/* Calculation of costs with Dijkstra */
 	// First line of matrix is depot; other lines are the delivery points
-	costTSP[0] = dijkstraHelper(depot.getAddress());
-	for (int i = 0; i < deliveries.size(); i++) {
-	    costTSP[i + 1] = dijkstraHelper(deliveries.get(i).getAddress());
+	this.costTSP[0] = dijkstraHelper(this.depot.getAddress());
+	for (int i = 0; i < this.deliveries.size(); i++) {
+	    this.costTSP[i + 1] = dijkstraHelper(this.deliveries.get(i).getAddress());
 	}
 
     }
@@ -141,125 +143,119 @@ public class TourCalculator {
      * Create a restricted graph to be used with the TSP algorithm (see
      * createGraph()).
      * 
-     * @param index, the index in deliveriesForEachTour where List of delivery
-     *            needed for TSP is.
+     * @param index is the index in deliveriesForEachTour where the List of
+     *                  deliveries needed for this TSP is.
      */
     private void createSubGraph(int index) {
-	List<Delivery> deliveries = deliveriesForEachTour.get(index);
+	List<Delivery> tourDeliveries = this.deliveriesForEachTour.get(index);
 	/* Initialization */
-	int nodesCount = 1 + deliveries.size(); // depot as first + deliveries
-	nodesCountForEachTour.add(index, nodesCount);
+	int tourNodesCount = 1 + tourDeliveries.size(); // depot as first + deliveries
+	this.nodesCountForEachTour.add(index, tourNodesCount);
 
-	int[] delay = new int[nodesCount];
-	delay[0] = 0; // no delay in the depot
-	for (int i = 0; i < deliveries.size(); i++) {
-	    delay[i + 1] = deliveries.get(i).getDuration();
+	int[] tourDelay = new int[tourNodesCount];
+	tourDelay[0] = 0; // no delay in the depot
+	for (int i = 0; i < tourDeliveries.size(); i++) {
+	    tourDelay[i + 1] = tourDeliveries.get(i).getDuration();
 	}
-	delayForEachTour.add(index, delay);
+	this.delayForEachTour.add(index, tourDelay);
 
-	double[][] costTSP = new double[nodesCount][nodesCount];
+	double[][] tourCostTSP = new double[tourNodesCount][tourNodesCount];
 
-	/* Calculation of costs with Dijkstra */
+	// Calculation of costs with Dijkstra
 	// First line of matrix is depot; other lines are the delivery points
-	costTSP[0] = dijkstraHelperSubGraph(index, depot.getAddress());
-	for (int i = 0; i < deliveries.size(); i++) {
-	    costTSP[i + 1] = dijkstraHelperSubGraph(index, deliveries.get(i).getAddress());
+	tourCostTSP[0] = dijkstraHelperSubGraph(index, this.depot.getAddress());
+	for (int i = 0; i < tourDeliveries.size(); i++) {
+	    tourCostTSP[i + 1] = dijkstraHelperSubGraph(index, tourDeliveries.get(i).getAddress());
 	}
-	costsTSPForEachTour.add(index, costTSP);
+	this.costsTSPForEachTour.add(index, tourCostTSP);
     }
 
     /**
-     * Dijkstra helper function, create the useful row for TSP cost matrix based
-     * on the result of the algorithm, and create the steps related to Dijkstra
-     * result.
+     * Dijkstra helper function, create the useful row for TSP cost matrix based on
+     * the result of the algorithm, and create the steps related to Dijkstra result.
      * 
-     * @param source, the source from which Dijkstra will start.
-     * @return
+     * @param source is the source from which Dijkstra will start.
+     * @return Double[], the row for the TSP cost matrix.
      */
     private double[] dijkstraHelper(Intersection source) {
-	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
+	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = this.map.dijkstra(source);
 	HashMap<Long, Double> cost = result.getKey();
 	HashMap<Long, Long> predecessors = result.getValue();
-	/*
-	 * idsList is the "header" of the list : the ids of the nodes to use in
-	 * the correct order
->>>>>>> efdf32dba13b727dfc4fadfc14b96624e74997d9
-	 */
-	long[] idsList = new long[nodesCount];
-	idsList[0] = depot.getAddress().getId();
-	for (int i = 0; i < deliveries.size(); i++) {
-	    idsList[i + 1] = deliveries.get(i).getAddress().getId();
+
+	// idsList is the "header" of the list : the ids of the nodes to use in the
+	// correct order
+	long[] idsList = new long[this.nodesCount];
+	idsList[0] = this.depot.getAddress().getId();
+	for (int i = 0; i < this.deliveries.size(); i++) {
+	    idsList[i + 1] = this.deliveries.get(i).getAddress().getId();
 	}
-	/* We use the "header" to construct the cost line */
-	double[] costResult = new double[nodesCount];
-	for (int i = 0; i < nodesCount; i++) {
+	// We use the "header" to construct the cost line
+	double[] costResult = new double[this.nodesCount];
+	for (int i = 0; i < this.nodesCount; i++) {
 	    costResult[i] = cost.get(idsList[i]);
 	}
-	/* We also create the steps */
+
 	createSteps(predecessors, source);
 	return costResult;
     }
 
     /**
-     * Dijkstra helper function, create the useful row for TSP cost matrix based
-     * on the result of the algorithm, and create the steps related to Dijkstra
-     * result Sub-graph implementation, see dijkstraHelper.
+     * Dijkstra helper function, create the useful row for TSP cost matrix based on
+     * the result of the algorithm, and create the steps related to Dijkstra result
+     * Sub-graph implementation, see dijkstraHelper.
      * 
-     * @param index, the index in deliveriesForEachTour where List of delivery
-     *            needed for TSP is.
-     * @param source, the source from which Dijkstra will start.
-     * @return
+     * @param index  is the index in deliveriesForEachTour where List of delivery
+     *                   needed for TSP is.
+     * @param source is the source from which Dijkstra will start.
+     * @return Double[], the row for the TSP cost matrix.
      */
     private double[] dijkstraHelperSubGraph(int index, Intersection source) {
-	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = map.Dijkstra(source);
+	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result = this.map.dijkstra(source);
 	// XXX : this is what we need to be careful about ^^^^^
 
 	HashMap<Long, Double> cost = result.getKey();
 	HashMap<Long, Long> predecessors = result.getValue();
 
-	int nodesCount = nodesCountForEachTour.get(index);
-	List<Delivery> deliveries = deliveriesForEachTour.get(index);
-	/*
-	 * idsList is the "header" of the list : the ids of the nodes to use in
-	 * the correct order
-	 */
+	int nodesCount = this.nodesCountForEachTour.get(index);
+	List<Delivery> deliveries = this.deliveriesForEachTour.get(index);
+
+	// idsList is the "header" of the list : the ids of the nodes to use in the
+	// correct order
+
 	long[] idsList = new long[nodesCount];
-	idsList[0] = depot.getAddress().getId();
+	idsList[0] = this.depot.getAddress().getId();
 	for (int i = 0; i < deliveries.size(); i++) {
 	    idsList[i + 1] = deliveries.get(i).getAddress().getId();
 	}
 
-	/* We use the "header" to construct the cost line */
+	// We use the "header" to construct the cost line
 	double[] costResult = new double[nodesCount];
 	for (int i = 0; i < nodesCount; i++) {
 	    costResult[i] = cost.get(idsList[i]);
 	}
 
-	/* We also create the steps */
-	// XXX : I don't know if we need to change this v
 	createSteps(predecessors, source);
 
-	/* And we return the cost */
 	return costResult;
     }
 
     /**
-     * resolve TSP for the subGraph.
+     * Resolve TSP for the subGraph.
      * 
-     * @param index, the index of the subgraph.
+     * @param index is the index of the subgraph.
      */
     private void resolveTSPSubGraph(int index) {
-	TSPimplementation.searchSolution(calculationTimeLimitMs, nodesCountForEachTour.get(index),
-		costsTSPForEachTour.get(index), delayForEachTour.get(index));
-	List<Step> solutionSteps = findStepsFromResultSubGraph(index, TSPimplementation.getBestSolution());
-	TourFactory.createTour(index, solutionSteps, depot, deliveriesForEachTour.get(index));
+	this.TSPimplementation.searchSolution(this.calculationTimeLimit, this.nodesCountForEachTour.get(index),
+		this.costsTSPForEachTour.get(index), this.delayForEachTour.get(index));
+	List<Step> solutionSteps = findStepsFromResultSubGraph(index, this.TSPimplementation.getBestSolution());
+	TourFactory.createTour(index, solutionSteps, this.depot, this.deliveriesForEachTour.get(index));
     }
 
     /**
      * Create the steps of the tours.
      * 
-     * @param predecessors, result of Dijkstra
-     * @param source, the source where start the Dijkstra s algorithm.
+     * @param predecessors is result of Dijkstra
+     * @param source       is the source where start the Dijkstra s algorithm.
      */
     private void createSteps(HashMap<Long, Long> predecessors, Intersection source) {
 	long sourceId = source.getId();
@@ -269,7 +265,7 @@ public class TourCalculator {
 	    }
 	    // Filter useful nodes, we don't need to create steps between
 	    // every single intersection
-	    if (findCorrespondingDelivery(map.getIntersectionById(id)) == null) {
+	    if (findCorrespondingDelivery(this.map.getIntersectionById(id)) == null) {
 		continue;
 	    }
 
@@ -292,7 +288,7 @@ public class TourCalculator {
 	    }
 	    Step step = new Step(sections);
 	    Pair<Long, Long> pair = new Pair<Long, Long>(sourceId, id);
-	    steps.put(pair, step);
+	    this.steps.put(pair, step);
 	}
     }
 
@@ -300,12 +296,12 @@ public class TourCalculator {
      * Find the section, if it exists, between two intersections.
      * 
      * @param idStart the id of the departure intersection.
-     * @param idEnd the id of the arriving intersection.
+     * @param idEnd   the id of the arriving intersection.
      * @return the Section from the departure intersection to the arriving
      *         intersection, it it exists.
      */
     private Section findSectionBetween(Long idStart, Long idEnd) {
-	for (Section section : map.getIntersectionById(idStart).getOutcomingSections()) {
+	for (Section section : this.map.getIntersectionById(idStart).getOutcomingSections()) {
 	    if (section.getEnd().getId() == idEnd) {
 		return section;
 	    }
@@ -314,108 +310,108 @@ public class TourCalculator {
     }
 
     /**
-     * take result from TSP and create associated Steps.
+     * Take result of the TSP and create associated Steps.
      * 
-     * @param index, index of subGraph.
-     * @param solution, result from TSP.
-     * @return List<Step> resulting from TSP.
+     * @param index    is index of subGraph.
+     * @param solution is result of the TSP.
+     * @return List, the list of calculated steps.
      */
     private List<Step> findStepsFromResultSubGraph(int index, Integer[] solution) {
 	List<Step> list = new ArrayList<Step>();
 	for (int i = 0; i < solution.length - 1; i++) {
 	    /* Convert ids used with TSP to ids used in Model */
-	    long idStart = solution[i] == 0 ? depot.getAddress().getId()
-		    : deliveriesForEachTour.get(index).get(solution[i] - 1).getAddress().getId();
-	    long idEnd = solution[i + 1] == 0 ? depot.getAddress().getId()
-		    : deliveriesForEachTour.get(index).get(solution[i + 1] - 1).getAddress().getId();
+	    long idStart = solution[i] == 0 ? this.depot.getAddress().getId()
+		    : this.deliveriesForEachTour.get(index).get(solution[i] - 1).getAddress().getId();
+	    long idEnd = solution[i + 1] == 0 ? this.depot.getAddress().getId()
+		    : this.deliveriesForEachTour.get(index).get(solution[i + 1] - 1).getAddress().getId();
 
-	    list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+	    list.add(this.steps.get(new Pair<Long, Long>(idStart, idEnd)));
 	}
 
-	/* Add latest step : last delivery -> depot */
-	long idStart = deliveriesForEachTour.get(index).get(solution[solution.length - 1] - 1).getAddress().getId();
-	long idEnd = depot.getAddress().getId();
-	list.add(steps.get(new Pair<Long, Long>(idStart, idEnd)));
+	// Add latest step : last delivery -> depot
+	long idStart = this.deliveriesForEachTour.get(index).get(solution[solution.length - 1] - 1).getAddress()
+		.getId();
+	long idEnd = this.depot.getAddress().getId();
+	list.add(this.steps.get(new Pair<Long, Long>(idStart, idEnd)));
 	return list;
     }
 
     /**
-     * Remove a delivery from its tour, and update the steps and time for the
-     * tour.
+     * Remove a delivery from its tour, and update the steps and time for the tour.
+     * Doesn't need any recalculation.
      * 
-     * @param delivery, the delivery to remove.
-     * @param tour, where the delivery must be remove.
+     * @param delivery is the delivery to remove.
+     * @param tour     is where the delivery must be remove.
      */
     public void removeDeliveryFromTour(Delivery delivery, Tour tour) {
-	/* Doesn't need any recalculation */
-	if (delivery.equals(depot)) {
+	if (delivery.equals(this.depot)) {
 	    throw new RuntimeException("Cant remove depot !");
 	}
 	if (tour.getSteps().size() < 3) {
 	    throw new RuntimeException("Cant remove last delivery !");
 	}
-	/* Find the delivery in the steps */
+
+	// Find the delivery in the steps
 	Step stepBeforeDelivery = TourFactory.getInstance().findStepBeforeDelivery(delivery);
 	int indexOfStepBeforeDelivery = tour.getSteps().indexOf(stepBeforeDelivery);
 	int indexOfStepAfterDelivery = indexOfStepBeforeDelivery + 1;
 	Step stepAfterDelivery = tour.getSteps().get(indexOfStepAfterDelivery);
-	/* Link the deliveries before and after the one removed */
+
+	// Link the deliveries before and after the one removed
 	Delivery deliveryBefore = stepBeforeDelivery.getStartDelivery();
 	Delivery deliveryAfter = stepAfterDelivery.getEndDelivery();
-	/*
-	 * The new step will be in place of the step before the delivery and
-	 * will use the shortest path between them
-	 */
-	Step newStep = steps.get(new Pair<>(deliveryBefore.getAddress().getId(), deliveryAfter.getAddress().getId()));
+
+	// The new step will be in place of the step before the delivery and will use
+	// the shortest path between them
+	Step newStep = this.steps
+		.get(new Pair<>(deliveryBefore.getAddress().getId(), deliveryAfter.getAddress().getId()));
 	tour.getSteps().add(indexOfStepBeforeDelivery + 1, newStep);
-	/* Remove the steps before and after the delivery */
+	// Remove the steps before and after the delivery
 	tour.getSteps().remove(stepBeforeDelivery);
 	tour.getSteps().remove(stepAfterDelivery);
-	/* Remove the delivery */
+	// Remove the delivery
 	tour.removeDelivery(delivery);
-	deliveries.remove(delivery);
+	this.deliveries.remove(delivery);
 	tour.calculateDeliveryHours();
     }
 
     /**
-     * Adds a new delivery in a tour, after a selected delivery.
+     * Add a new delivery in a tour, after a selected delivery. Some calculations
+     * are required (Dijkstra for new steps), but no re-execution of TSP or K-means
      * 
-     * @param newDelivery the new Delivery to add to the tour.
+     * @param newDelivery       the new Delivery to add to the tour.
      * @param precedingDelivery the Delivery which will precede the new one.
-     * @param tour, tour where to add the delivery.
+     * @param tour              is the tour to which we want to add the delivery.
      */
-    public void addDeliveryAfterDelivery(Delivery newDelivery, Delivery precedingDelivery, Tour tour) {
-	/*
-	 * Some calculations required (Dijkstra for new steps), but no
-	 * re-execution of TSP or K-means
-	 */
-	/* We test if the delivery already exists */
-	if (deliveries.contains(newDelivery) || newDelivery.getAddress().equals(depot.getAddress())) {
+    public void addDeliveryToTour(Delivery newDelivery, Delivery precedingDelivery, Tour tour) {
+
+	// Test if the delivery already exists
+	if (this.deliveries.contains(newDelivery) || newDelivery.getAddress().equals(this.depot.getAddress())) {
 	    throw new RuntimeException("Delivery already exists !");
 	}
-	/* We add the new Delivery to the list of deliveries */
-	deliveries.add(newDelivery);
-	/* We add the newDelivery to the tour */
+
+	// Add the new Delivery to the list of deliveries
+	this.deliveries.add(newDelivery);
+
+	// Add the newDelivery to the tour
 	tour.addDeliveryAtIndex(newDelivery, tour.getDeliveryPoints().indexOf(precedingDelivery));
-	/*
-	 * We create the step between the new delivery all other deliveries
-	 */
+
+	// Create the step between the new delivery all other deliveries
 	Pair<HashMap<Long, Double>, HashMap<Long, Long>> result;
 	HashMap<Long, Long> predecessors;
 
-	for (Delivery delivery : deliveries) {
-	    result = map.Dijkstra(delivery.getAddress());
+	for (Delivery delivery : this.deliveries) {
+	    result = this.map.dijkstra(delivery.getAddress());
 	    predecessors = result.getValue();
 	    createSteps(predecessors, delivery.getAddress());
 	}
 
-	result = map.Dijkstra(depot.getAddress());
+	result = this.map.dijkstra(this.depot.getAddress());
 	predecessors = result.getValue();
-	createSteps(predecessors, depot.getAddress());
-	/*
-	 * We remove the step between the preceding Delivery and the delivery
-	 * after the preceding delivery in the current tour
-	 */
+	createSteps(predecessors, this.depot.getAddress());
+
+	// Remove the step between the preceding Delivery and the delivery after the
+	// preceding delivery in the current tour
 	Step stepBeforePrecedingDelivery = TourFactory.getInstance().findStepBeforeDelivery(precedingDelivery);
 	int indexOfStepBeforePrecedingDelivery = tour.getSteps().indexOf(stepBeforePrecedingDelivery);
 	if (indexOfStepBeforePrecedingDelivery == tour.getSteps().size() - 1) {
@@ -427,27 +423,26 @@ public class TourCalculator {
 	int indexOfStepAfterPrecedingDelivery = tour.getSteps().indexOf(stepAfterPrecedingDelivery);
 	tour.getSteps().remove(stepAfterPrecedingDelivery);
 
-	/* We update the steps of the tour */
-	Step stepFromPrecedingDeliveryToNewDelivery = steps
+	// Update the steps of the tour
+	Step stepFromPrecedingDeliveryToNewDelivery = this.steps
 		.get(new Pair<>(precedingDelivery.getAddress().getId(), newDelivery.getAddress().getId()));
-	Step stepFromNewDeliveryToItsNextDelivery = steps
+	Step stepFromNewDeliveryToItsNextDelivery = this.steps
 		.get(new Pair<>(newDelivery.getAddress().getId(), deliveryAfterNewDelivery.getAddress().getId()));
 
 	tour.getSteps().add(indexOfStepAfterPrecedingDelivery, stepFromPrecedingDeliveryToNewDelivery);
 	tour.getSteps().add(indexOfStepAfterPrecedingDelivery + 1, stepFromNewDeliveryToItsNextDelivery);
 
-	/* We update the times for the modified tour */
+	// Update the times for the modified tour
 	tour.calculateDeliveryHours();
     }
 
     /**
-     * data clustering using k-means algorithm. Can return some empty clusters
-     * if clusterNb is badly set, or is superior to intersections s size. It can
-     * also happen depending on the random initialization.
+     * data clustering using k-means algorithm. Can return some empty clusters if
+     * clusterNb is badly set, or is superior to intersections s size. It can also
+     * happen depending on the random initialization.
      * 
      * @param clusterNb, number of cluster in the returned list MUST BE strictly
-     *            under dataPoints s size, or kmeans will throw an
-     *            assertionError.
+     *            under dataPoints s size, or kmeans will throw an assertionError.
      * @param dataPoints, data to be partitioned.
      * @param epsilon, convergence coefficient.
      * @return a list of clusterNb clusters.
@@ -530,7 +525,7 @@ public class TourCalculator {
      */
     private List<Cluster> createTrivialClusters(int clusterNb) {
 	List<Cluster> bestClusters = new ArrayList<Cluster>();
-	for (Delivery delivery : deliveries) {
+	for (Delivery delivery : this.deliveries) {
 	    Pair<Double, Double> centroid = new Pair<Double, Double>(delivery.getAddress().getLat(),
 		    delivery.getAddress().getLon());
 	    Cluster cluster = new Cluster(centroid);
@@ -559,25 +554,25 @@ public class TourCalculator {
     }
 
     /**
-     * return id of the nearest delivery from toMove, which belong to a not
-     * full, not balanced cluster from currentClusters and which is from a
-     * different cluster than currentClusterIndex.
+     * return id of the nearest delivery from toMove, which belong to a not full,
+     * not balanced cluster from currentClusters and which is from a different
+     * cluster than currentClusterIndex.
      * 
      * @param toMove, delivery for which we search the nearest.
      * @param currentClusters, list of cluster.
      * @param currentClusterIndex, the id of the cluster which contain toMove
      * @param remainingAdditionalDeliveries, represent the number of cluster not
      *            balanced with one more delivery.
-     * @param idDeliveryToIdCluster, an Hashmap of <Id Delivery, Id Cluster> to
-     *            find for a delivery ID the cluster Id of the cluster which
-     *            contain the delivery.
+     * @param idDeliveryToIdCluster, an Hashmap of <Id Delivery, Id Cluster> to find
+     *            for a delivery ID the cluster Id of the cluster which contain the
+     *            delivery.
      * @return a delivery id.
      */
     private int nearestDeliveryInClusters(Delivery toMove, List<Cluster> currentClusters, int currentClusterIndex,
 	    int remainingAdditionalDeliveries, HashMap<Integer, Integer> idDeliveryToIdCluster) {
 	int minIndex = -1;
 	int evenDeliveryNumber = (int) (this.deliveries.size() / currentClusters.size());
-	double[] distanceToToMove = costTSP[deliveries.indexOf(toMove)];
+	double[] distanceToToMove = this.costTSP[this.deliveries.indexOf(toMove)];
 	double minDistance = MAXDOUBLE;
 	for (int indexCostTSP = 1; indexCostTSP < distanceToToMove.length; indexCostTSP++) {
 	    int indexDelivery = indexCostTSP - 1;
@@ -604,9 +599,9 @@ public class TourCalculator {
     }
 
     /**
-     * calculate best set of clusters in a array of MAXKMEANS set of clusters.
-     * Will not take into account empty cluster. The graph must be created
-     * before this method is called. Need at least two deliveries.
+     * calculate best set of clusters in a array of MAXKMEANS set of clusters. Will
+     * not take into account empty cluster. The graph must be created before this
+     * method is called. Need at least two deliveries.
      * 
      * @param clusterNb, if clusterNb>deliveries s size, only deliveries s size
      *            cluster will be return.
@@ -615,7 +610,7 @@ public class TourCalculator {
      */
     public List<Cluster> clusterizeData(int clusterNb, double epsilon) {
 	/* particular case where each cluster only has one delivery */
-	if (clusterNb >= deliveries.size()) {
+	if (clusterNb >= this.deliveries.size()) {
 	    return createTrivialClusters(clusterNb);
 	}
 	/* General case */
@@ -647,18 +642,17 @@ public class TourCalculator {
 			    - maxIntersectionNumber;
 		    currentClusters.get(currentClusterIndex).sortDeliveriesByEuclidianDistanceToCentroid();
 		    /*
-		     * move exceeding Deliveries to the cluster containing the
-		     * nearest intersection
+		     * move exceeding Deliveries to the cluster containing the nearest intersection
 		     */
 		    while ((nbExceedingDeliveries > 0)) {
 			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
-			int indexToMove = deliveries.indexOf(toMove);
+			int indexToMove = this.deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
 			    throw new AssertionError("Delivery present in cluster does not exist.");
 			}
 			/*
-			 * find the nearest delivery contained in a not full
-			 * cluster (which is not the current cluster)
+			 * find the nearest delivery contained in a not full cluster (which is not the
+			 * current cluster)
 			 */
 			int minIndex = nearestDeliveryInClusters(toMove, currentClusters, currentClusterIndex,
 				remainingAdditionalDeliveries, idDeliveryToIdCluster);
@@ -668,8 +662,7 @@ public class TourCalculator {
 					    + "put an exceeding delivery. This error SHOULD NOT happen");
 			} else {
 			    /*
-			     * move exceeding delivery to nearest delivery's
-			     * cluster
+			     * move exceeding delivery to nearest delivery's cluster
 			     */
 			    Integer idNearestCluster = idDeliveryToIdCluster.get(minIndex);
 			    currentClusters.get(idNearestCluster).addDelivery(toMove);
@@ -685,7 +678,7 @@ public class TourCalculator {
 	    /* evaluate cluster by adding distance to centroid */
 	    double coeff = 0;
 	    for (Cluster cluster : currentClusters) {
-		coeff += cluster.calculateCoefficient();
+		coeff += cluster.evaluateClusteringQuality();
 	    }
 	    if (coeff < minCoeff) {
 		minCoeff = coeff;
@@ -714,18 +707,17 @@ public class TourCalculator {
     }
 
     /**
-     * construct a HashMap with delivery index as key and cluster index as
-     * value.
+     * construct a HashMap with delivery index as key and cluster index as value.
      * 
      * @param clusters, the list of Cluster
      * @return a HashMap with delivery index as key and cluster index as value.
      */
     private HashMap<Integer, Integer> clusterListToHashMap(List<Cluster> clusters) {
 	HashMap<Integer, Integer> idDeliveryToIdCluster = new HashMap<Integer, Integer>();
-	for (int deliveryIndex = 0; deliveryIndex < deliveries.size(); deliveryIndex++) {
+	for (int deliveryIndex = 0; deliveryIndex < this.deliveries.size(); deliveryIndex++) {
 	    int clusterIndex = 0;
 	    boolean foundCluster = false;
-	    Delivery toFind = deliveries.get(deliveryIndex);
+	    Delivery toFind = this.deliveries.get(deliveryIndex);
 	    while ((clusterIndex < clusters.size()) && (!foundCluster)) {
 		if (clusters.get(clusterIndex).getDeliveries().contains(toFind)) {
 		    foundCluster = true;
@@ -755,15 +747,15 @@ public class TourCalculator {
      * @param createDelivery, delivery to add.
      */
     protected void addDelivery(Delivery createDelivery) {
-	deliveries.add(createDelivery);
+	this.deliveries.add(createDelivery);
     }
 
     /**
      * Function calls to empty the loaded deliveries.
      */
     protected void emptyLoadedDeliveries() {
-	deliveries = new ArrayList<>();
-	depot = null;
+	this.deliveries = new ArrayList<>();
+	this.depot = null;
     }
 
     /**
@@ -801,7 +793,7 @@ public class TourCalculator {
      * 
      * @param deliveryMenCount is the number of delivery men.
      * @throws IllegalArgumentException, if deliveryMenCount isn't strictly
-     *             positive.
+     *                                       positive.
      */
     public void setDeliveryMenCount(int deliveryMenCount) {
 	if (deliveryMenCount <= 0) {
@@ -817,7 +809,7 @@ public class TourCalculator {
      * @return int, the count of delivery men
      */
     public int getDeliveryMenCount() {
-	return deliveryMenCount;
+	return this.deliveryMenCount;
     }
 
     /**
@@ -826,7 +818,7 @@ public class TourCalculator {
      * @return List, the list of Deliveries to include in tours.
      */
     public List<Delivery> getDeliveries() {
-	return deliveries;
+	return this.deliveries;
     }
 
     /**
@@ -835,6 +827,6 @@ public class TourCalculator {
      * @return the Delivery corresponding to the depot.
      */
     public Delivery getDepot() {
-	return depot;
+	return this.depot;
     }
 }

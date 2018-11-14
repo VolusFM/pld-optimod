@@ -16,22 +16,53 @@ public abstract class ModelInterface {
     private static TourFactory tourFactory = TourFactory.getInstance();
 
     /**
+     * Add an intersection to the plan.
+     * 
+     * @param toAdd is the intersection to add.
+     */
+    public static void addIntersection(Intersection toAdd) {
+	plan.getGraph().put(toAdd.getId(), toAdd);
+    }
+
+    /**
+     * Add a section to the plan.
+     * 
+     * @param toAdd is the section to add.
+     */
+    public static void addSection(Section toAdd) {
+	long idIntersection = toAdd.getStart().getId();
+	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
+    }
+
+    /**
      * Add a delivery to the tour calculator.
      * 
      * @param toAdd is the delivery to add.
      */
-    public static void addDelivery(Delivery toAdd, Delivery precedingDelivery, Tour tour) {
-	tourCalculator.addDeliveryAfterDelivery(toAdd, precedingDelivery, tour);
+    public static void addDeliveryToTourCalculator(Delivery toAdd) {
+	tourCalculator.addDelivery(toAdd);
+    }
+
+    /**
+     * Add a delivery to an already calculated tour.
+     * 
+     * @param toAdd             is the delivery to add.
+     * @param precedingDelivery is the delivery to realize before the delivery to
+     *                              add.
+     * @param tour              is the tour to which we want to add the delivery.
+     */
+    public static void addDeliveryToTour(Delivery toAdd, Delivery precedingDelivery, Tour tour) {
+	tourCalculator.addDeliveryToTour(toAdd, precedingDelivery, tour);
     }
 
     /**
      * Remove a delivery from tour calculator.
      * 
-     * @param toSuppress is the delivery to suppress.
+     * @param toRemove is the delivery to remove.
      */
-    public static void removeDelivery(Delivery toSuppress) {
-	Tour t = tourFactory.findTourContainingDelivery(toSuppress);
-	tourCalculator.removeDeliveryFromTour(toSuppress, t);
+    public static void removeDelivery(Delivery toRemove) {
+	Tour t = tourFactory.findTourContainingDelivery(toRemove);
+	tourCalculator.removeDeliveryFromTour(toRemove, t);
     }
 
     /**
@@ -47,7 +78,7 @@ public abstract class ModelInterface {
     /**
      * Find the closest section in the plan, given a set of coordinates.
      * 
-     * @param latitude is the latitude of the search location.
+     * @param latitude  is the latitude of the search location.
      * @param longitude is the latitude of the search location.
      * @return Section, the section closest to the search location.
      */
@@ -58,7 +89,7 @@ public abstract class ModelInterface {
     /**
      * Find the closest intersection in the plan, given a set of coordinates.
      * 
-     * @param latitude is the latitude of the search location.
+     * @param latitude  is the latitude of the search location.
      * @param longitude is the latitude of the search location.
      * @return Intersection, the section closest to the search location.
      */
@@ -80,16 +111,16 @@ public abstract class ModelInterface {
      * Find the delivery corresponding to a given intersection.
      * 
      * @param intersection is the place where a delivery a supposed to happen.
-     * @return Delivery, the delivery corresponding to the intersection, or null
-     *         if there is none.
+     * @return Delivery, the delivery corresponding to the intersection, or null if
+     *         there is none.
      */
     public static Delivery findCorrespondingDelivery(Intersection intersection) {
 	return tourCalculator.findCorrespondingDelivery(intersection);
     }
 
     /**
-     * Creates the graph of tourCalculator to be used with TSP algorithm. It
-     * uses the plan and all the deliveries, as well as the depot.
+     * Creates the graph of tourCalculator to be used with TSP algorithm. It uses
+     * the plan and all the deliveries, as well as the depot.
      */
     public static void createGraph() {
 	tourCalculator.createGraph();
@@ -117,49 +148,27 @@ public abstract class ModelInterface {
     }
 
     /**
-     * Add an intersection to the plan.
+     * Run Dijkstra's algorithm on the plan.
      * 
-     * @param toAdd is the intersection to add.
+     * @param sourceIntersection is the node from which we will run the algorithm.
+     * 
+     * @return Pair, a pair with as the first member distances, and as the second
+     *         member predecessors.
      */
-    public static void addIntersection(Intersection toAdd) {
-	plan.getGraph().put(toAdd.getId(), toAdd);
+    public static Pair<HashMap<Long, Double>, HashMap<Long, Long>> dijkstra(Intersection sourceIntersection) {
+	return plan.dijkstra(sourceIntersection);
     }
 
     /**
-     * Add a section to the plan.
+     * Run kMeans algorithm on the plan.
      * 
-     * @param toAdd is the section to add.
+     * @param clustersCount is number of cluster needed.
+     * @param deliveries    is list of deliveries to clusterize.
+     * @param d             is epsilon parameter for kMeans.
+     * @return List, the list of calculated clusters.
      */
-    public static void addSection(Section toAdd) {
-	long idIntersection = toAdd.getStart().getId();
-	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
-    }
-    
-    public static void addDeliveryToTourCalculator(Delivery createDelivery){
-	tourCalculator.addDelivery(createDelivery);
-    }
-
-    /**
-     * calculate Dijkstra 's algorithm
-     * 
-     * @param sourceIntersection, where Dijkstra start
-     * @return
-     */
-    public static Pair<HashMap<Long, Double>, HashMap<Long, Long>> Dijkstra(Intersection sourceIntersection) {
-	return plan.Dijkstra(sourceIntersection);
-    }
-
-    /**
-     * calculate kMeans
-     * 
-     * @param clusterNb, number of cluster needed
-     * @param deliveries, list of deliveries to clusterize
-     * @param d, epsilon for kmMeans.
-     * @return
-     */
-    public static List<Cluster> kMeans(int clusterNb, List<Delivery> deliveries, double d) {
-	// TODO Auto-generated method stub
-	return tourCalculator.kMeans(clusterNb, deliveries, d);
+    public static List<Cluster> kMeans(int clustersCount, List<Delivery> deliveries, double d) {
+	return tourCalculator.kMeans(clustersCount, deliveries, d);
     }
 
     /**
@@ -220,8 +229,8 @@ public abstract class ModelInterface {
      * Find the deliveries for a specified delivery man id
      * 
      * @param deliveryManId the specified delivery man id
-     * @return List<Delivery>, the deliveries's List of a delivery man with an
-     *         id == deliveryManId.
+     * @return List<Delivery>, the deliveries's List of a delivery man with an id ==
+     *         deliveryManId.
      */
     public static List<Delivery> getDeliveriesById(int deliveryManId) {
 	return tourFactory.getDeliveriesById(deliveryManId);
@@ -242,7 +251,7 @@ public abstract class ModelInterface {
      * @param depot is the Delivery corresponding to the depot.
      */
     public static void setDepot(Delivery depot) {
-	tourCalculator.setDepot(depot);;
+	tourCalculator.setDepot(depot);
     }
 
     /**

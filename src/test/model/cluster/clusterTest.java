@@ -72,7 +72,7 @@ public class clusterTest {
 	
 	@Test
 	public void testCalculateCoefficient() {
-		assert(cluster.calculateCoefficient() == 0) : "Empty cluster doesnt have coef = 0";
+		assert(cluster.evaluateClusteringQuality() == 0) : "Empty cluster doesnt have coef = 0";
 		Intersection intersection1 = new Intersection(4, 2, 0);
 		Intersection intersection2 = new Intersection(5, 2, 0);
 		Intersection intersection3 = new Intersection(6, 0, 3);
@@ -82,7 +82,7 @@ public class clusterTest {
 		cluster.addDelivery(delivery1);
 		cluster.addDelivery(delivery2);
 		cluster.addDelivery(delivery3);
-		assert(cluster.calculateCoefficient() == 7) : "cluster coefficient isnt egal to expected result";
+		assert(cluster.evaluateClusteringQuality() == 7) : "cluster coefficient isnt egal to expected result";
 	}
 	
 	@Test

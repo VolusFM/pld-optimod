@@ -46,7 +46,7 @@ public class DijkstraTest {
 	ModelInterface.addSection(db);
 	ModelInterface.addSection(be);
 	ModelInterface.addSection(ca);
-	Pair<HashMap<Long, Double>, HashMap<Long, Long>> results = ModelInterface.Dijkstra(a);
+	Pair<HashMap<Long, Double>, HashMap<Long, Long>> results = ModelInterface.dijkstra(a);
 
 	HashMap<Long, Double> distances = results.getKey();
 	HashMap<Long, Long> predecessors = results.getValue();

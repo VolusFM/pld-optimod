@@ -33,7 +33,7 @@ public class Section {
      * @return Double, the length of the Section.
      */
     public double getLength() {
-	return length;
+	return this.length;
     }
 
     /**
@@ -42,7 +42,7 @@ public class Section {
      * @return Intersection, the start of the section.
      */
     public Intersection getStart() {
-	return start;
+	return this.start;
     }
 
     /**
@@ -51,7 +51,7 @@ public class Section {
      * @return Intersection, the end of the section.
      */
     public Intersection getEnd() {
-	return end;
+	return this.end;
     }
 
     /**
@@ -60,7 +60,7 @@ public class Section {
      * @return String, the name of the street the section corresponds to.
      */
     public String getStreetName() {
-	return streetName;
+	return this.streetName;
     }
 
     @Override
@@ -77,22 +77,22 @@ public class Section {
 	if (getClass() != obj.getClass())
 	    return false;
 	Section other = (Section) obj;
-	if (end == null) {
+	if (this.end == null) {
 	    if (other.end != null)
 		return false;
-	} else if (!end.equals(other.end))
+	} else if (!this.end.equals(other.end))
 	    return false;
-	if (Double.doubleToLongBits(length) != Double.doubleToLongBits(other.length))
+	if (Double.doubleToLongBits(this.length) != Double.doubleToLongBits(other.length))
 	    return false;
-	if (start == null) {
+	if (this.start == null) {
 	    if (other.start != null)
 		return false;
-	} else if (!start.equals(other.start))
+	} else if (!this.start.equals(other.start))
 	    return false;
-	if (streetName == null) {
+	if (this.streetName == null) {
 	    if (other.streetName != null)
 		return false;
-	} else if (!streetName.equals(other.streetName))
+	} else if (!this.streetName.equals(other.streetName))
 	    return false;
 	return true;
     }

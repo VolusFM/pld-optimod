@@ -32,7 +32,7 @@ class AddDeliveryState extends DefaultState {
 	Intersection address = ModelInterface.findClosestIntersection(lat, lon);
 	Delivery toAdd = new Delivery(duration, address);
 	Tour deliveryManTour = TourFactory.getInstance().findTourFromDeliveryManId(deliveryMenId);
-	ModelInterface.addDelivery(toAdd, preceding, deliveryManTour);
+	ModelInterface.addDeliveryToTour(toAdd, preceding, deliveryManTour);
 
 	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
