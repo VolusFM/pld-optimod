@@ -499,7 +499,7 @@ public class TourCalculator {
 	 */
 
 	/* We test if the delivery already exists */
-	if (deliveries.contains(newDelivery)) {
+	if (deliveries.contains(newDelivery) || newDelivery.getAddress().equals(depot.getAddress())) {
 	    System.out.println("Delivery already exists !");
 	    return;
 	}

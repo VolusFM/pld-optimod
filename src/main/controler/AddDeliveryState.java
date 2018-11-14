@@ -5,6 +5,7 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Step;
 import main.model.Tour;
+import main.model.TourFactory;
 import main.ui.Window;
 
 /**
@@ -14,26 +15,23 @@ import main.ui.Window;
  */
 class AddDeliveryState extends DefaultState {
 
-    /**
-     * Cancel the new delivery and go back to planningState.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
     @Override
     public void cancelNewDelivery(Controler controler, Window window) {
 	controler.getWindow().hideAddingDeliveryPanel();
 	controler.setCurrentState(controler.planningState);
     }
 
-    /**
-     * Confirms the delivery's addition.
-     * 
-     * @param controler is the application's controler.
-     * @param window is the application's graphical window.
-     */
     @Override
-    public void confirmNewDelivery(Controler controler, Window window, Delivery toAdd, Tour deliveryManTour, Delivery preceding) {
+    public void confirmNewDelivery(Controler controler, Window window) {
+
+	int duration = Window.getPlanningPanel().getAddingPanel().getSelectedDuration();
+	double lat = Window.getPlanningPanel().getAddingPanel().getSelectedLat();
+	double lon = Window.getPlanningPanel().getAddingPanel().getSelectedLon();
+	int deliveryMenId = Window.getPlanningPanel().getAddingPanel().getSelectedDeliveryMen();
+	Delivery preceding = Window.getPlanningPanel().getAddingPanel().getSelectedPrecedingDelivery();
+	Intersection address = ModelInterface.findClosestIntersection(lat, lon);
+	Delivery toAdd = new Delivery(duration, address);
+	Tour deliveryManTour = TourFactory.getInstance().findTourFromDeliveryManId(deliveryMenId);
 	ModelInterface.addDelivery(toAdd, preceding, deliveryManTour);
 
 	controler.getWindow().hideAddingDeliveryPanel();
@@ -42,7 +40,6 @@ class AddDeliveryState extends DefaultState {
 	window.redrawTable();
     }
 
-    
     @Override
     public void clickedNearIntersection(Controler controler, Window window, Intersection closestIntersection) {
 	Delivery selectedDelivery = ModelInterface.findCorrespondingDelivery(closestIntersection);
@@ -57,13 +54,9 @@ class AddDeliveryState extends DefaultState {
 	controler.setSelectedIntersection(closestIntersection);
     }
 
-    @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
-	window.highlightRightClickedIntersection(intersection);
-
-	controler.setRightClickedIntersection(intersection);
-    }
-    
+    /**
+     * Get string description of this state.
+     */
     public String stateToString() {
 	return "addDeliveryState";
     }

@@ -5,7 +5,6 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Section;
 import main.model.Step;
-import main.model.TourCalculator;
 import main.ui.InputDialogSelector;
 import main.ui.InputDialogSelector.SelectionCancelledException;
 import main.ui.Window;
@@ -99,13 +98,6 @@ class PlanningState extends DefaultState {
 	    }
 	}
 	controler.setSelectedIntersection(closestIntersection);
-    }
-
-    @Override
-    public void rightClickedNearIntersection(Controler controler, Window window, Intersection intersection) {
-	window.highlightRightClickedIntersection(intersection);
-
-	controler.setRightClickedIntersection(intersection);
     }
     
     @Override
