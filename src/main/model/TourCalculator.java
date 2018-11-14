@@ -145,13 +145,13 @@ public class TourCalculator {
 	 * @return the corresponding Delivery if it exists, or null if it doesn't.
 	 */
 	public Delivery findCorrespondingDelivery(Intersection intersection) {
+		if (depot.getAddress().equals(intersection)) {
+			return depot;
+		}
 		for (Delivery delivery : deliveries) {
 			if (delivery.getAddress().equals(intersection)) {
 				return delivery;
 			}
-		}
-		if (depot.getAddress().equals(intersection)) {
-			return depot;
 		}
 		return null;
 	}
