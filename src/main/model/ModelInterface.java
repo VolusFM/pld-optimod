@@ -15,24 +15,6 @@ public abstract class ModelInterface {
     private static TourCalculator tourCalculator = TourCalculator.getInstance();
     private static TourFactory tourFactory = TourFactory.getInstance();
 
-    /**
-     * Add an intersection to the plan.
-     * 
-     * @param toAdd is the intersection to add.
-     */
-    public static void addIntersection(Intersection toAdd) {
-	plan.getGraph().put(toAdd.getId(), toAdd);
-    }
-
-    /**
-     * Add a section to the plan.
-     * 
-     * @param toAdd is the section to add.
-     */
-    public static void addSection(Section toAdd) {
-	long idIntersection = toAdd.getStart().getId();
-	plan.getGraph().get(idIntersection).addOutcomingSection(toAdd);
-    }
 
     /**
      * Add a delivery to the tour calculator.
@@ -150,7 +132,23 @@ public abstract class ModelInterface {
     /**
      * Run Dijkstra's algorithm on the plan.
      * 
-     * @param sourceIntersection is the node from which we will run the algorithm.
+     * @param toAdd is the intersection to add.
+     */
+    public static void addIntersection(Intersection toAdd) {
+	plan.addIntersection(toAdd);
+    }
+
+    /**
+     * Add a section to the plan.
+     * 
+     * @param toAdd is the section to add.
+     */
+    public static void addSection(Section toAdd) {
+	plan.addSection(toAdd);
+    }
+    
+    /**
+     * calculate Dijkstra 's algorithm
      * 
      * @return Pair, a pair with as the first member distances, and as the second
      *         member predecessors.
