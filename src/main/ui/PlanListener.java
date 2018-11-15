@@ -42,9 +42,11 @@ public class PlanListener extends MouseAdapter {
 	    /*
 	     * Write the coordinates information into the adding delivery form
 	     */
-	    if (Window.getPlanningPanel().getAddingPanel() != null) {
-		Window.getPlanningPanel().getAddingPanel().latitudeField.setText("" + closestIntersection.getLat());
-		Window.getPlanningPanel().getAddingPanel().longitudeField.setText("" + closestIntersection.getLon());
+	    if (Window.getPlanningPanel()!= null) {
+		if (Window.getPlanningPanel().getAddingPanel() != null) {
+		    Window.getPlanningPanel().getAddingPanel().latitudeField.setText("" + closestIntersection.getLat());
+		    Window.getPlanningPanel().getAddingPanel().longitudeField.setText("" + closestIntersection.getLon());
+		}
 	    }
 	}
 	this.controler.getWindow().forceFocusOnPlanView();
