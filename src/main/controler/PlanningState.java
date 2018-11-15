@@ -12,6 +12,8 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 /**
  * PlanningState is the state in which a tour planning has been calculated.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class PlanningState extends DefaultState {
 

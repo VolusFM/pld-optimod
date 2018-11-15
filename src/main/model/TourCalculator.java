@@ -13,6 +13,9 @@ import main.model.tsp.TemplateTSP;
 
 /**
  * TourCalculator is a singleton class which handles the calculation of tours.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class TourCalculator {
 

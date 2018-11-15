@@ -6,11 +6,12 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * 
  * Tour represents a number of deliveries done by one delivery man. The delivery
  * man will leave the depot, travel to all deliveries using the shortest
  * possible path, and come back to the depot after all of them are done.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Tour {
 

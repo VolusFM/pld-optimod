@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
  * Step represents the path between two deliveries in a tour. It is a list of
  * sections.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Step {
 

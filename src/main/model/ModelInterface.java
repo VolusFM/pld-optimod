@@ -8,13 +8,15 @@ import javafx.util.Pair;
 /**
  * ModelInterface provides all methods other packages need to access the model
  * package.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public abstract class ModelInterface {
 
     private static Plan plan = new Plan();
     private static TourCalculator tourCalculator = TourCalculator.getInstance();
     private static TourFactory tourFactory = TourFactory.getInstance();
-
 
     /**
      * Add a delivery to the tour calculator.
@@ -146,10 +148,12 @@ public abstract class ModelInterface {
     public static void addSection(Section toAdd) {
 	plan.addSection(toAdd);
     }
-    
+
     /**
-     * calculate Dijkstra 's algorithm
+     * Run Dijkstra's algorithm on the plan
      * 
+     * @param sourceIntersection is the intersection from where we run the
+     *                               algorithm.
      * @return Pair, a pair with as the first member distances, and as the second
      *         member predecessors.
      */

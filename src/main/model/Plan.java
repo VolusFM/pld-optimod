@@ -12,6 +12,8 @@ import main.ui.GeographicCoordinate;
  * Plan represents a plan of a city or city part, and consists in a set of
  * intersections (from which we will get the outcoming sections)
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Plan {
 
@@ -242,6 +244,6 @@ public class Plan {
     
     @Override
     public String toString() {
-        return graph.toString();
+        return this.graph.toString();
     }
 }

@@ -12,6 +12,8 @@ import main.ui.Window;
  * AddDeliveryState is the state in which the user is trying to add a new
  * delivery to the planning.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class AddDeliveryState extends DefaultState {
 

@@ -8,6 +8,8 @@ import main.ui.Window;
  * LoadedDeliveriesState is the state in which a plan and a deliveries request
  * have been loaded.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class LoadedDeliveriesState extends DefaultState {
 

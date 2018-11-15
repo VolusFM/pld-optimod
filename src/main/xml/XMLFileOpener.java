@@ -9,6 +9,8 @@ import javax.swing.filechooser.FileFilter;
  * XMLFileOpener allows to open an XML file and get its content as a File
  * object.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class XMLFileOpener extends FileFilter {
 

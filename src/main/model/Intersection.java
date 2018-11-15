@@ -8,6 +8,8 @@ import java.util.List;
  * located by geographical coordinates (latitude and longitude) and has outgoing
  * Sections.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Intersection {
 

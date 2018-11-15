@@ -14,6 +14,8 @@ import main.xml.XMLException;
 /**
  * LoadedPlanState is the state in which only the plan has been loaded
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class LoadedPlanState extends DefaultState {
 

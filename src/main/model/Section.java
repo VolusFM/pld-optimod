@@ -4,6 +4,8 @@ package main.model;
  * Section represents a part of a street. It has a positive length, is delimited
  * by two intersections and corresponds to a street.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Section {
 

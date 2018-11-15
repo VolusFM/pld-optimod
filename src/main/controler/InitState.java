@@ -15,6 +15,8 @@ import main.xml.XMLException;
  * InitState is the initial state of the application, when it's just been
  * started.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class InitState extends DefaultState {
 

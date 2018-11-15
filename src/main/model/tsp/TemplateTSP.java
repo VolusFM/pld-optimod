@@ -5,6 +5,9 @@ import java.util.Iterator;
 
 /**
  * TemplateTSP is an super-class with convenient methods to resolve a TSP.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public abstract class TemplateTSP implements TSP {
 

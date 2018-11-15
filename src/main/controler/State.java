@@ -14,6 +14,9 @@ import main.xml.XMLException;
 /**
  * State provides an interface for all classes representing a possible state of
  * the controler.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 interface State {
 

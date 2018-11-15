@@ -10,7 +10,9 @@ import javafx.util.Pair;
 /**
  * Cluster represents a set of deliveries and is used to ease the resolution of
  * the TSP.
- *
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Cluster {
     private List<Delivery> deliveries;

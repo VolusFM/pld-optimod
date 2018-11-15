@@ -22,9 +22,10 @@ import main.model.Section;
 import main.model.TourCalculator;
 
 /**
- * 
  * XMLDeserializer handles the conversion from XML to Model objects.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public abstract class XMLDeserializer {
 

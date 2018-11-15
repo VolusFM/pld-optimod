@@ -8,6 +8,8 @@ import main.ui.Window;
 /**
  * Controler handles the interactions between the ui and model packages.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Controler {
 

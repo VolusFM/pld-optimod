@@ -7,6 +7,8 @@ import java.util.Calendar;
  * Delivery either represents a delivery OR a depot (duration equal to zero),
  * which is the beginning and end of a Tour.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class Delivery {
 

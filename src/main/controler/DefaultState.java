@@ -14,6 +14,8 @@ import main.xml.XMLException;
 /**
  * Default state is the most basic state and parent class of all other states.
  *
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 class DefaultState implements State {
 

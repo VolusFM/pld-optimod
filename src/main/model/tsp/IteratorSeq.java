@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * {@link IteratorSeq} provides an iterator on the unseenNodes of a graph.
+ * IteratorSeq provides an iterator on the unseenNodes of a graph.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
  */
 public class IteratorSeq implements Iterator<Integer> {
 
