@@ -83,7 +83,7 @@ public abstract class XMLDeserializer {
 	}
 	NodeList sections = rootNode.getElementsByTagName(SECTION);
 	for (int i = 0; i < sections.getLength(); i++) {
-	    ModelInterface.addSection(createSection((Element) sections.item(i), plan));
+	    ModelInterface.addSection(createSection((Element) sections.item(i), ModelInterface.getPlan()));
 	}
     }
 
@@ -164,9 +164,9 @@ public abstract class XMLDeserializer {
 	Node depot = rootNode.getElementsByTagName(DEPOT).item(0);
 	NodeList deliveriesNodes = rootNode.getElementsByTagName(DELIVERY);
 
-	ModelInterface.setDepot(createDelivery((Element) depot, plan));
+	ModelInterface.setDepot(createDelivery((Element) depot, ModelInterface.getPlan()));
 	for (int i = 0; i < deliveriesNodes.getLength(); i++) {
-	    ModelInterface.addDeliveryToTourCalculator(createDelivery((Element) deliveriesNodes.item(i), plan));
+	    ModelInterface.addDeliveryToTourCalculator(createDelivery((Element) deliveriesNodes.item(i), ModelInterface.getPlan()));
 	}
     }
 
