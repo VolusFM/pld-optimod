@@ -56,7 +56,6 @@ public class DijkstraTest {
 	for (long i : distances.keySet()) {
 	    assert(distances.get(i)==expectedDistances[j]);
 	    assert(predecessors.get(i)==expectedPredecessors[j]);
-	    System.out.println(i + ", d=" + distances.get(i) + ", predecessors =" + predecessors.get(i));
 	    j++;
 	}
 
