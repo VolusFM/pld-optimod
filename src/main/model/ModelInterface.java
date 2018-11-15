@@ -258,6 +258,7 @@ public abstract class ModelInterface {
      * @param map is the plan for the deliveries.
      */
     public static void setMap(Plan map) {
+	plan = map;
 	tourCalculator.setMap(map);
     }
 

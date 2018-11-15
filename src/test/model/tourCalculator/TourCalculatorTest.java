@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,6 +30,12 @@ public class TourCalculatorTest {
 		calculator = TourCalculator.getInstance();
 		XMLDeserializer.load(ModelInterface.getPlan(), calculator);
 		calculator = TourCalculator.getInstance();
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+	    ModelInterface.emptyLoadedDeliveries();
+	    ModelInterface.emptyTourFactory();
 	}
 
 	@Test

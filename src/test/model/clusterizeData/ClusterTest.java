@@ -16,7 +16,7 @@ import main.xml.XMLDeserializer;
 public class ClusterTest {
 
     private TourCalculator calculator;
-    private int clusterNb = 5;
+    private int clusterNb = 3;
 
     @Before
     public void setUp() throws Exception {
@@ -25,11 +25,11 @@ public class ClusterTest {
 	XMLDeserializer.load(ModelInterface.getPlan(), calculator);
 	ModelInterface.createGraph();
     }
-    
+
     @After
-    public void reinitialize() {
-    	ModelInterface.emptyLoadedDeliveries();;
-    	ModelInterface.emptyTourFactory();
+    public void tearDown() {
+	ModelInterface.emptyLoadedDeliveries();
+	ModelInterface.emptyTourFactory();
     }
 
     @Test
@@ -44,7 +44,7 @@ public class ClusterTest {
 		deliveriesInClusters, calculator.getDeliveries().size());
     }
 
-    @Test(expected = AssertionError.class)
+    @Test(expected = IllegalArgumentException.class)
     public void solveBasicKmeansError() {
 	ModelInterface.kMeans(50, calculator.getDeliveries(), 0.0001);
     }

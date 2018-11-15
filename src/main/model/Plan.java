@@ -238,4 +238,10 @@ public class Plan {
     public HashMap<Long, Intersection> getGraph() {
 	return this.graph;
     }
+    
+    
+    @Override
+    public String toString() {
+        return graph.toString();
+    }
 }

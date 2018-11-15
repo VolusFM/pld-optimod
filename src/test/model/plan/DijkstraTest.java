@@ -2,6 +2,7 @@ package test.model.plan;
 
 import java.util.HashMap;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,14 +15,20 @@ import main.model.Section;
 public class DijkstraTest {
 
     private Plan p;
-    
+
     @Before
     public void setUp() {
 	p = ModelInterface.getPlan();
     }
-    
+
+    @After
+    public void tearDown() {
+	ModelInterface.emptyLoadedDeliveries();
+	ModelInterface.emptyTourFactory();
+    }
+
     @Test
-    public void testNormalCaseDijkstra(){
+    public void testNormalCaseDijkstra() {
 	Intersection a = new Intersection(4, 8, 8);
 	Intersection b = new Intersection(5, 9, 8);
 	Intersection c = new Intersection(6, 10, 8);
@@ -50,12 +57,12 @@ public class DijkstraTest {
 
 	HashMap<Long, Double> distances = results.getKey();
 	HashMap<Long, Long> predecessors = results.getValue();
-	double[] expectedDistances = {0.0,4.0,3.0,5.0,12.0};
-	int [] expectedPredecessors = {4,4,4,6,5};
-	int j=0;
+	double[] expectedDistances = { 0.0, 4.0, 3.0, 5.0, 12.0 };
+	int[] expectedPredecessors = { 4, 4, 4, 6, 5 };
+	int j = 0;
 	for (long i : distances.keySet()) {
-	    assert(distances.get(i)==expectedDistances[j]);
-	    assert(predecessors.get(i)==expectedPredecessors[j]);
+	    assert (distances.get(i) == expectedDistances[j]);
+	    assert (predecessors.get(i) == expectedPredecessors[j]);
 	    j++;
 	}
 
