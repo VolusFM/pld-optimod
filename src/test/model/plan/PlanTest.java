@@ -10,7 +10,7 @@ import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 
-public class planTest {
+public class PlanTest {
 	private Plan p;
     
     @Before

@@ -472,14 +472,14 @@ public class TourCalculator {
      * 
      * @param clustersCount is the number of clusters in the returned list. Must be
      *                          strictly inferior to dataPoints's size, or kMeans
-     *                          will throw an AssertionError.
+     *                          will throw an IllegalStateException.
      * @param dataPoints    is the data to partition.
      * @param epsilon       is the convergence coefficient.
      * @return a list of clustersCount clusters.
      */
     protected List<Cluster> kMeans(int clustersCount, List<Delivery> dataPoints, double epsilon) {
 	if (!(clustersCount <= dataPoints.size()) || (clustersCount == 0)) {
-	    throw new AssertionError("Kmean was called with incorrect clusterNb.");
+	    throw new IllegalArgumentException("Kmean was called with incorrect clusterNb.");
 	}
 	/* Cluster initialization */
 	List<Cluster> clusters = new ArrayList<Cluster>();
@@ -678,7 +678,7 @@ public class TourCalculator {
 			Delivery toMove = currentClusters.get(currentClusterIndex).popDelivery(0);
 			int indexToMove = this.deliveries.indexOf(toMove);
 			if (indexToMove == -1) {
-			    throw new AssertionError("Delivery present in cluster does not exist.");
+			    throw new IllegalStateException("Delivery present in cluster does not exist.");
 			}
 
 			// Find the nearest delivery contained in a not full cluster (which is not the
@@ -686,7 +686,7 @@ public class TourCalculator {
 			int minIndex = nearestDeliveryInClusters(toMove, currentClusters, currentClusterIndex,
 				remainingAdditionalDeliveries, idDeliveryToIdCluster);
 			if (minIndex == -1) {
-			    throw new AssertionError(
+			    throw new IllegalStateException(
 				    "Error in clusterizeData in TourCalculator : no cluster was found to "
 					    + "put an exceeding delivery. This error SHOULD NOT happen");
 			}

@@ -36,12 +36,12 @@ public class TourTest {
 		assertEquals("Delivery wasnt correctly added", toAdd, tour.getDeliveryPoints().get(0));
 	}
 	
-	@Test(expected =  AssertionError.class)
+	@Test(expected =  IllegalArgumentException.class)
 	public void testAddEmptyDelivery() {
 		tour.addDeliveryAtIndex(null, 0);
 	}
 	
-	@Test(expected =  AssertionError.class)
+	@Test(expected =  IndexOutOfBoundsException.class)
 	public void testAddDeliveryWrongIndex() {
 		Intersection intersection = new Intersection(2,2,2);
 		Delivery toAdd = new Delivery(10, intersection);

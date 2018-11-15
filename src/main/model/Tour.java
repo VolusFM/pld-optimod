@@ -42,6 +42,9 @@ public class Tour {
      * @param index    is the index where to add the delivery in the list.
      */
     public void addDeliveryAtIndex(Delivery delivery, int index) {
+	if (delivery == null) {
+	    throw new IllegalArgumentException();
+	}
 	this.deliveryPoints.add(index, delivery);
     }
 

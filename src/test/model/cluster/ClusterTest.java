@@ -13,7 +13,7 @@ import main.model.Cluster;
 import main.model.Delivery;
 import main.model.Intersection;
 
-public class clusterTest {
+public class ClusterTest {
 
 	private Cluster cluster;
 

@@ -12,7 +12,7 @@ import main.model.ModelInterface;
 import main.model.TourCalculator;
 import main.xml.XMLDeserializer;
 
-public class clusterTest {
+public class ClusterTest {
 
     private TourCalculator calculator;
     private int clusterNb = 5;
