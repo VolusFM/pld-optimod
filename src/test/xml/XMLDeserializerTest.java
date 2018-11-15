@@ -17,14 +17,20 @@ import main.model.Plan;
 import main.xml.XMLDeserializer;
 import main.xml.XMLException;
 
+/**
+ * Test of XMLDeserializer class.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
+ */
 public class XMLDeserializerTest {
 
     private Plan plan;
 
     @Before
     public void setUp() throws Exception {
-	plan = new Plan();
-	ModelInterface.setMap(plan);
+	this.plan = new Plan();
+	ModelInterface.setMap(this.plan);
     }
 
     @After
@@ -36,7 +42,7 @@ public class XMLDeserializerTest {
     public void testLoadValidPlan() {
 	System.out.println("Please load 'petitPlanValide.xml'");
 	try {
-	    XMLDeserializer.load(plan);
+	    XMLDeserializer.load(this.plan);
 	} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
 	    fail("Failed to parse valid plan");
 	}
@@ -46,7 +52,7 @@ public class XMLDeserializerTest {
     public void testLoadPlanWithUnvalidRoot() {
 	System.out.println("Please load 'petitPlanInvalidePasReseau.xml'");
 	try {
-	    XMLDeserializer.load(plan);
+	    XMLDeserializer.load(this.plan);
 	} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
 	    if (e.getClass() == XMLException.class) {
 		return; // expected exception for invalid XML syntax
@@ -60,7 +66,7 @@ public class XMLDeserializerTest {
     public void testLoadUnvalidPlan() {
 	System.out.println("Please load 'petitPlanInvalide.xml'");
 	try {
-	    XMLDeserializer.load(plan);
+	    XMLDeserializer.load(this.plan);
 	} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
 	    if (e.getClass() == SAXParseException.class) {
 		return; // expected exception for invalid XML syntax
@@ -74,7 +80,7 @@ public class XMLDeserializerTest {
     public void testLoadNotAnXMLFile() {
 	System.out.println("Please load 'petitPlanInvalideNonXml.not_xml'");
 	try {
-	    XMLDeserializer.load(plan);
+	    XMLDeserializer.load(this.plan);
 	} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
 	    fail("Even though the file doesn't claim to be XML, if it is actually a valid XML file with a plan it is fine");
 	}
@@ -85,7 +91,7 @@ public class XMLDeserializerTest {
 	System.out.println("Please load 'petitPlanInvalideLongueurSection.xml'");
 
 	try {
-	    XMLDeserializer.load(plan);
+	    XMLDeserializer.load(this.plan);
 	} catch (ParserConfigurationException | SAXException | IOException | XMLException e) {
 	    if (e.getClass() == XMLException.class) {
 		return; // expected exception when a section has a negative

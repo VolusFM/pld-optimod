@@ -15,6 +15,12 @@ import main.model.Intersection;
 import main.model.ModelInterface;
 import main.model.Step;
 
+/**
+ * Test of Tour class.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
+ */
 public class TourTest {
     private Tour tour;
     private Delivery depot;
@@ -23,11 +29,11 @@ public class TourTest {
 
     @Before
     public void setUp() {
-	steps = new ArrayList<Step>();
-	deliveries = new ArrayList<Delivery>();
+	this.steps = new ArrayList<Step>();
+	this.deliveries = new ArrayList<Delivery>();
 	Intersection depotIntersection = new Intersection(7, 0, 0);
-	depot = new Delivery(10, depotIntersection);
-	tour = new Tour(depot, steps, deliveries, 2);
+	this.depot = new Delivery(10, depotIntersection);
+	this.tour = new Tour(this.depot, this.steps, this.deliveries, 2);
     }
 
     @After
@@ -40,40 +46,40 @@ public class TourTest {
     public void testAddDeliveryAtIndex() {
 	Intersection intersection = new Intersection(2, 2, 2);
 	Delivery toAdd = new Delivery(10, intersection);
-	tour.addDeliveryAtIndex(toAdd, 0);
-	assertEquals("Delivery wasnt correctly added", toAdd, tour.getDeliveryPoints().get(0));
+	this.tour.addDeliveryAtIndex(toAdd, 0);
+	assertEquals("Delivery wasnt correctly added", toAdd, this.tour.getDeliveryPoints().get(0));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testAddEmptyDelivery() {
-	tour.addDeliveryAtIndex(null, 0);
+	this.tour.addDeliveryAtIndex(null, 0);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
     public void testAddDeliveryWrongIndex() {
 	Intersection intersection = new Intersection(2, 2, 2);
 	Delivery toAdd = new Delivery(10, intersection);
-	tour.addDeliveryAtIndex(toAdd, 15);
+	this.tour.addDeliveryAtIndex(toAdd, 15);
     }
 
     @Test
     public void testRemoveDelivery() {
 	Intersection intersection = new Intersection(5, 2, 2);
 	Delivery toAdd = new Delivery(10, intersection);
-	tour.addDeliveryAtIndex(toAdd, 0);
-	tour.removeDelivery(toAdd);
-	assert (tour.getDeliveryPoints().size() == 1);
+	this.tour.addDeliveryAtIndex(toAdd, 0);
+	this.tour.removeDelivery(toAdd);
+	assert (this.tour.getDeliveryPoints().size() == 1);
     }
 
     @Test
     public void testRemoveEmptyDelivery() {
-	tour.removeDelivery(null);
+	this.tour.removeDelivery(null);
     }
 
     @Test
     public void testRemoveUnknownDelivery() {
 	Intersection intersection = new Intersection(5, 2, 2);
 	Delivery toRemove = new Delivery(10, intersection);
-	tour.removeDelivery(toRemove);
+	this.tour.removeDelivery(toRemove);
     }
 }

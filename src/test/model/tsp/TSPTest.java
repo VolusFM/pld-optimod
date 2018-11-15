@@ -18,6 +18,12 @@ import main.model.Tour;
 import main.model.TourCalculator;
 import main.model.TourFactory;
 
+/**
+ * Test of TSP class.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
+ */
 public class TSPTest {
 
     @After

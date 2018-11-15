@@ -12,13 +12,19 @@ import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 
+/**
+ * Test of Dijkstra algorithm.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
+ */
 public class DijkstraTest {
 
     private Plan p;
 
     @Before
     public void setUp() {
-	p = ModelInterface.getPlan();
+	this.p = ModelInterface.getPlan();
     }
 
     @After

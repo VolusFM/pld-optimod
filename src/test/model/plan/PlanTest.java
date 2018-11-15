@@ -11,6 +11,12 @@ import main.model.ModelInterface;
 import main.model.Plan;
 import main.model.Section;
 
+/**
+ * Test of Plan class.
+ * 
+ * @author H4204 - DURAFFOURG Maud, MONTIGNY François, SILVESTRI Lisa, STERNER
+ *         Léo, THOLOT Cassandre
+ */
 public class PlanTest {
     private Plan p;
 
