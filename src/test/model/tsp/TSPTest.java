@@ -1,72 +1,71 @@
 package test.model.tsp;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
 import main.model.Delivery;
 import main.model.Intersection;
 import main.model.ModelInterface;
-import main.model.Plan;
 import main.model.Section;
+import main.model.Step;
+import main.model.Tour;
 import main.model.TourCalculator;
-import main.model.tsp.TSP1;
-import main.model.tsp.TemplateTSP;
 
 public class TSPTest {
 
-    private double[][] graph = {
-	    /* v---- 0, 1, 2, 3, 4 */
-	    /* 0 */ { 0, 2, 3, 4, 5 }, /* 1 */ { 3, 0, 4, 8, 2 }, /* 2 */ { 1, 2, 0, 5, 3 }, /* 3 */ { 4, 5, 3, 0, 3 },
-	    /* 4 */ { 4, 5, 6, 5, 0 }, };
+     @Test
+     public void solveTSP() {
+	  /* Creation intersections */
+	  Intersection i1 = new Intersection(1, 5, 5);
+	  Intersection i2 = new Intersection(2, 8, 8);
+	  Intersection i3 = new Intersection(3, 10, 10);
+	  /* Create sections */
+	  Section s1 = new Section(i1, i2, 6, "");
+	  Section s2 = new Section(i1, i3, 8, "");
+	  Section s6 = new Section(i2, i1, 6, "");
+	  Section s7 = new Section(i2, i3, 4, "");
+	  Section s8 = new Section(i3, i1, 6, "");
+	  Section s9 = new Section(i3, i2, 10, "");
+	  /* Add sections to intersection */
+	  i1.addOutcomingSection(s1);
+	  i1.addOutcomingSection(s2);
+	  i2.addOutcomingSection(s6);
+	  i2.addOutcomingSection(s7);
+	  i3.addOutcomingSection(s8);
+	  i3.addOutcomingSection(s9);
+	  /* Initialisation plan avec intersection */
+	  ModelInterface.addIntersection(i1);
+	  ModelInterface.addIntersection(i2);
+	  ModelInterface.addIntersection(i3);
+	  /* create delivery */
+	  Delivery d1 = new Delivery(0, i1);
+	  Calendar time = new GregorianCalendar();
+	  time.set(Calendar.HOUR_OF_DAY, 8);
+	  time.set(Calendar.MINUTE, 0);
+	  time.set(Calendar.SECOND, 0);
+	  d1.setHour(time);
+	  Delivery d2 = new Delivery(5 * 60, i2);
+	  Delivery d3 = new Delivery(15 * 60, i3);
+	  ModelInterface.setDepot(d1);
+	  ModelInterface.addDeliveryToTourCalculator(d2);
+	  ModelInterface.addDeliveryToTourCalculator(d3);
+	  ModelInterface.setDeliveryMenCount(1);
+	  TourCalculator.getInstance().calculateTours();
+	  Tour result = ModelInterface.getTourPlanning().get(0);
+	  Step firstStep = result.getSteps().get(0);
+	  Step secondStep = result.getSteps().get(1);
+	  Step lastStep = result.getSteps().get(2);
 
-    private int[] duree = // TODO : je ne comprend pas comment c'est utilisé
-	    /* 0, 1, 2, 3, 4 */
-	    { 0, 0, 0, 0, 0 };
-
-    private int nbSommets = 5;
-
-    @Test
-    public void solveBasicTSP() {
-	TemplateTSP tsp = new TSP1();
-	tsp.searchAndDisplayBestSolution(10000, nbSommets, graph, duree);
-    }
-
-    @Test
-    public void solveAnotherTSP() {
-	Plan plan = ModelInterface.getPlan();
-	/* Creation intersections */
-	Intersection i1 = new Intersection(1, 5, 5);
-	Intersection i2 = new Intersection(2, 8, 8);
-	Intersection i3 = new Intersection(3, 10, 10);
-	/* Create sections */
-	Section s1 = new Section(i1, i2, 6, "");
-	Section s2 = new Section(i1, i3, 6, "");
-	Section s6 = new Section(i2, i1, 6, "");
-	Section s7 = new Section(i2, i3, 6, "");
-	Section s8 = new Section(i3, i1, 6, "");
-	Section s9 = new Section(i3, i2, 6, "");
-	/* Add sections to intersection */
-	i1.addOutcomingSection(s1);
-	i1.addOutcomingSection(s2);
-	i2.addOutcomingSection(s6);
-	i2.addOutcomingSection(s7);
-	i3.addOutcomingSection(s8);
-	i3.addOutcomingSection(s9);
-	/* Initialisation plan avec intersection */
-	ModelInterface.addIntersection(i1);
-	ModelInterface.addIntersection(i2);
-	ModelInterface.addIntersection(i3);
-	/* create delivery */
-	Delivery d1 = new Delivery(5, i3);
-	Delivery d3 = new Delivery(15, i2);
-	List<Delivery> deliveries = new ArrayList<Delivery>();
-	deliveries.add(d1);
-	deliveries.add(d3);
-
-	// TourCalculator.init(plan, deliveries, new Delivery(0, i1)); FIXME
-	TourCalculator.getInstance().calculateTours();
-    }
+	  assertEquals(firstStep.getStartDelivery(), d1);
+	  assertEquals(firstStep.getEndDelivery(), d2);
+	  assertEquals(secondStep.getStartDelivery(), d2);
+	  assertEquals(secondStep.getEndDelivery(), d3);
+	  assertEquals(lastStep.getStartDelivery(), d3);
+	  assertEquals(lastStep.getEndDelivery(), d1);
+     }
 
 }
